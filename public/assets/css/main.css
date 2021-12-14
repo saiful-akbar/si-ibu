@@ -1,0 +1,12 @@
+.page-title,
+.button-menu-mobile {
+    line-height: 100% !important;
+}
+
+.topbar-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    max-width: 170px;
+}

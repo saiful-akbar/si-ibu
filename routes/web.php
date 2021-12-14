@@ -1,23 +1,36 @@
 <?php
 
-use App\Models\User;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+/**
+ * Route middleware auth
+ */
+Route::middleware('auth')->group(function () {
 
-Route::get('/', function () {
-    $users = User::with(['role', 'divisi'])->get();
+    /**
+     * Route dashboard
+     */
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    foreach ($users as $user) {
-        echo 'username => ' . $user->username . '; role level => ' . $user->role->level . '; Divisi => ' . $user->divisi->nama_divisi . '<br/>';
-    }
+    /**
+     * Route logout
+     */
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+
+/**
+ * Route middleware guest
+ */
+Route::middleware('guest')->group(function () {
+
+    /**
+     * Route login
+     */
+    Route::prefix('/login')->group(function () {
+        Route::get('/', [AuthController::class, 'index'])->name('login.view');
+        Route::post('/', [AuthController::class, 'login'])->name('login');
+    });
 });
