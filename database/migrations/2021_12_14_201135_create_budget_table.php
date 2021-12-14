@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserTable extends Migration
+class CreateBudgetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,14 @@ class CreateUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('user', function (Blueprint $table) {
+        Schema::create('budget', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('divisi_id');
-            $table->string('username', 128)->unique();
-            $table->string('password');
-            $table->boolean('active')->default(false);
+            $table->year('tahun_anggaran');
+            $table->double('nominal');
             $table->timestamps();
 
-            // relasi dengan tabel role
-            $table->foreign('role_id')
-                ->references('id')
-                ->on('role')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
-            // relasi dengan table divisi
+            // relasi dengan tabel divisi
             $table->foreign('divisi_id')
                 ->references('id')
                 ->on('divisi')
@@ -45,6 +36,6 @@ class CreateUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user');
+        Schema::dropIfExists('budget');
     }
 }

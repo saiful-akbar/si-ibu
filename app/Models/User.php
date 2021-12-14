@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Profil;
 use App\Models\Role;
+use App\Models\Transaksi;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,5 +53,21 @@ class User extends Authenticatable
     public function divisi()
     {
         return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
+    }
+
+    /**
+     * Relasi one to one dengan table profil
+     */
+    public function profile()
+    {
+        return $this->hasOne(Profil::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relasi one to many dengan table transaksi
+     */
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'transaksi_id', 'id');
     }
 }
