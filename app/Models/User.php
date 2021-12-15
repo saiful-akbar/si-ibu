@@ -58,7 +58,7 @@ class User extends Authenticatable
     /**
      * Relasi one to one dengan table profil
      */
-    public function profile()
+    public function profil()
     {
         return $this->hasOne(Profil::class, 'user_id', 'id');
     }

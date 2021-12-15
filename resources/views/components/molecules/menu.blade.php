@@ -1,12 +1,46 @@
-<ul class="metismenu side-nav">
-    <li class="side-nav-title side-nav-item">Halaman Utama</li>
+@php
+    /**
+     * NB:
+     * divisi_akses diisi sesuai nama_divisi pada database
+     * 
+     * @var Array
+     */
+    $menu_list = [
+        [
+            'title' => 'Utama',
+            'divisi_akses' => 'all',
+            'menu' => [
+                [
+                    'title' => 'Dashboard',
+                    'icon' => 'uil-home-alt',
+                    'href' => 'dashboard',
+                    'active' => '/',
+                    'divisi_akses' => 'all',
+                    'submenu' => [],
+                ],
+            ],
+        ],
+        [
+            'title' => 'Data Master'
+        ]
+    ];
+@endphp
 
-    <li class="side-nav-item {{ Request::is('/') ? 'mm-active' : null }}">
-        <a href="apps-chat.html" class="side-nav-link">
-            <i class="uil-home-alt"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
+
+<ul class="metismenu side-nav">
+
+    @foreach($menu_list as $heading)
+        <li class="side-nav-title side-nav-item">{{ $heading['title'] }}</li>
+
+        @foreach($heading['menu'] as $menu)
+            <li class="side-nav-item {{ Request::is($menu['active']) ? 'mm-active' : null }}">
+                <a href="{{ route($menu['href']) }}" class="side-nav-link">
+                    <i class="{{ $menu['icon'] }}"></i>
+                    <span>{{ $menu['title'] }}</span>
+                </a>
+            </li>
+        @endforeach
+    @endforeach
 
     <li class="side-nav-title side-nav-item">Apps</li>
 

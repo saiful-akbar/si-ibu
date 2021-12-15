@@ -34,5 +34,22 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ]
         ]);
+
+        DB::table('profil')->insert([
+            [
+                'user_id' => 1,
+                'avatar' => 'avatar_default.webp',
+                'nama_lengkap' => 'Administrator',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 2,
+                'avatar' => 'avatar_default.webp',
+                'nama_lengkap' => 'Staff',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
     }
 }
