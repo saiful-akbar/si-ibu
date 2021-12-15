@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +19,8 @@ class AuthController extends Controller
 
         return view('pages.auth.login', compact('is_login'));
     }
+
+
 
     /**
      * Login user
@@ -38,22 +41,34 @@ class AuthController extends Controller
         $credentials = [
             'username' => $request->username,
             'password' => $request->password,
-            'active'   => 1,
         ];
-
 
         // cek pada database
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
 
+            // cek apakah akun aktif atau tidak
+            if (Auth::user()->active != 1) {
+                Auth::logout();
+
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'error' => 'Akun anda tidak aktif.',
+                ]);
+            }
+
+            $request->session()->regenerate();
             return redirect()->route('dashboard');
         }
 
         // return error
         return back()->withErrors([
-            'error' => 'Username atau password yang anda masukan salah.',
+            'error' => 'Username atau password salah.',
         ]);
     }
+
+
 
     /**
      * Logout user

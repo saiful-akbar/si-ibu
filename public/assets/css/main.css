@@ -11,11 +11,12 @@
     max-width: 170px;
 }
 
-table.table {
+table {
     width: 100%;
 }
 
-.nowrap {
+table.nowrap tr th,
+table.nowrap tr td {
     white-space: nowrap;
     overflow: hidden;
     max-width: 200px;

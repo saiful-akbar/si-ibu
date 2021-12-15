@@ -27,9 +27,9 @@ class UserSeeder extends Seeder
             [
                 'role_id' => 2,
                 'divisi_id' => 2,
-                'username' => 'staf',
-                'password' => bcrypt('staf1234'),
-                'active' => true,
+                'username' => 'staff',
+                'password' => bcrypt('staff1234'),
+                'active' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
