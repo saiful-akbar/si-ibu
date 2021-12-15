@@ -10,3 +10,14 @@
     min-width: 0;
     max-width: 170px;
 }
+
+table.table {
+    width: 100%;
+}
+
+.nowrap {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 200px;
+    text-overflow: ellipsis;
+}
