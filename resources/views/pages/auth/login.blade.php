@@ -11,9 +11,17 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 mb-3 text-center">
-                            <a href="{{ route('login.view') }}" class="logo-dark">
+                            <a
+                                href="{{ route('login.view') }}"
+                                class="logo-dark"
+                            >
                                 <span>
-                                    <img src="assets/images/logo-dark.png" alt="logo" height="20" class="mb-4" />
+                                    <img
+                                        src="assets/images/logo-dark.png"
+                                        alt="logo"
+                                        height="20"
+                                        class="mb-4"
+                                    />
                                 </span>
                             </a>
                             <h4 class="mt-0">Sign In</h4>
@@ -26,11 +34,20 @@
                     @error('error')
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <div role="alert" class="alert alert-danger alert-dismissible fade show">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <div
+                                    role="alert"
+                                    class="alert alert-danger alert-dismissible fade show"
+                                >
+                                    <button
+                                        type="button"
+                                        class="close"
+                                        data-dismiss="alert"
+                                        aria-label="Close"
+                                    >
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <strong>Error - </strong> {{ $message }}
+                                    <strong><i class="dripicons-wrong mr-2"></i></strong>
+                                    {{ $message }}
                                 </div>
                             </div>
                         </div>
@@ -38,7 +55,12 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <form name="form-login" autocomplete="off" method="POST" action="{{ route('login') }}">
+                            <form
+                                name="form-login"
+                                autocomplete="off"
+                                method="POST"
+                                action="{{ route('login') }}"
+                            >
                                 @method('POST')
                                 @csrf
 
@@ -70,15 +92,25 @@
 
                                 <div class="form-group mb-4">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="show-password">
-                                        <label class="custom-control-label" for="show-password">
+                                        <input
+                                            type="checkbox"
+                                            class="custom-control-input"
+                                            id="show-password"
+                                        >
+                                        <label
+                                            class="custom-control-label"
+                                            for="show-password"
+                                        >
                                             Tampilkan password
                                         </label>
                                     </div>
                                 </div>
 
                                 <div class="form-group mb-3 text-center">
-                                    <button class="btn btn-primary btn-block" type="submit">
+                                    <button
+                                        class="btn btn-primary btn-block"
+                                        type="submit"
+                                    >
                                         <i class="mdi mdi-login"></i> Log In
                                     </button>
                                 </div>
@@ -99,7 +131,7 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            $('#show-password').change(function () {
+            $('#show-password').change(function() {
                 $('#password').attr('type', $(this).is(':checked') ? 'text' : 'password');
             });
         });
