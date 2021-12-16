@@ -14,11 +14,8 @@ class DivisiController extends Controller
      */
     public function index(Request $request)
     {
-        $search = '';
-        if (isset($request->search) && !empty($request->search)) {
-            $search = $request->search;
-        }
-
+        $search = $request->search ?? '';
+        
         $divisi = Divisi::where('nama_divisi', 'like', '%' . $search . '%')
             ->simplePaginate(25)
             ->withQueryString();

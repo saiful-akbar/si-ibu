@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DivisiController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -40,11 +41,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Route dvisi
     Route::prefix('/divisi')->group(function () {
-        Route::get('/', [DivisiController::class, 'index'])->name('divisi');
+        Route::get('/', [DivisiController::class, 'index'])->name('divisi');            
         Route::get('/create', [DivisiController::class, 'create'])->name('divisi.create');
         Route::post('/', [DivisiController::class, 'store'])->name('divisi.store');
         Route::get('/{divisi}/edit', [DivisiController::class, 'edit'])->name('divisi.edit');
         Route::patch('/{divisi}', [DivisiController::class, 'update'])->name('divisi.update');
         Route::delete('/{divisi}', [DivisiController::class, 'delete'])->name('divisi.delete');
+    });
+
+    // route user
+    Route::prefix('/user')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('user');
     });
 });

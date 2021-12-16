@@ -1,16 +1,9 @@
-<footer class="footer">
+<footer class="footer bg-white">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                2021 - {{ date('Y') }} © Laravel
+                2021 - {{ date('Y') }} © {{ env('APP_NAME', 'Laravel') }}
             </div>
-            {{-- <div class="col-md-6">
-                <div class="text-md-right footer-links d-none d-md-block">
-                    <a href="javascript: void(0);">About</a>
-                    <a href="javascript: void(0);">Support</a>
-                    <a href="javascript: void(0);">Contact Us</a>
-                </div>
-            </div> --}}
         </div>
     </div>
 </footer>
