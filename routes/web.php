@@ -41,7 +41,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Route dvisi
     Route::prefix('/divisi')->group(function () {
-        Route::get('/', [DivisiController::class, 'index'])->name('divisi');            
+        Route::get('/', [DivisiController::class, 'index'])->name('divisi');
         Route::get('/create', [DivisiController::class, 'create'])->name('divisi.create');
         Route::post('/', [DivisiController::class, 'store'])->name('divisi.store');
         Route::get('/{divisi}/edit', [DivisiController::class, 'edit'])->name('divisi.edit');
@@ -52,5 +52,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // route user
     Route::prefix('/user')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('user');
+        Route::get('/create', [UserController::class, 'create'])->name('user.create');
+        Route::post('/', [UserController::class, 'store'])->name('user.store');
     });
 });

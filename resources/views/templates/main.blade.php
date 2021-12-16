@@ -3,25 +3,62 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Aplikasi anggarang berbasis web laravel" />
-    <meta name="Saiful Akbar" content="Coderthemes" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+    <meta
+        name="description"
+        content="Aplikasi anggarang berbasis web laravel"
+    />
+    <meta
+        name="Saiful Akbar"
+        content="Coderthemes"
+    />
 
-    <meta name="base-url" content="{{ url('/') }}" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta
+        name="base-url"
+        content="{{ url('/') }}"
+    />
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    />
 
     <title>@yield('title') - {{ env('APP_NAME', 'Laravel') }}</title>
 
     {{-- App favicon --}}
-    <link href="{{ asset('assets/images/favicon.ico') }}" rel="shortcut icon" />
+    <link
+        href="{{ asset('assets/images/favicon.ico') }}"
+        rel="shortcut icon"
+    />
 
     {{-- App css --}}
-    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
-    <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style" disabled />
+    <link
+        href="{{ asset('assets/css/icons.min.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
+    <link
+        href="{{ asset('assets/css/app.min.css') }}"
+        rel="stylesheet"
+        type="text/css"
+        id="light-style"
+    />
+    <link
+        href="{{ asset('assets/css/app-dark.min.css') }}"
+        rel="stylesheet"
+        type="text/css"
+        id="dark-style"
+        disabled
+    />
 
     {{-- Main css --}}
-    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('assets/css/main.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
 
     {{-- Page css --}}
     @yield('css')
@@ -70,7 +107,7 @@
                     {{-- Topbar Start --}}
                     @include('components.organisms.topbar')
 
-                    <div class="container-fluid pt-4 pb-2">
+                    <div class="container-fluid pt-4 pb-4">
 
                         {{-- alert notifikasi --}}
                         @include('components.organisms.alert')

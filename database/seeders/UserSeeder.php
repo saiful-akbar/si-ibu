@@ -38,14 +38,14 @@ class UserSeeder extends Seeder
         DB::table('profil')->insert([
             [
                 'user_id' => 1,
-                'avatar' => 'avatar_default.webp',
+                'avatar' => null,
                 'nama_lengkap' => 'Administrator',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => 2,
-                'avatar' => 'avatar_default.webp',
+                'avatar' => null,
                 'nama_lengkap' => 'Staff',
                 'created_at' => now(),
                 'updated_at' => now(),

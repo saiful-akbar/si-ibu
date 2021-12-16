@@ -17,7 +17,7 @@
                                 class="btn btn-sm btn-primary"
                             >
                                 <i class="mdi mdi-plus"></i>
-                                <span>Tambah Divisi Baru</span>
+                                <span>Tambah Divisi</span>
                             </a>
                         </div>
                     </div>
@@ -37,10 +37,13 @@
                                         name="search"
                                         placeholder="Cari divisi..."
                                         class="form-control"
-                                        value="{{ $search }}"
+                                        value="{{ request('search') }}"
                                     />
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="submit">
+                                        <button
+                                            class="btn btn-secondary"
+                                            type="submit"
+                                        >
                                             <i class="dripicons-search"></i>
                                         </button>
                                     </div>
@@ -59,6 +62,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Divisi</th>
+                                            <th>Diperbarui</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -67,6 +71,7 @@
                                             <tr>
                                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                                 <td class="align-middle">{{ $data->nama_divisi }}</td>
+                                                <td class="align-middle">{{ $data->updated_at }}</td>
                                                 <td class="align-middle text-center">
                                                     <a
                                                         href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"

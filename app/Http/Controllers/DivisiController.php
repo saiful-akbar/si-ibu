@@ -14,13 +14,15 @@ class DivisiController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->search ?? '';
-        
-        $divisi = Divisi::where('nama_divisi', 'like', '%' . $search . '%')
-            ->simplePaginate(25)
-            ->withQueryString();
+        $divisi = Divisi::select('id', 'nama_divisi', 'updated_at');
 
-        return view('pages.divisi.index', compact('divisi', 'search'));
+        if ($request->search) {
+            $divisi->where('nama_divisi', 'like', '%' . $request->search . '%');
+        }
+
+        return view('pages.divisi.index', [
+            'divisi' => $divisi->simplePaginate(25)->withQueryString(),
+        ]);
     }
 
 

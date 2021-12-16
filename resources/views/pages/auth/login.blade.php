@@ -17,7 +17,7 @@
                             >
                                 <span>
                                     <img
-                                        src="assets/images/logo-dark.png"
+                                        src="{{ asset('assets/images/logo/logo-dark.png') }}"
                                         alt="logo"
                                         height="20"
                                         class="mb-4"
