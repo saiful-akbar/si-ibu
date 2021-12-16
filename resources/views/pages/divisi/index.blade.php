@@ -69,8 +69,8 @@
                                     <tbody>
                                         @foreach ($divisi as $data)
                                             <tr>
-                                                <td class="align-middle">{{ $loop->iteration }}</td>
-                                                <td class="align-middle">{{ $data->nama_divisi }}</td>
+                                                <td class="align-middle">{{ $divisi->currentPage() + $loop->iteration - 1 }}</td>
+                                                <td class="align-middle">{{ ucwords($data->nama_divisi) }}</td>
                                                 <td class="align-middle">{{ $data->updated_at }}</td>
                                                 <td class="align-middle text-center">
                                                     <a
@@ -93,7 +93,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 d-flex justify-content-center">
+                        <div class="col-12 d-flex justify-content-end">
                             {{ $divisi->links() }}
                         </div>
                     </div>

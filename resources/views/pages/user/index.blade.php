@@ -74,7 +74,7 @@
                                     <tbody>
                                         @foreach ($users as $user)
                                             <tr>
-                                                <td class="align-middle">{{ $loop->iteration }}</td>
+                                                <td class="align-middle">{{ $users->currentPage() + $loop->iteration - 1 }}</td>
                                                 <td class="align-middle">
                                                     @if ($user->avatar != null)
                                                         <img
@@ -103,12 +103,8 @@
                                                 </td>
                                                 <td class="align-middle">{{ $user->updated_at }}</td>
                                                 <td class="align-middle text-center">
-                                                    <button class="btn btn-sm btn-outline-success mr-1">
-                                                        Edit
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-danger">
-                                                        Hapus
-                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success mr-1">Edit</button>
+                                                    <button class="btn btn-sm btn-outline-danger">Hapus</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -117,7 +113,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 d-flex justify-content-center">
+                        <div class="col-12 d-flex justify-content-end">
                             {{ $users->links() }}
                         </div>
                     </div>
