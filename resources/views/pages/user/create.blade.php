@@ -5,14 +5,22 @@
 @section('content')
     <div class="row">
         <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('user') }}" class="btn btn-sm btn-dark">
+            <a
+                href="{{ route('user') }}"
+                class="btn btn-sm btn-dark"
+            >
                 <i class="dripicons-chevron-left"></i>
                 <span>Kembali</span>
             </a>
         </div>
     </div>
 
-    <form name="user_form" enctype="multipart/form-data" action="{{ route('user.store') }}" method="POST">
+    <form
+        name="user_form"
+        enctype="multipart/form-data"
+        action="{{ route('user.store') }}"
+        method="POST"
+    >
         @method('POST') @csrf
 
         {{-- form akun --}}
@@ -28,7 +36,10 @@
 
                         {{-- input username --}}
                         <div class="form-group row mb-3">
-                            <label for="username" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="username"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Username <small class="text-danger">*</small>
                             </label>
 
@@ -51,7 +62,10 @@
 
                         {{-- input password --}}
                         <div class="form-group row">
-                            <label for="password" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="password"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 password <small class="text-danger">*</small>
                             </label>
 
@@ -67,7 +81,11 @@
                                         class="form-control @error('password') is-invalid @enderror"
                                     />
 
-                                    <div class="input-group-append" data-password="false" style="cursor: pointer">
+                                    <div
+                                        class="input-group-append"
+                                        data-password="false"
+                                        style="cursor: pointer"
+                                    >
                                         <div class="input-group-text">
                                             <span class="password-eye"></span>
                                         </div>
@@ -96,7 +114,10 @@
                                         @if (old('active')) checked @endif
                                     />
 
-                                    <label class="custom-control-label" for="active">
+                                    <label
+                                        class="custom-control-label"
+                                        for="active"
+                                    >
                                         Aktif
                                     </label>
                                 </div>
@@ -130,8 +151,14 @@
                                     data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
                                 />
 
-                                <label for="avatar" class="ml-2">
-                                    <span type="button" class="btn btn-sm btn-primary">
+                                <label
+                                    for="avatar"
+                                    class="ml-2"
+                                >
+                                    <span
+                                        type="button"
+                                        class="btn btn-sm btn-primary"
+                                    >
                                         Upload avatar
                                     </span>
                                 </label>
@@ -156,7 +183,10 @@
 
                         {{-- input nama lengkap --}}
                         <div class="form-group row mb-3">
-                            <label for="nama_lengkap" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="nama_lengkap"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Nama Lengkap <small class="text-danger">*</small>
                             </label>
 
@@ -179,7 +209,10 @@
 
                         {{-- input divisi --}}
                         <div class="form-group row mb-3">
-                            <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="divisi_id"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Divisi <small class="text-danger">*</small>
                             </label>
 
@@ -190,12 +223,18 @@
                                     id="divisi_id"
                                     class="custom-select @error('divisi_id') is-invalid @enderror"
                                 >
-                                    <option disabled @if (!old('divisi_id')) selected @endif>
+                                    <option
+                                        disabled
+                                        @if (!old('divisi_id')) selected @endif
+                                    >
                                         -- Pilih Divisi --
                                     </option>
 
                                     @foreach ($divisions as $divisi)
-                                        <option value="{{ $divisi->id }}" @if (old('divisi_id') == $divisi->id) selected @endif>
+                                        <option
+                                            value="{{ $divisi->id }}"
+                                            @if (old('divisi_id') == $divisi->id) selected @endif
+                                        >
                                             {{ $divisi->nama_divisi }}
                                         </option>
                                     @endforeach
@@ -209,7 +248,10 @@
 
                         {{-- input role level --}}
                         <div class="form-group row mb-3">
-                            <label for="role_id" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="role_id"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Role Level <small class="text-danger">*</small>
                             </label>
 
@@ -220,12 +262,18 @@
                                     id="role_id"
                                     class="custom-select @error('role_id') is-invalid @enderror"
                                 >
-                                    <option disabled @if (!old('role_id')) selected @endif>
+                                    <option
+                                        disabled
+                                        @if (!old('role_id')) selected @endif
+                                    >
                                         -- Pilih Level --
                                     </option>
 
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}" @if (old('role_id') == $role->id) selected @endif>
+                                        <option
+                                            value="{{ $role->id }}"
+                                            @if (old('role_id') == $role->id) selected @endif
+                                        >
                                             {{ ucwords($role->level) }}
                                         </option>
                                     @endforeach
@@ -245,17 +293,24 @@
         {{-- button submit & reset --}}
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-success btn-sm mr-2">
+                <button
+                    type="submit"
+                    class="btn btn-info btn-sm mr-2"
+                >
                     <i class="mdi mdi-content-save"></i>
                     <span>Simpan</span>
                 </button>
 
-                <button type="reset" class="btn btn-sm btn-secondary">
+                <button
+                    type="reset"
+                    class="btn btn-sm btn-secondary"
+                >
                     <i class="mdi mdi-close"></i>
                     <span>Reset</span>
                 </button>
             </div>
         </div>
+
     </form>
 @endsection
 

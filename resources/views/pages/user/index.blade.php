@@ -44,7 +44,7 @@
                                             class="btn btn-secondary"
                                             type="submit"
                                         >
-                                            <i class="dripicons-search"></i>
+                                            <i class="uil-search"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -82,13 +82,13 @@
                                                         <img
                                                             src="{{ asset('storage/' . $user->avatar) }}"
                                                             alt="avatar"
-                                                            class="img-fluid avatar-sm rounded-circle"
+                                                            class="img-fluid avatar-sm rounded-circle shadow-sm"
                                                         />
                                                     @else
                                                         <img
                                                             src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
                                                             alt="avatar"
-                                                            class="img-fluid avatar-sm rounded-circle"
+                                                            class="img-fluid avatar-sm rounded-circle shadow-sm"
                                                         />
                                                     @endif
                                                 </td>
@@ -107,15 +107,17 @@
                                                 <td class="align-middle text-center">
                                                     <a
                                                         href="{{ route('user.edit', ['user' => $user->id]) }}"
-                                                        class="btn btn-sm btn-outline-success mr-1"
+                                                        class="btn btn-sm btn-success mr-1"
                                                     >
-                                                        Edit
+                                                        <i class="mdi mdi-square-edit-outline"></i>
+                                                        <span>Edit</span>
                                                     </a>
                                                     <button
                                                         onclick="handleDelete({{ $user->id }}, '{{ $user->username }}')"
-                                                        class="btn btn-sm btn-outline-danger"
+                                                        class="btn btn-sm btn-danger"
                                                     >
-                                                        Hapus
+                                                        <i class="mdi mdi-delete"></i>
+                                                        <span>Hapus</span>
                                                     </button>
                                                 </td>
                                             </tr>

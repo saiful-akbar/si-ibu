@@ -52,7 +52,7 @@ class UserController extends Controller
             'profil.nama_lengkap',
             'divisi.nama_divisi',
             'role.level',
-        );
+        )->orderBy('user.username', 'asc');
 
         /**
          * view halaman user.

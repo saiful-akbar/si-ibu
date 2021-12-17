@@ -124,7 +124,11 @@
         {{-- end auth-fluid-form-box --}}
 
         {{-- Auth fluid right content --}}
-        <div class="auth-fluid-right text-center"></div>
+        <div class="auth-fluid-right text-center">
+            <div class="auth-user-testimonial">
+                <h2 class="mb-3">{{ env('APP_NAME', 'Laravel') }}</h2>
+            </div>
+        </div>
     </div>
 @endsection
 

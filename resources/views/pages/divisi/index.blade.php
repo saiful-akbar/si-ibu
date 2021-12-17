@@ -44,7 +44,7 @@
                                             class="btn btn-secondary"
                                             type="submit"
                                         >
-                                            <i class="dripicons-search"></i>
+                                            <i class="uil-search"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -75,15 +75,17 @@
                                                 <td class="align-middle text-center">
                                                     <a
                                                         href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"
-                                                        class="btn btn-sm btn-outline-success mr-1"
+                                                        class="btn btn-sm btn-success mr-1"
                                                     >
-                                                        Edit
+                                                        <i class="mdi mdi-square-edit-outline"></i>
+                                                        <span>Edit</span>
                                                     </a>
                                                     <button
-                                                        class="btn btn-sm btn-outline-danger"
+                                                        class="btn btn-sm btn-danger"
                                                         onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
                                                     >
-                                                        Hapus
+                                                        <i class="mdi mdi-delete"></i>
+                                                        <span>Hapus</span>
                                                     </button>
                                                 </td>
                                             </tr>

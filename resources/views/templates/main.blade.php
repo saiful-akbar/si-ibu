@@ -72,8 +72,8 @@
         "layoutBoxed": false,
         "leftSidebarCondensed": false,
         "leftSidebarScrollable": false,
-        "darkMode":false,
-        "showRightSidebarOnStart": true
+        "darkMode": false,
+        "showRightSidebarOnStart": false
     }'
 >
 

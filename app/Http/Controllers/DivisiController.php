@@ -20,6 +20,8 @@ class DivisiController extends Controller
             $divisi->where('nama_divisi', 'like', '%' . $request->search . '%');
         }
 
+        $divisi->orderBy('nama_divisi', 'asc');
+
         return view('pages.divisi.index', [
             'divisi' => $divisi->simplePaginate(25)->withQueryString(),
         ]);
