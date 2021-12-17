@@ -17,7 +17,7 @@
                                 class="btn btn-sm btn-primary"
                             >
                                 <i class="mdi mdi-plus"></i>
-                                <span>Buat Divisi Baru</span>
+                                <span>Tambah Divisi</span>
                             </a>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                                         name="search"
                                         placeholder="Cari divisi..."
                                         class="form-control"
-                                        value="{{ $search }}"
+                                        value="{{ request('search') }}"
                                     />
                                     <div class="input-group-append">
                                         <button
@@ -62,14 +62,16 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Divisi</th>
+                                            <th>Diperbarui</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($divisi as $data)
                                             <tr>
-                                                <td class="align-middle">{{ $loop->iteration }}</td>
-                                                <td class="align-middle">{{ $data->nama_divisi }}</td>
+                                                <td class="align-middle">{{ $divisi->currentPage() + $loop->iteration - 1 }}</td>
+                                                <td class="align-middle">{{ ucwords($data->nama_divisi) }}</td>
+                                                <td class="align-middle">{{ $data->updated_at }}</td>
                                                 <td class="align-middle text-center">
                                                     <a
                                                         href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"
@@ -91,7 +93,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 d-flex justify-content-center">
+                        <div class="col-12 d-flex justify-content-end">
                             {{ $divisi->links() }}
                         </div>
                     </div>

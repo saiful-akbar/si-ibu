@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-12 mb-3">
             <div
-                class="alert alert-{{ session('alert')['type'] }} alert-dismissible fade show shadow-sm"
+                class="alert alert-{{ session('alert')['type'] }} alert-dismissible fade show"
                 role="alert"
             >
                 <button

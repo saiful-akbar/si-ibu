@@ -10,14 +10,14 @@
             <div class="align-items-center d-flex h-100">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 mb-3 text-center">
+                        <div class="col-12 text-center mb-3">
                             <a
                                 href="{{ route('login.view') }}"
                                 class="logo-dark"
                             >
                                 <span>
                                     <img
-                                        src="assets/images/logo-dark.png"
+                                        src="{{ asset('assets/images/logo/logo-dark.png') }}"
                                         alt="logo"
                                         height="20"
                                         class="mb-4"
@@ -33,7 +33,7 @@
 
                     @error('error')
                         <div class="row">
-                            <div class="col-12 mb-3">
+                            <div class="col-12">
                                 <div
                                     role="alert"
                                     class="alert alert-danger alert-dismissible fade show"

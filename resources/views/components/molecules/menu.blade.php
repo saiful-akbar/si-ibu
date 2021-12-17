@@ -33,8 +33,8 @@
                 [
                     'title' => 'User',
                     'icon' => 'uil-users-alt',
-                    'href' => 'dashboard',
-                    'active' => '/',
+                    'href' => 'user',
+                    'active' => 'user*',
                     'user_akses' => ['admin'],
                 ],
             ],

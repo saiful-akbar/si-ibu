@@ -6,7 +6,7 @@
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
-    >
+    />
     <meta
         name="description"
         content="Aplikasi anggarang berbasis web laravel"
@@ -25,7 +25,7 @@
         content="{{ csrf_token() }}"
     />
 
-    <title>@yield('title') - Laravel</title>
+    <title>@yield('title') - {{ env('APP_NAME', 'Laravel') }}</title>
 
     {{-- App favicon --}}
     <link
@@ -107,7 +107,7 @@
                     {{-- Topbar Start --}}
                     @include('components.organisms.topbar')
 
-                    <div class="container-fluid py-4">
+                    <div class="container-fluid pt-4 pb-4">
 
                         {{-- alert notifikasi --}}
                         @include('components.organisms.alert')

@@ -14,16 +14,15 @@ class DivisiController extends Controller
      */
     public function index(Request $request)
     {
-        $search = '';
-        if (isset($request->search) && !empty($request->search)) {
-            $search = $request->search;
+        $divisi = Divisi::select('id', 'nama_divisi', 'updated_at');
+
+        if ($request->search) {
+            $divisi->where('nama_divisi', 'like', '%' . $request->search . '%');
         }
 
-        $divisi = Divisi::where('nama_divisi', 'like', '%' . $search . '%')
-            ->simplePaginate(25)
-            ->withQueryString();
-
-        return view('pages.divisi.index', compact('divisi', 'search'));
+        return view('pages.divisi.index', [
+            'divisi' => $divisi->simplePaginate(25)->withQueryString(),
+        ]);
     }
 
 
@@ -114,11 +113,11 @@ class DivisiController extends Controller
         }
 
         // validasi
-        $validatedData = $request->validate($validate_rules, $validate_message);
-        $validatedData['nama_divisi'] = ucwords($validatedData['nama_divisi']);
+        $validated_data = $request->validate($validate_rules, $validate_message);
+        $validated_data['nama_divisi'] = ucwords($validated_data['nama_divisi']);
 
         // update ke database
-        Divisi::where('id', $divisi->id)->update($validatedData);
+        Divisi::where('id', $divisi->id)->update($validated_data);
 
         return redirect()->route('divisi')->with('alert', [
             'type' => 'success',

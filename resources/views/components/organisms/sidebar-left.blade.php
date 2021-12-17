@@ -7,14 +7,14 @@
     >
         <span class="logo-lg">
             <img
-                src="{{ asset('assets/images/logo.png') }}"
+                src="{{ asset('assets/images/logo/logo.png') }}"
                 alt=""
                 height="16"
             />
         </span>
         <span class="logo-sm">
             <img
-                src="{{ asset('assets/images/logo_sm.png') }}"
+                src="{{ asset('assets/images/logo/logo_sm.png') }}"
                 alt=""
                 height="16"
             />
@@ -28,14 +28,14 @@
     >
         <span class="logo-lg">
             <img
-                src="{{ asset('assets/images/logo-dark.png') }}"
+                src="{{ asset('assets/images/logo/logo-dark.png') }}"
                 alt=""
                 height="16"
             />
         </span>
         <span class="logo-sm">
             <img
-                src="{{ asset('assets/images/logo_sm_dark.png') }}"
+                src="{{ asset('assets/images/logo/logo_sm_dark.png') }}"
                 alt=""
                 height="16"
             />

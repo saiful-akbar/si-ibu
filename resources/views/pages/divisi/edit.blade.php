@@ -38,14 +38,16 @@
 
                                 <div class="form-group row mb-3">
                                     <label
-                                        for="inputEmail3"
+                                        for="nama_divisi"
                                         class="col-md-3 col-sm-12 col-form-label"
                                     >
                                         Nama Divisi <small class="text-danger ml-1">*</small>
                                     </label>
                                     <div class="col-md-9 col-sm-12">
                                         <input
+                                            required
                                             type="text"
+                                            id="nama_divisi"
                                             name="nama_divisi"
                                             placeholder="Nama divisi..."
                                             value="{{ old('nama_divisi', $divisi->nama_divisi) }}"
