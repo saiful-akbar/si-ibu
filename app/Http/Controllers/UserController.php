@@ -18,10 +18,10 @@ class UserController extends Controller
      * @return view
      */
     public function index(Request $request)
-    {   
+    {
         /**
          * query join tabel user dengan tabel profil, divisi & role.
-         * 
+         *
          * @var object
          */
         $users = User::leftJoin('profil', 'user.id', '=', 'profil.user_id')
@@ -58,7 +58,7 @@ class UserController extends Controller
          * view halaman user.
          */
         return view('pages.user.index', [
-            
+
             /**
              * buat pagination
              */
@@ -77,7 +77,7 @@ class UserController extends Controller
     {
         /**
          * ambil semua data divisi & role
-         * 
+         *
          * @var object
          */
         $divisions = Divisi::all();
@@ -99,7 +99,7 @@ class UserController extends Controller
     {
         /**
          * valisadi rules
-         * 
+         *
          * @var array
          */
         $validasi_rules = [
@@ -113,7 +113,7 @@ class UserController extends Controller
 
         /**
          * pesan error validasi
-         * 
+         *
          * @var array
          */
         $validate_message = [
@@ -154,7 +154,7 @@ class UserController extends Controller
 
         /**
          * simpan data user ke database
-         * 
+         *
          * @var object
          */
         $user = User::create([
@@ -186,7 +186,7 @@ class UserController extends Controller
 
     /**
      * View halaman edit user
-     * 
+     *
      * @param  User   $user [description]
      * @return view
      */
@@ -205,17 +205,17 @@ class UserController extends Controller
 
     /**
      * Update data user
-     * 
+     *
      * @param  Request $request
      * @param  User    $user
-     * 
+     *
      * @return redirect
      */
     public function update(Request $request, User $user)
     {
         /**
          * valisadi rules
-         * 
+         *
          * @var array
          */
         $validasi_rules = [
@@ -243,7 +243,7 @@ class UserController extends Controller
 
         /**
          * pesan error validasi
-         * 
+         *
          * @var array
          */
         $validate_message = [
@@ -261,7 +261,7 @@ class UserController extends Controller
             'divisi_id.exists' => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
             'role_id.required' => 'Role level harus dipilih.',
             'divisi_id.exists' => 'Role level tidak terdaftar. Anda harus memilih role level yang telah ditentukan.',
-        ];        
+        ];
 
         /**
          * jalankan validasi
@@ -280,13 +280,13 @@ class UserController extends Controller
          */
         if ($request->hasFile('avatar')) {
             Storage::disk('public')->delete($user->profil->avatar);
-            
+
             $avatar = $request->file('avatar')->store('avatars', 'public');
         }
 
         /**
          * simpan data user ke database
-         * 
+         *
          * @var object
          */
         $user->role_id = $request->role_id;
@@ -315,5 +315,31 @@ class UserController extends Controller
             'type' => 'success',
             'message' => '1 user berhasil diperbarui',
         ]);
+    }
+
+
+
+    /**
+     * Hapus data user
+     *
+     * @param User $user
+     *
+     * @return redirect
+     */
+    public function delete(User $user)
+    {
+        try {
+            User::destroy($user->id);
+
+            return redirect()->route('user')->with('alert', [
+                'type' => 'success',
+                'message' => '1 data user berhasil dihapus.',
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('user')->with('alert', [
+                'type' => 'danger',
+                'message' => 'User dengan id = ' . $user->id . 'gagal dihapus. <br> <strong>' . $e->getMessage() . '</strong>',
+            ]);
+        }
     }
 }

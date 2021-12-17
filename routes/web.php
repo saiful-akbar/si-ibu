@@ -56,5 +56,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('/', [UserController::class, 'store'])->name('user.store');
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
         Route::patch('/{user}', [UserController::class, 'update'])->name('user.update');
+        Route::delete('/{user}', [UserController::class, 'delete'])->name('user.delete');
     });
 });

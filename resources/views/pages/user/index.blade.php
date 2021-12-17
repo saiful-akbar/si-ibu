@@ -40,7 +40,10 @@
                                         value="{{ request('search') }}"
                                     />
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="submit">
+                                        <button
+                                            class="btn btn-secondary"
+                                            type="submit"
+                                        >
                                             <i class="dripicons-search"></i>
                                         </button>
                                     </div>
@@ -108,7 +111,10 @@
                                                     >
                                                         Edit
                                                     </a>
-                                                    <button class="btn btn-sm btn-outline-danger">
+                                                    <button
+                                                        onclick="handleDelete({{ $user->id }}, '{{ $user->username }}')"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                    >
                                                         Hapus
                                                     </button>
                                                 </td>
@@ -129,4 +135,15 @@
             </div>
         </div>
     </div>
+
+    <form
+        method="POST"
+        id="form-delete-user"
+    >
+        @method('DELETE') @csrf
+    </form>
+@endsection
+
+@section('js')
+    <script src="{{ asset('assets/js/pages/user.js') }}"></script>
 @endsection
