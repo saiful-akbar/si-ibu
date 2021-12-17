@@ -113,11 +113,11 @@ class DivisiController extends Controller
         }
 
         // validasi
-        $validatedData = $request->validate($validate_rules, $validate_message);
-        $validatedData['nama_divisi'] = ucwords($validatedData['nama_divisi']);
+        $validated_data = $request->validate($validate_rules, $validate_message);
+        $validated_data['nama_divisi'] = ucwords($validated_data['nama_divisi']);
 
         // update ke database
-        Divisi::where('id', $divisi->id)->update($validatedData);
+        Divisi::where('id', $divisi->id)->update($validated_data);
 
         return redirect()->route('divisi')->with('alert', [
             'type' => 'success',

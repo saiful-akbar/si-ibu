@@ -20,7 +20,7 @@
                 <span class="account-user-avatar">
                     @if (Auth::user()->profil->avatar != null)
                         <img
-                            src="{{ asset('storage/avatars/' . Auth::user()->profil->avatar) }}"
+                            src="{{ asset('storage/' . Auth::user()->profil->avatar) }}"
                             alt="user-image"
                             class="rounded-circle"
                         />

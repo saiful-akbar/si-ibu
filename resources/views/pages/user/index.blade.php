@@ -40,10 +40,7 @@
                                         value="{{ request('search') }}"
                                     />
                                     <div class="input-group-append">
-                                        <button
-                                            class="btn btn-secondary"
-                                            type="submit"
-                                        >
+                                        <button class="btn btn-secondary" type="submit">
                                             <i class="dripicons-search"></i>
                                         </button>
                                     </div>
@@ -74,7 +71,9 @@
                                     <tbody>
                                         @foreach ($users as $user)
                                             <tr>
-                                                <td class="align-middle">{{ $users->currentPage() + $loop->iteration - 1 }}</td>
+                                                <td class="align-middle">
+                                                    {{ $users->currentPage() + $loop->iteration - 1 }}
+                                                </td>
                                                 <td class="align-middle">
                                                     @if ($user->avatar != null)
                                                         <img
@@ -103,8 +102,15 @@
                                                 </td>
                                                 <td class="align-middle">{{ $user->updated_at }}</td>
                                                 <td class="align-middle text-center">
-                                                    <button class="btn btn-sm btn-outline-success mr-1">Edit</button>
-                                                    <button class="btn btn-sm btn-outline-danger">Hapus</button>
+                                                    <a
+                                                        href="{{ route('user.edit', ['user' => $user->id]) }}"
+                                                        class="btn btn-sm btn-outline-success mr-1"
+                                                    >
+                                                        Edit
+                                                    </a>
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        Hapus
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @endforeach

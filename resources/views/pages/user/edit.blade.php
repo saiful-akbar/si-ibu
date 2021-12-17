@@ -1,6 +1,6 @@
 @extends('templates.main')
 
-@section('title', 'Tambah User')
+@section('title', 'Edit User')
 
 @section('content')
     <div class="row">
@@ -12,8 +12,13 @@
         </div>
     </div>
 
-    <form name="user_form" enctype="multipart/form-data" action="{{ route('user.store') }}" method="POST">
-        @method('POST') @csrf
+    <form
+        name="user_form"
+        enctype="multipart/form-data"
+        action="{{ route('user.update', ['user' => $user->id]) }}"
+        method="POST"
+    >
+        @method('PATCH') @csrf
 
         {{-- form akun --}}
         <div class="row">
@@ -22,7 +27,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <h4 class="header-title">Form Tambah User Akun</h4>
+                                <h4 class="header-title">Form Edit User Akun</h4>
                             </div>
                         </div>
 
@@ -39,7 +44,7 @@
                                     id="username"
                                     name="username"
                                     placeholder="Masukan username..."
-                                    value="{{ old('username') }}"
+                                    value="{{ old('username', $user->username) }}"
                                     class="form-control @error('username') is-invalid @enderror"
                                 />
 
@@ -52,13 +57,12 @@
                         {{-- input password --}}
                         <div class="form-group row">
                             <label for="password" class="col-md-3 col-sm-12 col-form-label">
-                                password <small class="text-danger">*</small>
+                                password
                             </label>
 
                             <div class="col-md-9 col-sm-12">
                                 <div class="input-group input-group-merge @error('password') is-invalid @enderror">
                                     <input
-                                        required
                                         type="password"
                                         id="password"
                                         name="password"
@@ -67,12 +71,20 @@
                                         class="form-control @error('password') is-invalid @enderror"
                                     />
 
-                                    <div class="input-group-append" data-password="false" style="cursor: pointer">
+                                    <div
+                                        class="input-group-append"
+                                        data-password="false"
+                                        style="cursor: pointer"
+                                    >
                                         <div class="input-group-text">
                                             <span class="password-eye"></span>
                                         </div>
                                     </div>
                                 </div>
+
+                                <span class="help-block">
+                                    <small>Biarkan password tetap kosong jika tidak ingin merubahnya.</small>
+                                </span>
 
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -93,7 +105,7 @@
                                         name="active"
                                         class="custom-control-input form-control-lg"
                                         id="active"
-                                        @if (old('active')) checked @endif
+                                        @if (old('active', $user->active)) checked @endif
                                     />
 
                                     <label class="custom-control-label" for="active">
@@ -115,20 +127,30 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <h4 class="header-title">Form Tambah User Profil</h4>
+                                <h4 class="header-title">Form Edit User Profil</h4>
                             </div>
                         </div>
 
                         {{-- input avatar --}}
                         <div class="form-group row mb-3 justify-content-end">
                             <div class="col-md-9 col-sm-12">
-                                <img
-                                    id="avatar-view"
-                                    alt="avatar"
-                                    class="img-fluid avatar-lg rounded-circle"
-                                    src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                    data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                />
+                                @if($user->profil->avatar != null)
+                                    <img
+                                        id="avatar-view"
+                                        alt="avatar"
+                                        class="img-fluid avatar-lg rounded-circle"
+                                        src="{{ asset('storage/' . $user->profil->avatar) }}"
+                                        data-src="{{ asset('storage/' . $user->profil->avatar) }}"
+                                    />
+                                @else
+                                    <img
+                                        id="avatar-view"
+                                        alt="avatar"
+                                        class="img-fluid avatar-lg rounded-circle"
+                                        src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
+                                        data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
+                                    />
+                                @endif
 
                                 <label for="avatar" class="ml-2">
                                     <span type="button" class="btn btn-sm btn-primary">
@@ -142,6 +164,7 @@
                                         id="avatar"
                                         name="avatar"
                                         accept="image/*"
+                                        placeholder="Upload avatar..."
                                         value="{{ old('avatar') }}"
                                         class="@error('avatar') is-invalid @enderror"
                                         style="display: none;"
@@ -167,7 +190,7 @@
                                     id="nama_lengkap"
                                     name="nama_lengkap"
                                     placeholder="Masukan nama lengkap..."
-                                    value="{{ old('nama_lengkap') }}"
+                                    value="{{ old('nama_lengkap', $user->profil->nama_lengkap) }}"
                                     class="form-control @error('nama_lengkap') is-invalid @enderror"
                                 />
 
@@ -190,12 +213,15 @@
                                     id="divisi_id"
                                     class="custom-select @error('divisi_id') is-invalid @enderror"
                                 >
-                                    <option disabled @if (!old('divisi_id')) selected @endif>
+                                    <option disabled @if (!old('divisi_id', $user->divisi->id)) selected @endif>
                                         -- Pilih Divisi --
                                     </option>
 
                                     @foreach ($divisions as $divisi)
-                                        <option value="{{ $divisi->id }}" @if (old('divisi_id') == $divisi->id) selected @endif>
+                                        <option
+                                            value="{{ $divisi->id }}"
+                                            @if (old('divisi_id', $user->divisi->id) == $divisi->id) selected @endif
+                                        >
                                             {{ $divisi->nama_divisi }}
                                         </option>
                                     @endforeach
@@ -220,12 +246,15 @@
                                     id="role_id"
                                     class="custom-select @error('role_id') is-invalid @enderror"
                                 >
-                                    <option disabled @if (!old('role_id')) selected @endif>
+                                    <option disabled @if (!old('role_id', $user->role->id)) selected @endif>
                                         -- Pilih Level --
                                     </option>
 
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}" @if (old('role_id') == $role->id) selected @endif>
+                                        <option
+                                            value="{{ $role->id }}"
+                                            @if (old('role_id', $user->role->id) == $role->id) selected @endif
+                                        >
                                             {{ ucwords($role->level) }}
                                         </option>
                                     @endforeach
