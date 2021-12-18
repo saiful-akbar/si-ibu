@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Divisi;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DivisiController extends Controller
 {
@@ -20,8 +22,19 @@ class DivisiController extends Controller
             $divisi->where('nama_divisi', 'like', '%' . $request->search . '%');
         }
 
+        $divisi->orderBy('nama_divisi', 'asc');
+
+        /**
+         * ambid data user akses untuk menu divisi
+         */
+        $user_akses = User::with('menuItem')->find(Auth::user()->id)
+            ->menuItem
+            ->where('nama_menu', 'divisi')
+            ->first();
+
         return view('pages.divisi.index', [
             'divisi' => $divisi->simplePaginate(25)->withQueryString(),
+            'user_akses' => $user_akses
         ]);
     }
 

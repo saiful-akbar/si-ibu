@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Divisi;
-use App\Models\Role;
+use App\Models\MenuHeader;
+use App\Models\MenuItem;
 use App\Models\Profil;
 use App\Models\User;
+use App\Models\UserMenuHeader;
+use App\Models\UserMenuItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -18,15 +23,14 @@ class UserController extends Controller
      * @return view
      */
     public function index(Request $request)
-    {   
+    {
         /**
-         * query join tabel user dengan tabel profil, divisi & role.
-         * 
+         * query join tabel user dengan tabel profil, divisi
+         *
          * @var object
          */
         $users = User::leftJoin('profil', 'user.id', '=', 'profil.user_id')
-            ->leftJoin('divisi', 'user.divisi_id', '=', 'divisi.id')
-            ->leftJoin('role', 'user.role_id', '=', 'role.id');
+            ->leftJoin('divisi', 'user.divisi_id', '=', 'divisi.id');
 
         /**
          * cek apakah ada request pencarian atau tidak
@@ -35,8 +39,7 @@ class UserController extends Controller
         if ($request->search) {
             $users->where('user.username', 'like', '%' . $request->search . '%')
                 ->orWhere('profil.nama_lengkap', 'like', '%' . $request->search . '%')
-                ->orWhere('divisi.nama_divisi', 'like', '%' . $request->search . '%')
-                ->orWhere('role.level', 'like', '%' . $request->search . '%');
+                ->orWhere('divisi.nama_divisi', 'like', '%' . $request->search . '%');
         }
 
         /**
@@ -51,18 +54,22 @@ class UserController extends Controller
             'profil.avatar',
             'profil.nama_lengkap',
             'divisi.nama_divisi',
-            'role.level',
-        );
+        )->orderBy('user.username', 'asc');
+
+        /**
+         * ambid data user akses untuk menu user
+         */
+        $user_akses = User::with('menuItem')->find(Auth::user()->id)
+            ->menuItem
+            ->where('nama_menu', 'user')
+            ->first();
 
         /**
          * view halaman user.
          */
         return view('pages.user.index', [
-            
-            /**
-             * buat pagination
-             */
-            'users' => $users->simplePaginate(25)->withQueryString()
+            'users' => $users->simplePaginate(25)->withQueryString(),
+            'user_akses' => $user_akses,
         ]);
     }
 
@@ -76,14 +83,13 @@ class UserController extends Controller
     public function create()
     {
         /**
-         * ambil semua data divisi & role
-         * 
+         * ambil semua data divisi
+         *
          * @var object
          */
         $divisions = Divisi::all();
-        $roles = Role::all();
 
-        return view('pages.user.create', compact('divisions', 'roles'));
+        return view('pages.user.create', compact('divisions'));
     }
 
 
@@ -99,7 +105,7 @@ class UserController extends Controller
     {
         /**
          * valisadi rules
-         * 
+         *
          * @var array
          */
         $validasi_rules = [
@@ -108,12 +114,11 @@ class UserController extends Controller
             'avatar'       => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
             'divisi_id'    => ['required', 'exists:divisi,id'],
-            'role_id'      => ['required', 'exists:role,id'],
         ];
 
         /**
          * pesan error validasi
-         * 
+         *
          * @var array
          */
         $validate_message = [
@@ -129,8 +134,6 @@ class UserController extends Controller
             'nama_lengkap.max'      => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
             'divisi_id.required'    => 'Divisi harus dipilih.',
             'divisi_id.exists'      => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
-            'role_id.required'      => 'Role level harus dipilih.',
-            'divisi_id.exists'      => 'Role level tidak terdaftar. Anda harus memilih role level yang telah ditentukan.',
         ];
 
         /**
@@ -154,11 +157,10 @@ class UserController extends Controller
 
         /**
          * simpan data user ke database
-         * 
+         *
          * @var object
          */
         $user = User::create([
-            'role_id' => $request->role_id,
             'divisi_id' => $request->divisi_id,
             'username' => $request->username,
             'password' => bcrypt($request->password),
@@ -186,7 +188,7 @@ class UserController extends Controller
 
     /**
      * View halaman edit user
-     * 
+     *
      * @param  User   $user [description]
      * @return view
      */
@@ -196,26 +198,25 @@ class UserController extends Controller
          * ambil data divisi & rol
          */
         $divisions = Divisi::all();
-        $roles = Role::all();
 
-        return view('pages.user.edit', compact('divisions', 'roles', 'user'));
+        return view('pages.user.edit', compact('divisions', 'user'));
     }
 
 
 
     /**
      * Update data user
-     * 
+     *
      * @param  Request $request
      * @param  User    $user
-     * 
+     *
      * @return redirect
      */
     public function update(Request $request, User $user)
     {
         /**
          * valisadi rules
-         * 
+         *
          * @var array
          */
         $validasi_rules = [
@@ -224,7 +225,6 @@ class UserController extends Controller
             'avatar' => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
             'divisi_id' => ['required', 'exists:divisi,id'],
-            'role_id' => ['required', 'exists:role,id'],
         ];
 
         /**
@@ -243,7 +243,7 @@ class UserController extends Controller
 
         /**
          * pesan error validasi
-         * 
+         *
          * @var array
          */
         $validate_message = [
@@ -259,9 +259,7 @@ class UserController extends Controller
             'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
             'divisi_id.required' => 'Divisi harus dipilih.',
             'divisi_id.exists' => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
-            'role_id.required' => 'Role level harus dipilih.',
-            'divisi_id.exists' => 'Role level tidak terdaftar. Anda harus memilih role level yang telah ditentukan.',
-        ];        
+        ];
 
         /**
          * jalankan validasi
@@ -271,7 +269,7 @@ class UserController extends Controller
         /**
          * set value user active & avatar
          */
-        $user_active = isset($request->active) ? true : $user->active;
+        $user_active = isset($request->active) ? true : false;
         $avatar = $user->profil->avatar;
 
         /**
@@ -280,16 +278,15 @@ class UserController extends Controller
          */
         if ($request->hasFile('avatar')) {
             Storage::disk('public')->delete($user->profil->avatar);
-            
+
             $avatar = $request->file('avatar')->store('avatars', 'public');
         }
 
         /**
          * simpan data user ke database
-         * 
+         *
          * @var object
          */
-        $user->role_id = $request->role_id;
         $user->divisi_id = $request->divisi_id;
         $user->username = $request->username;
         $user->active = $user_active;
@@ -314,6 +311,136 @@ class UserController extends Controller
         return redirect()->route('user')->with('alert', [
             'type' => 'success',
             'message' => '1 user berhasil diperbarui',
+        ]);
+    }
+
+
+
+    /**
+     * Hapus data user
+     *
+     * @param User $user
+     *
+     * @return redirect
+     */
+    public function delete(User $user)
+    {
+        try {
+            User::destroy($user->id);
+
+            return redirect()->route('user')->with('alert', [
+                'type' => 'success',
+                'message' => '1 data user berhasil dihapus.',
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('user')->with('alert', [
+                'type' => 'danger',
+                'message' => 'User dengan id = ' . $user->id . 'gagal dihapus. ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+
+
+    /**
+     * View menu akses user
+     *
+     * @param User $user
+     *
+     * @return view
+     */
+    public function detailMenuAkses(User $user)
+    {
+        $user = User::with('profil', 'divisi')->find($user->id);
+        $menuItems = MenuItem::with('menuHeader', 'user')->get();
+
+        return view('pages.user.menu-akses.index', compact('user', 'menuItems'));
+    }
+
+
+
+    /**
+     * View menu akses user
+     *
+     * @param User $user
+     *
+     * @return view
+     */
+    public function editMenuAkses(User $user)
+    {
+        $user = User::with('menuHeader', 'menuItem', 'profil', 'divisi')->find($user->id);
+        $menuHeaders = MenuHeader::with('menuItem', 'user')->get();
+
+        return view('pages.user.menu-akses.edit', compact('user', 'menuHeaders'));
+    }
+
+
+
+    /**
+     * Tambah menu akses user
+     *
+     * @param Request $request
+     * @param User $user
+     *
+     * @return resirect
+     */
+    public function updateMenuAkses(Request $request, User $user)
+    {
+        /**
+         * simpan data ke user_menu_header
+         */
+        try {
+            foreach ($request->menuHeader as $menuHeader) {
+                DB::table('user_menu_header')->updateOrInsert(
+                    [
+                        'user_id' => $user->id,
+                        'menu_header_id' => $menuHeader['id'],
+                    ],
+                    [
+                        'read' => isset($menuHeader['read']),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
+                'type' => 'danger',
+                'message' => 'Akses pada menu header gagal diperbarui. ' . $e->getMessage(),
+            ]);
+        }
+
+        /**
+         * simpan data ke tabel user_menu_header
+         */
+        try {
+            foreach ($request->menuItem as $menuItem) {
+                DB::table('user_menu_item')
+                    ->updateOrInsert(
+                        [
+                            'user_id' => $user->id,
+                            'menu_item_id' => $menuItem['id']
+                        ],
+                        [
+                            'create' => isset($menuItem['create']),
+                            'read' => isset($menuItem['read']),
+                            'update' => isset($menuItem['update']),
+                            'delete' => isset($menuItem['delete']),
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]
+                    );
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
+                'type' => 'danger',
+                'message' => 'Akses pada menu item gagal diperbarui. ' . $e->getMessage(),
+            ]);
+        }
+
+        return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
+            'type' => 'success',
+            'message' => 'Akses pada menu berhasil diperbarui',
         ]);
     }
 }

@@ -67,6 +67,6 @@ class Kernel extends HttpKernel
         /**
          * Custom middleware
          */
-        'role' => \App\Http\Middleware\UserRole::class,
+        'akses' => \App\Http\Middleware\UserMenuAkses::class,
     ];
 }

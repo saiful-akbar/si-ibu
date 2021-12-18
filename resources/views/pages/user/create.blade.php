@@ -33,15 +33,8 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    required
-                                    type="text"
-                                    id="username"
-                                    name="username"
-                                    placeholder="Masukan username..."
-                                    value="{{ old('username') }}"
-                                    class="form-control @error('username') is-invalid @enderror"
-                                />
+                                <input required type="text" id="username" name="username" placeholder="Masukan username..."
+                                    value="{{ old('username') }}" class="form-control @error('username') is-invalid @enderror" />
 
                                 @error('username')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -57,15 +50,9 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <div class="input-group input-group-merge @error('password') is-invalid @enderror">
-                                    <input
-                                        required
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        placeholder="Masukan password..."
+                                    <input required type="password" id="password" name="password" placeholder="Masukan password..."
                                         value="{{ old('password') }}"
-                                        class="form-control @error('password') is-invalid @enderror"
-                                    />
+                                        class="form-control @error('password') is-invalid @enderror" />
 
                                     <div class="input-group-append" data-password="false" style="cursor: pointer">
                                         <div class="input-group-text">
@@ -88,13 +75,8 @@
                         <div class="form-group row justify-content-end">
                             <div class="col-md-9 col-sm-12">
                                 <div class="custom-control custom-switch">
-                                    <input
-                                        type="checkbox"
-                                        name="active"
-                                        class="custom-control-input form-control-lg"
-                                        id="active"
-                                        @if (old('active')) checked @endif
-                                    />
+                                    <input type="checkbox" name="active" class="custom-control-input form-control-lg" id="active"
+                                        @if (old('active')) checked @endif />
 
                                     <label class="custom-control-label" for="active">
                                         Aktif
@@ -122,13 +104,9 @@
                         {{-- input avatar --}}
                         <div class="form-group row mb-3 justify-content-end">
                             <div class="col-md-9 col-sm-12">
-                                <img
-                                    id="avatar-view"
-                                    alt="avatar"
-                                    class="img-fluid avatar-lg rounded-circle"
+                                <img id="avatar-view" alt="avatar" class="img-fluid avatar-lg rounded-circle"
                                     src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                    data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                />
+                                    data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}" />
 
                                 <label for="avatar" class="ml-2">
                                     <span type="button" class="btn btn-sm btn-primary">
@@ -137,15 +115,8 @@
                                 </label>
 
                                 <div>
-                                    <input
-                                        type="file"
-                                        id="avatar"
-                                        name="avatar"
-                                        accept="image/*"
-                                        value="{{ old('avatar') }}"
-                                        class="@error('avatar') is-invalid @enderror"
-                                        style="display: none;"
-                                    />
+                                    <input type="file" id="avatar" name="avatar" accept="image/*" value="{{ old('avatar') }}"
+                                        class="@error('avatar') is-invalid @enderror" style="display: none;" />
 
                                     @error('avatar')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -161,15 +132,9 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    required
-                                    type="text"
-                                    id="nama_lengkap"
-                                    name="nama_lengkap"
-                                    placeholder="Masukan nama lengkap..."
-                                    value="{{ old('nama_lengkap') }}"
-                                    class="form-control @error('nama_lengkap') is-invalid @enderror"
-                                />
+                                <input required type="text" id="nama_lengkap" name="nama_lengkap"
+                                    placeholder="Masukan nama lengkap..." value="{{ old('nama_lengkap') }}"
+                                    class="form-control @error('nama_lengkap') is-invalid @enderror" />
 
                                 @error('nama_lengkap')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -184,12 +149,8 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <select
-                                    required
-                                    name="divisi_id"
-                                    id="divisi_id"
-                                    class="custom-select @error('divisi_id') is-invalid @enderror"
-                                >
+                                <select required name="divisi_id" id="divisi_id"
+                                    class="custom-select @error('divisi_id') is-invalid @enderror">
                                     <option disabled @if (!old('divisi_id')) selected @endif>
                                         -- Pilih Divisi --
                                     </option>
@@ -206,36 +167,6 @@
                                 @enderror
                             </div>
                         </div>
-
-                        {{-- input role level --}}
-                        <div class="form-group row mb-3">
-                            <label for="role_id" class="col-md-3 col-sm-12 col-form-label">
-                                Role Level <small class="text-danger">*</small>
-                            </label>
-
-                            <div class="col-md-9 col-sm-12">
-                                <select
-                                    required
-                                    name="role_id"
-                                    id="role_id"
-                                    class="custom-select @error('role_id') is-invalid @enderror"
-                                >
-                                    <option disabled @if (!old('role_id')) selected @endif>
-                                        -- Pilih Level --
-                                    </option>
-
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}" @if (old('role_id') == $role->id) selected @endif>
-                                            {{ ucwords($role->level) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('role_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -245,7 +176,7 @@
         {{-- button submit & reset --}}
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-success btn-sm mr-2">
+                <button type="submit" class="btn btn-info btn-sm mr-2">
                     <i class="mdi mdi-content-save"></i>
                     <span>Simpan</span>
                 </button>
@@ -256,6 +187,7 @@
                 </button>
             </div>
         </div>
+
     </form>
 @endsection
 

@@ -12,12 +12,7 @@
         </div>
     </div>
 
-    <form
-        name="user_form"
-        enctype="multipart/form-data"
-        action="{{ route('user.update', ['user' => $user->id]) }}"
-        method="POST"
-    >
+    <form name="user_form" enctype="multipart/form-data" action="{{ route('user.update', ['user' => $user->id]) }}" method="POST">
         @method('PATCH') @csrf
 
         {{-- form akun --}}
@@ -38,15 +33,9 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    required
-                                    type="text"
-                                    id="username"
-                                    name="username"
-                                    placeholder="Masukan username..."
+                                <input required type="text" id="username" name="username" placeholder="Masukan username..."
                                     value="{{ old('username', $user->username) }}"
-                                    class="form-control @error('username') is-invalid @enderror"
-                                />
+                                    class="form-control @error('username') is-invalid @enderror" />
 
                                 @error('username')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -60,22 +49,22 @@
                                 password
                             </label>
 
-                            <div class="col-md-9 col-sm-12">
-                                <div class="input-group input-group-merge @error('password') is-invalid @enderror">
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        placeholder="Masukan password..."
-                                        value="{{ old('password') }}"
-                                        class="form-control @error('password') is-invalid @enderror"
-                                    />
+                            <div class="col-lg-2 col-md-3 col-sm-12 mt-2 mb-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="is-disable-password" />
+                                    <label class="custom-control-label" for="is-disable-password">
+                                        Ubah Password
+                                    </label>
+                                </div>
+                            </div>
 
-                                    <div
-                                        class="input-group-append"
-                                        data-password="false"
-                                        style="cursor: pointer"
-                                    >
+                            <div class="col-lg-7 col-md-6 col-sm-12">
+                                <div class="input-group input-group-merge @error('password') is-invalid @enderror">
+                                    <input disabled type="password" id="password" name="password" placeholder="Masukan password..."
+                                        value="{{ old('password') }}"
+                                        class="form-control @error('password') is-invalid @enderror" />
+
+                                    <div class="input-group-append" data-password="false" style="cursor: pointer">
                                         <div class="input-group-text">
                                             <span class="password-eye"></span>
                                         </div>
@@ -90,23 +79,14 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
 
                         {{-- input user aktif --}}
                         <div class="form-group row justify-content-end">
                             <div class="col-md-9 col-sm-12">
                                 <div class="custom-control custom-switch">
-                                    <input
-                                        type="checkbox"
-                                        name="active"
-                                        class="custom-control-input form-control-lg"
-                                        id="active"
-                                        @if (old('active', $user->active)) checked @endif
-                                    />
+                                    <input type="checkbox" name="active" class="custom-control-input form-control-lg" id="active"
+                                        @if (old('active', $user->active)) checked @endif />
 
                                     <label class="custom-control-label" for="active">
                                         Aktif
@@ -134,22 +114,14 @@
                         {{-- input avatar --}}
                         <div class="form-group row mb-3 justify-content-end">
                             <div class="col-md-9 col-sm-12">
-                                @if($user->profil->avatar != null)
-                                    <img
-                                        id="avatar-view"
-                                        alt="avatar"
-                                        class="img-fluid avatar-lg rounded-circle"
+                                @if ($user->profil->avatar != null)
+                                    <img id="avatar-view" alt="avatar" class="img-fluid avatar-lg rounded-circle"
                                         src="{{ asset('storage/' . $user->profil->avatar) }}"
-                                        data-src="{{ asset('storage/' . $user->profil->avatar) }}"
-                                    />
+                                        data-src="{{ asset('storage/' . $user->profil->avatar) }}" />
                                 @else
-                                    <img
-                                        id="avatar-view"
-                                        alt="avatar"
-                                        class="img-fluid avatar-lg rounded-circle"
+                                    <img id="avatar-view" alt="avatar" class="img-fluid avatar-lg rounded-circle"
                                         src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                        data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                    />
+                                        data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}" />
                                 @endif
 
                                 <label for="avatar" class="ml-2">
@@ -159,16 +131,9 @@
                                 </label>
 
                                 <div>
-                                    <input
-                                        type="file"
-                                        id="avatar"
-                                        name="avatar"
-                                        accept="image/*"
-                                        placeholder="Upload avatar..."
-                                        value="{{ old('avatar') }}"
-                                        class="@error('avatar') is-invalid @enderror"
-                                        style="display: none;"
-                                    />
+                                    <input type="file" id="avatar" name="avatar" accept="image/*" placeholder="Upload avatar..."
+                                        value="{{ old('avatar') }}" class="@error('avatar') is-invalid @enderror"
+                                        style="display: none;" />
 
                                     @error('avatar')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -184,15 +149,10 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    required
-                                    type="text"
-                                    id="nama_lengkap"
-                                    name="nama_lengkap"
+                                <input required type="text" id="nama_lengkap" name="nama_lengkap"
                                     placeholder="Masukan nama lengkap..."
                                     value="{{ old('nama_lengkap', $user->profil->nama_lengkap) }}"
-                                    class="form-control @error('nama_lengkap') is-invalid @enderror"
-                                />
+                                    class="form-control @error('nama_lengkap') is-invalid @enderror" />
 
                                 @error('nama_lengkap')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -207,60 +167,20 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <select
-                                    required
-                                    name="divisi_id"
-                                    id="divisi_id"
-                                    class="custom-select @error('divisi_id') is-invalid @enderror"
-                                >
+                                <select required name="divisi_id" id="divisi_id"
+                                    class="custom-select @error('divisi_id') is-invalid @enderror">
                                     <option disabled @if (!old('divisi_id', $user->divisi->id)) selected @endif>
                                         -- Pilih Divisi --
                                     </option>
 
                                     @foreach ($divisions as $divisi)
-                                        <option
-                                            value="{{ $divisi->id }}"
-                                            @if (old('divisi_id', $user->divisi->id) == $divisi->id) selected @endif
-                                        >
+                                        <option value="{{ $divisi->id }}" @if (old('divisi_id', $user->divisi->id) == $divisi->id) selected @endif>
                                             {{ $divisi->nama_divisi }}
                                         </option>
                                     @endforeach
                                 </select>
 
                                 @error('divisi_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        {{-- input role level --}}
-                        <div class="form-group row mb-3">
-                            <label for="role_id" class="col-md-3 col-sm-12 col-form-label">
-                                Role Level <small class="text-danger">*</small>
-                            </label>
-
-                            <div class="col-md-9 col-sm-12">
-                                <select
-                                    required
-                                    name="role_id"
-                                    id="role_id"
-                                    class="custom-select @error('role_id') is-invalid @enderror"
-                                >
-                                    <option disabled @if (!old('role_id', $user->role->id)) selected @endif>
-                                        -- Pilih Level --
-                                    </option>
-
-                                    @foreach ($roles as $role)
-                                        <option
-                                            value="{{ $role->id }}"
-                                            @if (old('role_id', $user->role->id) == $role->id) selected @endif
-                                        >
-                                            {{ ucwords($role->level) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('role_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -274,7 +194,7 @@
         {{-- button submit & reset --}}
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-success btn-sm mr-2">
+                <button type="submit" class="btn btn-info btn-sm mr-2">
                     <i class="mdi mdi-content-save"></i>
                     <span>Simpan</span>
                 </button>
@@ -285,6 +205,7 @@
                 </button>
             </div>
         </div>
+
     </form>
 @endsection
 

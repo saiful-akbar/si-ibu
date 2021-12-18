@@ -16,7 +16,6 @@ class UserSeeder extends Seeder
     {
         DB::table('user')->insert([
             [
-                'role_id' => 1,
                 'divisi_id' => 1,
                 'username' => 'admin',
                 'password' => bcrypt('admin1234'),
@@ -25,7 +24,6 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'role_id' => 2,
                 'divisi_id' => 2,
                 'username' => 'staff',
                 'password' => bcrypt('staff1234'),
