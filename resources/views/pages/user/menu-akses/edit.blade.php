@@ -244,12 +244,5 @@
 @endsection
 
 @section('js')
-    <script>
-        $('.menu-headers').change(function(e) {
-            const isChecked = $(this).is(':checked');
-            const headerName = $(this).data('header-name');
-
-            $(`.${headerName}`).attr('disabled', !isChecked);
-        });
-    </script>
+    <script src="{{ asset('assets/js/pages/user.js') }}"></script>
 @endsection

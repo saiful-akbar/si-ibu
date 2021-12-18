@@ -52,4 +52,23 @@ $(document).ready(function () {
 
         avatarView.attr("src", avatarView.data("src"));
     });
+
+    /**
+     * Disable atau aktifkan form update user menu akses
+     */
+    $(".menu-headers").change(function (e) {
+        const isChecked = $(this).is(":checked");
+        const headerName = $(this).data("header-name");
+
+        $(`.${headerName}`).attr("disabled", !isChecked);
+    });
+
+    /**
+     * Dissable atau aktifkan password di halaman edit
+     */
+    $("#is-disable-password").change(function (e) {
+        const isChecked = $(this).is(":checked");
+
+        $("#password").attr("disabled", !isChecked);
+    });
 });

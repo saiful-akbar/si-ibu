@@ -49,9 +49,18 @@
                                 password
                             </label>
 
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-lg-2 col-md-3 col-sm-12 mt-2 mb-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="is-disable-password" />
+                                    <label class="custom-control-label" for="is-disable-password">
+                                        Ubah Password
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-7 col-md-6 col-sm-12">
                                 <div class="input-group input-group-merge @error('password') is-invalid @enderror">
-                                    <input type="password" id="password" name="password" placeholder="Masukan password..."
+                                    <input disabled type="password" id="password" name="password" placeholder="Masukan password..."
                                         value="{{ old('password') }}"
                                         class="form-control @error('password') is-invalid @enderror" />
 
@@ -70,10 +79,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
 
                         {{-- input user aktif --}}
