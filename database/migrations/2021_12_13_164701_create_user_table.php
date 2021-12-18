@@ -15,19 +15,11 @@ class CreateUserTable extends Migration
     {
         Schema::create('user', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('divisi_id');
             $table->string('username', 128)->unique();
             $table->string('password');
             $table->boolean('active')->default(false);
             $table->timestamps();
-
-            // relasi dengan tabel role
-            $table->foreign('role_id')
-                ->references('id')
-                ->on('role')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
 
             // relasi dengan table divisi
             $table->foreign('divisi_id')

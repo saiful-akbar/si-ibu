@@ -1,70 +1,22 @@
 @php
-/**
- * NB:
- * user_akses diisi sesuai "nama_level" pada tabel "role" di database
- *
- * @var Array
- */
-$menu_list = [
-    [
-        'title' => 'Utama',
-        'user_akses' => ['admin', 'staff'],
-        'menu' => [
-            [
-                'title' => 'Dashboard',
-                'icon' => 'uil-home-alt',
-                'href' => 'dashboard',
-                'active' => '/',
-                'user_akses' => ['admin', 'staff'],
-            ],
-        ],
-    ],
-    [
-        'title' => 'Data Master',
-        'user_akses' => ['admin'],
-        'menu' => [
-            [
-                'title' => 'Divisi',
-                'icon' => 'uil-gold',
-                'href' => 'divisi',
-                'active' => 'divisi*',
-                'user_akses' => ['admin'],
-            ],
-            [
-                'title' => 'User',
-                'icon' => 'uil-users-alt',
-                'href' => 'user',
-                'active' => 'user*',
-                'user_akses' => ['admin'],
-            ],
-        ],
-    ],
-];
+use App\Models\User;
+
+$user = User::with('menuHeader', 'menuItem')->find(Auth::user()->id);
 @endphp
 
-
 <ul class="metismenu side-nav">
+    @foreach ($user->menuHeader as $menuHeader)
+        <li class="side-nav-title side-nav-item mt-3">{{ $menuHeader->nama_header }}</li>
 
-    {{-- looping heading menu --}}
-    @foreach ($menu_list as $heading)
-
-        {{-- Cek akses user pada heading --}}
-        @if (in_array(Auth::user()->role->level, $heading['user_akses']))
-            <li class="side-nav-title side-nav-item mt-3">{{ $heading['title'] }}</li>
-
-            {{-- looping menu --}}
-            @foreach ($heading['menu'] as $menu)
-                <li class="side-nav-item {{ Request::is($menu['active']) ? 'mm-active' : null }}">
-                    <a
-                        href="{{ route($menu['href']) }}"
-                        class="side-nav-link"
-                    >
-                        <i class="{{ $menu['icon'] }}"></i>
-                        <span>{{ $menu['title'] }}</span>
+        @foreach ($user->menuItem as $menuItem)
+            @if ($menuItem->menu_header_id == $menuHeader->id && $menuItem->pivot->read == 1)
+                <li class="side-nav-item {{ Request::is(trim($menuItem->href, '/') . '*') ? 'mm-active' : null }}">
+                    <a href="{{ url($menuItem->href) }}" class="side-nav-link">
+                        <i class="{{ $menuItem->icon }}"></i>
+                        <span>{{ $menuItem->nama_menu }}</span>
                     </a>
                 </li>
-            @endforeach
-        @endif
-
+            @endif
+        @endforeach
     @endforeach
 </ul>

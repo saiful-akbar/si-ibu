@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Divisi;
-use App\Models\Role;
 use App\Models\Profil;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,13 +19,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
         /**
-         * query join tabel user dengan tabel profil, divisi & role.
+         * query join tabel user dengan tabel profil, divisi
          *
          * @var object
          */
         $users = User::leftJoin('profil', 'user.id', '=', 'profil.user_id')
-            ->leftJoin('divisi', 'user.divisi_id', '=', 'divisi.id')
-            ->leftJoin('role', 'user.role_id', '=', 'role.id');
+            ->leftJoin('divisi', 'user.divisi_id', '=', 'divisi.id');
 
         /**
          * cek apakah ada request pencarian atau tidak
@@ -35,8 +33,7 @@ class UserController extends Controller
         if ($request->search) {
             $users->where('user.username', 'like', '%' . $request->search . '%')
                 ->orWhere('profil.nama_lengkap', 'like', '%' . $request->search . '%')
-                ->orWhere('divisi.nama_divisi', 'like', '%' . $request->search . '%')
-                ->orWhere('role.level', 'like', '%' . $request->search . '%');
+                ->orWhere('divisi.nama_divisi', 'like', '%' . $request->search . '%');
         }
 
         /**
@@ -51,7 +48,6 @@ class UserController extends Controller
             'profil.avatar',
             'profil.nama_lengkap',
             'divisi.nama_divisi',
-            'role.level',
         )->orderBy('user.username', 'asc');
 
         /**
@@ -76,14 +72,13 @@ class UserController extends Controller
     public function create()
     {
         /**
-         * ambil semua data divisi & role
+         * ambil semua data divisi
          *
          * @var object
          */
         $divisions = Divisi::all();
-        $roles = Role::all();
 
-        return view('pages.user.create', compact('divisions', 'roles'));
+        return view('pages.user.create', compact('divisions'));
     }
 
 
@@ -108,7 +103,6 @@ class UserController extends Controller
             'avatar'       => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
             'divisi_id'    => ['required', 'exists:divisi,id'],
-            'role_id'      => ['required', 'exists:role,id'],
         ];
 
         /**
@@ -129,8 +123,6 @@ class UserController extends Controller
             'nama_lengkap.max'      => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
             'divisi_id.required'    => 'Divisi harus dipilih.',
             'divisi_id.exists'      => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
-            'role_id.required'      => 'Role level harus dipilih.',
-            'divisi_id.exists'      => 'Role level tidak terdaftar. Anda harus memilih role level yang telah ditentukan.',
         ];
 
         /**
@@ -158,7 +150,6 @@ class UserController extends Controller
          * @var object
          */
         $user = User::create([
-            'role_id' => $request->role_id,
             'divisi_id' => $request->divisi_id,
             'username' => $request->username,
             'password' => bcrypt($request->password),
@@ -196,9 +187,8 @@ class UserController extends Controller
          * ambil data divisi & rol
          */
         $divisions = Divisi::all();
-        $roles = Role::all();
 
-        return view('pages.user.edit', compact('divisions', 'roles', 'user'));
+        return view('pages.user.edit', compact('divisions', 'user'));
     }
 
 
@@ -224,7 +214,6 @@ class UserController extends Controller
             'avatar' => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
             'divisi_id' => ['required', 'exists:divisi,id'],
-            'role_id' => ['required', 'exists:role,id'],
         ];
 
         /**
@@ -259,8 +248,6 @@ class UserController extends Controller
             'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
             'divisi_id.required' => 'Divisi harus dipilih.',
             'divisi_id.exists' => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
-            'role_id.required' => 'Role level harus dipilih.',
-            'divisi_id.exists' => 'Role level tidak terdaftar. Anda harus memilih role level yang telah ditentukan.',
         ];
 
         /**
@@ -289,7 +276,6 @@ class UserController extends Controller
          *
          * @var object
          */
-        $user->role_id = $request->role_id;
         $user->divisi_id = $request->divisi_id;
         $user->username = $request->username;
         $user->active = $user_active;

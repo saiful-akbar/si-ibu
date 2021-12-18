@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\MenuHeader;
+use App\Models\MenuItem;
 use App\Models\Profil;
-use App\Models\Role;
 use App\Models\Transaksi;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,7 +23,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'role_id',
         'divisi_id',
         'username',
         'password',
@@ -38,14 +37,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
-
-    /**
-     * Relasi one to many dengan table role
-     */
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id', 'id');
-    }
 
     /**
      * Relasi one to many dengan table divisi
@@ -69,6 +60,25 @@ class User extends Authenticatable
     public function transaksi()
     {
         return $this->hasMany(Transaksi::class, 'transaksi_id', 'id');
+    }
+
+    /**
+     * Relasi many to many dengan tabel menu_header
+     */
+    public function menuHeader()
+    {
+        return $this->belongsToMany(MenuHeader::class, 'user_menu_header', 'user_id', 'menu_header_id');
+    }
+
+    /**
+     * relasi many to many dengan tabel menu_item
+     *
+     * @return object
+     */
+    public function menuItem()
+    {
+        return $this->belongsToMany(MenuItem::class, 'user_menu_item', 'user_id', 'menu_item_id')
+            ->withPivot('create', 'read', 'update', 'delete');
     }
 
     /**
