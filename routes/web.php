@@ -4,14 +4,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\UserController;
-use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
 /**
  * Route middleware guest
  */
 Route::middleware('guest')->group(function () {
-    Route::get('/', [AuthController::class, 'index'])->name('login.view');
+    Route::get('/login', [AuthController::class, 'index'])->name('login.view');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
@@ -90,8 +89,24 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{user}', [UserController::class, 'delete'])
             ->middleware('akses:user,delete')
             ->name('user.delete');
+
+        Route::get('/menu-akses/{user}', [UserController::class, 'detailMenuAkses'])
+            ->middleware('akses:user,read')
+            ->name('user.menu-akses.detail');
+
+        Route::get('/menu-akses/{user}/edit', [UserController::class, 'editMenuAkses'])
+            ->middleware('akses:user,update')
+            ->name('user.menu-akses.edit');
+
+        Route::patch('/menu-akses/{user}', [UserController::class, 'updateMenuAkses'])
+            ->middleware('akses:user,update')
+            ->name('user.menu-akses.update');
     });
 });
+
+
+Route::redirect('/', '/dashboard');
+
 
 Route::fallback(function () {
     return abort(404);

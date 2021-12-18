@@ -6,17 +6,22 @@ $user = User::with('menuHeader', 'menuItem')->find(Auth::user()->id);
 
 <ul class="metismenu side-nav">
     @foreach ($user->menuHeader as $menuHeader)
-        <li class="side-nav-title side-nav-item mt-3">{{ $menuHeader->nama_header }}</li>
+        @if (isset($menuHeader->pivot->read) && $menuHeader->pivot->read == 1)
+            <li class="side-nav-title side-nav-item mt-3">{{ $menuHeader->nama_header }}</li>
 
-        @foreach ($user->menuItem as $menuItem)
-            @if ($menuItem->menu_header_id == $menuHeader->id && $menuItem->pivot->read == 1)
-                <li class="side-nav-item {{ Request::is(trim($menuItem->href, '/') . '*') ? 'mm-active' : null }}">
-                    <a href="{{ url($menuItem->href) }}" class="side-nav-link">
-                        <i class="{{ $menuItem->icon }}"></i>
-                        <span>{{ $menuItem->nama_menu }}</span>
-                    </a>
-                </li>
-            @endif
-        @endforeach
+            @foreach ($user->menuItem as $menuItem)
+                @if ($menuItem->menu_header_id == $menuHeader->id && $menuItem->pivot->read == 1)
+                    <li class="side-nav-item {{ Request::is(trim($menuItem->href, '/') . '*') ? 'mm-active' : null }}">
+                        <a
+                            href="{{ url($menuItem->href) }}"
+                            class="side-nav-link"
+                        >
+                            <i class="{{ $menuItem->icon }}"></i>
+                            <span>{{ $menuItem->nama_menu }}</span>
+                        </a>
+                    </li>
+                @endif
+            @endforeach
+        @endif
     @endforeach
 </ul>

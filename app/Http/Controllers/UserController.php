@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Divisi;
+use App\Models\MenuHeader;
+use App\Models\MenuItem;
 use App\Models\Profil;
 use App\Models\User;
+use App\Models\UserMenuHeader;
+use App\Models\UserMenuItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -51,14 +57,19 @@ class UserController extends Controller
         )->orderBy('user.username', 'asc');
 
         /**
+         * ambid data user akses untuk menu user
+         */
+        $user_akses = User::with('menuItem')->find(Auth::user()->id)
+            ->menuItem
+            ->where('nama_menu', 'user')
+            ->first();
+
+        /**
          * view halaman user.
          */
         return view('pages.user.index', [
-
-            /**
-             * buat pagination
-             */
-            'users' => $users->simplePaginate(25)->withQueryString()
+            'users' => $users->simplePaginate(25)->withQueryString(),
+            'user_akses' => $user_akses,
         ]);
     }
 
@@ -258,7 +269,7 @@ class UserController extends Controller
         /**
          * set value user active & avatar
          */
-        $user_active = isset($request->active) ? true : $user->active;
+        $user_active = isset($request->active) ? true : false;
         $avatar = $user->profil->avatar;
 
         /**
@@ -324,8 +335,112 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('user')->with('alert', [
                 'type' => 'danger',
-                'message' => 'User dengan id = ' . $user->id . 'gagal dihapus. <br> <strong>' . $e->getMessage() . '</strong>',
+                'message' => 'User dengan id = ' . $user->id . 'gagal dihapus. ' . $e->getMessage(),
             ]);
         }
+    }
+
+
+
+    /**
+     * View menu akses user
+     *
+     * @param User $user
+     *
+     * @return view
+     */
+    public function detailMenuAkses(User $user)
+    {
+        $user = User::with('profil', 'divisi')->find($user->id);
+        $menuItems = MenuItem::with('menuHeader', 'user')->get();
+
+        return view('pages.user.menu-akses.index', compact('user', 'menuItems'));
+    }
+
+
+
+    /**
+     * View menu akses user
+     *
+     * @param User $user
+     *
+     * @return view
+     */
+    public function editMenuAkses(User $user)
+    {
+        $user = User::with('menuHeader', 'menuItem', 'profil', 'divisi')->find($user->id);
+        $menuHeaders = MenuHeader::with('menuItem', 'user')->get();
+
+        return view('pages.user.menu-akses.edit', compact('user', 'menuHeaders'));
+    }
+
+
+
+    /**
+     * Tambah menu akses user
+     *
+     * @param Request $request
+     * @param User $user
+     *
+     * @return resirect
+     */
+    public function updateMenuAkses(Request $request, User $user)
+    {
+        /**
+         * simpan data ke user_menu_header
+         */
+        try {
+            foreach ($request->menuHeader as $menuHeader) {
+                DB::table('user_menu_header')->updateOrInsert(
+                    [
+                        'user_id' => $user->id,
+                        'menu_header_id' => $menuHeader['id'],
+                    ],
+                    [
+                        'read' => isset($menuHeader['read']),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
+                'type' => 'danger',
+                'message' => 'Akses pada menu header gagal diperbarui. ' . $e->getMessage(),
+            ]);
+        }
+
+        /**
+         * simpan data ke tabel user_menu_header
+         */
+        try {
+            foreach ($request->menuItem as $menuItem) {
+                DB::table('user_menu_item')
+                    ->updateOrInsert(
+                        [
+                            'user_id' => $user->id,
+                            'menu_item_id' => $menuItem['id']
+                        ],
+                        [
+                            'create' => isset($menuItem['create']),
+                            'read' => isset($menuItem['read']),
+                            'update' => isset($menuItem['update']),
+                            'delete' => isset($menuItem['delete']),
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]
+                    );
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
+                'type' => 'danger',
+                'message' => 'Akses pada menu item gagal diperbarui. ' . $e->getMessage(),
+            ]);
+        }
+
+        return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
+            'type' => 'success',
+            'message' => 'Akses pada menu berhasil diperbarui',
+        ]);
     }
 }

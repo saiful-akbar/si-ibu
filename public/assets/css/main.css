@@ -12,13 +12,10 @@
 }
 
 table {
-    width: 100%;
+    min-width: 100%;
 }
 
 table.nowrap tr th,
 table.nowrap tr td {
     white-space: nowrap;
-    overflow: hidden;
-    max-width: 200px;
-    text-overflow: ellipsis;
 }

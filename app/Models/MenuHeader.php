@@ -18,7 +18,8 @@ class MenuHeader extends Model
      */
     public function user()
     {
-        return $this->belongsToMany(User::class, 'user_menu_header', 'user_id', 'menu_header_id');
+        return $this->belongsToMany(User::class, 'user_menu_header', 'user_id', 'menu_header_id')
+            ->withPivot('read');
     }
 
     /**

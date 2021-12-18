@@ -72,18 +72,21 @@ class MenuSeeder extends Seeder
             [
                 'user_id' => 1,
                 'menu_header_id' => 1,
+                'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => 1,
                 'menu_header_id' => 2,
+                'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => 2,
                 'menu_header_id' => 1,
+                'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

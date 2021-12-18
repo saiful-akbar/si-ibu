@@ -13,10 +13,12 @@
                         <div class="col-12 d-flex justify-content-between align-items-center mb-3">
                             <h4 class="header-title">Tabel User</h4>
 
-                            <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">
-                                <i class="mdi mdi-plus"></i>
-                                <span>Tambah User</span>
-                            </a>
+                            @if ($user_akses->pivot->create == 1)
+                                <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">
+                                    <i class="mdi mdi-plus"></i>
+                                    <span>Tambah User</span>
+                                </a>
+                            @endif
                         </div>
                     </div>
                     {{-- end title & btn tambah --}}
@@ -48,9 +50,8 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Avatar</th>
+                                            <th>User</th>
                                             <th>Username</th>
-                                            <th>Nama Lengkap</th>
                                             <th>Divisi</th>
                                             <th>Aktif</th>
                                             <th>Diperbarui</th>
@@ -63,38 +64,50 @@
                                                 <td class="align-middle">
                                                     {{ $users->currentPage() + $loop->iteration - 1 }}
                                                 </td>
-                                                <td class="align-middle">
+                                                <td class="align-middle table-user">
                                                     @if ($user->avatar != null)
                                                         <img src="{{ asset('storage/' . $user->avatar) }}" alt="avatar"
-                                                            class="img-fluid avatar-sm rounded-circle shadow-sm" />
+                                                            class="mr-2 rounded-circle" />
                                                     @else
                                                         <img src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                                            alt="avatar" class="img-fluid avatar-sm rounded-circle shadow-sm" />
+                                                            alt="avatar" class="mr-2 rounded-circle" />
                                                     @endif
+
+                                                    {{ ucwords($user->nama_lengkap) }}
                                                 </td>
                                                 <td class="align-middle">{{ $user->username }}</td>
-                                                <td class="align-middle">{{ ucwords($user->nama_lengkap) }}</td>
                                                 <td class="align-middle">{{ ucwords($user->nama_divisi) }}</td>
                                                 <td class="align-middle">
                                                     @if ($user->active == 1)
-                                                        <i class="mdi mdi-check-bold text-success h3"></i>
+                                                        <i class="mdi mdi-check text-success h3"></i>
                                                     @else
-                                                        <i class="mdi mdi-close-circle-outline text-danger h3"></i>
+                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
                                                     @endif
                                                 </td>
                                                 <td class="align-middle">{{ $user->updated_at }}</td>
                                                 <td class="align-middle text-center">
-                                                    <a href="{{ route('user.edit', ['user' => $user->id]) }}"
-                                                        class="btn btn-sm btn-success mr-1">
-                                                        <i class="mdi mdi-square-edit-outline"></i>
-                                                        <span>Edit</span>
-                                                    </a>
+                                                    @if ($user_akses->pivot->update == 1)
+                                                        <a href="{{ route('user.edit', ['user' => $user->id]) }}"
+                                                            class="btn btn-sm btn-success mr-1">
+                                                            <i class="mdi mdi-square-edit-outline"></i>
+                                                            <span>Edit</span>
+                                                        </a>
+                                                    @endif
 
-                                                    <button onclick="handleDelete({{ $user->id }}, '{{ $user->username }}')"
-                                                        class="btn btn-sm btn-danger">
-                                                        <i class="mdi mdi-delete"></i>
-                                                        <span>Hapus</span>
-                                                    </button>
+                                                    @if ($user_akses->pivot->delete == 1)
+                                                        <button
+                                                            onclick="handleDelete({{ $user->id }}, '{{ $user->username }}')"
+                                                            class="btn btn-sm btn-danger mr-1">
+                                                            <i class="mdi mdi-delete"></i>
+                                                            <span>Hapus</span>
+                                                        </button>
+                                                    @endif
+
+                                                    <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
+                                                        class="btn btn-sm btn-info">
+                                                        <i class="mdi mdi-eye"></i>
+                                                        <span>Menu Akses</span>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach

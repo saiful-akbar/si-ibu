@@ -14,6 +14,7 @@ class UserMenuItem extends Model
         'user_id',
         'menu_item_id',
         'create',
+        'read',
         'update',
         'delete'
     ];

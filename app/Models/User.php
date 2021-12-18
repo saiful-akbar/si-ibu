@@ -67,7 +67,8 @@ class User extends Authenticatable
      */
     public function menuHeader()
     {
-        return $this->belongsToMany(MenuHeader::class, 'user_menu_header', 'user_id', 'menu_header_id');
+        return $this->belongsToMany(MenuHeader::class, 'user_menu_header', 'user_id', 'menu_header_id')
+            ->withPivot('read');
     }
 
     /**
