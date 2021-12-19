@@ -21,3 +21,11 @@ table.nowrap tr td {
     padding-right: 1em;
     padding-left: 1em;
 }
+
+.logo-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.4em !important;
+    font-weight: 800 !important;
+}

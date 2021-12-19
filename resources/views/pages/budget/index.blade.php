@@ -56,14 +56,15 @@
                                             <th>Diperbarui</th>
 
                                             @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
-                                                <td class="text-center">Aksi</td>
+                                                <th class="text-center">Aksi</th>
                                             @endif
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($budgets as $data)
                                             <tr>
-                                                <td class="align-middle">{{ $budgets->currentPage() + $loop->iteration - 1 }}</td>
+                                                <td class="align-middle">{{ $budgets->currentPage() + $loop->iteration - 1 }}
+                                                </td>
                                                 <td class="align-middle">{{ $data->tahun_anggaran }}</td>
                                                 <td class="align-middle">{{ ucwords($data->nama_divisi) }}</td>
                                                 <td class="align-middle">Rp. {{ number_format($data->nominal) }}</td>

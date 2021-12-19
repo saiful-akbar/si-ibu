@@ -91,6 +91,15 @@ class MenuSeeder extends Seeder
                 'href' => '/budget',
                 'created_at' => now(),
                 'updated_at' => now(),
+            ],
+            [
+                // id 4
+                'menu_header_id' => $this->getMenuHeader('keuangan'),
+                'nama_menu' => 'transaksi',
+                'icon' => 'fas fa-file-invoice-dollar',
+                'href' => '/transaksi',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
     }
@@ -174,6 +183,16 @@ class MenuSeeder extends Seeder
             [
                 'user_id' => $this->getUser('admin'),
                 'menu_item_id' => $this->getMenuItem('budget'),
+                'create' => true,
+                'read' => true,
+                'update' => true,
+                'delete' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('admin'),
+                'menu_item_id' => $this->getMenuItem('transaksi'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
