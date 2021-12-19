@@ -139,8 +139,32 @@ Route::middleware('auth')->group(function () {
      */
     Route::prefix('/transaksi')->group(function () {
         Route::get('/', [TransaksiController::class, 'index'])
-            ->middleware('menu:read')
+            ->middleware('menu:transaksi,read')
             ->name('transaksi');
+
+        Route::get('/create', [TransaksiController::class, 'create'])
+            ->middleware('menu:transaksi,create')
+            ->name('transaksi.create');
+
+        Route::post('/', [TransaksiController::class, 'store'])
+            ->middleware('menu:transaksi,create')
+            ->name('transaksi.store');
+
+        Route::get('/{transaksi}', [TransaksiController::class, 'show'])
+            ->middleware('menu:transaksi,read')
+            ->name('transaksi.show');
+
+        Route::get('/{transaksi}/edit', [TransaksiController::class, 'edit'])
+            ->middleware('menu:transaksi,update')
+            ->name('transaksi.edit');
+
+        Route::patch('/{transaksi}', [TransaksiController::class, 'update'])
+            ->middleware('menu:transaksi,update')
+            ->name('transaksi.update');
+
+        Route::delete('/{transaksi}', [TransaksiController::class, 'delete'])
+            ->middleware('menu:transaksi,delete')
+            ->name('transaksi.delete');
     });
 });
 

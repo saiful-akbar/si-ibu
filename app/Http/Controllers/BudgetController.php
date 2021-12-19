@@ -91,8 +91,8 @@ class BudgetController extends Controller
          */
         $validateRules = [
             'divisi_id' => ['required', 'exists:divisi,id'],
-            'tahun_anggaran' => ['required', 'numeric', 'max:9999'],
-            'nominal' => ['required', 'numeric'],
+            'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:0'],
+            'nominal' => ['required', 'numeric', 'min:0'],
         ];
 
         /**
@@ -104,8 +104,10 @@ class BudgetController extends Controller
             'tahun_anggaran.required' => 'Tahun anggaran tidak boleh kosong.',
             'tahun_anggaran.numeric' => 'Tahun anggaran harus bertipe numerik atau angka.',
             'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari 4 digit angka.',
+            'tahun_anggaran.min' => 'Tahun anggaran tidak boleh kurang dari 0.',
             'nominal.required' => 'Nilai nominal tidak boleh kosong.',
             'nominal.numeric' => 'Nilai nominal harus bertipe numerik atau angka.',
+            'nominal.min' => 'Nilai nominal tidak boleh kurang dari 0.',
         ];
 
         /**
@@ -163,8 +165,8 @@ class BudgetController extends Controller
          */
         $validateRules = [
             'divisi_id' => ['required', 'exists:divisi,id'],
-            'tahun_anggaran' => ['required', 'numeric', 'max:9999'],
-            'nominal' => ['required', 'numeric'],
+            'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:0'],
+            'nominal' => ['required', 'numeric', 'min:0'],
         ];
 
         /**
@@ -176,8 +178,10 @@ class BudgetController extends Controller
             'tahun_anggaran.required' => 'Tahun anggaran tidak boleh kosong.',
             'tahun_anggaran.numeric' => 'Tahun anggaran harus bertipe numerik atau angka.',
             'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari 4 digit angka.',
+            'tahun_anggaran.min' => 'Tahun anggaran tidak boleh kurang dari 0.',
             'nominal.required' => 'Nilai nominal tidak boleh kosong.',
             'nominal.numeric' => 'Nilai nominal harus bertipe numerik atau angka.',
+            'nominal.min' => 'Nilai nominal tidak boleh kurang dari 0.',
         ];
 
         /**

@@ -6,7 +6,7 @@
 
     <div class="row mb-3">
         <div class="col-12 d-flex justify-content-end">
-            <a href="{{ route('user') }}" class="btn btn-sm btn-dark">
+            <a href="{{ route('user') }}" class="btn btn-rounded btn-dark">
                 <i class="dripicons-chevron-left"></i>
                 <span>Kembali</span>
             </a>

@@ -14,9 +14,9 @@
                             <h4 class="header-title">Tabel Divisi</h4>
 
                             @if ($user_akses->pivot->create == 1)
-                                <a href="{{ route('divisi.create') }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('divisi.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
-                                    <span>Tambah Divisi</span>
+                                    <span>Tambah Divisi Baru</span>
                                 </a>
                             @endif
                         </div>
@@ -66,14 +66,14 @@
                                                     <td class="align-middle text-center">
                                                         @if ($user_akses->pivot->update == 1)
                                                             <a href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"
-                                                                class="btn btn-sm btn-success mr-1">
+                                                                class="btn btn-sm btn-success btn-rounded mr-1">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                                 <span>Edit</span>
                                                             </a>
                                                         @endif
 
                                                         @if ($user_akses->pivot->delete == 1)
-                                                            <button class="btn btn-sm btn-danger"
+                                                            <button class="btn btn-sm btn-danger btn-rounded"
                                                                 onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')">
                                                                 <i class="mdi mdi-delete"></i>
                                                                 <span>Hapus</span>

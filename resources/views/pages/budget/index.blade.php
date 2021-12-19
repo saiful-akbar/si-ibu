@@ -14,7 +14,7 @@
                             <h4 class="header-title">Tabel Budget</h4>
 
                             @if ($userAccess->pivot->create == 1)
-                                <a href="{{ route('budget.create') }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('budget.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Input Budget</span>
                                 </a>
@@ -74,14 +74,14 @@
                                                     <td class="align-middel text-center">
                                                         @if ($userAccess->pivot->update == 1)
                                                             <a href="{{ route('budget.edit', ['budget' => $data->id]) }}"
-                                                                class="btn btn-sm btn-success mr-1">
+                                                                class="btn btn-sm btn-success btn-rounded mr-1">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                                 <span>Edit</span>
                                                             </a>
                                                         @endif
 
                                                         @if ($userAccess->pivot->delete == 1)
-                                                            <button class="btn btn-sm btn-danger"
+                                                            <button class="btn btn-sm btn-danger btn-rounded"
                                                                 onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')">
                                                                 <i class="mdi mdi-delete"></i>
                                                                 <span>Hapus</span>
@@ -137,11 +137,11 @@
                 buttons: {
                     confirm: {
                         label: "Hapus",
-                        className: "btn-danger btn-sm"
+                        className: "btn-danger btn-rounded btn-sm"
                     },
                     cancel: {
                         label: "Batal",
-                        className: "btn-secondary btn-sm"
+                        className: "btn-secondary btn-rounded btn-sm"
                     },
                 },
                 callback: (result) => {

@@ -17,13 +17,15 @@ class CreateTransaksiTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('divisi_id');
+            $table->date('tanggal');
             $table->string('kegiatan', 128);
             $table->double('jumlah');
-            $table->string('no_dokumen', 64)->unique();
+            $table->char('no_dokumen', 32)->unique();
             $table->string('file_dokumen', 128)->nullable()->default(null);
-            $table->text('uraian');
-            $table->string('approval', 128);
+            $table->text('uraian')->nullable()->default(null);
+            $table->string('approval', 64);
             $table->timestamps();
+
 
             // relasi dengan tabel divisi
             $table->foreign('divisi_id')

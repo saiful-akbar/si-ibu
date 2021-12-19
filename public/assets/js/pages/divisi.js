@@ -21,11 +21,11 @@ const handleDelete = (id, namaDivisi) => {
         buttons: {
             confirm: {
                 label: "Hapus",
-                className: "btn-danger btn-sm",
+                className: "btn-danger btn-sm btn-rounded",
             },
             cancel: {
                 label: "Batal",
-                className: "btn-secondary btn-sm",
+                className: "btn-secondary btn-sm btn-rounded",
             },
         },
         callback: (result) => {

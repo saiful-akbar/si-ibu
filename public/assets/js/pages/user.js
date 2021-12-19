@@ -16,8 +16,14 @@ function handleDelete(id, username) {
             </ul>
         `,
         buttons: {
-            confirm: { label: "Hapus", className: "btn-danger btn-sm" },
-            cancel: { label: "Batal", className: "btn-secondary btn-sm" },
+            confirm: {
+                label: "Hapus",
+                className: "btn-danger btn-rounded btn-sm",
+            },
+            cancel: {
+                label: "Batal",
+                className: "btn-secondary btn-rounded btn-sm",
+            },
         },
         callback: (result) => {
             if (result) {

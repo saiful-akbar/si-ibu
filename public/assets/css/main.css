@@ -18,8 +18,8 @@ table {
 table.nowrap tr th,
 table.nowrap tr td {
     white-space: nowrap;
-    padding-right: 1em;
-    padding-left: 1em;
+    padding-right: 1.2em;
+    padding-left: 1.2em;
 }
 
 .logo-text {
@@ -28,4 +28,16 @@ table.nowrap tr td {
     text-overflow: ellipsis;
     font-size: 1.4em !important;
     font-weight: 800 !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.text-nowrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
 }
