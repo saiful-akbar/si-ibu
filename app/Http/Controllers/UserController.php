@@ -7,8 +7,6 @@ use App\Models\MenuHeader;
 use App\Models\MenuItem;
 use App\Models\Profil;
 use App\Models\User;
-use App\Models\UserMenuHeader;
-use App\Models\UserMenuItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -95,11 +93,11 @@ class UserController extends Controller
 
 
     /**
+     * store
      * Tambah data user baru
      *
-     * @param Request $request
-     *
-     * @return redirect
+     * @param  mixed $request
+     * @return void
      */
     public function store(Request $request)
     {
@@ -327,17 +325,17 @@ class UserController extends Controller
     {
         try {
             User::destroy($user->id);
-
-            return redirect()->route('user')->with('alert', [
-                'type' => 'success',
-                'message' => '1 data user berhasil dihapus.',
-            ]);
         } catch (\Exception $e) {
             return redirect()->route('user')->with('alert', [
                 'type' => 'danger',
                 'message' => 'User dengan id = ' . $user->id . 'gagal dihapus. ' . $e->getMessage(),
             ]);
         }
+
+        return redirect()->route('user')->with('alert', [
+            'type' => 'success',
+            'message' => '1 data user berhasil dihapus.',
+        ]);
     }
 
 
@@ -354,7 +352,15 @@ class UserController extends Controller
         $user = User::with('profil', 'divisi')->find($user->id);
         $menuItems = MenuItem::with('menuHeader', 'user')->get();
 
-        return view('pages.user.menu-akses.index', compact('user', 'menuItems'));
+        /**
+         * ambid data user akses untuk menu user
+         */
+        $userAccess = User::with('menuItem')->find(Auth::user()->id)
+            ->menuItem
+            ->where('nama_menu', 'user')
+            ->first();
+
+        return view('pages.user.menu-akses.index', compact('user', 'menuItems', 'userAccess'));
     }
 
 
@@ -371,7 +377,12 @@ class UserController extends Controller
         $user = User::with('menuHeader', 'menuItem', 'profil', 'divisi')->find($user->id);
         $menuHeaders = MenuHeader::with('menuItem', 'user')->get();
 
-        return view('pages.user.menu-akses.edit', compact('user', 'menuHeaders'));
+        $userAccess = User::with('menuItem')->find(Auth::user()->id)
+            ->menuItem
+            ->where('nama_menu', 'user')
+            ->first();
+
+        return view('pages.user.menu-akses.edit', compact('user', 'menuHeaders', 'userAccess'));
     }
 
 

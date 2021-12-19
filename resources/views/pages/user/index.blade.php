@@ -14,9 +14,9 @@
                             <h4 class="header-title">Tabel User</h4>
 
                             @if ($user_akses->pivot->create == 1)
-                                <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('user.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
-                                    <span>Tambah User</span>
+                                    <span>Tambah User Baru</span>
                                 </a>
                             @endif
                         </div>
@@ -86,9 +86,15 @@
                                                 </td>
                                                 <td class="align-middle">{{ $user->updated_at }}</td>
                                                 <td class="align-middle text-center">
+                                                    <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
+                                                        class="btn btn-sm btn-info btn-rounded mr-1">
+                                                        <i class="mdi mdi-key"></i>
+                                                        <span>Menu Akses</span>
+                                                    </a>
+
                                                     @if ($user_akses->pivot->update == 1)
                                                         <a href="{{ route('user.edit', ['user' => $user->id]) }}"
-                                                            class="btn btn-sm btn-success mr-1">
+                                                            class="btn btn-sm btn-rounded btn-success mr-1">
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                             <span>Edit</span>
                                                         </a>
@@ -97,17 +103,11 @@
                                                     @if ($user_akses->pivot->delete == 1)
                                                         <button
                                                             onclick="handleDelete({{ $user->id }}, '{{ $user->username }}')"
-                                                            class="btn btn-sm btn-danger mr-1">
+                                                            class="btn btn-sm btn-rounded btn-danger">
                                                             <i class="mdi mdi-delete"></i>
                                                             <span>Hapus</span>
                                                         </button>
                                                     @endif
-
-                                                    <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
-                                                        class="btn btn-sm btn-info">
-                                                        <i class="mdi mdi-eye"></i>
-                                                        <span>Menu Akses</span>
-                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach
