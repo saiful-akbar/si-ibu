@@ -16,17 +16,17 @@ class DivisiSeeder extends Seeder
     {
         DB::table('divisi')->insert([
             [
-                'nama_divisi' => 'Admin',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
                 'nama_divisi' => 'IT',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'nama_divisi' => 'Accounting',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_divisi' => 'Warehouse',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

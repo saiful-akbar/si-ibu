@@ -3,39 +3,84 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Aplikasi anggarang berbasis web laravel" />
-    <meta name="author" content="Saiful Akbar" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+    <meta
+        name="description"
+        content="Aplikasi anggarang berbasis web laravel"
+    />
+    <meta
+        name="author"
+        content="Saiful Akbar"
+    />
 
-    <meta name="base-url" content="{{ url('/') }}" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta
+        name="base-url"
+        content="{{ url('/') }}"
+    />
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    />
 
     <title>@yield('title') - {{ env('APP_NAME', 'Laravel') }}</title>
 
     {{-- App favicon --}}
-    <link href="{{ asset('assets/images/favicon.ico') }}" rel="shortcut icon" />
+    <link
+        href="{{ asset('assets/images/favicon.ico') }}"
+        rel="shortcut icon"
+    />
 
     {{-- google icons --}}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet"
+    />
 
     {{-- font awesome --}}
-    <link href="{{ asset('assets/css/vendor/fontawesome/css/all.min.css') }}" rel="stylesheet" />
+    <link
+        href="{{ asset('assets/css/vendor/fontawesome/css/all.min.css') }}"
+        rel="stylesheet"
+    />
 
     {{-- App css --}}
-    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
-    <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style" disabled />
+    <link
+        href="{{ asset('assets/css/icons.min.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
+    <link
+        href="{{ asset('assets/css/app.min.css') }}"
+        rel="stylesheet"
+        type="text/css"
+        id="light-style"
+        disabled
+    />
+    <link
+        href="{{ asset('assets/css/app-dark.min.css') }}"
+        rel="stylesheet"
+        type="text/css"
+        id="dark-style"
+    />
 
     {{-- Main css --}}
-    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('assets/css/main.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
 
     {{-- Page css --}}
     @yield('css')
 
 </head>
 
-<body class="loading @isset($is_login) authentication-bg pb-0 @endisset"
-    data-layout-config='{ "leftSideBarTheme": "dark", "layoutBoxed": false, "leftSidebarCondensed": false, "leftSidebarScrollable": false, "darkMode": false, "showRightSidebarOnStart": false}'>
+<body
+    class="loading @isset($is_login) authentication-bg pb-0 @endisset"
+    data-layout-config='{ "leftSideBarTheme": "dark", "layoutBoxed": false, "leftSidebarCondensed": false, "leftSidebarScrollable": false, "darkMode": false, "showRightSidebarOnStart": false}'
+>
 
     {{-- Pre-loader --}}
     <div id="preloader">

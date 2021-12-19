@@ -6,10 +6,7 @@
 
     <div class="row mb-3">
         <div class="col-12 d-flex justify-content-end">
-            <a
-                href="{{ route('user') }}"
-                class="btn btn-sm btn-dark"
-            >
+            <a href="{{ route('user') }}" class="btn btn-sm btn-dark">
                 <i class="dripicons-chevron-left"></i>
                 <span>Kembali</span>
             </a>
@@ -39,20 +36,15 @@
                             {{-- tab nav --}}
                             <ul class="nav nav-pills bg-nav-pills nav-justified mb-5">
                                 <li class="nav-item">
-                                    <a
-                                        href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
-                                        aria-expanded="true"
-                                        class="nav-link rounded-0 active"
-                                    >
+                                    <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}" aria-expanded="true"
+                                        class="nav-link rounded-0 active">
                                         <span class="d-md-block">Detail</span>
                                     </a>
                                 </li>
+
                                 <li class="nav-item">
-                                    <a
-                                        href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}"
-                                        aria-expanded="false"
-                                        class="nav-link rounded-0"
-                                    >
+                                    <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" aria-expanded="false"
+                                        class="nav-link rounded-0 @if ($userAccess->pivot->update != 1) disabled @endif">
                                         <span class="d-md-block">Edit</span>
                                     </a>
                                 </li>

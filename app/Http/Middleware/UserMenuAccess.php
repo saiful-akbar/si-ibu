@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserMenuAkses
+class UserMenuAccess
 {
     /**
      * Cek hak akses user untuk setiap menu dan
@@ -17,28 +17,28 @@ class UserMenuAkses
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $menu, $akses)
+    public function handle(Request $request, Closure $next, $menu, $access)
     {
         $menuItem = User::with('menuItem')
             ->find(Auth::user()->id)
             ->menuItem
-            ->where('nama_menu', strtolower($menu))
+            ->where('nama_menu', $menu)
             ->first();
 
         if (!empty($menuItem)) {
-            if ($akses == 'create' && $menuItem->pivot->create == 1) {
+            if ($access == 'create' && $menuItem->pivot->create == 1) {
                 return $next($request);
             }
 
-            if ($akses == 'read' && $menuItem->pivot->read == 1) {
+            if ($access == 'read' && $menuItem->pivot->read == 1) {
                 return $next($request);
             }
 
-            if ($akses == 'update' && $menuItem->pivot->update == 1) {
+            if ($access == 'update' && $menuItem->pivot->update == 1) {
                 return $next($request);
             }
 
-            if ($akses == 'delete' && $menuItem->pivot->delete == 1) {
+            if ($access == 'delete' && $menuItem->pivot->delete == 1) {
                 return $next($request);
             }
 

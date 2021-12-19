@@ -19,4 +19,20 @@ class Budget extends Model
     {
         return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
     }
+
+    /**
+     * Merubah format created_at
+     */
+    public function getCreatedAtAttribute()
+    {
+        return \Carbon\Carbon::parse($this->attributes['created_at'])->diffForHumans();
+    }
+
+    /**
+     * Merubah format updated_at
+     */
+    public function getUpdatedAtAttribute()
+    {
+        return \Carbon\Carbon::parse($this->attributes['updated_at'])->diffForHumans();
+    }
 }

@@ -30,15 +30,35 @@ class MenuSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                // id 2
+                'nama_header' => 'keuangan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
+
+
         /**
-         * buat data menu item
+         * Jalankan fungsi insert
          */
+        $this->insertMenuItem();
+        $this->insetUserMenu();
+    }
+
+    /**
+     * insertMenuItem
+     * insert data menu_item ke database
+     *
+     * @return void
+     */
+    public function insertMenuItem()
+    {
         DB::table('menu_item')->insert([
             [
                 // id 1
-                'menu_header_id' => 1,
+                'menu_header_id' => $this->getMenuHeader('utama'),
                 'nama_menu' => 'dashboard',
                 'icon' => 'fas fa-home',
                 'href' => '/dashboard',
@@ -47,7 +67,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 // id 2
-                'menu_header_id' => 2,
+                'menu_header_id' => $this->getMenuHeader('data master'),
                 'nama_menu' => 'divisi',
                 'icon' => 'fas fa-boxes',
                 'href' => '/divisi',
@@ -56,40 +76,65 @@ class MenuSeeder extends Seeder
             ],
             [
                 // id 3
-                'menu_header_id' => 2,
+                'menu_header_id' => $this->getMenuHeader('data master'),
                 'nama_menu' => 'user',
                 'icon' => 'fas fa-users',
                 'href' => '/user',
                 'created_at' => now(),
                 'updated_at' => now(),
+            ],
+            [
+                // id 4
+                'menu_header_id' => $this->getMenuHeader('keuangan'),
+                'nama_menu' => 'budget',
+                'icon' => 'fas fa-money-check-alt',
+                'href' => '/budget',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
+    }
 
+    /**
+     * insetUserMenu
+     * insert data user_menu
+     *
+     * @return void
+     */
+    public function insetUserMenu()
+    {
         /**
          * buata data user menu header
          */
         DB::table('user_menu_header')->insert([
             [
-                'user_id' => 1,
-                'menu_header_id' => 1,
+                'user_id' => $this->getUser('admin'),
+                'menu_header_id' => $this->getMenuHeader('utama'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
-                'menu_header_id' => 2,
+                'user_id' => $this->getUser('admin'),
+                'menu_header_id' => $this->getMenuHeader('data master'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 2,
-                'menu_header_id' => 1,
+                'user_id' => $this->getUser('admin'),
+                'menu_header_id' => $this->getMenuHeader('keuangan'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
+            [
+                'user_id' => $this->getUser('staff'),
+                'menu_header_id' => $this->getMenuHeader('utama'),
+                'read' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         /**
@@ -97,8 +142,8 @@ class MenuSeeder extends Seeder
          */
         DB::table('user_menu_item')->insert([
             [
-                'user_id' => 1,
-                'menu_item_id' => 1,
+                'user_id' => $this->getUser('admin'),
+                'menu_item_id' => $this->getMenuItem('dashboard'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
@@ -107,8 +152,8 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
-                'menu_item_id' => 2,
+                'user_id' => $this->getUser('admin'),
+                'menu_item_id' => $this->getMenuItem('divisi'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
@@ -117,8 +162,8 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
-                'menu_item_id' => 3,
+                'user_id' => $this->getUser('admin'),
+                'menu_item_id' => $this->getMenuItem('user'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
@@ -127,8 +172,18 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 2,
-                'menu_item_id' => 1,
+                'user_id' => $this->getUser('admin'),
+                'menu_item_id' => $this->getMenuItem('budget'),
+                'create' => true,
+                'read' => true,
+                'update' => true,
+                'delete' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('staff'),
+                'menu_item_id' => $this->getMenuItem('dashboard'),
                 'create' => false,
                 'read' => true,
                 'update' => false,
@@ -137,5 +192,53 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ]
         ]);
+    }
+
+    /**
+     * getMenuHeader
+     * ambil id dari menu header berdasarkan nama menu
+     *
+     * @param  mixed $nama
+     * @return void
+     */
+    public function getMenuHeader(string $nama)
+    {
+        $menuHeader = DB::table('menu_header')
+            ->where('nama_header', $nama)
+            ->first();
+
+        return $menuHeader->id;
+    }
+
+    /**
+     * getMenuItem
+     * ambil id dari menu item berdasarkan nama menu
+     *
+     * @param  mixed $nama
+     * @return void
+     */
+    public function getMenuItem(string $nama)
+    {
+        $menuItem = DB::table('menu_item')
+            ->where('nama_menu', $nama)
+            ->first();
+
+        return $menuItem->id;
+    }
+
+    /**
+     * getUser
+     * ambil id user berdasarkan username
+     *
+     * @param  string $username
+     * @return void
+     */
+    public function getUser(String $username)
+    {
+        $user = DB::table('user')
+            ->where('username', $username)
+            ->first();
+
+        return $user->id;
     }
 }
