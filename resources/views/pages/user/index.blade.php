@@ -14,7 +14,10 @@
                             <h4 class="header-title">Tabel User</h4>
 
                             @if ($user_akses->pivot->create == 1)
-                                <a href="{{ route('user.create') }}" class="btn btn-rounded btn-primary">
+                                <a
+                                    href="{{ route('user.create') }}"
+                                    class="btn btn-rounded btn-primary"
+                                >
                                     <i class="mdi mdi-plus"></i>
                                     <span>Tambah User Baru</span>
                                 </a>
@@ -26,13 +29,25 @@
                     {{-- form search --}}
                     <div class="row justify-content-end">
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form action="{{ route('user') }}" method="GET" autocomplete="off">
+                            <form
+                                action="{{ route('user') }}"
+                                method="GET"
+                                autocomplete="off"
+                            >
                                 <div class="input-group">
-                                    <input type="search" name="search" placeholder="Cari user..." class="form-control"
-                                        value="{{ request('search') }}" />
+                                    <input
+                                        type="search"
+                                        name="search"
+                                        placeholder="Cari user..."
+                                        class="form-control"
+                                        value="{{ request('search') }}"
+                                    />
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="submit">
+                                        <button
+                                            class="btn btn-secondary"
+                                            type="submit"
+                                        >
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>
@@ -66,11 +81,17 @@
                                                 </td>
                                                 <td class="align-middle table-user">
                                                     @if ($user->avatar != null)
-                                                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="avatar"
-                                                            class="mr-2 rounded-circle" />
+                                                        <img
+                                                            src="{{ asset('storage/' . $user->avatar) }}"
+                                                            alt="avatar"
+                                                            class="mr-2 rounded-circle"
+                                                        />
                                                     @else
-                                                        <img src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                                            alt="avatar" class="mr-2 rounded-circle" />
+                                                        <img
+                                                            src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
+                                                            alt="avatar"
+                                                            class="mr-2 rounded-circle"
+                                                        />
                                                     @endif
 
                                                     {{ ucwords($user->nama_lengkap) }}
@@ -86,26 +107,34 @@
                                                 </td>
                                                 <td class="align-middle">{{ $user->updated_at }}</td>
                                                 <td class="align-middle text-center">
-                                                    <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
-                                                        class="btn btn-sm btn-info btn-rounded mr-1">
+                                                    <a
+                                                        href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
+                                                        class="btn btn-sm btn-info mr-1"
+                                                        data-toggle="tooltip"
+                                                        data-original-title="Menu Akses"
+                                                    >
                                                         <i class="mdi mdi-key"></i>
-                                                        <span>Menu Akses</span>
                                                     </a>
 
                                                     @if ($user_akses->pivot->update == 1)
-                                                        <a href="{{ route('user.edit', ['user' => $user->id]) }}"
-                                                            class="btn btn-sm btn-rounded btn-success mr-1">
+                                                        <a
+                                                            href="{{ route('user.edit', ['user' => $user->id]) }}"
+                                                            class="btn btn-sm btn-success mr-1"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Edit"
+                                                        >
                                                             <i class="mdi mdi-square-edit-outline"></i>
-                                                            <span>Edit</span>
                                                         </a>
                                                     @endif
 
                                                     @if ($user_akses->pivot->delete == 1)
                                                         <button
                                                             onclick="handleDelete({{ $user->id }}, '{{ $user->username }}')"
-                                                            class="btn btn-sm btn-rounded btn-danger">
+                                                            class="btn btn-sm btn-danger"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Hapus"
+                                                        >
                                                             <i class="mdi mdi-delete"></i>
-                                                            <span>Hapus</span>
                                                         </button>
                                                     @endif
                                                 </td>
@@ -127,7 +156,10 @@
         </div>
     </div>
 
-    <form method="POST" id="form-delete-user">
+    <form
+        method="POST"
+        id="form-delete-user"
+    >
         @method('DELETE') @csrf
     </form>
 @endsection
