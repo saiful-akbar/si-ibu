@@ -198,7 +198,7 @@
                             </div>
                         </div>
 
-                        {{-- input file dokument --}}
+                        {{-- upload file dokument --}}
                         <div class="form-group row mb-3">
                             <span class="col-md-3 col-sm-12 col-form-label">
                                 File Dokumen
@@ -210,7 +210,7 @@
                                         <label for="file_dokumen">
                                             <span type="button" class="btn btn-primary btn-rounded">
                                                 <i class="mdi mdi-upload-outline"></i>
-                                                <span>Upload file</span>
+                                                <span>Upload File</span>
                                             </span>
                                         </label>
                                     </div>
