@@ -38,8 +38,4 @@ php artisan migrate:fresh --seed
 - Jalankan local server
 ```bash
 php artisan serve
-<<<<<<< HEAD
 ```
-=======
-```
->>>>>>> 84fe1bb2c57608aa7333a3078f265f3cafa976ae
