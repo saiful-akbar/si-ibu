@@ -121,6 +121,10 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:budget,create')
             ->name('budget.store');
 
+        Route::get('/{budget}', [BudgetController::class, 'show'])
+            ->middleware('menu:budget,read')
+            ->name('budget.show');
+
         Route::get('/{budget}/edit', [BudgetController::class, 'edit'])
             ->middleware('menu:budget,update')
             ->name('budget.edit');

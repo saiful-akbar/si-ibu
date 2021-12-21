@@ -44,7 +44,7 @@ class BudgetController extends Controller
             'budget.updated_at',
             'divisi.nama_divisi',
         )->orderBy('budget.tahun_anggaran', 'desc')
-            ->orderBy('divisi.nama_divisi', 'asc');
+            ->orderBy('budget.updated_at', 'desc');
 
         /**
          * ambid data user akses untuk menu user
@@ -61,6 +61,22 @@ class BudgetController extends Controller
     }
 
     /**
+     * detail budget per id
+     *
+     * @param Budget $budget
+     *
+     * @return json
+     */
+    public function show(Budget $budget)
+    {
+        $result = Budget::with('divisi')->find($budget->id);
+
+        return response()->json([
+            'budget' => $result,
+        ]);
+    }
+
+    /**
      * create
      * view halman input budget
      *
@@ -71,7 +87,7 @@ class BudgetController extends Controller
         /**
          * Ambil semua data divisi
          */
-        $divisions = Divisi::all();
+        $divisions = Divisi::orderBy('nama_divisi', 'asc')->get();
 
         return view('pages.budget.create', compact('divisions'));
     }
@@ -115,6 +131,12 @@ class BudgetController extends Controller
          */
         $validatedData = $request->validate($validateRules, $validateMessage);
 
+        /**
+         * cek apa ada ketengan atau tidak
+         */
+        if ($request->keterangan) {
+            $validatedData['keterangan'] = $request->keterangan;
+        };
 
         /**
          * simpan ke database
@@ -145,7 +167,7 @@ class BudgetController extends Controller
         /**
          * Ambil semua data divisi
          */
-        $divisions = Divisi::all();
+        $divisions = Divisi::orderBy('nama_divisi', 'asc')->get();;
 
         return view('pages.budget.edit', compact('budget', 'divisions'));
     }
@@ -188,6 +210,13 @@ class BudgetController extends Controller
          * jalankan validasi
          */
         $validatedData = $request->validate($validateRules, $validateMessage);
+
+        /**
+         * cek apa ada ketengan atau tidak
+         */
+        if ($request->keterangan) {
+            $validatedData['keterangan'] = $request->keterangan;
+        };
 
         /**
          * update budget di database

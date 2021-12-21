@@ -2,6 +2,10 @@
 
 @section('title', 'Input Budget')
 
+@push('css')
+    <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('content')
 
     {{-- button kembali --}}
@@ -84,7 +88,9 @@
 
                             <div class="col-md-9 col-sm-12 input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                                    <span class="input-group-text" id="basic-addon1">
+                                        Rp
+                                    </span>
                                 </div>
 
                                 <input required type="number" id="nominal" name="nominal" placeholder="Masukan nominal..."
@@ -94,6 +100,18 @@
                                 @error('nominal')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div>
+                        </div>
+
+                        {{-- input Keterangan --}}
+                        <div class="form-group row mb-3">
+                            <label for="keterangan" class="col-md-3 col-sm-12 col-form-label">
+                                Keterangan
+                            </label>
+
+                            <div class="col-md-9 col-sm-12">
+                                <textarea name="keterangan" id="keterangan" rows="10" placeholder="Masukan keterangan..."
+                                    class="form-control">{{ old('keterangan') }}</textarea>
                             </div>
                         </div>
 
@@ -121,4 +139,9 @@
     </div>
     {{-- end card form input budget --}}
 
+@endsection
+
+@section('js')
+    <script src="{{ asset('assets/js/vendor/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/budget.js') }}"></script>
 @endsection
