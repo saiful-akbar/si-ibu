@@ -11,9 +11,7 @@ class JenisBelanja extends Model
     use HasFactory;
 
     protected $table = 'jenis_belanja';
-    protected $fillabale = [
-        'kategori_belanja',
-    ];
+    protected $fillable = ['kategori_belanja'];
 
     /**
      * Relasi onr to many dengan tabel transaksi
