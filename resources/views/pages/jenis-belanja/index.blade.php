@@ -16,7 +16,7 @@
                             @if ($userAccess->pivot->create == 1)
                                 <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
-                                    <span>Tambah Jenis Belanja Baru</span>
+                                    <span>Tambah Jenis Belanja</span>
                                 </a>
                             @endif
                         </div>
@@ -46,7 +46,7 @@
 
                             {{-- tabel view jenis belanja --}}
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover nowrap">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -115,8 +115,6 @@
 
 @section('js')
     <script>
-        const main = new Main();
-
         /**
          * Fungsi handle hapus data user
          *
