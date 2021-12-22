@@ -17,13 +17,9 @@ class UserMenuAccess
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $menu, $access)
+    public function handle(Request $request, Closure $next, $path, $access)
     {
-        $menuItem = User::with('menuItem')
-            ->find(Auth::user()->id)
-            ->menuItem
-            ->where('nama_menu', $menu)
-            ->first();
+        $menuItem = User::with('menuItem')->find(Auth::user()->id)->menuItem->where('href', $path)->first();
 
         if (!empty($menuItem)) {
             if ($access == 'create' && $menuItem->pivot->create == 1) {

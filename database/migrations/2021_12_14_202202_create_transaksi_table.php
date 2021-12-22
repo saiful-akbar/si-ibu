@@ -17,6 +17,7 @@ class CreateTransaksiTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('divisi_id');
+            $table->unsignedBigInteger('jenis_belanja_id');
             $table->date('tanggal');
             $table->string('kegiatan', 128);
             $table->double('jumlah');
@@ -38,6 +39,13 @@ class CreateTransaksiTable extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('user')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            // relasi dengan tabel jenis_belanja
+            $table->foreign('jenis_belanja_id')
+                ->references('id')
+                ->on('jenis_belanja')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });

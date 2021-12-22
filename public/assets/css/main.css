@@ -41,3 +41,12 @@ table.nowrap tr td {
     display: block;
     max-width: 100%;
 }
+
+.btn-icon {
+    padding: 4px 8px 3px 8px;
+    border-radius: 100%;
+}
+
+.btn-icon i {
+    font-size: 1.2em;
+}

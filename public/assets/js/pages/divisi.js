@@ -1,9 +1,4 @@
 /**
- * Inisialisasi class Main
- */
-const main = new Main();
-
-/**
  * Fungsi handle hapus data divisi
  *
  * @param {int} id id divisi

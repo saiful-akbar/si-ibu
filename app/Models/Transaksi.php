@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Divisi;
+use App\Models\JenisBelanja;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,7 @@ class Transaksi extends Model
     protected $fillabale = [
         'user_id',
         'divisi_id',
+        'jenis_belanja_id',
         'tanggal',
         'kegiatan',
         'jumlah',
@@ -38,6 +40,14 @@ class Transaksi extends Model
     public function divisi()
     {
         return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
+    }
+
+    /**
+     * Method relasi one to many dengan table jenis_belanja
+     */
+    public function jenisBelanja()
+    {
+        return $this->belongsTo(JenisBelanja::class, 'jenis_belanja_id', 'id');
     }
 
     /**

@@ -8,3 +8,8 @@ class Main {
         this.csrfToken = $("meta[name=csrf-token]").attr("content");
     }
 }
+
+/**
+ * inisialisasi class main
+ */
+const main = new Main();

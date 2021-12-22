@@ -66,17 +66,18 @@
                                                     <td class="align-middle text-center">
                                                         @if ($user_akses->pivot->update == 1)
                                                             <a href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"
-                                                                class="btn btn-sm btn-success btn-rounded mr-1">
+                                                                class="btn btn-sm btn-success btn-icon mr-1" data-toggle="tooltip"
+                                                                data-original-title="Edit">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
-                                                                <span>Edit</span>
                                                             </a>
                                                         @endif
 
                                                         @if ($user_akses->pivot->delete == 1)
-                                                            <button class="btn btn-sm btn-danger btn-rounded"
-                                                                onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')">
+                                                            <button
+                                                                onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
+                                                                class="btn btn-sm btn-danger btn-icon" data-toggle="tooltip"
+                                                                data-original-title="Hapus">
                                                                 <i class="mdi mdi-delete"></i>
-                                                                <span>Hapus</span>
                                                             </button>
                                                         @endif
                                                     </td>

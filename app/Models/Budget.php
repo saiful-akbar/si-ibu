@@ -10,7 +10,7 @@ class Budget extends Model
     use HasFactory;
 
     protected $table = 'budget';
-    protected $fillable = ['divisi_id', 'tahun_anggaran', 'nominal'];
+    protected $fillable = ['divisi_id', 'tahun_anggaran', 'nominal', 'keterangan'];
 
     /**
      * Method relasi one to many dengan table divisi

@@ -72,23 +72,23 @@
                                                 <td class="align-middle">{{ ucwords($data->approval) }}</td>
                                                 <td class="align-middle">{{ $data->updated_at }}</td>
                                                 <td class="align-middle text-center">
-                                                    <button class="btn btn-sm btn-info mr-1 btn-rounded">
+                                                    <button class="btn btn-sm btn-info btn-icon mr-1" data-toggle="tooltip"
+                                                        data-original-title="Detail">
                                                         <i class="mdi mdi-eye-outline"></i>
-                                                        <span>Detail</span>
                                                     </button>
 
                                                     @if ($userAccess->pivot->update == 1)
                                                         <a href="{{ route('transaksi.edit', ['transaksi' => $data->id]) }}"
-                                                            class="btn btn-sm btn-success btn-rounded mr-1">
+                                                            class="btn btn-sm btn-success btn-icon mr-1" data-toggle="tooltip"
+                                                            data-original-title="Edit">
                                                             <i class="mdi mdi-square-edit-outline"></i>
-                                                            <span>Edit</span>
                                                         </a>
                                                     @endif
 
                                                     @if ($userAccess->pivot->delete == 1)
-                                                        <button class="btn btn-sm btn-danger btn-rounded">
+                                                        <button class="btn btn-sm btn-icon btn-danger" data-toggle="tooltip"
+                                                            data-original-title="Hapus">
                                                             <i class="mdi mdi-delete"></i>
-                                                            <span>Hapus</span>
                                                         </button>
                                                     @endif
                                                 </td>

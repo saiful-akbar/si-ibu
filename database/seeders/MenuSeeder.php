@@ -75,6 +75,15 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
+                // id 2
+                'menu_header_id' => $this->getMenuHeader('data master'),
+                'nama_menu' => 'jenis belanja',
+                'icon' => 'fas fa-shopping-cart',
+                'href' => '/jenis-belanja',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 // id 3
                 'menu_header_id' => $this->getMenuHeader('data master'),
                 'nama_menu' => 'user',
@@ -163,6 +172,16 @@ class MenuSeeder extends Seeder
             [
                 'user_id' => $this->getUser('admin'),
                 'menu_item_id' => $this->getMenuItem('divisi'),
+                'create' => true,
+                'read' => true,
+                'update' => true,
+                'delete' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('admin'),
+                'menu_item_id' => $this->getMenuItem('jenis belanja'),
                 'create' => true,
                 'read' => true,
                 'update' => true,

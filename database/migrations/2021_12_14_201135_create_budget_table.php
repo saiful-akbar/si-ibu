@@ -18,6 +18,7 @@ class CreateBudgetTable extends Migration
             $table->unsignedBigInteger('divisi_id');
             $table->year('tahun_anggaran');
             $table->double('nominal');
+            $table->text('keterangan')->nullable()->default(null);
             $table->timestamps();
 
             // relasi dengan tabel divisi

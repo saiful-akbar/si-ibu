@@ -21,6 +21,8 @@
     {{-- font awesome --}}
     <link href="{{ asset('assets/css/vendor/fontawesome/css/all.min.css') }}" rel="stylesheet" />
 
+    @stack('css')
+
     {{-- App css --}}
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
@@ -98,6 +100,7 @@
 
     {{-- Javascript page --}}
     @yield('js')
+
 </body>
 
 </html>

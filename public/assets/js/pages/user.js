@@ -1,5 +1,3 @@
-const main = new Main();
-
 /**
  * Fungsi handle hapus data user
  *
