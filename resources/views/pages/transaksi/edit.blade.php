@@ -19,7 +19,7 @@
     </div>
 
     {{-- Form input budget --}}
-    <form action="{{ route('transaksi.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('transaksi.update', ['transaksi' => $transaksi->id]) }}" method="POST" enctype="multipart/form-data">
         @method('PATCH')
         @csrf
 
@@ -219,7 +219,11 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <span id="file-name" class="text-nowrap d-none h5">nama file</span>
+                                        <span id="file-name" class="text-nowrap h5"
+                                            data-file="{{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}"
+                                            data-action="edit">
+                                            {{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}
+                                        </span>
                                     </div>
                                 </div>
 

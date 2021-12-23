@@ -217,7 +217,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <span id="file-name" class="text-nowrap d-none h5">nama file</span>
+                                        <span id="file-name" class="text-nowrap d-none h5" data-action="create"></span>
                                     </div>
                                 </div>
 

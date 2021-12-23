@@ -56,6 +56,7 @@
                                             <th>Jumlah Nominal</th>
                                             <th>No. Dokumen</th>
                                             <th>Diperbarui</th>
+                                            <th class="text-center">Unduh File</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -71,11 +72,17 @@
                                                 <td class="align-middle">{{ $data->no_dokumen }}</td>
                                                 <td class="align-middle">{{ $data->updated_at }}</td>
                                                 <td class="align-middle text-center">
-                                                    <button class="btn btn-sm btn-primary btn-icon mr-1" data-toggle="tooltip"
-                                                        data-original-title="Unduh" data-placement="top">
-                                                        <i class="mdi mdi-download"></i>
-                                                    </button>
-
+                                                    @if ($data->file_dokumen)
+                                                        <a href="{{ route('transaksi.download', ['transaksi' => $data->id]) }}"
+                                                            class="btn btn-sm btn-primary btn-icon" data-toggle="tooltip"
+                                                            data-original-title="Unduh" data-placement="top">
+                                                            <i class="mdi mdi-download"></i>
+                                                        </a>
+                                                    @else
+                                                        File tidak tersedia
+                                                    @endif
+                                                </td>
+                                                <td class="align-middle text-center">
                                                     <button class="btn btn-sm btn-info btn-icon mr-1" data-toggle="tooltip"
                                                         data-original-title="Detail" data-placement="top">
                                                         <i class="mdi mdi-eye-outline"></i>
@@ -91,7 +98,8 @@
 
                                                     @if ($userAccess->pivot->delete == 1)
                                                         <button class="btn btn-sm btn-icon btn-danger" data-toggle="tooltip"
-                                                            data-original-title="Hapus" data-placement="top">
+                                                            data-original-title="Hapus" data-placement="top"
+                                                            onclick="handleDelete({{ $data->id }}, '{{ $data->no_dokumen }}')">
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>
                                                     @endif
@@ -113,4 +121,14 @@
             </div>
         </div>
     </div>
+
+    {{-- form delete transaksi --}}
+    <form method="post" id="form-delete-transaksi">
+        @method('DELETE') @csrf
+    </form>
+@endsection
+
+@section('js')
+    <script src="{{ asset('assets/js/vendor/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/transaksi.js') }}"></script>
 @endsection
