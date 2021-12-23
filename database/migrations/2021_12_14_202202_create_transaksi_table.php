@@ -20,11 +20,11 @@ class CreateTransaksiTable extends Migration
             $table->unsignedBigInteger('jenis_belanja_id');
             $table->date('tanggal');
             $table->string('kegiatan', 128);
-            $table->double('jumlah');
-            $table->char('no_dokumen', 32)->unique();
+            $table->double('jumlah_nominal');
+            $table->char('no_dokumen', 100)->unique();
             $table->string('file_dokumen', 128)->nullable()->default(null);
             $table->text('uraian')->nullable()->default(null);
-            $table->string('approval', 64);
+            $table->string('approval', 128);
             $table->timestamps();
 
 
