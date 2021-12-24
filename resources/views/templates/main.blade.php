@@ -36,8 +36,7 @@
 
 </head>
 
-<body class="loading @isset($is_login) authentication-bg pb-0 @endisset"
-    data-layout-config='{ "leftSideBarTheme": "dark", "layoutBoxed": false, "leftSidebarCondensed": false, "leftSidebarScrollable": false, "darkMode": false, "showRightSidebarOnStart": false}'>
+<body class="loading @isset($is_login) authentication-bg pb-0 @endisset" data-layout-config='{"darkMode": true,"leftSideBarTheme": "dark","layoutBoxed": false,"leftSidebarCondensed": false,"leftSidebarScrollable": false,"showRightSidebarOnStart":false}'>
 
     {{-- Pre-loader --}}
     <div id="preloader">

@@ -60,7 +60,7 @@ class TransaksiController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * view halaman transaksi
      *
      * @return \Illuminate\Http\Response
      */
@@ -110,7 +110,7 @@ class TransaksiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * view halaman tambah transaksi
      *
      * @return \Illuminate\Http\Response
      */
@@ -123,7 +123,7 @@ class TransaksiController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Tambah data transaksi ke database
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -222,13 +222,20 @@ class TransaksiController extends Controller
     }
 
     /**
-     * View edit data transaksi
+     * View detail data transaksi
      *
      * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
     public function show(Transaksi $transaksi)
     {
+        $query = Transaksi::with('divisi', 'jenisBelanja', 'user.profil')
+            ->where('id', $transaksi->id)
+            ->first();
+
+        return response()->json([
+            'transaksi' => $query,
+        ]);
     }
 
     /**

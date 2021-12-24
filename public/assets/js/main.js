@@ -13,8 +13,8 @@ class Main {
      *
      * @returns string
      */
-    formatRupiah() {
-        let numberString = angka.toString().replace(/[^,\d]/g, "");
+    formatRupiah(nominal) {
+        let numberString = nominal.toString().replace(/[^,\d]/g, "");
         let split = numberString.split(",");
         let sisa = split[0].length % 3;
         let rupiah = split[0].substr(0, sisa);
@@ -22,7 +22,8 @@ class Main {
 
         // tambahkan titik jika yang di input sudah menjadi angka ribuan
         if (ribuan) {
-            separator = sisa ? "." : "";
+            let separator = sisa ? "." : "";
+            
             rupiah += separator + ribuan.join(".");
         }
 
