@@ -35,29 +35,6 @@ const handleDelete = (id, divisi) => {
 };
 
 /**
- * FUngsi format rupiah
- *
- * @param {int} angka
- * @returns string
- */
-function formatRupiah(angka) {
-    let numberString = angka.toString().replace(/[^,\d]/g, "");
-    let split = numberString.split(",");
-    let sisa = split[0].length % 3;
-    let rupiah = split[0].substr(0, sisa);
-    let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-    // tambahkan titik jika yang di input sudah menjadi angka ribuan
-    if (ribuan) {
-        separator = sisa ? "." : "";
-        rupiah += separator + ribuan.join(".");
-    }
-
-    rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-    return rupiah ? `Rp. ${rupiah}` : "";
-}
-
-/**
  * fungsi show hide loading modal
  *
  * @param {boolean} show
@@ -96,7 +73,7 @@ const handleShowModalDetail = (id) => {
 
             $("#detail-divisi").text(res.budget.divisi.nama_divisi);
             $("#detail-tahun-anggaran").text(res.budget.tahun_anggaran);
-            $("#detail-nominal").text(formatRupiah(res.budget.nominal));
+            $("#detail-nominal").text(main.formatRupiah(res.budget.nominal));
             $("#detail-created").text(res.budget.created_at);
             $("#detail-updated").text(res.budget.updated_at);
             $("#detail-keterangan").html(res.budget.keterangan);

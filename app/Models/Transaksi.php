@@ -13,13 +13,13 @@ class Transaksi extends Model
     use HasFactory;
 
     protected $table = 'transaksi';
-    protected $fillabale = [
+    protected $fillable = [
         'user_id',
         'divisi_id',
         'jenis_belanja_id',
         'tanggal',
         'kegiatan',
-        'jumlah',
+        'jumlah_nominal',
         'no_dokumen',
         'file_dokumen',
         'uraian',

@@ -19,20 +19,22 @@ class MenuSeeder extends Seeder
          */
         DB::table('menu_header')->insert([
             [
-                // id 1
-                'nama_header' => 'utama',
+                'nama_header' => 'Halaman Utama',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                // id 2
-                'nama_header' => 'data master',
+                'nama_header' => 'Data Master',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                // id 2
-                'nama_header' => 'keuangan',
+                'nama_header' => 'Keuangan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_header' => 'Laporan',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -57,8 +59,7 @@ class MenuSeeder extends Seeder
     {
         DB::table('menu_item')->insert([
             [
-                // id 1
-                'menu_header_id' => $this->getMenuHeader('utama'),
+                'menu_header_id' => $this->getMenuHeader('Halaman Utama'),
                 'nama_menu' => 'dashboard',
                 'icon' => 'fas fa-home',
                 'href' => '/dashboard',
@@ -66,8 +67,7 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                // id 2
-                'menu_header_id' => $this->getMenuHeader('data master'),
+                'menu_header_id' => $this->getMenuHeader('Data Master'),
                 'nama_menu' => 'divisi',
                 'icon' => 'fas fa-boxes',
                 'href' => '/divisi',
@@ -75,8 +75,7 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                // id 2
-                'menu_header_id' => $this->getMenuHeader('data master'),
+                'menu_header_id' => $this->getMenuHeader('Data Master'),
                 'nama_menu' => 'jenis belanja',
                 'icon' => 'fas fa-shopping-cart',
                 'href' => '/jenis-belanja',
@@ -84,8 +83,7 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                // id 3
-                'menu_header_id' => $this->getMenuHeader('data master'),
+                'menu_header_id' => $this->getMenuHeader('Data Master'),
                 'nama_menu' => 'user',
                 'icon' => 'fas fa-users',
                 'href' => '/user',
@@ -93,20 +91,26 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                // id 4
                 'menu_header_id' => $this->getMenuHeader('keuangan'),
                 'nama_menu' => 'budget',
-                'icon' => 'fas fa-money-check-alt',
+                'icon' => 'fas fa-funnel-dollar',
                 'href' => '/budget',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                // id 4
                 'menu_header_id' => $this->getMenuHeader('keuangan'),
                 'nama_menu' => 'transaksi',
-                'icon' => 'fas fa-file-invoice-dollar',
+                'icon' => 'fas fa-handshake',
                 'href' => '/transaksi',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'menu_header_id' => $this->getMenuHeader('Laporan'),
+                'nama_menu' => 'Laporan Transaksi',
+                'icon' => 'fas fa-newspaper',
+                'href' => '/laporan-transaksi',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
@@ -127,28 +131,35 @@ class MenuSeeder extends Seeder
         DB::table('user_menu_header')->insert([
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('utama'),
+                'menu_header_id' => $this->getMenuHeader('Halaman Utama'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('data master'),
+                'menu_header_id' => $this->getMenuHeader('Data Master'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('keuangan'),
+                'menu_header_id' => $this->getMenuHeader('Keuangan'),
+                'read' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('admin'),
+                'menu_header_id' => $this->getMenuHeader('Laporan'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => $this->getUser('staff'),
-                'menu_header_id' => $this->getMenuHeader('utama'),
+                'menu_header_id' => $this->getMenuHeader('Halaman Utama'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -161,7 +172,7 @@ class MenuSeeder extends Seeder
         DB::table('user_menu_item')->insert([
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('dashboard'),
+                'menu_item_id' => $this->getMenuItem('Dashboard'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
@@ -171,7 +182,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('divisi'),
+                'menu_item_id' => $this->getMenuItem('Divisi'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
@@ -181,7 +192,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('jenis belanja'),
+                'menu_item_id' => $this->getMenuItem('Jenis Belanja'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
@@ -191,7 +202,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('user'),
+                'menu_item_id' => $this->getMenuItem('User'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
@@ -201,7 +212,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('budget'),
+                'menu_item_id' => $this->getMenuItem('Budget'),
                 'create' => true,
                 'read' => true,
                 'update' => true,
@@ -211,7 +222,17 @@ class MenuSeeder extends Seeder
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('transaksi'),
+                'menu_item_id' => $this->getMenuItem('Transaksi'),
+                'create' => true,
+                'read' => true,
+                'update' => true,
+                'delete' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('admin'),
+                'menu_item_id' => $this->getMenuItem('Laporan Transaksi'),
                 'create' => true,
                 'read' => true,
                 'update' => true,

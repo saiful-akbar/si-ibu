@@ -1,6 +1,6 @@
 @extends('templates.main')
 
-@section('title', 'Tambah Transaksi')
+@section('title', 'Edit Transaksi')
 
 @push('css')
     <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
@@ -19,8 +19,8 @@
     </div>
 
     {{-- Form input budget --}}
-    <form action="{{ route('transaksi.store') }}" method="POST" enctype="multipart/form-data">
-        @method('POST')
+    <form action="{{ route('transaksi.update', ['transaksi' => $transaksi->id]) }}" method="POST" enctype="multipart/form-data">
+        @method('PATCH')
         @csrf
 
         {{-- form divisi, tanggal & approval --}}
@@ -32,7 +32,7 @@
                         {{-- title --}}
                         <div class="row">
                             <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="header-title">Form Tambah Transaksi</h4>
+                                <h4 class="header-title">Form Edit Transaksi</h4>
                             </div>
                         </div>
                         {{-- end title --}}
@@ -45,8 +45,8 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input type="date" id="tanggal" name="tanggal" placeholder="Masukan tanggal..."
-                                    value="{{ old('tanggal') }}" class="form-control @error('tanggal') is-invalid @enderror"
-                                    required />
+                                    value="{{ old('tanggal', $transaksi->tanggal) }}"
+                                    class="form-control @error('tanggal') is-invalid @enderror" required />
 
                                 @error('tanggal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -62,8 +62,8 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input type="text" id="approval" name="approval" placeholder="Masukan nama approval..."
-                                    value="{{ old('approval') }}" class="form-control @error('approval') is-invalid @enderror"
-                                    required />
+                                    value="{{ old('approval', $transaksi->approval) }}"
+                                    class="form-control @error('approval') is-invalid @enderror" required />
 
                                 @error('approval')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -86,7 +86,7 @@
                         {{-- title --}}
                         <div class="row">
                             <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="header-title">Kegiatan</h4>
+                                <h4 class="header-title">Edit Kegiatan</h4>
                             </div>
                         </div>
                         {{-- end title --}}
@@ -105,7 +105,7 @@
                                     </option>
 
                                     @foreach ($jenisBelanja as $jBelanja)
-                                        <option value="{{ $jBelanja->id }}" @if (old('jenis_belanja_id') == $jBelanja->id) selected @endif>
+                                        <option value="{{ $jBelanja->id }}" @if (old('jenis_belanja_id', $transaksi->jenis_belanja_id) == $jBelanja->id) selected @endif>
                                             {{ ucwords($jBelanja->kategori_belanja) }}
                                         </option>
                                     @endforeach
@@ -125,8 +125,8 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input type="text" id="kegiatan" name="kegiatan" placeholder="Masukan kegiatan..."
-                                    value="{{ old('kegiatan') }}" class="form-control @error('kegiatan') is-invalid @enderror"
-                                    required />
+                                    value="{{ old('kegiatan', $transaksi->kegiatan) }}"
+                                    class="form-control @error('kegiatan') is-invalid @enderror" required />
 
                                 @error('kegiatan')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -142,7 +142,8 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input type="number" id="jumlah_nominal" name="jumlah_nominal" min="0"
-                                    placeholder="Masukan jumlah nominal..." value="{{ old('jumlah_nominal') }}"
+                                    placeholder="Masukan jumlah nominal..."
+                                    value="{{ old('jumlah_nominal', $transaksi->jumlah_nominal) }}"
                                     class="form-control @error('jumlah_nominal') is-invalid @enderror" required />
 
                                 @error('jumlah_nominal')
@@ -158,7 +159,8 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <textarea name="uraian" id="uraian" class="form-control">{{ old('uraian') }}</textarea>
+                                <textarea name="uraian" id="uraian"
+                                    class="form-control">{{ old('uraian', $transaksi->uraian) }}</textarea>
                             </div>
                         </div>
 
@@ -190,7 +192,7 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input type="text" id="no_dokumen" name="no_dokumen" placeholder="Masukan no dokumen..."
-                                    value="{{ old('no_dokumen', $noDocument) }}"
+                                    value="{{ old('no_dokumen', $transaksi->no_dokumen) }}"
                                     class="form-control @error('no_dokumen') is-invalid @enderror" required />
 
                                 @error('no_dokumen')
@@ -217,7 +219,11 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <span id="file-name" class="text-nowrap d-none h5" data-action="create"></span>
+                                        <span id="file-name" class="text-nowrap h5"
+                                            data-file="{{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}"
+                                            data-action="edit">
+                                            {{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}
+                                        </span>
                                     </div>
                                 </div>
 
