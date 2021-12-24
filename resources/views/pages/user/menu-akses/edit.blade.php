@@ -20,37 +20,22 @@
         <div class="col-12 mb-3">
             <div class="card">
                 <div class="card-body">
-
-                    {{-- title & btn tambah --}}
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="header-title">Edit User Menu Akses</h4>
-                        </div>
-                    </div>
-                    {{-- end title & btn tambah --}}
-
-                    {{-- nav tabs --}}
-                    <div class="row">
-                        <div class="col-12">
-                            <ul class="nav nav-pills bg-nav-pills nav-justified">
-                                <li class="nav-item">
-                                    <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}" aria-expanded="false"
-                                        class="nav-link rounded-0">
-                                        <i class="mdi mdi-home-variant d-md-none d-block"></i>
-                                        <span class="d-none d-md-block">Detail</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" aria-expanded="true"
-                                        class="nav-link rounded-0 active">
-                                        <i class="mdi mdi-account-circle d-md-none d-block"></i>
-                                        <span class="d-none d-md-block">Edit</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    {{-- end nav tabs --}}
+                    <ul class="nav nav-pills bg-nav-pills nav-justified">
+                        <li class="nav-item">
+                            <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}" aria-expanded="false"
+                                class="nav-link rounded-0">
+                                <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                                <span class="d-none d-md-block">Detail</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" aria-expanded="true"
+                                class="nav-link rounded-0 active">
+                                <i class="mdi mdi-account-circle d-md-none d-block"></i>
+                                <span class="d-none d-md-block">Edit</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

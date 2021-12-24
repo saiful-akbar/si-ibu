@@ -6,13 +6,15 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <div class="card-header">
+                    <h4 class="header-title mt-2">Tabel Transaksi</h4>
+                </div>
+
                 <div class="card-body">
 
-                    {{-- title & btn tambah --}}
+                    {{-- button tambah & form search --}}
                     <div class="row">
-                        <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="header-title">Tabel Transaksi</h4>
-
+                        <div class="col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
                                 <a href="{{ route('transaksi.create') }}" class="btn btn-primary btn-rounded">
                                     <i class="mdi mdi-plus"></i>
@@ -20,11 +22,7 @@
                                 </a>
                             @endif
                         </div>
-                    </div>
-                    {{-- end itle & btn tambah --}}
 
-                    {{-- form search --}}
-                    <div class="row justify-content-end">
                         <div class="col-md-6 col-sm-12 mb-3">
                             <form action="{{ route('transaksi') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
@@ -45,7 +43,7 @@
                             </form>
                         </div>
                     </div>
-                    {{-- end form search --}}
+                    {{-- end button tambah & form search --}}
 
                     {{-- table --}}
                     <div class="row">

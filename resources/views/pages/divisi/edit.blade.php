@@ -15,13 +15,11 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <h4 class="header-title">Form Edit Divisi</h4>
-                        </div>
-                    </div>
+                <div class="card-header">
+                    <h4 class="header-title mt-2">Form Edit Divisi</h4>
+                </div>
 
+                <div class="card-body">
                     <div class="row">
                         <div class="col-12">
 

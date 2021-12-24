@@ -22,20 +22,13 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <div class="card-header">
+                    <h4 class="header-title mt-2">Form Edit Budget</h4>
+                </div>
+
                 <div class="card-body">
-
-                    {{-- title --}}
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="header-title">Form Edit Budget</h4>
-                        </div>
-                    </div>
-                    {{-- end title --}}
-
-                    {{-- Form input budget --}}
                     <form action="{{ route('budget.update', ['budget' => $budget->id]) }}" method="POST">
-                        @method('PATCH')
-                        @csrf
+                        @method('PATCH') @csrf
 
                         {{-- Input divisi --}}
                         <div class="form-group row mb-3">
@@ -128,10 +121,7 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
-                    {{-- end form input budget --}}
-
                 </div>
             </div>
         </div>

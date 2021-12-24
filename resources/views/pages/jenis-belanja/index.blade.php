@@ -6,13 +6,15 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <div class="card-header">
+                    <h4 class="header-title mt-2">Tabel Jenis Belanja</h4>
+                </div>
+
                 <div class="card-body">
 
-                    {{-- title & btn tambah --}}
+                    {{-- button tambah & form search --}}
                     <div class="row">
-                        <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="header-title">Tabel Jenis Belanja</h4>
-
+                        <div class="col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
                                 <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
@@ -20,11 +22,7 @@
                                 </a>
                             @endif
                         </div>
-                    </div>
-                    {{-- end itle & btn tambah --}}
 
-                    {{-- form search --}}
-                    <div class="row justify-content-end">
                         <div class="col-md-6 col-sm-12 mb-3">
                             <form action="{{ route('jenis-belanja') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
@@ -39,12 +37,11 @@
                             </form>
                         </div>
                     </div>
-                    {{-- end form search --}}
+                    {{-- end button tambah & form search --}}
 
+                    {{-- table --}}
                     <div class="row">
                         <div class="col-12 mb-3">
-
-                            {{-- tabel view jenis belanja --}}
                             <div class="table-responsive">
                                 <table class="table table-hover nowrap">
                                     <thead>
@@ -92,8 +89,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            {{-- end tabel view jenis belanja --}}
-
                         </div>
 
                         {{-- paginasi --}}
@@ -101,6 +96,8 @@
                             {{ $jenisBelanja->links() }}
                         </div>
                     </div>
+                    {{-- end table --}}
+
                 </div>
             </div>
         </div>
@@ -108,8 +105,7 @@
 
     {{-- form delete --}}
     <form method="POST" id="form-delete-jenis-belanja">
-        @method('DELETE')
-        @csrf
+        @method('DELETE') @csrf
     </form>
 @endsection
 
