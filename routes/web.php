@@ -32,9 +32,19 @@ Route::middleware('auth')->group(function () {
     /**
      * Route dashboard
      */
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->middleware('menu:/dashboard,read')
-        ->name('dashboard');
+    Route::prefix('/dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])
+            ->middleware('menu:/dashboard,read')
+            ->name('dashboard');
+
+        Route::get('/{year}', [DashboardController::class, 'globalChart'])
+            ->middleware('menu:/dashboard,read')
+            ->name('dashboard.global');
+
+        Route::get('/{divisi}/{year}', [DashboardController::class, 'divisiChart'])
+            ->middleware('menu:/dashboard,read')
+            ->name('dashboard.divisi');
+    });
 
     /**
      * Route dvisi

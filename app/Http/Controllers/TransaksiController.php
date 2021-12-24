@@ -214,10 +214,10 @@ class TransaksiController extends Controller
         }
 
         return redirect()
-            ->route('transaksi')
+            ->route('transaksi.create')
             ->with('alert', [
                 'type' => 'success',
-                'message' => '1 transaksi berhasil ditambahkan.',
+                'message' => 'Transaksi berhasil ditambahkan.',
             ]);
     }
 
@@ -357,10 +357,10 @@ class TransaksiController extends Controller
         }
 
         return redirect()
-            ->route('transaksi')
+            ->route('transaksi.edit', ['transaksi' => $transaksi->id])
             ->with('alert', [
                 'type' => 'success',
-                'message' => '1 transaksi berhasil dirubah.',
+                'message' => 'Transaksi berhasil dirubah.',
             ]);
     }
 

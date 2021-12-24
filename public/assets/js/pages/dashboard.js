@@ -1,38 +1,137 @@
-var colors=["#727cf5","#6c757d","#0acf97","#fa5c7c","#e3eaef"];
+/**
+ * Fungsi set chart global divisi
+ *
+ * @param {int} year
+ */
+function setGlobalChart(year) {
+    $.ajax({
+        type: "get",
+        url: `${main.baseUrl}/dashboard/${year}`,
+        dataType: "json",
+        success: function (res) {
+            $("#global-divisi").text(res.divisi);
+            $("#global-total-budget").text(main.formatRupiah(res.totalBudget));
+            $("#global-sisa-budget").text(main.formatRupiah(res.sisaBudget));
+            $("#global-total-transaksi").text(
+                main.formatRupiah(res.totalTransaksi)
+            );
 
-(dataColors = $("#simple-pie").data("colors")) && (colors = dataColors.split(","));
+            // chart options
+            const options = {
+                chart: { height: 350, width: 350, type: "pie" },
+                legend: { show: false },
+                fill: { type: "gradient" },
+                series: [res.totalTransaksi, res.sisaBudget],
+                labels: ["Total Transaksi", "Sisa Budget"],
+                colors: ["#0acf97", "#727cf5"],
+                responsive: [
+                    {
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                height: "100%",
+                                width: "100%",
+                            },
+                        },
+                    },
+                ],
+            };
 
-var options = { 
-	chart: {
-		height: 320,
-		type: "pie"
-	},
-	series: [44,55,41,17,15],
-	labels: ["Series 1","Series 2","Series 3","Series 4","Series 5"],
-	colors: colors,
-	legend: {
-		show: !0,
-		position: "bottom",
-		horizontalAlign: "center",
-		verticalAlign: "middle", 
-		floating: !1,
-		fontSize: "14px",
-		offsetX: 0,
-		offsetY: 7
-	},
-	responsive: [
-		{
-			breakpoint: 600,
-			options: {
-				chart: {
-					height: 240
-				},
-				legend: {
-					show: !1
-				}
-			}
-		}
-	]
-};
+            const chart = new ApexCharts(
+                document.querySelector("#global-chart"),
+                options
+            );
 
-	(chart=new ApexCharts(document.querySelector("#simple-pie"),options)).render();colors=["#39afd1","#ffbc00","#313a46","#fa5c7c","#0acf97"];(dataColors=$("#simple-donut").data("colors"))&&(colors=dataColors.split(","));options={chart:{height:320,type:"donut"},series:[44,55,41,17,15],legend:{show:!0,position:"bottom",horizontalAlign:"center",verticalAlign:"middle",floating:!1,fontSize:"14px",offsetX:0,offsetY:7},labels:["Series 1","Series 2","Series 3","Series 4","Series 5"],colors:colors,responsive:[{breakpoint:600,options:{chart:{height:240},legend:{show:!1}}}]};(chart=new ApexCharts(document.querySelector("#simple-donut"),options)).render();options={chart:{height:320,type:"pie"},series:[25,15,44,55,41,17],labels:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],legend:{show:!0,position:"bottom",horizontalAlign:"center",verticalAlign:"middle",floating:!1,fontSize:"14px",offsetX:0,offsetY:7},theme:{monochrome:{enabled:!0}},responsive:[{breakpoint:600,options:{chart:{height:240},legend:{show:!1}}}]};(chart=new ApexCharts(document.querySelector("#monochrome-pie"),options)).render();colors=["#727cf5","#6c757d","#0acf97","#fa5c7c","#e3eaef"];(dataColors=$("#gradient-donut").data("colors"))&&(colors=dataColors.split(","));options={chart:{height:320,type:"donut"},series:[44,55,41,17,15],legend:{show:!0,position:"bottom",horizontalAlign:"center",verticalAlign:"middle",floating:!1,fontSize:"14px",offsetX:0,offsetY:7},labels:["Series 1","Series 2","Series 3","Series 4","Series 5"],colors:colors,responsive:[{breakpoint:600,options:{chart:{height:240},legend:{show:!1}}}],fill:{type:"gradient"}};(chart=new ApexCharts(document.querySelector("#gradient-donut"),options)).render();colors=["#39afd1","#ffbc00","#313a46","#fa5c7c","#0acf97"];(dataColors=$("#patterned-donut").data("colors"))&&(colors=dataColors.split(","));options={chart:{height:320,type:"donut",dropShadow:{enabled:!0,color:"#111",top:-1,left:3,blur:3,opacity:.2}},stroke:{show:!0,width:2},series:[44,55,41,17,15],colors:colors,labels:["Comedy","Action","SciFi","Drama","Horror"],dataLabels:{dropShadow:{blur:3,opacity:.8}},fill:{type:"pattern",opacity:1,pattern:{enabled:!0,style:["verticalLines","squares","horizontalLines","circles","slantedLines"]}},states:{hover:{enabled:!1}},legend:{show:!0,position:"bottom",horizontalAlign:"center",verticalAlign:"middle",floating:!1,fontSize:"14px",offsetX:0,offsetY:7},responsive:[{breakpoint:600,options:{chart:{height:240},legend:{show:!1}}}]};(chart=new ApexCharts(document.querySelector("#patterned-donut"),options)).render();colors=["#39afd1","#ffbc00","#727cf5","#0acf97"];(dataColors=$("#image-pie").data("colors"))&&(colors=dataColors.split(","));options={chart:{height:320,type:"pie"},labels:["Series 1","Series 2","Series 3","Series 4"],colors:colors,series:[44,33,54,45],fill:{type:"image",opacity:.85,image:{src:["assets/images/small/small-1.jpg","assets/images/small/small-2.jpg","assets/images/small/small-3.jpg","assets/images/small/small-4.jpg"],width:25,imagedHeight:25}},stroke:{width:4},dataLabels:{enabled:!1},legend:{show:!0,position:"bottom",horizontalAlign:"center",verticalAlign:"middle",floating:!1,fontSize:"14px",offsetX:0,offsetY:7},responsive:[{breakpoint:600,options:{chart:{height:240},legend:{show:!1}}}]};(chart=new ApexCharts(document.querySelector("#image-pie"),options)).render();var dataColors;colors=["#727cf5","#6c757d","#0acf97","#fa5c7c"];(dataColors=$("#update-donut").data("colors"))&&(colors=dataColors.split(","));var chart;options={chart:{height:320,type:"donut"},dataLabels:{enabled:!1},series:[44,55,13,33],colors:colors,legend:{show:!0,position:"bottom",horizontalAlign:"center",verticalAlign:"middle",floating:!1,fontSize:"14px",offsetX:0,offsetY:7},responsive:[{breakpoint:600,options:{chart:{height:240},legend:{show:!1}}}]};function appendData(){var e=chart.w.globals.series.map(function(){return Math.floor(100*Math.random())+1});return e.push(Math.floor(100*Math.random())+1),e}function removeData(){var e=chart.w.globals.series.map(function(){return Math.floor(100*Math.random())+1});return e.pop(),e}function randomize(){return chart.w.globals.series.map(function(){return Math.floor(100*Math.random())+1})}function reset(){return options.series}(chart=new ApexCharts(document.querySelector("#update-donut"),options)).render(),document.querySelector("#randomize").addEventListener("click",function(){chart.updateSeries(randomize())}),document.querySelector("#add").addEventListener("click",function(){chart.updateSeries(appendData())}),document.querySelector("#remove").addEventListener("click",function(){chart.updateSeries(removeData())}),document.querySelector("#reset").addEventListener("click",function(){chart.updateSeries(reset())});
+            chart.render();
+            chart.updateSeries([res.totalTransaksi, res.sisaBudget]);
+        },
+    });
+}
+
+/**
+ * Fungsi set chart per divisi
+ *
+ * @param {int} id
+ * @param {int} year
+ */
+function setDivisiChart(id, year) {
+    $.ajax({
+        type: "get",
+        url: `${main.baseUrl}/dashboard/${id}/${year}`,
+        dataType: "json",
+        success: (res) => {
+            $(`#total-budget-divisi-${id}`).text(
+                main.formatRupiah(res.totalBudget)
+            );
+
+            $(`#sisa-budget-divisi-${id}`).text(
+                main.formatRupiah(res.sisaBudget)
+            );
+
+            $(`#total-transaksi-divisi-${id}`).text(
+                main.formatRupiah(res.totalTransaksi)
+            );
+
+            const options = {
+                chart: { height: 230, width: 230, type: "donut" },
+                legend: { show: false },
+                series: [res.totalTransaksi, res.sisaBudget],
+                labels: ["Total Transaksi", "Sisa Budget"],
+                colors: ["#0acf97", "#fa5c7c"],
+                responsive: [
+                    {
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                height: "100%",
+                                width: "100%",
+                            },
+                        },
+                    },
+                ],
+            };
+
+            const chart = new ApexCharts(
+                document.querySelector(`#divisi-${id}`),
+                options
+            );
+
+            chart.render();
+            chart.updateSeries([res.totalTransaksi, res.sisaBudget]);
+        },
+    });
+}
+
+/**
+ * Jalankan fungsi ketika document selsai dimuat
+ */
+$(document).ready(function () {
+    setGlobalChart(new Date().getFullYear());
+
+    /**
+     * handle change form select global period
+     */
+    $("#periode-global").change(function (e) {
+        e.preventDefault();
+        setGlobalChart($(this).val());
+    });
+
+    /**
+     * set chart divisi
+     */
+    $.each($(".divisi-chart"), function (index, el) {
+        const chartEl = $(el);
+        const id = chartEl.data("divisi-id");
+
+        setDivisiChart(id, new Date().getFullYear());
+    });
+
+    /**
+     * handle jika periode per divisi dirubah
+     */
+    $(".periode-divisi").change(function (e) {
+        e.preventDefault();
+
+        setDivisiChart($(this).data("divisi-id"), $(this).val());
+    });
+});

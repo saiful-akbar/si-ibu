@@ -144,15 +144,15 @@ class BudgetController extends Controller
         try {
             Budget::create($validatedData);
         } catch (\Exception $e) {
-            return redirect()->route('budget')->with('alert', [
+            return redirect()->route('budget.create')->with('alert', [
                 'type' => 'danger',
                 'message' => 'Budget gagal ditambahkan. ' . $e->getMessage(),
             ]);
         }
 
-        return redirect()->route('budget')->with('alert', [
+        return redirect()->route('budget.create')->with('alert', [
             'type' => 'success',
-            'message' => '1 baris data budget berhasil ditambahkan.',
+            'message' => 'Budget berhasil ditambahkan.',
         ]);
     }
 
@@ -224,15 +224,15 @@ class BudgetController extends Controller
         try {
             Budget::where('id', $budget->id)->update($validatedData);
         } catch (\Exception $e) {
-            return redirect()->route('budget')->with('alert', [
+            return redirect()->route('budget.edit', ['budget' => $budget->id])->with('alert', [
                 'type' => 'danger',
                 'message' => 'Budget gagal ditambahkan. ' . $e->getMessage(),
             ]);
         }
 
-        return redirect()->route('budget')->with('alert', [
+        return redirect()->route('budget.edit', ['budget' => $budget->id])->with('alert', [
             'type' => 'success',
-            'message' => '1 baris data budget berhasil diperbarui.',
+            'message' => 'Budget berhasil diperbarui.',
         ]);
     }
 
