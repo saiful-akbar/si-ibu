@@ -19,12 +19,13 @@
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">
+                            Form Tambah User Akun
+                        </h4>
+                    </div>
+
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <h4 class="header-title">Form Tambah User Akun</h4>
-                            </div>
-                        </div>
 
                         {{-- input username --}}
                         <div class="form-group row mb-3">
@@ -94,12 +95,13 @@
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">
+                            Form Tambah User Profil
+                        </h4>
+                    </div>
+
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <h4 class="header-title">Form Tambah User Profil</h4>
-                            </div>
-                        </div>
 
                         {{-- input avatar --}}
                         <div class="form-group row mb-3 justify-content-end">
@@ -111,7 +113,7 @@
                                 <label for="avatar" class="ml-2">
                                     <span type="button" class="btn btn-rounded btn-primary">
                                         <i class="mdi mdi-upload-outline"></i>
-                                        <span>Upload avatar</span>
+                                        <span>Avatar</span>
                                     </span>
                                 </label>
 

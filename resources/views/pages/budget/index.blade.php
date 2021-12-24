@@ -6,13 +6,15 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <div class="card-header">
+                    <h4 class="header-title mt-2">Tabel Budget</h4>
+                </div>
+
                 <div class="card-body">
 
-                    {{-- title & btn tambah --}}
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="header-title">Tabel Budget</h4>
-
+                    {{-- button tambah & form search --}}
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
                                 <a href="{{ route('budget.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
@@ -20,11 +22,7 @@
                                 </a>
                             @endif
                         </div>
-                    </div>
-                    {{-- end itle & btn tambah --}}
 
-                    {{-- form search --}}
-                    <div class="row justify-content-end">
                         <div class="col-md-6 col-sm-12 mb-3">
                             <form action="{{ route('budget') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
@@ -40,7 +38,7 @@
                             </form>
                         </div>
                     </div>
-                    {{-- end form search --}}
+                    {{-- end button tambah & form search --}}
 
                     {{-- table --}}
                     <div class="row">
@@ -60,23 +58,40 @@
                                     <tbody>
                                         @foreach ($budgets as $data)
                                             <tr>
-                                                <td class="align-middle">{{ $budgets->currentPage() + $loop->iteration - 1 }}
+                                                <td class="align-middle">
+                                                    {{ $budgets->currentPage() + $loop->iteration - 1 }}
                                                 </td>
-                                                <td class="align-middle">{{ $data->tahun_anggaran }}</td>
-                                                <td class="align-middle">{{ ucwords($data->nama_divisi) }}</td>
-                                                <td class="align-middle">Rp. {{ number_format($data->nominal) }}</td>
-                                                <td class="align-middle">{{ $data->updated_at }}</td>
+                                                <td class="align-middle">
+                                                    {{ $data->tahun_anggaran }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ ucwords($data->nama_divisi) }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    Rp. {{ number_format($data->nominal) }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ $data->updated_at }}
+                                                </td>
                                                 <td class="align-middel text-center">
-                                                    <button class="btn btn-sm btn-info btn-icon mr-1" data-toggle="tooltip"
+                                                    <button 
+                                                        onclick="handleShowModalDetail({{ $data->id }})"
+                                                        data-toggle="tooltip"
                                                         data-original-title="Detail"
-                                                        onclick="handleShowModalDetail({{ $data->id }})">
+                                                        data-placement="top"
+                                                        class="btn btn-sm btn-info btn-icon mr-1"
+                                                    >
                                                         <i class="mdi mdi-eye-outline"></i>
                                                     </button>
 
                                                     @if ($userAccess->pivot->update == 1)
-                                                        <a href="{{ route('budget.edit', ['budget' => $data->id]) }}"
-                                                            class="btn btn-sm btn-success btn-icon mr-1" data-toggle="tooltip"
-                                                            data-original-title="Edit">
+                                                        <a
+                                                            href="{{ route('budget.edit', ['budget' => $data->id]) }}"
+                                                            class="btn btn-sm btn-success btn-icon mr-1"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Edit"
+                                                            data-placement="top"
+                                                        >
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
                                                     @endif
@@ -84,8 +99,11 @@
                                                     @if ($userAccess->pivot->delete == 1)
                                                         <button
                                                             onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
-                                                            class="btn btn-sm btn-danger btn-icon" data-toggle="tooltip"
-                                                            data-original-title="Hapus">
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Hapus"
+                                                            data-placement="top"
+                                                            class="btn btn-sm btn-danger btn-icon"
+                                                        >
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>
                                                     @endif

@@ -27,15 +27,11 @@
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">Form Tambah Transaksi</h4>
+                    </div>
 
-                        {{-- title --}}
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="header-title">Form Tambah Transaksi</h4>
-                            </div>
-                        </div>
-                        {{-- end title --}}
+                    <div class="card-body">
 
                         {{-- input tanggal --}}
                         <div class="form-group row mb-3">
@@ -81,15 +77,11 @@
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">Kegiatan</h4>
+                    </div>
 
-                        {{-- title --}}
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="header-title">Kegiatan</h4>
-                            </div>
-                        </div>
-                        {{-- end title --}}
+                    <div class="card-body">
 
                         {{-- Input jenis belanja --}}
                         <div class="form-group row mb-3">
@@ -172,15 +164,11 @@
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">Dokumen</h4>
+                    </div>
 
-                        {{-- title --}}
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="header-title">Dokumen</h4>
-                            </div>
-                        </div>
-                        {{-- end title --}}
+                    <div class="card-body">
 
                         {{-- input no dokumen --}}
                         <div class="form-group row mb-3">
@@ -211,7 +199,7 @@
                                         <label for="file_dokumen">
                                             <span type="button" class="btn btn-primary btn-rounded">
                                                 <i class="mdi mdi-upload-outline"></i>
-                                                <span>Upload File</span>
+                                                <span>Unggah File</span>
                                             </span>
                                         </label>
                                     </div>

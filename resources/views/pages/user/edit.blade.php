@@ -19,12 +19,13 @@
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">
+                            Form Edit User Akun
+                        </h4>
+                    </div>
+
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <h4 class="header-title">Form Edit User Akun</h4>
-                            </div>
-                        </div>
 
                         {{-- input username --}}
                         <div class="form-group row mb-3">
@@ -49,7 +50,7 @@
                                 password
                             </label>
 
-                            <div class="col-lg-2 col-md-3 col-sm-12 mt-2 mb-1">
+                            <div class="col-md-3 col-sm-12 mt-2 mb-1">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="is-disable-password" />
                                     <label class="custom-control-label" for="is-disable-password">
@@ -58,7 +59,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-7 col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12">
                                 <div class="input-group input-group-merge @error('password') is-invalid @enderror">
                                     <input disabled type="password" id="password" name="password" placeholder="Masukan password..."
                                         value="{{ old('password') }}"
@@ -104,12 +105,13 @@
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">
+                            Form Edit User Profil
+                        </h4>
+                    </div>
+
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <h4 class="header-title">Form Edit User Profil</h4>
-                            </div>
-                        </div>
 
                         {{-- input avatar --}}
                         <div class="form-group row mb-3 justify-content-end">
@@ -127,7 +129,7 @@
                                 <label for="avatar" class="ml-2">
                                     <span type="button" class="btn btn-rounded btn-primary">
                                         <i class="mdi mdi-upload-outline"></i>
-                                        <span>Upload avatar</span>
+                                        <span>Avatar</span>
                                     </span>
                                 </label>
 
