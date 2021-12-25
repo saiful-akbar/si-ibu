@@ -107,11 +107,11 @@ class UserController extends Controller
          * @var array
          */
         $validasi_rules = [
-            'username'     => ['required', 'unique:user,username', 'max:100'],
-            'password'     => ['required', 'min:4', 'max:200'],
-            'avatar'       => ['image', 'max:1000'],
+            'username' => ['required', 'unique:user,username', 'max:100'],
+            'password' => ['required', 'min:4', 'max:200'],
+            'avatar' => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
-            'divisi_id'    => ['required', 'exists:divisi,id'],
+            'divisi_id' => ['required', 'exists:divisi,id'],
         ];
 
         /**
@@ -120,18 +120,18 @@ class UserController extends Controller
          * @var array
          */
         $validate_message = [
-            'username.required'     => 'Username harus diisi.',
-            'username.unique'       => 'Username sudah digunakan.',
-            'username.max'          => 'Username tidak boleh lebih dari 100 karakter.',
-            'password.required'     => 'Password harus diisi.',
-            'password.min'          => 'Password minimal 4 karakter.',
-            'password.max'          => 'Password tidak boleh lebih dari 200 karakter.',
-            'avatar.image'          => 'Avatar harus berupa file gambar.',
-            'avatar.max'            => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
+            'username.required' => 'Username harus diisi.',
+            'username.unique' => 'Username sudah digunakan.',
+            'username.max' => 'Username tidak boleh lebih dari 100 karakter.',
+            'password.required' => 'Password harus diisi.',
+            'password.min' => 'Password minimal 4 karakter.',
+            'password.max' => 'Password tidak boleh lebih dari 200 karakter.',
+            'avatar.image' => 'Avatar harus berupa file gambar.',
+            'avatar.max' => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
             'nama_lengkap.required' => 'Nama lengkap harus diisi.',
-            'nama_lengkap.max'      => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
-            'divisi_id.required'    => 'Divisi harus dipilih.',
-            'divisi_id.exists'      => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
+            'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
+            'divisi_id.required' => 'Divisi harus dipilih.',
+            'divisi_id.exists' => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
         ];
 
         /**

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
@@ -98,7 +97,7 @@ class TransaksiController extends Controller
          * buat pagination
          */
         $transactions = $query->orderBy('transaksi.tanggal', 'desc')
-            ->simplePaginate(25)
+            ->paginate(25)
             ->withQueryString();
 
         /**

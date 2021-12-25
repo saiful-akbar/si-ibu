@@ -7,6 +7,7 @@ use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JenisBelanjaController;
+use App\Http\Controllers\LaporanTransaksiController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -213,6 +214,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/{transaksi}/download', [TransaksiController::class, 'download'])
             ->middleware('menu:/transaksi,read')
             ->name('transaksi.download');
+    });
+
+    /**
+     * Route laporan transaksi
+     */
+    Route::prefix('/laporan-transaksi')->group(function () {
+        Route::get('/', [LaporanTransaksiController::class, 'index'])
+            ->middleware('menu:/laporan-transaksi,read')
+            ->name('laporan-transaksi');
     });
 });
 

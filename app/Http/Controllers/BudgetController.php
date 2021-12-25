@@ -55,7 +55,7 @@ class BudgetController extends Controller
             ->first();
 
         return view('pages.budget.index', [
-            'budgets' => $budgets->simplePaginate(25)->withQueryString(),
+            'budgets' => $budgets->paginate(25)->withQueryString(),
             'userAccess' => $userAccess,
         ]);
     }

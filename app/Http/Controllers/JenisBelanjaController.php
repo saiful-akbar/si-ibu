@@ -37,7 +37,7 @@ class JenisBelanjaController extends Controller
         /**
          * buat paginasi
          */
-        $jenisBelanja = $query->simplePaginate(25)->withQueryString();
+        $jenisBelanja = $query->paginate(25)->withQueryString();
 
         /**
          * ambid data user akses untuk menu divisi
