@@ -83,7 +83,6 @@
     class="loading @isset($is_login) authentication-bg pb-0 @endisset"
     data-layout-config='{"darkMode": true,"leftSideBarTheme": "dark","layoutBoxed": false,"leftSidebarCondensed": false,"leftSidebarScrollable": false,"showRightSidebarOnStart":false}'
 >
-
     {{-- Pre-loader --}}
     <div id="preloader">
         <div id="status">
@@ -126,10 +125,12 @@
 
                 {{-- Footer --}}
                 @include('components.organisms.footer')
-            </div>
-            {{-- End Page content --}}
 
+            </div> {{-- End Page content --}}
         </div>
+
+        {{-- scroll to top --}}
+        @include('components.molecules.scroll-to-top');
     @endauth
     {{-- End auth content --}}
 

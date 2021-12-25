@@ -23,7 +23,7 @@ class Main {
         // tambahkan titik jika yang di input sudah menjadi angka ribuan
         if (ribuan) {
             let separator = sisa ? "." : "";
-            
+
             rupiah += separator + ribuan.join(".");
         }
 
@@ -36,3 +36,10 @@ class Main {
  * inisialisasi class main
  */
 const main = new Main();
+
+$(document).ready(function () {
+    $("#scroll-to-top").click(function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+});

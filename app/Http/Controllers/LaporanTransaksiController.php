@@ -99,6 +99,13 @@ class LaporanTransaksiController extends Controller
         return Excel::download(new LaporanTransaksiExport($request), 'laporan-transaksi.xlsx');
     }
 
+    /**
+     * print PDF
+     *
+     * @param Request $request
+     *
+     * @return [type]
+     */
     public function exportPdf(Request $request)
     {
         /**
@@ -119,18 +126,23 @@ class LaporanTransaksiController extends Controller
         }
 
         /**
+         * hitung jumlah nominal;
+         */
+        $totalTransaksi = $query->sum('jumlah_nominal');
+
+        /**
          * buat order
          */
         $laporanTransaksi = $query->orderBy('tanggal', 'asc')->orderBy('divisi_id', 'asc')->get();
 
-        // $pdf = PDF::loadView('pages.laporan-transaksi.export-pdf', [
-        //     'laporanTransaksi' => $laporanTransaksi
-        // ])->setPaper('a4', 'landscape');
 
-        // return $pdf->download('laporan-transaksi.pdf');
+        $data = [
+            'laporanTransaksi' => $laporanTransaksi,
+            'totalTransaksi' => $totalTransaksi,
+        ];
 
-        return view('pages.laporan-transaksi.export-pdf', [
-            'laporanTransaksi' => $laporanTransaksi
-        ]);
+        return PDF::loadView('pages.laporan-transaksi.export-pdf', $data)
+            ->setPaper('a4', 'landscape')
+            ->download('laporan-transaksi.pdf');
     }
 }

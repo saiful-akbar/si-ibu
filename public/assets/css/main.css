@@ -50,3 +50,10 @@ table.nowrap tr td {
 .btn-icon i {
     font-size: 1.2em;
 }
+
+.btn-scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}

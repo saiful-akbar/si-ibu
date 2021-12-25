@@ -7,17 +7,17 @@
     {{-- form filter --}}
     <div class="row">
         <div class="col-12 mb-3">
-            <div class="card">
-                <div class="card-header pt-3">
-                    <h4 class="header-title">Filter Transaksi</h4>
-                </div>
+            <form
+                action="{{ route('laporan-transaksi') }}"
+                method="GET"
+                autocomplete="off"
+            >
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <h4 class="header-title">Filter Transaksi</h4>
+                    </div>
 
-                <div class="card-body">
-                    <form
-                        action="{{ route('laporan-transaksi') }}"
-                        method="GET"
-                        autocomplete="off"
-                    >
+                    <div class="card-body">
                         <div class="row">
 
                             {{-- input periode tanggal --}}
@@ -124,9 +124,9 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     {{-- end form filter --}}
@@ -144,41 +144,25 @@
                     {{-- button export --}}
                     <div class="row">
                         <div class="col-12 mb-3">
-
-                            {{-- export excel --}}
-                            <form
-                                action="{{ route('laporan-transaksi.excel') }}"
-                                method="GET"
-                                class="d-inline"
-                            >
-                                <input
-                                    type="hidden"
-                                    name="periodeAwal"
-                                    value="{{ old('periodeAwal', request('periodeAwal')) }}"
-                                />
-
-                                <input
-                                    type="hidden"
-                                    name="periodeAkhir"
-                                    value="{{ old('periodeAkhir', request('periodeAkhir')) }}"
-                                />
-
-                                <input
-                                    type="hidden"
-                                    name="divisi"
-                                    value="{{ old('divisi', request('divisi')) }}"
-                                />
+                            <div class="btn-group">
+                                <button
+                                    type="submit"
+                                    class="btn btn-success btn-rounded btn-export"
+                                    data-route="{{ route('laporan-transaksi.excel') }}"
+                                    @if (count($laporanTransaksi) <= 0) disabled @endif
+                                >
+                                    <span>Export Excel</span>
+                                </button>
 
                                 <button
                                     type="submit"
-                                    class="btn btn-success btn-rounded"
+                                    class="btn btn-danger btn-rounded btn-export"
+                                    data-route="{{ route('laporan-transaksi.pdf') }}"
+                                    @if (count($laporanTransaksi) <= 0) disabled @endif
                                 >
-                                    <i class="mdi mdi-file-excel"></i>
-                                    <span>Export Excel</span>
+                                    <span>Cetak PDF</span>
                                 </button>
-                            </form>
-                            {{-- end export excel --}}
-
+                            </div>
                         </div>
                     </div>
                     {{-- button export --}}
@@ -276,4 +260,44 @@
     </div>
     {{-- end table laporan transaksi --}}
 
+    {{-- export excel --}}
+    <form id="form-export">
+        @method('GET') @csrf
+
+        <input
+            type="hidden"
+            name="periodeAwal"
+            value="{{ old('periodeAwal', request('periodeAwal')) }}"
+        />
+
+        <input
+            type="hidden"
+            name="periodeAkhir"
+            value="{{ old('periodeAkhir', request('periodeAkhir')) }}"
+        />
+
+        <input
+            type="hidden"
+            name="divisi"
+            value="{{ old('divisi', request('divisi')) }}"
+        />
+    </form>
+
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $('.btn-export').click(function(e) {
+                e.preventDefault();
+
+                const route = $(this).data('route');
+                const formExport = $('#form-export');
+
+                formExport.attr('action', route);
+
+                formExport.submit();
+            });
+        });
+    </script>
 @endsection
