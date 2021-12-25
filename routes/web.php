@@ -1,14 +1,16 @@
 <?php
 
+use App\Exports\UsersExport;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DivisiController;
-use App\Http\Controllers\TransaksiController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\JenisBelanjaController;
 use App\Http\Controllers\LaporanTransaksiController;
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Route middleware guest
@@ -223,6 +225,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [LaporanTransaksiController::class, 'index'])
             ->middleware('menu:/laporan-transaksi,read')
             ->name('laporan-transaksi');
+
+        Route::get('/export/excel', [LaporanTransaksiController::class, 'exportExcel'])
+            ->middleware('menu:/laporan-transaksi,read')
+            ->name('laporan-transaksi.excel');
     });
 });
 

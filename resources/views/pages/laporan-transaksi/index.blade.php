@@ -68,6 +68,7 @@
                                     @enderror
                                 </div>
                             </div>
+                            {{-- end input periode tanggal --}}
 
                             {{-- input nama divisi --}}
                             <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
@@ -99,6 +100,7 @@
                                     @enderror
                                 </div>
                             </div>
+                            {{-- end input nama divisi --}}
 
                         </div>
 
@@ -138,6 +140,50 @@
                 </div>
 
                 <div class="card-body">
+
+                    {{-- button export --}}
+                    <div class="row">
+                        <div class="col-12 mb-3">
+
+                            {{-- export excel --}}
+                            <form
+                                action="{{ route('laporan-transaksi.excel') }}"
+                                method="GET"
+                                class="d-inline"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="periodeAwal"
+                                    value="{{ old('periodeAwal', request('periodeAwal')) }}"
+                                />
+
+                                <input
+                                    type="hidden"
+                                    name="periodeAkhir"
+                                    value="{{ old('periodeAkhir', request('periodeAkhir')) }}"
+                                />
+
+                                <input
+                                    type="hidden"
+                                    name="divisi"
+                                    value="{{ old('divisi', request('divisi')) }}"
+                                />
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-success btn-rounded"
+                                >
+                                    <i class="mdi mdi-file-excel"></i>
+                                    <span>Export Excel</span>
+                                </button>
+                            </form>
+                            {{-- end export excel --}}
+
+                        </div>
+                    </div>
+                    {{-- button export --}}
+
+                    {{-- table laporan --}}
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
@@ -212,7 +258,9 @@
                             </div>
                         </div>
                     </div>
+                    {{-- end tabel laporan --}}
 
+                    {{-- pagination --}}
                     <div class="row">
                         <div class="col-12">
                             <div class="col-12 d-flex justify-content-end">
@@ -220,9 +268,12 @@
                             </div>
                         </div>
                     </div>
+                    {{-- end pagination --}}
+
                 </div>
             </div>
         </div>
     </div>
     {{-- end table laporan transaksi --}}
+
 @endsection

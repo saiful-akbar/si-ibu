@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LaporanTransaksiExport;
 use App\Models\Divisi;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Laporan Transaksi
@@ -82,5 +84,10 @@ class LaporanTransaksiController extends Controller
             'divisi' => Divisi::select('id', 'nama_divisi')->get(),
             'laporanTransaksi' => $query->paginate(50)->withQueryString(),
         ]);
+    }
+
+    public function exportExcel(Request $request)
+    {
+        return Excel::download(new LaporanTransaksiExport($request), 'laporan-transaksi.xlsx');
     }
 }
