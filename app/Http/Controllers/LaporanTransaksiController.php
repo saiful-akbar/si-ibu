@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\LaporanTransaksiExport;
 use App\Models\Divisi;
 use App\Models\Transaksi;
+use PDF;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -86,8 +87,50 @@ class LaporanTransaksiController extends Controller
         ]);
     }
 
+    /**
+     * export excel
+     *
+     * @param Request $request
+     *
+     * @return download
+     */
     public function exportExcel(Request $request)
     {
         return Excel::download(new LaporanTransaksiExport($request), 'laporan-transaksi.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        /**
+         * Query join table transaksi, divisi, user & profil
+         */
+        $query = Transaksi::with(['divisi', 'jenisBelanja', 'user.profil'])
+            ->whereBetween('transaksi.tanggal', [$request->periodeAwal, $request->periodeAkhir]);
+
+        /**
+         * cek apakan request divis dipilih atau tidak
+         */
+        if ($request->divisi != null) {
+            $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
+
+            if ($divisi) {
+                $query->where('divisi_id',  $divisi->id);
+            }
+        }
+
+        /**
+         * buat order
+         */
+        $laporanTransaksi = $query->orderBy('tanggal', 'asc')->orderBy('divisi_id', 'asc')->get();
+
+        // $pdf = PDF::loadView('pages.laporan-transaksi.export-pdf', [
+        //     'laporanTransaksi' => $laporanTransaksi
+        // ])->setPaper('a4', 'landscape');
+
+        // return $pdf->download('laporan-transaksi.pdf');
+
+        return view('pages.laporan-transaksi.export-pdf', [
+            'laporanTransaksi' => $laporanTransaksi
+        ]);
     }
 }

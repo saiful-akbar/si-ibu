@@ -229,6 +229,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/export/excel', [LaporanTransaksiController::class, 'exportExcel'])
             ->middleware('menu:/laporan-transaksi,read')
             ->name('laporan-transaksi.excel');
+
+        Route::get('/export/pdf', [LaporanTransaksiController::class, 'exportPdf'])
+            ->middleware('menu:/laporan-transaksi,read')
+            ->name('laporan-transaksi.pdf');
     });
 });
 

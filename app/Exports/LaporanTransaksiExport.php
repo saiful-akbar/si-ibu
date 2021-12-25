@@ -49,7 +49,7 @@ class LaporanTransaksiExport implements FromView
          */
         $result = $query->orderBy('tanggal', 'asc')->orderBy('divisi_id', 'asc')->get();
 
-        return view('pages.laporan-transaksi.export', [
+        return view('pages.laporan-transaksi.export-excel', [
             'laporanTransaksi' => $result
         ]);
     }
