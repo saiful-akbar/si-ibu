@@ -39,33 +39,44 @@
         rel="stylesheet"
     />
 
-    {{-- font awesome --}}
+    {{-- icons --}}
     <link
         href="{{ asset('assets/css/vendor/fontawesome/css/all.min.css') }}"
         rel="stylesheet"
     />
-
-    @stack('css')
-
-    {{-- App css --}}
     <link
         href="{{ asset('assets/css/icons.min.css') }}"
         rel="stylesheet"
         type="text/css"
     />
-    <link
-        href="{{ asset('assets/css/app.min.css') }}"
-        rel="stylesheet"
-        type="text/css"
-        id="light-style"
-        disabled
-    />
-    <link
-        href="{{ asset('assets/css/app-dark.min.css') }}"
-        rel="stylesheet"
-        type="text/css"
-        id="dark-style"
-    />
+
+    @stack('css')
+
+    {{-- App css --}}
+    @auth
+        <link
+            href="{{ asset('assets/css/app.min.css') }}"
+            rel="stylesheet"
+            type="text/css"
+            id="light-style"
+            disabled
+        />
+        <link
+            href="{{ asset('assets/css/app-dark.min.css') }}"
+            rel="stylesheet"
+            type="text/css"
+            id="dark-style"
+        />
+    @endauth
+
+    @guest
+        <link
+            href="{{ asset('assets/css/app.min.css') }}"
+            rel="stylesheet"
+            type="text/css"
+            id="light-style"
+        />
+    @endguest
 
     {{-- Main css --}}
     <link
