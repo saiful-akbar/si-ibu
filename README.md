@@ -24,7 +24,7 @@ composer install
 3.  Copy file .env
 
 ```bash
-cp .evn.example .env
+cp .env.example .env
 ```
 
 4.  Buat database di mysql
