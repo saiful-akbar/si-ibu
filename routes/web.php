@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\JenisBelanjaController;
 use App\Http\Controllers\LaporanTransaksiController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -228,6 +229,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/export/pdf', [TransaksiController::class, 'exportPdf'])
             ->middleware('menu:/belanja,read')
             ->name('belanja.pdf');
+    });
+
+    /**
+     * Route profil
+     */
+    Route::prefix('/profil')->group(function () {
+        Route::get('/', [ProfilController::class, 'index'])->name('profil');
     });
 });
 
