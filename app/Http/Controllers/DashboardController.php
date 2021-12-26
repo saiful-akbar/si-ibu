@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Budget;
 use App\Models\Divisi;
+use App\Models\JenisBelanja;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -183,5 +184,60 @@ class DashboardController extends Controller
             'sisaBudget' => $sisaBudget,
             'divisi' => $divisi->nama_divisi,
         ], 200);
+    }
+
+    public function jenisBelanjaChart(Divisi $divisi, int $year): Object
+    {
+        /**
+         * ambid data user akses untuk menu dashboard
+         */
+        $userAccess = User::with('menuItem')
+            ->find(Auth::user()->id)
+            ->menuItem
+            ->where('href', '/dashboard')
+            ->first();
+
+        $create = $userAccess->pivot->create;
+        $read = $userAccess->pivot->read;
+        $update = $userAccess->pivot->update;
+        $delete = $userAccess->pivot->delete;
+
+        /**
+         * Cek apakah user mempunyai full akses atau tidak
+         */
+        if ($create == 1 && $read == 1 && $update == 1 && $delete == 1) {
+            return response()->json([], 403);
+        }
+
+        $bulan = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+        $transaksiPerBulan = [];
+        $result = [];
+
+        foreach ($bulan as $keyBulan => $valueBulan) {
+            $transaksiPerBulan[$keyBulan]['bulan'] = $valueBulan;
+
+            $transaksiPerBulan[$keyBulan]['jumlahNominal'] = Transaksi::where('tanggal', 'like', "{$year}-{$valueBulan}%")
+                ->sum('jumlah_nominal');
+
+            $transaksiPerBulan[$keyBulan]['jenisBelanjaId'] = Transaksi::select('jenis_belanja_id')
+                ->where('tanggal', 'like', "{$year}-{$valueBulan}%")
+                ->first()->jenis_belanja_id ?? null;
+        }
+
+        foreach (JenisBelanja::all() as $keyJenisBelanja => $valueJenisBelanja) {
+            $result[$keyJenisBelanja]['name'] = $valueJenisBelanja->kategori_belanja;
+
+            foreach ($transaksiPerBulan as $keyTransaksi => $valueTransaksi) {
+                if ($valueTransaksi['jenisBelanjaId'] == $valueJenisBelanja->id) {
+                    $result[$keyJenisBelanja]['data'][] = $valueTransaksi['jumlahNominal'];
+                } else {
+                    $result[$keyJenisBelanja]['data'][] = 0;
+                }
+            }
+        }
+
+        return response()->json([
+            'data' => $result,
+        ]);
     }
 }

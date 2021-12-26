@@ -176,7 +176,7 @@ class UserController extends Controller
         /**
          * redurect ke halaman user
          */
-        return redirect()->route('user')->with('alert', [
+        return redirect()->route('user.create')->with('alert', [
             'type' => 'success',
             'message' => '1 user berhasil ditambahkan',
         ]);
@@ -306,10 +306,11 @@ class UserController extends Controller
         /**
          * redirect ke halaman user
          */
-        return redirect()->route('user')->with('alert', [
-            'type' => 'success',
-            'message' => '1 user berhasil diperbarui',
-        ]);
+        return redirect()->route('user.edit', ['user' => $user->id])
+            ->with('alert', [
+                'type' => 'success',
+                'message' => '1 user berhasil diperbarui',
+            ]);
     }
 
 
@@ -328,7 +329,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('user')->with('alert', [
                 'type' => 'danger',
-                'message' => 'User dengan id = ' . $user->id . 'gagal dihapus. ' . $e->getMessage(),
+                'message' => 'Gagal menghapus data user. ' . $e->getMessage(),
             ]);
         }
 

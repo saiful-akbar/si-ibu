@@ -95,15 +95,15 @@ class JenisBelanjaController extends Controller
         try {
             JenisBelanja::create($validatedData);
         } catch (\Exception $e) {
-            return redirect()->route('jenis-belanja')->with('alert', [
+            return redirect()->route('jenis-belanja.create')->with('alert', [
                 'type' => 'danger',
-                'message' => 'Jenis belanja gagal ditambahkan. ' . $e->getMessage(),
+                'message' => 'Gagal menambahkan data jenis belanja. ' . $e->getMessage(),
             ]);
         }
 
-        return redirect()->route('jenis-belanja')->with('alert', [
+        return redirect()->route('jenis-belanja.create')->with('alert', [
             'type' => 'success',
-            'message' => '1 baris jenis belanja berhasil ditambahkan.',
+            'message' => '1 data jenis belanja berhasil ditambahkan.',
         ]);
     }
 
@@ -165,16 +165,18 @@ class JenisBelanjaController extends Controller
             $jenisBelanja->kategori_belanja = $validatedData['kategori_belanja'];
             $jenisBelanja->save();
         } catch (\Exception $e) {
-            return redirect()->route('jenis-belanja')->with('alert', [
-                'type' => 'danger',
-                'message' => 'Jenis belanja gagal dirubah. ' . $e->getMessage(),
-            ]);
+            return redirect()->route('jenis-belanja.edit', ['jenisBelanja' => $jenisBelanja->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => 'Gagal merubah data jenis belanja. ' . $e->getMessage(),
+                ]);
         }
 
-        return redirect()->route('jenis-belanja')->with('alert', [
-            'type' => 'success',
-            'message' => '1 baris jenis belanja berhasil dirubah.',
-        ]);
+        return redirect()->route('jenis-belanja.edit', ['jenisBelanja' => $jenisBelanja->id])
+            ->with('alert', [
+                'type' => 'success',
+                'message' => 'Data jenis belanja berhasil dirubah.',
+            ]);
     }
 
     /**
@@ -193,7 +195,7 @@ class JenisBelanjaController extends Controller
                 ->route('jenis-belanja')
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Jenis belanja gagal dirubah. ' . $e->getMessage(),
+                    'message' => 'Gagal menghapus data jenis belanja. ' . $e->getMessage(),
                 ]);
         }
 
@@ -201,7 +203,7 @@ class JenisBelanjaController extends Controller
             ->route('jenis-belanja')
             ->with('alert', [
                 'type' => 'success',
-                'message' => '1 baris jenis belanja berhasil dihapus.',
+                'message' => '1 data jenis belanja berhasil dihapus.',
             ]);
     }
 }

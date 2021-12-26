@@ -78,7 +78,7 @@ class DivisiController extends Controller
         // simpan ke database
         Divisi::create($validate);
 
-        return redirect()->route('bagian')->with('alert', [
+        return redirect()->route('bagian.create')->with('alert', [
             'type' => 'success',
             'message' => '1 data bagian berhasil ditambahkan',
         ]);
@@ -132,9 +132,9 @@ class DivisiController extends Controller
         // update ke database
         Divisi::where('id', $divisi->id)->update($validated_data);
 
-        return redirect()->route('bagian')->with('alert', [
+        return redirect()->route('bagian.edit', ['divisi' => $divisi->id])->with('alert', [
             'type' => 'success',
-            'message' => '1 data bagian berhasil diperbarui',
+            'message' => 'Data bagian berhasil diperbarui',
         ]);
     }
 

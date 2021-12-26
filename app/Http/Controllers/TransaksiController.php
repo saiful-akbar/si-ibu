@@ -160,7 +160,7 @@ class TransaksiController extends Controller
         /**
          * buat order
          */
-        $query->orderBy('tanggal', 'asc')->orderBy('divisi_id', 'asc');
+        $query->orderBy('tanggal', 'desc')->orderBy('divisi_id', 'asc');
 
         return view('pages.transaksi.index', [
             'transactions' => $query->paginate(25)->withQueryString(),

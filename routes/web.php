@@ -44,9 +44,13 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.global');
 
-        Route::get('/{divisi}/{year}', [DashboardController::class, 'divisiChart'])
+        Route::get('/divisi/{divisi}/{year}', [DashboardController::class, 'divisiChart'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.divisi');
+
+        Route::get('/jenis-belanja/{divisi}/{year}', [DashboardController::class, 'jenisBelanjaChart'])
+            ->middleware('menu:/dashboard,read')
+            ->name('dashboard.jenisBelanja');
     });
 
     /**
