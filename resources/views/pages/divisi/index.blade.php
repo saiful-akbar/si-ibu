@@ -72,7 +72,8 @@
                                     <tbody>
                                         @foreach ($divisi as $data)
                                             <tr>
-                                                <td class="align-middle">{{ $divisi->currentPage() + $loop->iteration - 1 }}</td>
+                                                <td class="align-middle">
+                                                    {{ $divisi->count() * ($divisi->currentPage() - 1) + $loop->iteration }}</td>
                                                 <td class="align-middle">{{ ucwords($data->nama_divisi) }}</td>
                                                 <td class="align-middle">{{ $data->updated_at }}</td>
                                                 @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)

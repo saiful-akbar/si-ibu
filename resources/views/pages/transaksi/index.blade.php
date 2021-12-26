@@ -260,7 +260,7 @@
                                             @foreach ($transactions as $transaction)
                                                 <tr>
                                                     <td class="align-middle">
-                                                        {{ $transactions->currentPage() + $loop->iteration - 1 }}
+                                                        {{ $transactions->count() * ($transactions->currentPage() - 1) + $loop->iteration }}
                                                     </td>
                                                     <td class="align-middle">
                                                         {{ $transaction->tanggal }}
