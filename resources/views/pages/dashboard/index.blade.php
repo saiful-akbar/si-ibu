@@ -70,10 +70,10 @@
                                         ></span>
                                     </p>
                                     <p>
-                                        <i class="mdi mdi-square text-success"></i> Total Transaksi
+                                        <i class="mdi mdi-square text-success"></i> Total Belanja
                                         <span
                                             class="float-right"
-                                            id="global-total-transaksi"
+                                            id="global-total-belanja"
                                         ></span>
                                     </p>
                                     <p>
@@ -156,10 +156,10 @@
                                         </p>
                                         <p class="mb-0">
                                             <i class="mdi mdi-square text-success"></i>
-                                            Total Transaksi
+                                            Total Belanja
                                             <span
                                                 class="float-right"
-                                                id="total-transaksi-divisi-{{ $data->id }}"
+                                                id="total-belanja-divisi-{{ $data->id }}"
                                             ></span>
                                         </p>
                                         <p>

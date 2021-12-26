@@ -1,5 +1,4 @@
 class Transaksi {
-
     /**
      * Fungsi handle hapus data user
      *
@@ -11,12 +10,8 @@ class Transaksi {
             title: "Peringatan!",
             message: `
                 <ul>
-                    <li>
-                        Yakin ingin menghapus transaksi dengan nomer dokumen "<strong>${noDokumen}</strong>" ?
-                    </li>
-                    <li>
-                        Semua data terkait atau data yang berelasi dengan data transaksi ini juga akan terhapus.
-                    </li>
+                    <li>Yakin ingin menghapus data belanja dengan nomer dokumen "<strong>${noDokumen}</strong>" ?</li>
+                    <li>Semua data terkait atau data yang berelasi dengan data belanja ini juga akan terhapus.</li>
                 </ul>
             `,
             buttons: {
@@ -33,7 +28,7 @@ class Transaksi {
                 if (result) {
                     const form = $("#form-delete-transaksi");
 
-                    form.attr("action", `${main.baseUrl}/transaksi/${id}`);
+                    form.attr("action", `${main.baseUrl}/belanja/${id}`);
                     form.submit();
                 }
             },
@@ -41,55 +36,59 @@ class Transaksi {
     }
 
     showModalLoading(show) {
-        if(show) {
-            $('#modal-detail-loading').show();
-            $('#modal-detail-content').hide();
+        if (show) {
+            $("#modal-detail-loading").show();
+            $("#modal-detail-content").hide();
         } else {
-            $('#modal-detail-loading').hide();
-            $('#modal-detail-content').show();
+            $("#modal-detail-loading").hide();
+            $("#modal-detail-content").show();
         }
     }
 
     /**
      * Fungsi show modal detail transaksi
-     * 
+     *
      * @param  {integer} id
      * @return {void}
      */
     showDetail(id) {
-        $('#modal-detail').modal('show');
+        $("#modal-detail").modal("show");
         this.showModalLoading(true);
 
         $.ajax({
-            type: 'GET',
-            url: `${main.baseUrl}/transaksi/${id}`,
+            type: "GET",
+            url: `${main.baseUrl}/belanja/${id}`,
             data: { _token: main.csrfToken },
             dataType: "json",
             success: (res) => {
                 this.showModalLoading(false);
-                
-                $('#detail-user').text(res.transaksi.user.profil.nama_lengkap);
-                $('#detail-divisi').text(res.transaksi.divisi.nama_divisi);
-                $('#detail-jenis-belanja').text(res.transaksi.jenis_belanja.kategori_belanja);
-                $('#detail-tanggal').text(res.transaksi.tanggal);
-                $('#detail-kegiatan').text(res.transaksi.kegiatan);
-                $('#detail-jumlah-nominal').text(main.formatRupiah(res.transaksi.jumlah_nominal));
-                $('#detail-no-dokumen').text(res.transaksi.no_dokumen);
-                $('#detail-uraian').html(res.transaksi.uraian);
-                $('#detail-approval').text(res.transaksi.approval);
-            }
+
+                $("#detail-user").text(res.transaksi.user.profil.nama_lengkap);
+                $("#detail-divisi").text(res.transaksi.divisi.nama_divisi);
+                $("#detail-jenis-belanja").text(
+                    res.transaksi.jenis_belanja.kategori_belanja
+                );
+                $("#detail-tanggal").text(res.transaksi.tanggal);
+                $("#detail-kegiatan").text(res.transaksi.kegiatan);
+                $("#detail-jumlah-nominal").text(
+                    main.formatRupiah(res.transaksi.jumlah_nominal)
+                );
+                $("#detail-no-dokumen").text(res.transaksi.no_dokumen);
+                $("#detail-uraian").html(res.transaksi.uraian);
+                $("#detail-approval").text(res.transaksi.approval);
+            },
         });
     }
 
     /**
      * Fungsi close modal detail transaksi
-     * 
+     *
      * @return {void}
      */
     closeDetail() {
-        $('#modal-detail').modal('hide');
+        $("#modal-detail").modal("hide");
     }
-};
+}
 
 const transaksi = new Transaksi();
 
@@ -139,5 +138,19 @@ $(document).ready(function () {
         } else {
             fileNameEl.text(fileNameEl.data("file"));
         }
+    });
+
+    /**
+     * handle export excel & print pdf
+     */
+    $(".btn-export").click(function (e) {
+        e.preventDefault();
+
+        const route = $(this).data("route");
+        const formExport = $("#form-export");
+
+        formExport.attr("action", route);
+
+        formExport.submit();
     });
 });

@@ -29,7 +29,7 @@ class DivisiController extends Controller
          */
         $user_akses = User::with('menuItem')->find(Auth::user()->id)
             ->menuItem
-            ->where('nama_menu', 'divisi')
+            ->where('href', '/bagian')
             ->first();
 
         return view('pages.divisi.index', [
@@ -63,9 +63,9 @@ class DivisiController extends Controller
     {
         // pesan validasi error
         $validate_message = [
-            'nama_divisi.required' => 'Nama divisi tidak boleh kosong.',
+            'nama_divisi.required' => 'Nama bagian tidak boleh kosong.',
             'nama_divisi.max' => 'Panjang nama tidak boleh lebih dari 100 karakter.',
-            'nama_divisi.unique' => 'Nama divisi sudah digunakan.',
+            'nama_divisi.unique' => 'Nama bagian sudah digunakan.',
         ];
 
         // validasi
@@ -78,9 +78,9 @@ class DivisiController extends Controller
         // simpan ke database
         Divisi::create($validate);
 
-        return redirect()->route('divisi')->with('alert', [
+        return redirect()->route('bagian')->with('alert', [
             'type' => 'success',
-            'message' => '1 data divisi berhasil ditambahkan',
+            'message' => '1 data bagian berhasil ditambahkan',
         ]);
     }
 
@@ -112,9 +112,9 @@ class DivisiController extends Controller
     {
         // pesan validasi error
         $validate_message = [
-            'nama_divisi.required' => 'Nama divisi tidak boleh kosong.',
+            'nama_divisi.required' => 'Nama bagian tidak boleh kosong.',
             'nama_divisi.max' => 'Panjang nama tidak boleh lebih dari 100 karakter.',
-            'nama_divisi.unique' => 'Nama divisi sudah digunakan.',
+            'nama_divisi.unique' => 'Nama bagian sudah digunakan.',
         ];
 
         // validasi rules
@@ -132,9 +132,9 @@ class DivisiController extends Controller
         // update ke database
         Divisi::where('id', $divisi->id)->update($validated_data);
 
-        return redirect()->route('divisi')->with('alert', [
+        return redirect()->route('bagian')->with('alert', [
             'type' => 'success',
-            'message' => '1 data divisi berhasil diperbarui',
+            'message' => '1 data bagian berhasil diperbarui',
         ]);
     }
 
@@ -151,9 +151,9 @@ class DivisiController extends Controller
     {
         Divisi::destroy($divisi->id);
 
-        return redirect()->route('divisi')->with('alert', [
+        return redirect()->route('bagian')->with('alert', [
             'type' => 'success',
-            'message' => '1 data divisi berhasil dihapus',
+            'message' => '1 data bagian berhasil dihapus',
         ]);
     }
 }

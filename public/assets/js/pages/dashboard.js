@@ -12,7 +12,7 @@ function setGlobalChart(year) {
             $("#global-divisi").text(res.divisi);
             $("#global-total-budget").text(main.formatRupiah(res.totalBudget));
             $("#global-sisa-budget").text(main.formatRupiah(res.sisaBudget));
-            $("#global-total-transaksi").text(
+            $("#global-total-belanja").text(
                 main.formatRupiah(res.totalTransaksi)
             );
 
@@ -68,7 +68,7 @@ function setDivisiChart(id, year) {
                 main.formatRupiah(res.sisaBudget)
             );
 
-            $(`#total-transaksi-divisi-${id}`).text(
+            $(`#total-belanja-divisi-${id}`).text(
                 main.formatRupiah(res.totalTransaksi)
             );
 

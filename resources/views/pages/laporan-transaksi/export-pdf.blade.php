@@ -111,7 +111,7 @@
                 <tr>
                     <th class="text-center">No</th>
                     <th class="text-center">Tanggal</th>
-                    <th class="text-center">Divisi</th>
+                    <th class="text-center">Bagian</th>
                     <th class="text-center">Submitter</th>
                     <th class="text-center">Jenis Belanja</th>
                     <th class="text-center">Kegiatan</th>

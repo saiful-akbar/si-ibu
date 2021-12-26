@@ -52,30 +52,30 @@ Route::middleware('auth')->group(function () {
     /**
      * Route dvisi
      */
-    Route::prefix('/divisi')->group(function () {
+    Route::prefix('/bagian')->group(function () {
         Route::get('/', [DivisiController::class, 'index'])
-            ->middleware('menu:/divisi,read')
-            ->name('divisi');
+            ->middleware('menu:/bagian,read')
+            ->name('bagian');
 
         Route::get('/create', [DivisiController::class, 'create'])
-            ->middleware('menu:/divisi,create')
-            ->name('divisi.create');
+            ->middleware('menu:/bagian,create')
+            ->name('bagian.create');
 
         Route::post('/', [DivisiController::class, 'store'])
-            ->middleware('menu:/divisi,create')
-            ->name('divisi.store');
+            ->middleware('menu:/bagian,create')
+            ->name('bagian.store');
 
         Route::get('/{divisi}/edit', [DivisiController::class, 'edit'])
-            ->middleware('menu:/divisi,update')
-            ->name('divisi.edit');
+            ->middleware('menu:/bagian,update')
+            ->name('bagian.edit');
 
         Route::patch('/{divisi}', [DivisiController::class, 'update'])
-            ->middleware('menu:/divisi,update')
-            ->name('divisi.update');
+            ->middleware('menu:/bagian,update')
+            ->name('bagian.update');
 
         Route::delete('/{divisi}', [DivisiController::class, 'delete'])
-            ->middleware('menu:/divisi,delete')
-            ->name('divisi.delete');
+            ->middleware('menu:/bagian,delete')
+            ->name('bagian.delete');
     });
 
     /**
@@ -184,55 +184,46 @@ Route::middleware('auth')->group(function () {
     /**
      * Route transaksi
      */
-    Route::prefix('/transaksi')->group(function () {
+    Route::prefix('/belanja')->group(function () {
         Route::get('/', [TransaksiController::class, 'index'])
-            ->middleware('menu:/transaksi,read')
-            ->name('transaksi');
+            ->middleware('menu:/belanja,read')
+            ->name('belanja');
 
         Route::get('/create', [TransaksiController::class, 'create'])
-            ->middleware('menu:/transaksi,create')
-            ->name('transaksi.create');
+            ->middleware('menu:/belanja,create')
+            ->name('belanja.create');
 
         Route::post('/', [TransaksiController::class, 'store'])
-            ->middleware('menu:/transaksi,create')
-            ->name('transaksi.store');
+            ->middleware('menu:/belanja,create')
+            ->name('belanja.store');
 
         Route::get('/{transaksi}', [TransaksiController::class, 'show'])
-            ->middleware('menu:/transaksi,read')
-            ->name('transaksi.show');
+            ->middleware('menu:/belanja,read')
+            ->name('belanja.show');
 
         Route::get('/{transaksi}/edit', [TransaksiController::class, 'edit'])
-            ->middleware('menu:/transaksi,update')
-            ->name('transaksi.edit');
+            ->middleware('menu:/belanja,update')
+            ->name('belanja.edit');
 
         Route::patch('/{transaksi}', [TransaksiController::class, 'update'])
-            ->middleware('menu:/transaksi,update')
-            ->name('transaksi.update');
+            ->middleware('menu:/belanja,update')
+            ->name('belanja.update');
 
         Route::delete('/{transaksi}', [TransaksiController::class, 'delete'])
-            ->middleware('menu:/transaksi,delete')
-            ->name('transaksi.delete');
+            ->middleware('menu:/belanja,delete')
+            ->name('belanja.delete');
 
         Route::get('/{transaksi}/download', [TransaksiController::class, 'download'])
-            ->middleware('menu:/transaksi,read')
-            ->name('transaksi.download');
-    });
+            ->middleware('menu:/belanja,read')
+            ->name('belanja.download');
 
-    /**
-     * Route laporan transaksi
-     */
-    Route::prefix('/laporan-transaksi')->group(function () {
-        Route::get('/', [LaporanTransaksiController::class, 'index'])
-            ->middleware('menu:/laporan-transaksi,read')
-            ->name('laporan-transaksi');
+        Route::get('/export/excel', [TransaksiController::class, 'exportExcel'])
+            ->middleware('menu:/belanja,read')
+            ->name('belanja.excel');
 
-        Route::get('/export/excel', [LaporanTransaksiController::class, 'exportExcel'])
-            ->middleware('menu:/laporan-transaksi,read')
-            ->name('laporan-transaksi.excel');
-
-        Route::get('/export/pdf', [LaporanTransaksiController::class, 'exportPdf'])
-            ->middleware('menu:/laporan-transaksi,read')
-            ->name('laporan-transaksi.pdf');
+        Route::get('/export/pdf', [TransaksiController::class, 'exportPdf'])
+            ->middleware('menu:/belanja,read')
+            ->name('belanja.pdf');
     });
 });
 

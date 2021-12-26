@@ -103,7 +103,10 @@ class DashboardController extends Controller
         /**
          * buat sisa budget
          */
-        $sisaBudget = $totalBudget - $totalTransaksi;
+        $sisaBudget = 0;
+        if ($totalBudget - $totalTransaksi >= 0) {
+            $sisaBudget = $totalBudget - $totalTransaksi;
+        }
 
 
         /**
@@ -168,7 +171,10 @@ class DashboardController extends Controller
         /**
          * buat sisa budget
          */
-        $sisaBudget = $totalBudget - $totalTransaksi;
+        $sisaBudget = 0;
+        if ($totalBudget - $totalTransaksi >= 0) {
+            $sisaBudget = $totalBudget - $totalTransaksi;
+        }
 
         return response()->json([
             'year' => $year,

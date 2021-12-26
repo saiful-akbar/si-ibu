@@ -1,6 +1,6 @@
 @extends('templates.main')
 
-@section('title', 'Laporan Transaksi')
+@section('title', 'Laporan Belanja')
 
 @section('content')
 
@@ -8,13 +8,13 @@
     <div class="row">
         <div class="col-12 mb-3">
             <form
-                action="{{ route('laporan-transaksi') }}"
+                action="{{ route('laporan-belanja') }}"
                 method="GET"
                 autocomplete="off"
             >
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="header-title">Filter Transaksi</h4>
+                        <h4 class="header-title">Filter</h4>
                     </div>
 
                     <div class="card-body">
@@ -74,7 +74,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
                                 <div class="form-group">
                                     <label for="divisi">
-                                        Divisi
+                                        Bagian
                                     </label>
 
                                     <select
@@ -83,7 +83,7 @@
                                         data-toggle="select2"
                                         class="form-control select2 @error('divisi') is-invalid @enderror"
                                     >
-                                        <option value="{{ null }}">Semua Divisi</option>
+                                        <option value="{{ null }}">Semua Bagian</option>
 
                                         @foreach ($divisi as $div)
                                             <option
@@ -136,7 +136,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header pt-3">
-                    <h4 class="header-title">Table Laporan Transaksi</h4>
+                    <h4 class="header-title">Table Laporan Belanja</h4>
                 </div>
 
                 <div class="card-body">
@@ -148,7 +148,7 @@
                                 <button
                                     type="submit"
                                     class="btn btn-success btn-rounded btn-export"
-                                    data-route="{{ route('laporan-transaksi.excel') }}"
+                                    data-route="{{ route('laporan-belanja.excel') }}"
                                     @if (count($laporanTransaksi) <= 0) disabled @endif
                                 >
                                     <span>Export Excel</span>
@@ -157,7 +157,7 @@
                                 <button
                                     type="submit"
                                     class="btn btn-danger btn-rounded btn-export"
-                                    data-route="{{ route('laporan-transaksi.pdf') }}"
+                                    data-route="{{ route('laporan-belanja.pdf') }}"
                                     @if (count($laporanTransaksi) <= 0) disabled @endif
                                 >
                                     <span>Cetak PDF</span>
@@ -176,7 +176,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Tanggal</th>
-                                            <th>Divisi</th>
+                                            <th>Bagian</th>
                                             <th>Submitter</th>
                                             <th>Jenis Belanja</th>
                                             <th>Kegiatan</th>

@@ -59,7 +59,7 @@ class UserController extends Controller
          */
         $user_akses = User::with('menuItem')->find(Auth::user()->id)
             ->menuItem
-            ->where('nama_menu', 'user')
+            ->where('href', '/user')
             ->first();
 
         /**
@@ -357,7 +357,7 @@ class UserController extends Controller
          */
         $userAccess = User::with('menuItem')->find(Auth::user()->id)
             ->menuItem
-            ->where('nama_menu', 'user')
+            ->where('href', '/user')
             ->first();
 
         return view('pages.user.menu-akses.index', compact('user', 'menuItems', 'userAccess'));
@@ -379,7 +379,7 @@ class UserController extends Controller
 
         $userAccess = User::with('menuItem')->find(Auth::user()->id)
             ->menuItem
-            ->where('nama_menu', 'user')
+            ->where('href', '/user')
             ->first();
 
         return view('pages.user.menu-akses.edit', compact('user', 'menuHeaders', 'userAccess'));

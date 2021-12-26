@@ -51,7 +51,7 @@ class BudgetController extends Controller
          */
         $userAccess = User::with('menuItem')->find(Auth::user()->id)
             ->menuItem
-            ->where('nama_menu', 'budget')
+            ->where('href', '/budget')
             ->first();
 
         return view('pages.budget.index', [

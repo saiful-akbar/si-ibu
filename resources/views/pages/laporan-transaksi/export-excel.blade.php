@@ -3,7 +3,7 @@
         <tr>
             <th style="font-weight: bold; border: 1px solid #000;">No</th>
             <th style="font-weight: bold; border: 1px solid #000;">Tanggal</th>
-            <th style="font-weight: bold; border: 1px solid #000;">Divisi</th>
+            <th style="font-weight: bold; border: 1px solid #000;">Bagian</th>
             <th style="font-weight: bold; border: 1px solid #000;">Submitter</th>
             <th style="font-weight: bold; border: 1px solid #000;">Jenis Belanja</th>
             <th style="font-weight: bold; border: 1px solid #000;">Kegiatan</th>

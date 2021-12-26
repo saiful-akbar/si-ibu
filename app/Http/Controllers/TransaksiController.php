@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LaporanTransaksiExport;
+use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
+use phpDocumentor\Reflection\Types\This;
 
 class TransaksiController extends Controller
 {
@@ -66,46 +71,103 @@ class TransaksiController extends Controller
     public function index(Request $request)
     {
         /**
-         * query join tabel transaki, user, profil & divisi
+         * Validasi rule
          */
-        $query = Transaksi::leftJoin('user', 'transaksi.user_id', '=', 'user.id')
-            ->leftJoin('divisi', 'transaksi.divisi_id', '=', 'divisi.id')
-            ->select(
-                'transaksi.id',
-                'transaksi.tanggal',
-                'transaksi.kegiatan',
-                'transaksi.jumlah_nominal',
-                'transaksi.no_dokumen',
-                'transaksi.file_dokumen',
-                'transaksi.updated_at',
-                'divisi.nama_divisi'
-            );
+        $validateRules = [
+            'periodeAwal' => [],
+            'periodeAkhir' => [],
+            'divisi' => [],
+            'jenisBelanja' => [],
+            'noDokumen' => [],
+        ];
 
         /**
-         * cek jika ada request pencarian
+         * Pesan error validasi
          */
-        if ($request->search) {
-            $query->where('transaksi.tanggal', 'like', "%{$request->search}%")
-                ->orWhere('transaksi.kegiatan', 'like', "%{$request->search}%")
-                ->orWhere('transaksi.jumlah_nominal', 'like', "%{$request->search}%")
-                ->orWhere('transaksi.no_dokumen', 'like', "%{$request->search}%")
-                ->orWhere('transaksi.updated_at', 'like', "%{$request->search}%")
-                ->orWhere('divisi.nama_divisi', 'like', "%{$request->search}%");
+        $validateErrorMessage = [
+            'periodeAwal.required' => 'Periode harus diisi.',
+            'periodeAwal.date' => 'Periode harus tanggal yang valid.',
+            'periodeAkhir.required' => 'Periode harus diisi.',
+            'periodeAkhir.date' => 'Periode harus tanggal yang valid.',
+            'divisi.exists' => 'Divisi tidak ada. Pilih divisi yang ditentukan.',
+            'jenisBelanja.exists' => 'Jenis belanja tidak ada. Pilih jenis belanja yang ditentukan.',
+            'noDokumen.exists' => 'No dokumen tidak ditemukan.',
+        ];
+
+        /**
+         * jika periodeAwal & periodeAkhir dikirim tambahkan validasi
+         */
+        if ($request->periodeAwal || $request->periodeAkhir) {
+            array_push($validateRules['periodeAwal'], 'required', 'date');
+            array_push($validateRules['periodeAkhir'], 'required', 'date');
         }
 
         /**
-         * buat pagination
+         * jika divisi dipilih tambahkan validasi
          */
-        $transactions = $query->orderBy('transaksi.tanggal', 'desc')
-            ->paginate(25)
-            ->withQueryString();
+        if ($request->divisi != null) {
+            array_push($validateRules['divisi'], 'exists:divisi,nama_divisi');
+        }
 
         /**
-         * ambil user akses untuk menu transaksi
+         * jika no dokumen diisi tambahkan validasi
          */
-        $userAccess = Auth::user()->menuItem->where('href', '/transaksi')->first();
+        if ($request->noDokumen != null) {
+            array_push($validateRules['noDokumen'], 'exists:transaksi,no_dokumen');
+        }
 
-        return view('pages.transaksi.index', compact('transactions', 'userAccess'));
+        /**
+         * jika jenis belanja dipilah tambahkan validasi
+         */
+        if ($request->jenisBelanja != null) {
+            array_push($validateRules['jenisBelanja'], 'exists:jenis_belanja,kategori_belanja');
+        }
+
+        /**
+         * jalankan validasi
+         */
+        $request->validate($validateRules, $validateErrorMessage);
+
+        /**
+         * Query join table transaksi, divisi, user & profil
+         */
+        $query = Transaksi::with(['divisi', 'jenisBelanja', 'user.profil'])
+            ->whereBetween('transaksi.tanggal', [$request->periodeAwal, $request->periodeAkhir]);
+
+        /**
+         * jika divisi dipilih tambahkan query
+         */
+        if ($request->divisi != null) {
+            $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
+            $query->where('divisi_id',  $divisi->id);
+        }
+
+        /**
+         * jika jenis belanja dipilih tambahkan query
+         */
+        if ($request->jenisBelanja != null) {
+            $jenisBelanja = JenisBelanja::where('kategori_belanja', $request->jenisBelanja)->first();
+            $query->where('jenis_belanja_id',  $jenisBelanja->id);
+        }
+
+        /**
+         * jika no dokumen dipilih tambahkan validasi
+         */
+        if ($request->noDokumen != null) {
+            $query->where('no_dokumen',  $request->noDokumen);
+        }
+
+        /**
+         * buat order
+         */
+        $query->orderBy('tanggal', 'asc')->orderBy('divisi_id', 'asc');
+
+        return view('pages.transaksi.index', [
+            'transactions' => $query->paginate(25)->withQueryString(),
+            'userAccess' => Auth::user()->menuItem->where('href', '/belanja')->first(),
+            'divisi' => Divisi::all(),
+            'jenisBelanja' => JenisBelanja::all(),
+        ]);
     }
 
     /**
@@ -205,18 +267,18 @@ class TransaksiController extends Controller
             Transaksi::create($validatedData);
         } catch (\Exception $e) {
             return redirect()
-                ->route('transaksi.create')
+                ->route('belanja.create')
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Transaksi gagal ditambahkan. ' . $e->getMessage(),
+                    'message' => 'Gagal menambahkan data belanja ditambahkan. ' . $e->getMessage(),
                 ]);
         }
 
         return redirect()
-            ->route('transaksi.create')
+            ->route('belanja.create')
             ->with('alert', [
                 'type' => 'success',
-                'message' => 'Transaksi berhasil ditambahkan.',
+                'message' => 'Data belanja berhasil ditambahkan.',
             ]);
     }
 
@@ -348,18 +410,18 @@ class TransaksiController extends Controller
             Transaksi::where('id', $transaksi->id)->update($validatedData);
         } catch (\Exception $e) {
             return redirect()
-                ->route('transaksi.edit', ['transaksi' => $transaksi->id])
+                ->route('belanja.edit', ['transaksi' => $transaksi->id])
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Transaksi gagal dirubah. ' . $e->getMessage(),
+                    'message' => 'Data belanja gagal dirubah. ' . $e->getMessage(),
                 ]);
         }
 
         return redirect()
-            ->route('transaksi.edit', ['transaksi' => $transaksi->id])
+            ->route('belanja.edit', ['transaksi' => $transaksi->id])
             ->with('alert', [
                 'type' => 'success',
-                'message' => 'Transaksi berhasil dirubah.',
+                'message' => 'Data belanja berhasil dirubah.',
             ]);
     }
 
@@ -376,18 +438,18 @@ class TransaksiController extends Controller
             Storage::delete($transaksi->file_dokumen);
         } catch (\Exception $e) {
             return redirect()
-                ->route('transaksi')
+                ->route('belanja')
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Transaksi gagal dihapus. ' . $e->getMessage(),
+                    'message' => 'Gagal menghapus dihapus. ' . $e->getMessage(),
                 ]);
         }
 
         return redirect()
-            ->route('transaksi')
+            ->route('belanja')
             ->with('alert', [
                 'type' => 'success',
-                'message' => '1 data transaksi berhasil dihapus.',
+                'message' => '1 data belanja berhasil dihapus.',
             ]);
     }
 
@@ -404,11 +466,83 @@ class TransaksiController extends Controller
             return Storage::download($transaksi->file_dokumen);
         } else {
             return redirect()
-                ->route('transaksi')
+                ->route('belanja')
                 ->with('alert', [
                     'type' => 'info',
                     'message' => 'File dokumen tidak tersedia.',
                 ]);
         }
+    }
+
+    /**
+     * filter data untuk export excel & print pdf
+     *
+     * @param mixed $request
+     *
+     * @return array
+     */
+    public function fillter($request)
+    {
+        /**
+         * Query join table transaksi, divisi, user & profil
+         */
+        $query = Transaksi::with(['divisi', 'jenisBelanja', 'user.profil'])
+            ->whereBetween('transaksi.tanggal', [$request->periodeAwal, $request->periodeAkhir]);
+
+        /**
+         * cek apakan request divis dipilih atau tidak
+         */
+        if ($request->divisi != null) {
+            $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
+
+            if ($divisi) {
+                $query->where('divisi_id',  $divisi->id);
+            }
+        }
+
+        /**
+         * hitung jumlah nominal;
+         */
+        $totalTransaksi = $query->sum('jumlah_nominal');
+
+        /**
+         * buat order
+         */
+        $laporanTransaksi = $query->orderBy('tanggal', 'asc')->orderBy('divisi_id', 'asc')->get();
+
+
+        return [
+            'laporanTransaksi' => $laporanTransaksi,
+            'totalTransaksi' => $totalTransaksi,
+        ];
+    }
+
+    /**
+     * export excel
+     *
+     * @param Request $request
+     *
+     * @return download
+     */
+    public function exportExcel(Request $request)
+    {
+        $data = $this->fillter($request);
+        return Excel::download(new LaporanTransaksiExport($data), 'laporan-transaksi.xlsx');
+    }
+
+    /**
+     * print PDF
+     *
+     * @param Request $request
+     *
+     * @return [type]
+     */
+    public function exportPdf(Request $request)
+    {
+        $data = $this->fillter($request);
+
+        return PDF::loadView('pages.laporan-transaksi.export-pdf', $data)
+            ->setPaper('a4', 'landscape')
+            ->download('laporan-transaksi.pdf');
     }
 }

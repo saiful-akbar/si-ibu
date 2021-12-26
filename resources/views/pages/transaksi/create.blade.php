@@ -1,9 +1,13 @@
 @extends('templates.main')
 
-@section('title', 'Tambah Transaksi')
+@section('title', 'Tambah Belanja')
 
 @push('css')
-    <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('assets/css/vendor/summernote-bs4.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
 @endpush
 
 @section('content')
@@ -11,7 +15,10 @@
     {{-- button kembali --}}
     <div class="row">
         <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('transaksi') }}" class="btn btn-dark btn-rounded">
+            <a
+                href="{{ route('belanja') }}"
+                class="btn btn-dark btn-rounded"
+            >
                 <i class="dripicons-chevron-left"></i>
                 <span>Kembali</span>
             </a>
@@ -19,7 +26,11 @@
     </div>
 
     {{-- Form input budget --}}
-    <form action="{{ route('transaksi.store') }}" method="POST" enctype="multipart/form-data">
+    <form
+        action="{{ route('belanja.store') }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
         @method('POST')
         @csrf
 
@@ -28,21 +39,30 @@
             <div class="col-12 mb-3">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="header-title mt-2">Form Tambah Transaksi</h4>
+                        <h4 class="header-title mt-2">Form Tambah Belanja</h4>
                     </div>
 
                     <div class="card-body">
 
                         {{-- input tanggal --}}
                         <div class="form-group row mb-3">
-                            <label for="tanggal" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="tanggal"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Tanggal <small class="text-danger ml-1">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="date" id="tanggal" name="tanggal" placeholder="Masukan tanggal..."
-                                    value="{{ old('tanggal') }}" class="form-control @error('tanggal') is-invalid @enderror"
-                                    required />
+                                <input
+                                    type="date"
+                                    id="tanggal"
+                                    name="tanggal"
+                                    placeholder="Masukan tanggal..."
+                                    value="{{ old('tanggal') }}"
+                                    class="form-control @error('tanggal') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('tanggal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -52,14 +72,23 @@
 
                         {{-- input nama approval --}}
                         <div class="form-group row mb-3">
-                            <label for="approval" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="approval"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Nama Approval <small class="text-danger ml-1">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="text" id="approval" name="approval" placeholder="Masukan nama approval..."
-                                    value="{{ old('approval') }}" class="form-control @error('approval') is-invalid @enderror"
-                                    required />
+                                <input
+                                    type="text"
+                                    id="approval"
+                                    name="approval"
+                                    placeholder="Masukan nama approval..."
+                                    value="{{ old('approval') }}"
+                                    class="form-control @error('approval') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('approval')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -85,19 +114,32 @@
 
                         {{-- Input jenis belanja --}}
                         <div class="form-group row mb-3">
-                            <label for="jenis_belanja_id" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="jenis_belanja_id"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Jenis Belanja <small class="text-danger ml-1">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <select name="jenis_belanja_id" id="jenis_belanja_id"
-                                    class="custom-select @error('jenis_belanja_id') is-invalid @enderror" required>
-                                    <option disabled @if (!old('jenis_belanja_id')) selected @endif>
+                                <select
+                                    name="jenis_belanja_id"
+                                    id="jenis_belanja_id"
+                                    class="custom-select @error('jenis_belanja_id') is-invalid @enderror"
+                                    required
+                                >
+                                    <option
+                                        disabled
+                                        @if (!old('jenis_belanja_id')) selected @endif
+                                    >
                                         -- Pilih Jenis Belanja --
                                     </option>
 
                                     @foreach ($jenisBelanja as $jBelanja)
-                                        <option value="{{ $jBelanja->id }}" @if (old('jenis_belanja_id') == $jBelanja->id) selected @endif>
+                                        <option
+                                            value="{{ $jBelanja->id }}"
+                                            @if (old('jenis_belanja_id') == $jBelanja->id) selected @endif
+                                        >
                                             {{ ucwords($jBelanja->kategori_belanja) }}
                                         </option>
                                     @endforeach
@@ -111,14 +153,23 @@
 
                         {{-- input kegiatan --}}
                         <div class="form-group row mb-3">
-                            <label for="kegiatan" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="kegiatan"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Kegiatan <small class="text-danger ml-1">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="text" id="kegiatan" name="kegiatan" placeholder="Masukan kegiatan..."
-                                    value="{{ old('kegiatan') }}" class="form-control @error('kegiatan') is-invalid @enderror"
-                                    required />
+                                <input
+                                    type="text"
+                                    id="kegiatan"
+                                    name="kegiatan"
+                                    placeholder="Masukan kegiatan..."
+                                    value="{{ old('kegiatan') }}"
+                                    class="form-control @error('kegiatan') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('kegiatan')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -128,14 +179,24 @@
 
                         {{-- input jumlah_nominal --}}
                         <div class="form-group row mb-3">
-                            <label for="jumlah_nominal" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="jumlah_nominal"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Jumlah Nominal <small class="text-danger ml-1">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="number" id="jumlah_nominal" name="jumlah_nominal" min="0"
-                                    placeholder="Masukan jumlah nominal..." value="{{ old('jumlah_nominal') }}"
-                                    class="form-control @error('jumlah_nominal') is-invalid @enderror" required />
+                                <input
+                                    type="number"
+                                    id="jumlah_nominal"
+                                    name="jumlah_nominal"
+                                    min="0"
+                                    placeholder="Masukan jumlah nominal..."
+                                    value="{{ old('jumlah_nominal') }}"
+                                    class="form-control @error('jumlah_nominal') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('jumlah_nominal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -145,12 +206,19 @@
 
                         {{-- input uraian --}}
                         <div class="form-group row mb-3">
-                            <label for="uraian" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="uraian"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Uraian
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <textarea name="uraian" id="uraian" class="form-control">{{ old('uraian') }}</textarea>
+                                <textarea
+                                    name="uraian"
+                                    id="uraian"
+                                    class="form-control"
+                                >{{ old('uraian') }}</textarea>
                             </div>
                         </div>
 
@@ -172,14 +240,23 @@
 
                         {{-- input no dokumen --}}
                         <div class="form-group row mb-3">
-                            <label for="no_dokumen" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="no_dokumen"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 No Dokumen <small class="text-danger ml-1">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="text" id="no_dokumen" name="no_dokumen" placeholder="Masukan no dokumen..."
+                                <input
+                                    type="text"
+                                    id="no_dokumen"
+                                    name="no_dokumen"
+                                    placeholder="Masukan no dokumen..."
                                     value="{{ old('no_dokumen', $noDocument) }}"
-                                    class="form-control @error('no_dokumen') is-invalid @enderror" required />
+                                    class="form-control @error('no_dokumen') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('no_dokumen')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -197,7 +274,10 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="file_dokumen">
-                                            <span type="button" class="btn btn-primary btn-rounded">
+                                            <span
+                                                type="button"
+                                                class="btn btn-primary btn-rounded"
+                                            >
                                                 <i class="mdi mdi-upload-outline"></i>
                                                 <span>Unggah File</span>
                                             </span>
@@ -205,12 +285,21 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <span id="file-name" class="text-nowrap d-none h5" data-action="create"></span>
+                                        <span
+                                            id="file-name"
+                                            class="text-nowrap d-none h5"
+                                            data-action="create"
+                                        ></span>
                                     </div>
                                 </div>
 
-                                <input type="file" id="file_dokumen" name="file_dokumen" value="{{ old('file_dokumen') }}"
-                                    class="d-none is-invalid @error('file_dokumen') is-invalid @enderror" />
+                                <input
+                                    type="file"
+                                    id="file_dokumen"
+                                    name="file_dokumen"
+                                    value="{{ old('file_dokumen') }}"
+                                    class="d-none is-invalid @error('file_dokumen') is-invalid @enderror"
+                                />
 
                                 @error('file_dokumen')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -227,12 +316,18 @@
         {{-- button submit & reset --}}
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-info btn-rounded mr-2">
+                <button
+                    type="submit"
+                    class="btn btn-info btn-rounded mr-2"
+                >
                     <i class="mdi mdi-content-save"></i>
                     <span>Simpan</span>
                 </button>
 
-                <button type="reset" class="btn btn-secondary btn-rounded">
+                <button
+                    type="reset"
+                    class="btn btn-secondary btn-rounded"
+                >
                     <i class="mdi mdi-close"></i>
                     <span>Reset</span>
                 </button>
