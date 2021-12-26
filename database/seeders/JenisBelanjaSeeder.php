@@ -33,6 +33,11 @@ class JenisBelanjaSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'kategori_belanja' => "Lain-Lain",
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

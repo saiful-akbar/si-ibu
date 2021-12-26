@@ -141,11 +141,8 @@ function setChartPerJenisBelanja(idDivisi, year) {
                         top: 7,
                     },
                 },
-                dataLabels: { enabled: !1 },
-                stroke: { curve: "smooth", width: 4 },
+                stroke: { curve: "smooth", with: 4 },
                 series: res.data,
-                zoom: { enabled: !1 },
-                legend: { show: !1 },
                 xaxis: {
                     type: "string",
                     categories: [
@@ -162,8 +159,8 @@ function setChartPerJenisBelanja(idDivisi, year) {
                         "Nov",
                         "Des",
                     ],
-                    tooltip: { enabled: !1 },
-                    axisBorder: { show: !1 },
+                    tooltip: { enabled: true },
+                    axisBorder: { show: true },
                 },
                 yaxis: {
                     labels: {
@@ -179,6 +176,7 @@ function setChartPerJenisBelanja(idDivisi, year) {
             );
 
             chart.render();
+            chart.updateSeries(res.data);
         },
     });
 }
@@ -188,10 +186,29 @@ function setChartPerJenisBelanja(idDivisi, year) {
  */
 $(document).ready(function () {
     setGlobalChart(new Date().getFullYear());
-    setChartPerJenisBelanja(
-        $("#chart-jenis-belanja").data("divisi-id"),
-        new Date().getFullYear()
-    );
+
+    const chartPerJenisBelanja = $("#chart-jenis-belanja");
+
+    /**
+     * jalankan fungsi setChartPerJenisBelanja ketika user bukan admin
+     */
+    if (chartPerJenisBelanja.length > 0) {
+        setChartPerJenisBelanja(
+            chartPerJenisBelanja.data("divisi-id"),
+            new Date().getFullYear()
+        );
+
+        /**
+         * handle jika periode divisi per jenis belanja dirubah
+         */
+        $("#periode-divisi-jenis-belanja").change(function (e) {
+            e.preventDefault();
+            setChartPerJenisBelanja(
+                chartPerJenisBelanja.data("divisi-id"),
+                $(this).val()
+            );
+        });
+    }
 
     /**
      * handle change form select global period

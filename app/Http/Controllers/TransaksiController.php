@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
-use phpDocumentor\Reflection\Types\This;
 
 class TransaksiController extends Controller
 {

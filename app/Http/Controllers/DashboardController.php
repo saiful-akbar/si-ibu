@@ -210,34 +210,21 @@ class DashboardController extends Controller
         }
 
         $bulan = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-        $transaksiPerBulan = [];
-        $result = [];
-
-        foreach ($bulan as $keyBulan => $valueBulan) {
-            $transaksiPerBulan[$keyBulan]['bulan'] = $valueBulan;
-
-            $transaksiPerBulan[$keyBulan]['jumlahNominal'] = Transaksi::where('tanggal', 'like', "{$year}-{$valueBulan}%")
-                ->sum('jumlah_nominal');
-
-            $transaksiPerBulan[$keyBulan]['jenisBelanjaId'] = Transaksi::select('jenis_belanja_id')
-                ->where('tanggal', 'like', "{$year}-{$valueBulan}%")
-                ->first()->jenis_belanja_id ?? null;
-        }
+        $data = [];
 
         foreach (JenisBelanja::all() as $keyJenisBelanja => $valueJenisBelanja) {
-            $result[$keyJenisBelanja]['name'] = $valueJenisBelanja->kategori_belanja;
+            $data[$keyJenisBelanja]['name'] = $valueJenisBelanja->kategori_belanja;
 
-            foreach ($transaksiPerBulan as $keyTransaksi => $valueTransaksi) {
-                if ($valueTransaksi['jenisBelanjaId'] == $valueJenisBelanja->id) {
-                    $result[$keyJenisBelanja]['data'][] = $valueTransaksi['jumlahNominal'];
-                } else {
-                    $result[$keyJenisBelanja]['data'][] = 0;
-                }
+            foreach ($bulan as $valueBulan) {
+                $data[$keyJenisBelanja]['data'][] = Transaksi::where('tanggal', 'like', "{$year}-{$valueBulan}%")
+                    ->where('jenis_belanja_id', $valueJenisBelanja->id)
+                    ->where('divisi_id', $divisi->id)
+                    ->sum('jumlah_nominal');
             }
         }
 
         return response()->json([
-            'data' => $result,
+            'data' => $data,
         ]);
     }
 }
