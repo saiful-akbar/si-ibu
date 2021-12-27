@@ -2,7 +2,10 @@
 <html lang="id">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+        http-equiv="Content-Type"
+        content="text/html; charset=utf-8"
+    />
     <title>Laporan Transaksi</title>
     <style>
         * {
@@ -89,44 +92,49 @@
                     <tr>
                         <th>Tanggal Cetak</th>
                         <td>:</td>
-                        <td>{{ date('d-m-Y H:i') }}</td>
+                        <td>{{ date('Y-m-d H:i') }}</td>
                     </tr>
                 </table>
             </div>
             <h2 class="header-title">Laporan Transaksi</h2>
         </header>
-        <table class="table table-border table-padding" width="100%">
+        <table
+            class="table table-border table-padding"
+            width="100%"
+        >
             <thead>
                 <tr>
                     <th class="text-center">No</th>
                     <th class="text-center">Tanggal</th>
                     <th class="text-center">Bagian</th>
+                    <th class="text-center">Seksi</th>
                     <th class="text-center">Submitter</th>
                     <th class="text-center">Jenis Belanja</th>
                     <th class="text-center">Kegiatan</th>
                     <th class="text-center">No. Dokumen</th>
                     <th class="text-center">Approval</th>
-                    <th class="text-center">Jumlah Nominal</th>
+                    <th class="text-center">Jml Nominal</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($laporanTransaksi as $laporan)
-                <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $laporan->tanggal }}</td>
-                    <td>{{ $laporan->divisi->nama_divisi }}</td>
-                    <td>{{ $laporan->user->profil->nama_lengkap }}</td>
-                    <td>{{ $laporan->jenisBelanja->kategori_belanja }}</td>
-                    <td>{{ $laporan->kegiatan }}</td>
-                    <td>{{ $laporan->no_dokumen }}</td>
-                    <td>{{ $laporan->approval }}</td>
-                    <td>Rp. {{ number_format($laporan->jumlah_nominal) }}</td>
-                </tr>
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>{{ $laporan->tanggal }}</td>
+                        <td>{{ $laporan->divisi->nama_divisi }}</td>
+                        <td>{{ $laporan->user->seksi }}</td>
+                        <td>{{ $laporan->user->profil->nama_lengkap }}</td>
+                        <td>{{ $laporan->jenisBelanja->kategori_belanja }}</td>
+                        <td>{{ $laporan->kegiatan }}</td>
+                        <td>{{ $laporan->no_dokumen }}</td>
+                        <td>{{ $laporan->approval }}</td>
+                        <td>Rp. {{ number_format($laporan->jumlah_nominal) }}</td>
+                    </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="8">Grand Total</th>
+                    <th colspan="9">Grand Total</th>
                     <th>Rp. {{ number_format($totalTransaksi) }}</th>
                 </tr>
             </tfoot>

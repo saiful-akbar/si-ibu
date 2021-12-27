@@ -68,6 +68,7 @@
                                             <th>User</th>
                                             <th>Username</th>
                                             <th>Divisi</th>
+                                            <th>Seksi</th>
                                             <th>Aktif</th>
                                             <th>Diperbarui</th>
                                             <th class="text-center">Aksi</th>
@@ -98,6 +99,7 @@
                                                 </td>
                                                 <td class="align-middle">{{ $user->username }}</td>
                                                 <td class="align-middle">{{ ucwords($user->nama_divisi) }}</td>
+                                                <td class="align-middle">{{ ucwords($user->seksi) }}</td>
                                                 <td class="align-middle">
                                                     @if ($user->active == 1)
                                                         <i class="mdi mdi-check text-success h3"></i>

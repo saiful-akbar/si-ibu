@@ -1,4 +1,4 @@
-@extends('components.organisms.profil')
+@extends('templates.profil')
 
 @section('title', 'Profil')
 

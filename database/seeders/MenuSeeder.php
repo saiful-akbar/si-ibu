@@ -242,6 +242,16 @@ class MenuSeeder extends Seeder
                 'delete' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('staff'),
+                'menu_item_id' => $this->getMenuItem('Budget'),
+                'create' => false,
+                'read' => true,
+                'update' => false,
+                'delete' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
     }

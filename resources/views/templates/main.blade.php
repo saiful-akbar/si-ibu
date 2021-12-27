@@ -65,7 +65,6 @@
             rel="stylesheet"
             type="text/css"
             id="dark-style"
-            disabled
         />
     @endauth
 
@@ -75,6 +74,7 @@
             rel="stylesheet"
             type="text/css"
             id="light-style"
+            disabled
         />
     @endguest
 

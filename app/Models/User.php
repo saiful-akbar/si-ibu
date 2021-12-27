@@ -26,6 +26,7 @@ class User extends Authenticatable
         'divisi_id',
         'username',
         'password',
+        'seksi',
         'active',
     ];
 

@@ -36,6 +36,7 @@ class UserController extends Controller
          */
         if ($request->search) {
             $users->where('user.username', 'like', '%' . $request->search . '%')
+                ->orWhere('user.seksi', 'like', '%' . $request->search . '%')
                 ->orWhere('profil.nama_lengkap', 'like', '%' . $request->search . '%')
                 ->orWhere('divisi.nama_divisi', 'like', '%' . $request->search . '%');
         }
@@ -46,9 +47,9 @@ class UserController extends Controller
         $users->select(
             'user.id',
             'user.username',
+            'user.seksi',
             'user.active',
             'user.updated_at',
-            'user.created_at',
             'profil.avatar',
             'profil.nama_lengkap',
             'divisi.nama_divisi',
@@ -109,6 +110,7 @@ class UserController extends Controller
         $validasi_rules = [
             'username' => ['required', 'unique:user,username', 'max:100'],
             'password' => ['required', 'min:4', 'max:200'],
+            'seksi' => ['required', 'max:100'],
             'avatar' => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
             'divisi_id' => ['required', 'exists:divisi,id'],
@@ -126,6 +128,8 @@ class UserController extends Controller
             'password.required' => 'Password harus diisi.',
             'password.min' => 'Password minimal 4 karakter.',
             'password.max' => 'Password tidak boleh lebih dari 200 karakter.',
+            'seksi.required' => 'Seksi harus diisi.',
+            'seksi.max' => 'Seksi tidak boleh lebih dari 100 karakter.',
             'avatar.image' => 'Avatar harus berupa file gambar.',
             'avatar.max' => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
             'nama_lengkap.required' => 'Nama lengkap harus diisi.',
@@ -162,6 +166,7 @@ class UserController extends Controller
             'divisi_id' => $request->divisi_id,
             'username' => $request->username,
             'password' => bcrypt($request->password),
+            'seksi' => ucwords($request->seksi),
             'active' => $user_active,
         ]);
 
@@ -220,6 +225,7 @@ class UserController extends Controller
         $validasi_rules = [
             'username' => ['required', 'max:100'],
             'password' => ['max:200'],
+            'seksi' => ['required', 'max:100'],
             'avatar' => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
             'divisi_id' => ['required', 'exists:divisi,id'],
@@ -251,6 +257,8 @@ class UserController extends Controller
             'password.required' => 'Password harus diisi.',
             'password.min' => 'Password minimal 4 karakter.',
             'password.max' => 'Password tidak boleh lebih dari 200 karakter.',
+            'seksi.required' => 'Seksi harus diisi.',
+            'seksi.max' => 'Seksi tidak boleh lebih dari 100 karakter.',
             'avatar.image' => 'Avatar harus berupa file gambar.',
             'avatar.max' => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
             'nama_lengkap.required' => 'Nama lengkap harus diisi.',
@@ -287,16 +295,23 @@ class UserController extends Controller
          */
         $user->divisi_id = $request->divisi_id;
         $user->username = $request->username;
+        $user->seksi = ucwords($request->seksi);
         $user->active = $user_active;
 
+        /**
+         * Cek apakah password dirubah atau tidak
+         */
         if (!empty($request->password)) {
             $user->password = bcrypt($request->password);
         }
 
+        /**
+         * simpan perubahan user ke database
+         */
         $user->save();
 
         /**
-         * simpan data profil ke database
+         * simpan perubahan profil ke database
          */
         Profil::where('user_id', $user->id)->update([
             'avatar' => $avatar,

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <title>Laporan Transaksi</title>
 </head>
+
 <body>
     <table>
         <thead>
@@ -10,6 +12,7 @@
                 <th style="font-weight: bold; border: 1px solid #000;">No</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Tanggal</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Bagian</th>
+                <th style="font-weight: bold; border: 1px solid #000;">Seksi</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Submitter</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Jenis Belanja</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Kegiatan</th>
@@ -27,6 +30,7 @@
                     <td style="border: 1px solid #000;">{{ $loop->iteration }}</td>
                     <td style="border: 1px solid #000;">{{ $laporan->tanggal }}</td>
                     <td style="border: 1px solid #000;">{{ $laporan->divisi->nama_divisi }}</td>
+                    <td style="border: 1px solid #000;">{{ $laporan->user->seksi }}</td>
                     <td style="border: 1px solid #000;">{{ $laporan->user->profil->nama_lengkap }}</td>
                     <td style="border: 1px solid #000;">{{ $laporan->jenisBelanja->kategori_belanja }}</td>
                     <td style="border: 1px solid #000;">{{ $laporan->kegiatan }}</td>
@@ -40,4 +44,5 @@
         </tbody>
     </table>
 </body>
+
 </html>

@@ -18,6 +18,7 @@ class CreateUserTable extends Migration
             $table->unsignedBigInteger('divisi_id');
             $table->string('username', 128)->unique();
             $table->string('password');
+            $table->string('seksi', 128);
             $table->boolean('active')->default(false);
             $table->timestamps();
 
