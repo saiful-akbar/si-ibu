@@ -29,7 +29,6 @@
         .table tr td {
             text-align: left;
             padding: 5px 5px 5px 0;
-            white-space: nowrap;
         }
 
         .table tr td {
@@ -71,9 +70,17 @@
             line-height: 100%;
             font-size: 1.4em;
             font-weight: 700;
+        }
+
+        .logo {
+            margin-bottom: 15px;
+            line-height: 100%;
+            font-size: 2em;
+            font-weight: 800;
             position: absolute;
             right: 0;
             top: 0;
+            border-bottom: 2px solid black;
         }
 
     </style>
@@ -82,6 +89,8 @@
 <body>
     <div class="container">
         <header class="header">
+            <h2 class="header-title">Laporan Transaksi</h2>
+
             <div>
                 <table class="table">
                     <tr>
@@ -90,13 +99,14 @@
                         <td>{{ request('periodeAwal') }} ~ {{ request('periodeAkhir') }}</td>
                     </tr>
                     <tr>
-                        <th>Tanggal Cetak</th>
+                        <th>Waktu Cetak</th>
                         <td>:</td>
                         <td>{{ date('Y-m-d H:i') }}</td>
                     </tr>
                 </table>
             </div>
-            <h2 class="header-title">Laporan Transaksi</h2>
+
+            <h1 class="logo">{{ env('APP_NAME', 'Laravel') }}</h1>
         </header>
         <table
             class="table table-border table-padding"
@@ -111,6 +121,7 @@
                     <th class="text-center">Submitter</th>
                     <th class="text-center">Jenis Belanja</th>
                     <th class="text-center">Kegiatan</th>
+                    <th class="text-center">Uraian</th>
                     <th class="text-center">No. Dokumen</th>
                     <th class="text-center">Approval</th>
                     <th class="text-center">Jml Nominal</th>
@@ -126,6 +137,7 @@
                         <td>{{ $laporan->user->profil->nama_lengkap }}</td>
                         <td>{{ $laporan->jenisBelanja->kategori_belanja }}</td>
                         <td>{{ $laporan->kegiatan }}</td>
+                        <td>{!! $laporan->uraian !!}</td>
                         <td>{{ $laporan->no_dokumen }}</td>
                         <td>{{ $laporan->approval }}</td>
                         <td>Rp. {{ number_format($laporan->jumlah_nominal) }}</td>
@@ -134,7 +146,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="9">Grand Total</th>
+                    <th colspan="10">Grand Total</th>
                     <th>Rp. {{ number_format($totalTransaksi) }}</th>
                 </tr>
             </tfoot>
