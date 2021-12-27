@@ -56,7 +56,7 @@
                             <div class="row">
                                 <div class="col-12 chart-widget-list">
                                     <p>
-                                        Divisi
+                                        Bagian
                                         <span
                                             class="float-right"
                                             id="global-divisi"

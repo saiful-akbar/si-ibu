@@ -33,14 +33,14 @@
                         {{-- Input divisi --}}
                         <div class="form-group row mb-3">
                             <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
-                                Divisi <small class="text-danger ml-1">*</small>
+                                Bagian <small class="text-danger ml-1">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
                                 <select required name="divisi_id" id="divisi_id"
                                     class="custom-select @error('divisi_id') is-invalid @enderror">
                                     <option disabled @if (!old('divisi_id')) selected @endif>
-                                        -- Pilih Divisi --
+                                        -- Pilih Bagian --
                                     </option>
 
                                     @foreach ($divisions as $divisi)

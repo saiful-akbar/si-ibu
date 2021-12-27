@@ -21,7 +21,7 @@
                         <ul class="mb-0 list-inline text-light">
                             <li class="list-inline-item mr-3">
                                 <h5 class="mb-1">{{ $user->divisi->nama_divisi }}</h5>
-                                <p class="mb-0 font-13 text-white-50">Divisi</p>
+                                <p class="mb-0 font-13 text-white-50">Bagian</p>
                             </li>
                             <li class="list-inline-item">
                                 <h5 class="mb-1">{{ $user->active == 1 ? 'Aktif' : 'Tidak Aktif' }}</h5>

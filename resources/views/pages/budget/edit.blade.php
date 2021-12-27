@@ -33,13 +33,13 @@
                         {{-- Input divisi --}}
                         <div class="form-group row mb-3">
                             <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
-                                Divisi <small class="text-danger ml-1">*</small>
+                                Bagian <small class="text-danger ml-1">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
                                 <select required name="divisi_id" id="divisi_id"
                                     class="custom-select @error('divisi_id') is-invalid @enderror">
-                                    <option disabled>-- Pilih Divisi --</option>
+                                    <option disabled>-- Pilih Bagian --</option>
 
                                     @foreach ($divisions as $divisi)
                                         <option value="{{ $divisi->id }}" @if (old('divisi_id', $budget->divisi->id) == $divisi->id) selected @endif>
