@@ -540,7 +540,7 @@ class TransaksiController extends Controller
     {
         $data = $this->fillter($request);
 
-        return PDF::loadView('pages.laporan-transaksi.export-pdf', $data)
+        return PDF::loadView('export.pdf.pdf-transaksi', $data)
             ->setPaper('a4', 'landscape')
             ->download('laporan-transaksi.pdf');
     }

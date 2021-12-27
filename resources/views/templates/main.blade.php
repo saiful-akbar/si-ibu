@@ -59,13 +59,13 @@
             rel="stylesheet"
             type="text/css"
             id="light-style"
-            disabled
         />
         <link
             href="{{ asset('assets/css/app-dark.min.css') }}"
             rel="stylesheet"
             type="text/css"
             id="dark-style"
+            disabled
         />
     @endauth
 
