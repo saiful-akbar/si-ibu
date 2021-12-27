@@ -249,6 +249,12 @@ Route::middleware('auth')->group(function () {
 
         Route::patch('/akun/password', [ProfilController::class, 'updatePassword'])
             ->name('profil.akun.password.update');
+
+        Route::get('/pengaturan', [ProfilController::class, 'pengaturan'])
+            ->name('profil.pengaturan');
+
+        Route::patch('/pengaturan/tema', [ProfilController::class, 'updateTema'])
+            ->name('profil.pengaturan.tema');
     });
 });
 

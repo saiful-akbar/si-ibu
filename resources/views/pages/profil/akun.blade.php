@@ -22,15 +22,12 @@
                         @csrf
 
                         {{-- input username --}}
-                        <div class="form-group row mb-3">
-                            <label
-                                for="username"
-                                class="col-lg-3 col-sm-12 col-form-label"
-                            >
-                                Username <small class="text-danger">*</small>
-                            </label>
+                        <div class="row">
+                            <div class="col-12 form-group mb-3">
+                                <label for="username">
+                                    Username <small class="text-danger">*</small>
+                                </label>
 
-                            <div class="col-lg-9 col-sm-12">
                                 <input
                                     required
                                     type="text"
@@ -49,11 +46,11 @@
                         {{-- end input nama lengkap --}}
 
                         {{-- button submit & reset --}}
-                        <div class="row justify-content-end">
-                            <div class="col-lg-9 col-sm-12">
+                        <div class="row">
+                            <div class="col-12">
                                 <button
                                     type="submit"
-                                    class="btn btn-info btn-rounded mr-2"
+                                    class="btn btn-sm btn-info btn-rounded mr-2"
                                 >
                                     <i class="mdi mdi-content-save"></i>
                                     <span>Simpan</span>
@@ -61,7 +58,7 @@
 
                                 <button
                                     type="reset"
-                                    class="btn btn-rounded btn-secondary"
+                                    class="btn btn-sm btn-rounded btn-secondary"
                                 >
                                     <i class="mdi mdi-close"></i>
                                     <span>Reset</span>
@@ -92,15 +89,12 @@
                         @csrf
 
                         {{-- input password lama --}}
-                        <div class="form-group row mb-3">
-                            <label
-                                for="passwordLama"
-                                class="col-lg-3 col-sm-12 col-form-label"
-                            >
-                                Passwod Lama <small class="text-danger">*</small>
-                            </label>
+                        <div class="row">
+                            <div class="col-12 form-group mb-3">
+                                <label for="passwordLama">
+                                    Passwod Lama <small class="text-danger">*</small>
+                                </label>
 
-                            <div class="col-lg-9 col-sm-12">
                                 <input
                                     required
                                     type="password"
@@ -117,15 +111,12 @@
                         </div>
 
                         {{-- input password baru --}}
-                        <div class="form-group row mb-3">
-                            <label
-                                for="passwordBaru"
-                                class="col-lg-3 col-sm-12 col-form-label"
-                            >
-                                Passwod Baru <small class="text-danger">*</small>
-                            </label>
+                        <div class="row">
+                            <div class="col-12 form-group mb-3">
+                                <label for="passwordBaru">
+                                    Passwod Baru <small class="text-danger">*</small>
+                                </label>
 
-                            <div class="col-lg-9 col-sm-12">
                                 <input
                                     required
                                     type="password"
@@ -142,36 +133,33 @@
                         </div>
 
                         {{-- input password confirm --}}
-                        <div class="form-group row mb-3">
-                            <label
-                                for="passwordConfirm"
-                                class="col-lg-3 col-sm-12 col-form-label"
-                            >
-                                Konfirmasi Password Baru <small class="text-danger">*</small>
-                            </label>
+                        <div class="row">
+                            <div class="col-12 form-group mb-3">
+                                <label for="passwordKonfirmasi">
+                                    Konfirmasi Password <small class="text-danger">*</small>
+                                </label>
 
-                            <div class="col-lg-9 col-sm-12">
                                 <input
                                     required
                                     type="password"
-                                    id="passwordConfirm"
-                                    name="passwordConfirm"
-                                    placeholder="Konfirmasi password baru..."
-                                    class="form-control @error('passwordConfirm') is-invalid @enderror"
+                                    id="passwordKonfirmasi"
+                                    name="passwordKonfirmasi"
+                                    placeholder="Ketik ulang password baru..."
+                                    class="form-control @error('passwordKonfirmasi') is-invalid @enderror"
                                 />
 
-                                @error('passwordConfirm')
+                                @error('passwordKonfirmasi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
                         {{-- button submit & reset --}}
-                        <div class="row justify-content-end">
-                            <div class="col-lg-9 col-sm-12">
+                        <div class="row">
+                            <div class="col-12">
                                 <button
                                     type="submit"
-                                    class="btn btn-info btn-rounded mr-2"
+                                    class="btn btn-sm btn-info btn-rounded mr-2"
                                 >
                                     <i class="mdi mdi-content-save"></i>
                                     <span>Simpan</span>
@@ -179,7 +167,7 @@
 
                                 <button
                                     type="reset"
-                                    class="btn btn-rounded btn-secondary"
+                                    class="btn btn-sm btn-rounded btn-secondary"
                                 >
                                     <i class="mdi mdi-close"></i>
                                     <span>Reset</span>

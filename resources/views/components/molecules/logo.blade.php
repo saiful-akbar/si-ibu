@@ -1,4 +1,4 @@
-<a
+{{-- <a
     href="{{ route('dashboard') }}"
     class="logo text-center logo-light"
 >
@@ -16,7 +16,7 @@
             height="16"
         />
     </span>
-</a>
+</a> --}}
 
 {{-- <a href="{{ route('dashboard') }}" class="logo text-center logo-dark">
     <span class="logo-lg">
@@ -29,7 +29,10 @@
 
 
 {{-- logo light --}}
-{{-- <a href="{{ route('dashboard') }}" class="logo text-center text-white px-2">
+<a
+    href="{{ route('dashboard') }}"
+    class="logo text-center text-white px-2"
+>
     <span class="logo-lg logo-text">
         <i class="fas fa-coins mr-2 text-info"></i>
         {{ env('APP_NAME', 'Laravel') }}
@@ -37,4 +40,4 @@
     <span class="logo-sm logo-text">
         <i class="fas fa-coins text-info"></i>
     </span>
-</a> --}}
+</a>

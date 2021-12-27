@@ -75,11 +75,11 @@
                     <span>Akun</span>
                 </a>
                 <a
-                    {{-- href="{{ route('profil/tema') }}" --}}
-                    class="nav-link mb-2 {{ Request::is('profil/tema') ? 'active show' : null }}"
+                    href="{{ route('profil.pengaturan') }}"
+                    class="nav-link mb-2 {{ Request::is('profil/pengaturan') ? 'active show' : null }}"
                 >
                     <i class="mdi mdi-settings mr-2"></i>
-                    <span>Tema</span>
+                    <span>Pengaturan</span>
                 </a>
             </div>
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\MenuHeader;
 use App\Models\MenuItem;
+use App\Models\Pengaturan;
 use App\Models\Profil;
 use App\Models\Transaksi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,6 +54,14 @@ class User extends Authenticatable
     public function profil()
     {
         return $this->hasOne(Profil::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relasi one to one dengan table pengaturan
+     */
+    public function pengaturan()
+    {
+        return $this->hasOne(Pengaturan::class, 'user_id', 'id');
     }
 
     /**

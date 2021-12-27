@@ -14,6 +14,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        /**
+         * insert table user
+         */
         DB::table('user')->insert([
             [
                 'divisi_id' => 1,
@@ -35,6 +38,9 @@ class UserSeeder extends Seeder
             ]
         ]);
 
+        /**
+         * insert table profil
+         */
         DB::table('profil')->insert([
             [
                 'user_id' => 1,
@@ -47,6 +53,24 @@ class UserSeeder extends Seeder
                 'user_id' => 2,
                 'avatar' => null,
                 'nama_lengkap' => 'Staff',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
+
+        /**
+         * insert table pengaturan
+         */
+        DB::table('pengaturan')->insert([
+            [
+                'user_id' => 1,
+                'tema' => 'dark',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 2,
+                'tema' => 'light',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

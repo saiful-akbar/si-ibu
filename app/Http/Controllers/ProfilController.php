@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengaturan;
 use App\Models\Profil;
 use App\Models\User;
 use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ProfilController extends Controller
 {
@@ -162,7 +164,14 @@ class ProfilController extends Controller
             ]);
     }
 
-    public function updatePassword(Request $request)
+    /**
+     * Update password user yang sedang login
+     *
+     * @param Request $request
+     *
+     * @return Object
+     */
+    public function updatePassword(Request $request): Object
     {
         /**
          * validasi rule
@@ -170,7 +179,7 @@ class ProfilController extends Controller
         $validateRules = [
             'passwordLama' => ['required', new MatchOldPassword],
             'passwordBaru' => ['required', 'max:200', 'min:4'],
-            'passwordConfirm' => ['required', 'same:passwordBaru'],
+            'passwordKonfirmasi' => ['required', 'same:passwordBaru'],
         ];
 
         /**
@@ -181,8 +190,8 @@ class ProfilController extends Controller
             'passwordBaru.required' => 'Password baru harus diisi.',
             'passwordBaru.max' => 'Password baru tidak boleh lebih dari 200 karakter.',
             'passwordBaru.min' => 'Password baru minimal 4 karakter.',
-            'passwordConfirm.required' => 'Password konfirmasi harus diisi.',
-            'passwordConfirm.same' => 'Password konfirmasi tidak cocok.',
+            'passwordKonfirmasi.required' => 'Password konfirmasi harus diisi.',
+            'passwordKonfirmasi.same' => 'Password konfirmasi tidak cocok.',
         ];
 
         /**
@@ -195,7 +204,7 @@ class ProfilController extends Controller
          */
         try {
             User::where('id', Auth::user()->id)->update([
-                'password' => bcrypt($request->username),
+                'password' => bcrypt($request->passwordBaru),
             ]);
         } catch (\Exception $e) {
             return redirect()->route('profil.akun')
@@ -209,6 +218,66 @@ class ProfilController extends Controller
             ->with('alert', [
                 'type' => 'success',
                 'message' => 'Password berhasil diperbarui.',
+            ]);
+    }
+
+    /**
+     * view pengaturan
+     */
+    public function pengaturan()
+    {
+        return view('pages.profil.pengaturan');
+    }
+
+    /**
+     * Update Tema
+     *
+     * @param Request $request
+     *
+     * @return Object
+     */
+    public function updateTema(Request $request): Object
+    {
+
+        /**
+         * validasi rule
+         */
+        $validateRules = [
+            'tema' => ['required', 'in:light,dark']
+        ];
+
+        /**
+         * Pesan error validasi
+         */
+        $validateErrorMessage = [
+            'tema.required' => 'Tema harus dipilih',
+            'tema.in' => 'Pilih tema terang atau gelap.'
+        ];
+
+        /**
+         * jalankan validasi
+         */
+        $request->validate($validateRules, $validateErrorMessage);
+
+        /**
+         * update tema
+         */
+        try {
+            Pengaturan::where('user_id', Auth::user()->id)->update([
+                'tema' => $request->tema,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('profil.pengaturan')
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => 'Gagal memperbarui tema. ' . $e->getMessage(),
+                ]);
+        }
+
+        return redirect()->route('profil.pengaturan')
+            ->with('alert', [
+                'type' => 'success',
+                'message' => 'Tema berhasil diperbarui.',
             ]);
     }
 }

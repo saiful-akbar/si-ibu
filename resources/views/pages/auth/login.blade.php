@@ -11,19 +11,21 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 text-center mb-3">
-                            <a
-                                href="{{ route('login.view') }}"
-                                class="logo-dark"
-                            >
+                            {{-- <a href="{{ route('login.view') }}" class="logo-dark">
                                 <span class="h4">
                                     <img
                                         src="{{ asset('assets/images/logo/logo-dark.png') }}"
-                                        alt="logo"
-                                        height="20"
+                                        alt="logo" height="20"
                                         class="mb-4"
                                     />
                                 </span>
-                            </a>
+                            </a> --}}
+
+                            <h2 class="mt-0 mb-3">
+                                <i class="fas fa-coins mr-2 text-info"></i>
+                                {{ env('APP_NAME', 'Laravel') }}
+                            </h2>
+
                             <h4 class="mt-0">Sign In</h4>
                             <p class="text-muted">
                                 Masukan username dan password untuk mengakses panel dashboard.
