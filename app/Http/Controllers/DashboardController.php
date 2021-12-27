@@ -97,8 +97,8 @@ class DashboardController extends Controller
          */
         if ($create == 1 && $read == 1 && $update == 1 && $delete == 1) {
             $totalBudget = Budget::where('tahun_anggaran', $year)->sum('nominal');
-            $totalTransaksi = Transaksi::where('tanggal', 'like', "%{$year}%")->sum('jumlah_nominal');
-            $divisi = 'Semua Divisi';
+            $totalTransaksi = Transaksi::where('tanggal', 'like', "{$year}%")->sum('jumlah_nominal');
+            $divisi = 'Semua Bagian';
         }
 
         /**

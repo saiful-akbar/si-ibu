@@ -235,7 +235,20 @@ Route::middleware('auth')->group(function () {
      * Route profil
      */
     Route::prefix('/profil')->group(function () {
-        Route::get('/', [ProfilController::class, 'index'])->name('profil');
+        Route::get('/', [ProfilController::class, 'index'])
+            ->name('profil');
+
+        Route::patch('/', [ProfilController::class, 'updateProfil'])
+            ->name('profil.update');
+
+        Route::get('/akun', [ProfilController::class, 'akun'])
+            ->name('profil.akun');
+
+        Route::patch('/akun/username', [ProfilController::class, 'updateUsername'])
+            ->name('profil.akun.username.update');
+
+        Route::patch('/akun/password', [ProfilController::class, 'updatePassword'])
+            ->name('profil.akun.password.update');
     });
 });
 
