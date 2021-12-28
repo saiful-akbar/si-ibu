@@ -13,6 +13,10 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
+Route::get('/', function() {
+    return redirect()->route('dashboard');
+});
+
 /**
  * Route middleware guest
  */
@@ -257,9 +261,6 @@ Route::middleware('auth')->group(function () {
             ->name('profil.pengaturan.tema');
     });
 });
-
-
-Route::redirect('/', '/dashboard');
 
 
 Route::fallback(function () {
