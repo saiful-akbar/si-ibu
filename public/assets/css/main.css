@@ -57,3 +57,7 @@ table.nowrap tr td {
     right: 20px;
     z-index: 1000;
 }
+
+body[data-leftbar-compact-mode="condensed"] {
+    min-height: 100vh !important;
+}

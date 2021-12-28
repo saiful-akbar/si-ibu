@@ -15,9 +15,7 @@ class AuthController extends Controller
      */
     public function index()
     {
-        $is_login = false;
-
-        return view('pages.auth.login', compact('is_login'));
+        return view('pages.auth.login');
     }
 
 
