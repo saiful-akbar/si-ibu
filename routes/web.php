@@ -13,7 +13,10 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
-Route::get('/', function() {
+/**
+ * Route awal
+ */
+Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
@@ -24,8 +27,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login.view');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
-
-
 
 /**
  * Route middleware auth
@@ -262,7 +263,9 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-
+/**
+ * Route fallback 404 jika url tidak tersedia
+ */
 Route::fallback(function () {
     return abort(404);
 });
