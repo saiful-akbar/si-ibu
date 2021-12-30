@@ -16,9 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 /**
  * Route awal
  */
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-});
+Route::redirect('/', 'dashboard');
 
 /**
  * Route middleware guest

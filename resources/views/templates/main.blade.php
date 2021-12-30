@@ -25,7 +25,7 @@
         content="{{ csrf_token() }}"
     />
 
-    <title>@yield('title') - {{ env('APP_NAME', 'Laravel') }}</title>
+    <title>@yield('title') - {{ config('app.name') }}</title>
 
     {{-- App favicon --}}
     <link

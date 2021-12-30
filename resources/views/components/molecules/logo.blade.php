@@ -35,7 +35,7 @@
 >
     <span class="logo-lg logo-text">
         <i class="fas fa-coins mr-2 text-info"></i>
-        {{ env('APP_NAME', 'Laravel') }}
+        {{ config('app.name') }}
     </span>
     <span class="logo-sm logo-text">
         <i class="fas fa-coins text-info"></i>
