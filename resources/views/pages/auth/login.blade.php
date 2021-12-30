@@ -24,7 +24,7 @@
 
                             <h2 class="mt-0 mb-3">
                                 <i class="fas fa-coins mr-2 text-info"></i>
-                                {{ env('APP_NAME', 'Laravel') }}
+                                {{ config('app.name') }}
                             </h2>
 
                             <h4 class="mt-0">Sign In</h4>
