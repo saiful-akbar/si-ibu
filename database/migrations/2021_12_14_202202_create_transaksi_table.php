@@ -16,7 +16,6 @@ class CreateTransaksiTable extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('divisi_id');
             $table->unsignedBigInteger('jenis_belanja_id');
             $table->date('tanggal');
             $table->string('kegiatan', 128);
@@ -26,14 +25,6 @@ class CreateTransaksiTable extends Migration
             $table->text('uraian')->nullable()->default(null);
             $table->string('approval', 128);
             $table->timestamps();
-
-
-            // relasi dengan tabel divisi
-            $table->foreign('divisi_id')
-                ->references('id')
-                ->on('divisi')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
 
             // relasi dengan tabel user
             $table->foreign('user_id')

@@ -34,10 +34,12 @@ class JenisBelanjaController extends Controller
          */
         $query->orderBy('kategori_belanja', 'asc');
 
+        // dd($query->get());
+
         /**
          * buat paginasi
          */
-        $jenisBelanja = $query->paginate(25)->withQueryString();
+        $jenisBelanja = $query->paginate(1)->withQueryString();
 
         /**
          * ambid data user akses untuk menu divisi

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Transaksi;
+use App\Models\JenisBelanja;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,30 +13,29 @@ class Divisi extends Model
     protected $table = 'divisi';
     protected $fillable = [
         'nama_divisi',
+        'aktif',
     ];
 
     /**
+     * user
      * Relasi one to may dengan table user
+     *
+     * @return object
      */
-    public function user()
+    public function user(): object
     {
         return $this->hasMany(User::class, 'divisi_id', 'id');
     }
 
     /**
-     * Method relasi one to many dengan table budget
+     * jenisBelanja
+     * Relasi one to many dengan tabel jenis_belanja
+     *
+     * @return object
      */
-    public function budget()
+    public function jenisBelanja(): object
     {
-        return $this->hasMany(Budget::class, 'divisi_id', 'id');
-    }
-
-    /**
-     * Relasi one to many dengan table transaksi
-     */
-    public function transaksi()
-    {
-        return $this->hasMany(Transaksi::class, 'transaksi_id', 'id');
+        return $this->hasMany(JenisBelanja::class, 'divisi_id', 'id');
     }
 
     /**

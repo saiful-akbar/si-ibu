@@ -15,7 +15,6 @@ class Transaksi extends Model
     protected $table = 'transaksi';
     protected $fillable = [
         'user_id',
-        'divisi_id',
         'jenis_belanja_id',
         'tanggal',
         'kegiatan',
@@ -32,14 +31,6 @@ class Transaksi extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    /**
-     * Method relasi one to many dengan table divisi
-     */
-    public function divisi()
-    {
-        return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
     }
 
     /**

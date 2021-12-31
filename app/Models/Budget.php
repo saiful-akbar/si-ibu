@@ -10,14 +10,21 @@ class Budget extends Model
     use HasFactory;
 
     protected $table = 'budget';
-    protected $fillable = ['divisi_id', 'tahun_anggaran', 'nominal', 'keterangan'];
+    protected $fillable = [
+        'jenis_belanja_id',
+        'tahun_anggaran',
+        'nominal',
+        'keterangan'
+    ];
 
     /**
-     * Method relasi one to many dengan table divisi
+     * Method relasi one to many dengan table jenis_belanja
+     *
+     * @return object
      */
-    public function divisi()
+    public function jenisBelanja(): object
     {
-        return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
+        return $this->belongsTo(JenisBelanja::class, 'jenis_belanja_id', 'id');
     }
 
     /**

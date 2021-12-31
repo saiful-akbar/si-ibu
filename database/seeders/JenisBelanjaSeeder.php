@@ -14,30 +14,65 @@ class JenisBelanjaSeeder extends Seeder
      */
     public function run()
     {
-        /**
-         * insert data jenis belanja
-         */
         DB::table('jenis_belanja')->insert([
             [
                 'kategori_belanja' => "Barang",
+                'divisi_id' => $this->getIdDivisi('it'),
+                'active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'kategori_belanja' => "Jasa",
+                'divisi_id' => $this->getIdDivisi('it'),
+                'active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'kategori_belanja' => "Orang",
+                'divisi_id' => $this->getIdDivisi('it'),
+                'active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'kategori_belanja' => "Lain-Lain",
+                'kategori_belanja' => "Barang",
+                'divisi_id' => $this->getIdDivisi('accounting'),
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kategori_belanja' => "Jasa",
+                'divisi_id' => $this->getIdDivisi('accounting'),
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kategori_belanja' => "Orang",
+                'divisi_id' => $this->getIdDivisi('accounting'),
+                'active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ]);
+    }
+
+    /**
+     * Method untuk mengambil id divisi (bagian) berdasarkan nama divisisnya (bagiannya)
+     *
+     * @param string $nama_divisi
+     *
+     * @return int
+     */
+    public function getIdDivisi(string $nama_divisi): int
+    {
+        $divisi = DB::table('divisi')
+            ->where('nama_divisi', $nama_divisi)
+            ->first();
+
+        return $divisi->id;
     }
 }
