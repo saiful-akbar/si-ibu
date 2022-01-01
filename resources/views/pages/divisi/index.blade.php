@@ -63,6 +63,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Bagian</th>
+                                            <th>Aktif</th>
                                             <th>Diperbarui</th>
                                             @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
                                                 <th class="text-center">Aksi</th>
@@ -75,6 +76,13 @@
                                                 <td class="align-middle">
                                                     {{ $divisi->count() * ($divisi->currentPage() - 1) + $loop->iteration }}</td>
                                                 <td class="align-middle">{{ ucwords($data->nama_divisi) }}</td>
+                                                <td class="align-middle">
+                                                    @if ($data->active == 1)
+                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                    @else
+                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                    @endif
+                                                </td>
                                                 <td class="align-middle">{{ $data->updated_at }}</td>
                                                 @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
                                                     <td class="align-middle text-center">

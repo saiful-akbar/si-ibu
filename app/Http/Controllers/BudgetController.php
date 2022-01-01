@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Budget;
 use App\Models\Divisi;
+use App\Models\JenisBelanja;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,8 @@ class BudgetController extends Controller
         /**
          * query join table budget dengan tabel divisi
          */
-        $budgets = Budget::leftJoin('divisi', 'budget.divisi_id', '=', 'divisi.id');
+        $budgets = Budget::leftJoin('jenis_belanja', 'budget.jenis_belanja_id', '=', 'jenis_belanja.id')
+            ->leftJoin('divisi', 'divisi.id', '=', 'jenis_belanja.divisi_id');
 
         /**
          * cek apakah ada request search atau tidak
@@ -31,6 +33,7 @@ class BudgetController extends Controller
             $budgets->where('budget.tahun_anggaran', 'like', "%{$request->search}%")
                 ->orWhere('budget.nominal', 'like', "%{$request->search}%")
                 ->orWhere('budget.updated_at', 'like', "%{$request->search}%")
+                ->orWhere('jenis_belanja.kategori_balanja', 'like', "%{$request->search}%")
                 ->orWhere('divisi.nama_divisi', 'like', "%{$request->search}%");
         }
 
@@ -42,6 +45,7 @@ class BudgetController extends Controller
             'budget.tahun_anggaran',
             'budget.nominal',
             'budget.updated_at',
+            'jenis_belanja.kategori_belanja',
             'divisi.nama_divisi',
         )->orderBy('budget.tahun_anggaran', 'desc')
             ->orderBy('budget.updated_at', 'desc');
@@ -69,10 +73,8 @@ class BudgetController extends Controller
      */
     public function show(Budget $budget)
     {
-        $result = Budget::with('divisi')->find($budget->id);
-
         return response()->json([
-            'budget' => $result,
+            'budget' => Budget::with('jenisBelanja.divisi')->find($budget->id),
         ]);
     }
 
@@ -85,9 +87,11 @@ class BudgetController extends Controller
     public function create()
     {
         /**
-         * Ambil semua data divisi
+         * Ambil semua data divisi dan jenisBelanja
          */
-        $divisions = Divisi::orderBy('nama_divisi', 'asc')->get();
+        $divisions = Divisi::with('jenisBelanja')
+            ->where('active', 1)
+            ->get();
 
         return view('pages.budget.create', compact('divisions'));
     }
@@ -106,17 +110,18 @@ class BudgetController extends Controller
          * aturan validasi
          */
         $validateRules = [
-            'divisi_id' => ['required', 'exists:divisi,id'],
+            'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:0'],
             'nominal' => ['required', 'numeric', 'min:0'],
+            'keterangan' => [],
         ];
 
         /**
          * pesan error validasi
          */
         $validateMessage = [
-            'divisi_id.required' => 'Divisi tidak boleh kosong.',
-            'divisi_id.exists' => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
+            'jenis_belanja_id.required' => 'Akun belanja harus dipilih.',
+            'jenis_belanja_id.exists' => 'Akun belanja tidak terdaftar. Pilih akun belanja yang telah ditentukan.',
             'tahun_anggaran.required' => 'Tahun anggaran tidak boleh kosong.',
             'tahun_anggaran.numeric' => 'Tahun anggaran harus bertipe numerik atau angka.',
             'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari 4 digit angka.',
@@ -132,13 +137,6 @@ class BudgetController extends Controller
         $validatedData = $request->validate($validateRules, $validateMessage);
 
         /**
-         * cek apa ada ketengan atau tidak
-         */
-        if ($request->keterangan) {
-            $validatedData['keterangan'] = $request->keterangan;
-        };
-
-        /**
          * simpan ke database
          */
         try {
@@ -146,7 +144,7 @@ class BudgetController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('budget.create')->with('alert', [
                 'type' => 'danger',
-                'message' => 'Budget gagal ditambahkan. ' . $e->getMessage(),
+                'message' => 'Budget gagal ditambahkan. <strong>' . $e->getMessage() . '</strong>',
             ]);
         }
 
@@ -167,7 +165,9 @@ class BudgetController extends Controller
         /**
          * Ambil semua data divisi
          */
-        $divisions = Divisi::orderBy('nama_divisi', 'asc')->get();;
+        $divisions = Divisi::with('jenisBelanja')
+            ->where('active', 1)
+            ->get();
 
         return view('pages.budget.edit', compact('budget', 'divisions'));
     }
@@ -186,17 +186,18 @@ class BudgetController extends Controller
          * aturan validasi
          */
         $validateRules = [
-            'divisi_id' => ['required', 'exists:divisi,id'],
+            'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:0'],
             'nominal' => ['required', 'numeric', 'min:0'],
+            'keterangan' => [],
         ];
 
         /**
          * pesan error validasi
          */
         $validateMessage = [
-            'divisi_id.required' => 'Divisi tidak boleh kosong.',
-            'divisi_id.exists' => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
+            'jenis_belanja_id.required' => 'Akun belanja harus dipilih.',
+            'jenis_belanja_id.exists' => 'Akun belanja tidak terdaftar. Pilih akun belanja yang telah ditentukan.',
             'tahun_anggaran.required' => 'Tahun anggaran tidak boleh kosong.',
             'tahun_anggaran.numeric' => 'Tahun anggaran harus bertipe numerik atau angka.',
             'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari 4 digit angka.',
@@ -212,13 +213,6 @@ class BudgetController extends Controller
         $validatedData = $request->validate($validateRules, $validateMessage);
 
         /**
-         * cek apa ada ketengan atau tidak
-         */
-        if ($request->keterangan) {
-            $validatedData['keterangan'] = $request->keterangan;
-        };
-
-        /**
          * update budget di database
          */
         try {
@@ -226,7 +220,7 @@ class BudgetController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('budget.edit', ['budget' => $budget->id])->with('alert', [
                 'type' => 'danger',
-                'message' => 'Budget gagal ditambahkan. ' . $e->getMessage(),
+                'message' => 'Budget gagal ditambahkan. <strong>' . $e->getMessage() . '</strong>',
             ]);
         }
 

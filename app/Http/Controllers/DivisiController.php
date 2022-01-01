@@ -16,7 +16,7 @@ class DivisiController extends Controller
      */
     public function index(Request $request)
     {
-        $divisi = Divisi::select('id', 'nama_divisi', 'updated_at');
+        $divisi = Divisi::select('id', 'nama_divisi', 'active', 'updated_at');
 
         if ($request->search) {
             $divisi->where('nama_divisi', 'like', '%' . $request->search . '%');
@@ -61,6 +61,12 @@ class DivisiController extends Controller
      */
     public function store(Request $request)
     {
+        // validasi rules
+        $validateRules = [
+            'nama_divisi' => ['required', 'max:100', 'unique:divisi,nama_divisi'],
+            'active' => []
+        ];
+
         // pesan validasi error
         $validate_message = [
             'nama_divisi.required' => 'Nama bagian tidak boleh kosong.',
@@ -69,11 +75,10 @@ class DivisiController extends Controller
         ];
 
         // validasi
-        $validate = $request->validate([
-            'nama_divisi' => ['required', 'max:100', 'unique:divisi,nama_divisi']
-        ], $validate_message);
+        $validate = $request->validate($validateRules, $validate_message);
 
         $validate['nama_divisi'] = ucwords($validate['nama_divisi']);
+        $validate['active'] = isset($request->active) ? true : false;
 
         // simpan ke database
         Divisi::create($validate);
@@ -110,27 +115,40 @@ class DivisiController extends Controller
      */
     public function update(Request $request, Divisi $divisi)
     {
+        // validasi rules
+        $validateRules = [
+            'nama_divisi' => ['required', 'max:100'],
+            'active' => []
+        ];
+
         // pesan validasi error
-        $validate_message = [
+        $validateErrorMessage = [
             'nama_divisi.required' => 'Nama bagian tidak boleh kosong.',
             'nama_divisi.max' => 'Panjang nama tidak boleh lebih dari 100 karakter.',
             'nama_divisi.unique' => 'Nama bagian sudah digunakan.',
         ];
 
-        // validasi rules
-        $validate_rules = ['nama_divisi' => ['required', 'max:100']];
-
         // cek apakah value dirubah atau tidak
         if ($request->nama_divisi != $divisi->nama_divisi) {
-            $validate_rules = ['nama_divisi' => ['required', 'max:100', 'unique:divisi,nama_divisi']];
+            $validateRules = ['nama_divisi' => ['required', 'max:100', 'unique:divisi,nama_divisi']];
         }
 
         // validasi
-        $validated_data = $request->validate($validate_rules, $validate_message);
-        $validated_data['nama_divisi'] = ucwords($validated_data['nama_divisi']);
+        $validatedData = $request->validate($validateRules, $validateErrorMessage);
+
+        $validatedData['nama_divisi'] = ucwords($validatedData['nama_divisi']);
+        $validatedData['active'] = isset($request->active) ? true : false;
 
         // update ke database
-        Divisi::where('id', $divisi->id)->update($validated_data);
+        try {
+            Divisi::where('id', $divisi->id)->update($validatedData);
+        } catch (\Exception $e) {
+            return redirect()->route('bagian.edit', ['divisi' => $divisi->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => 'Gagal memperbarui data bagian. <strong>' . $e->getMessage() . '</strong>',
+                ]);
+        }
 
         return redirect()->route('bagian.edit', ['divisi' => $divisi->id])->with('alert', [
             'type' => 'success',
@@ -149,7 +167,31 @@ class DivisiController extends Controller
      */
     public function delete(Divisi $divisi)
     {
-        Divisi::destroy($divisi->id);
+        $relasiData = Divisi::with('user', 'jenisBelanja')->find($divisi->id);
+
+        /**
+         * cek apakah data divisi melilik data pada relasi ke user dan jenis_belanja
+         */
+        if (count($relasiData->user) > 0 && count($relasiData->jenisBelanja) > 0) {
+            return redirect()->route('bagian')
+                ->with('alert', [
+                    'type' => 'warning',
+                    'message' => "Gagal menghapus data. Bagian <b>{$divisi->nama_divisi}</b> memiliki relasi dengan user & akun belanja.",
+                ]);
+        }
+
+        /**
+         * Proses delete
+         */
+        try {
+            Divisi::destroy($divisi->id);
+        } catch (\Exception $e) {
+            return redirect()->route('bagian')
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => 'Gagal menghapus data bagian. <strong>' . $e->getMessage() . '</strong>',
+                ]);
+        }
 
         return redirect()->route('bagian')->with('alert', [
             'type' => 'success',

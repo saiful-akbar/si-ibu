@@ -61,6 +61,28 @@
                                     </div>
                                 </div>
 
+                                {{-- input user aktif --}}
+                                <div class="form-group row justify-content-end mb-3">
+                                    <div class="col-md-9 col-sm-12">
+                                        <div class="custom-control custom-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="active"
+                                                class="custom-control-input form-control-lg"
+                                                id="active"
+                                                @if (old('active', $divisi->active) == 1) checked @endif
+                                            />
+
+                                            <label
+                                                class="custom-control-label"
+                                                for="active"
+                                            >
+                                                Aktif
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {{-- button submit & reset --}}
                                 <div class="form-group mb-0 justify-content-end row">
                                     <div class="col-md-9 col-sm-12">

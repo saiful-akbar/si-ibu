@@ -61,3 +61,8 @@ table.nowrap tr td {
 body[data-leftbar-compact-mode="condensed"] {
     min-height: 100vh !important;
 }
+
+select.select2.is-invalid + span.select2-container {
+    border: 1px solid #fa5c7c !important;
+    border-radius: 0.25rem;
+}

@@ -29,16 +29,12 @@ class CreateTransaksiTable extends Migration
             // relasi dengan tabel user
             $table->foreign('user_id')
                 ->references('id')
-                ->on('user')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->on('user');
 
             // relasi dengan tabel jenis_belanja
             $table->foreign('jenis_belanja_id')
                 ->references('id')
-                ->on('jenis_belanja')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->on('jenis_belanja');
         });
     }
 

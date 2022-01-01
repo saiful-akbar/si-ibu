@@ -64,9 +64,9 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Tahun Anggaran</th>
-                                            <th>Divisi</th>
+                                            <th>Akun Belanja</th>
                                             <th>Nominal</th>
-                                            <th>Diperbarui</th>
+                                            <th>Dibuat / Diperbarui</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -80,7 +80,7 @@
                                                     {{ $data->tahun_anggaran }}
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ ucwords($data->nama_divisi) }}
+                                                    {{ ucwords($data->nama_divisi) }} - {{ $data->kategori_belanja }}
                                                 </td>
                                                 <td class="align-middle">
                                                     Rp. {{ number_format($data->nominal) }}
@@ -161,7 +161,7 @@
         aria-hidden="true"
     >
         <div
-            class="modal-dialog modal-dialog-scrollable modal-lg"
+            class="modal-dialog modal-dialog-scrollable"
             role="document"
         >
             <div class="modal-content">
@@ -169,7 +169,10 @@
                     <h5
                         class="modal-title"
                         id="detail"
-                    >DETAIL BUDGET</h5>
+                    >
+                        DETAIL BUDGET
+                    </h5>
+
                     <button
                         type="button"
                         class="close"
@@ -191,43 +194,52 @@
                     {{-- modal detail conten --}}
                     <div id="modal-detail-content">
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Divisi :</strong>
-                                <div id="detail-divisi"></div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Tahun Anggaran :</strong>
-                                <div id="detail-tahun-anggaran"></div>
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Divisi :</strong>
+                                <span id="detail-divisi"></span>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Nominal :</strong>
-                                <div id="detail-nominal"></div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Dibuat Pada :</strong>
-                                <div id="detail-created"></div>
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Akun Belanja :</strong>
+                                <span id="detail-akun-belanja"></span>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Diperbarui Pada :</strong>
-                                <div id="detail-updated"></div>
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Tahun Anggaran :</strong>
+                                <span id="detail-tahun-anggaran"></span>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Nominal :</strong>
+                                <span id="detail-nominal"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Dibuat :</strong>
+                                <span id="detail-created"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Diperbarui :</strong>
+                                <span id="detail-updated"></span>
+                            </div>
+                        </div>
+
+                        <hr class="mb-3">
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <strong>Keterangan :</strong>
-                                <div
-                                    class="mt-1"
-                                    id="detail-keterangan"
-                                ></div>
+                                <p id="detail-keterangan"></p>
                             </div>
                         </div>
                     </div>
@@ -237,7 +249,7 @@
                 <div class="modal-footer">
                     <button
                         type="button"
-                        class="btn btn-dark"
+                        class="btn btn-dark btn-sm btn-rounded"
                         onclick="handleCloseModalDetail()"
                     >
                         <i class=" mdi mdi-close"></i>

@@ -71,12 +71,22 @@ const handleShowModalDetail = (id) => {
         success: (res) => {
             showHideLoadingModal(false);
 
-            $("#detail-divisi").text(res.budget.divisi.nama_divisi);
-            $("#detail-tahun-anggaran").text(res.budget.tahun_anggaran);
-            $("#detail-nominal").text(main.formatRupiah(res.budget.nominal));
-            $("#detail-created").text(res.budget.created_at);
-            $("#detail-updated").text(res.budget.updated_at);
-            $("#detail-keterangan").html(res.budget.keterangan);
+            const {
+                jenis_belanja,
+                tahun_anggaran,
+                nominal,
+                created_at,
+                updated_at,
+                keterangan,
+            } = res.budget;
+
+            $("#detail-divisi").text(jenis_belanja.divisi.nama_divisi);
+            $("#detail-akun-belanja").text(jenis_belanja.kategori_belanja);
+            $("#detail-tahun-anggaran").text(tahun_anggaran);
+            $("#detail-nominal").text(main.formatRupiah(nominal));
+            $("#detail-created").text(created_at);
+            $("#detail-updated").text(updated_at);
+            $("#detail-keterangan").html(keterangan);
         },
     });
 };

@@ -23,9 +23,7 @@ class CreateJenisBelanjaTable extends Migration
             // relasi dengan table divisi
             $table->foreign('divisi_id')
                 ->references('id')
-                ->on('divisi')
-                ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->on('divisi');
         });
     }
 

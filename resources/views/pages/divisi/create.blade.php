@@ -49,7 +49,7 @@
                                             type="text"
                                             id="nama_divisi"
                                             name="nama_divisi"
-                                            placeholder="Nama bagian..."
+                                            placeholder="Masukan nama bagian..."
                                             value="{{ old('nama_divisi') }}"
                                             class="form-control @error('nama_divisi') is-invalid @enderror"
                                         />
@@ -57,6 +57,28 @@
                                         @error('nama_divisi')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                    </div>
+                                </div>
+
+                                {{-- input divisi (bagian) aktif --}}
+                                <div class="form-group row justify-content-end mb-3">
+                                    <div class="col-md-9 col-sm-12">
+                                        <div class="custom-control custom-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="active"
+                                                class="custom-control-input form-control-lg"
+                                                id="active"
+                                                @if (old('active', true)) checked @endif
+                                            />
+
+                                            <label
+                                                class="custom-control-label"
+                                                for="active"
+                                            >
+                                                Aktif
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
 

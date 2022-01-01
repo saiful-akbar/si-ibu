@@ -24,9 +24,7 @@ class CreateBudgetTable extends Migration
             // relasi dengan tabel divisi
             $table->foreign('jenis_belanja_id')
                 ->references('id')
-                ->on('jenis_belanja')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->on('jenis_belanja');
         });
     }
 

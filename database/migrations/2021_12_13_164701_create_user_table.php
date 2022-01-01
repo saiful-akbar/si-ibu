@@ -25,9 +25,7 @@ class CreateUserTable extends Migration
             // relasi dengan table divisi
             $table->foreign('divisi_id')
                 ->references('id')
-                ->on('divisi')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->on('divisi');
         });
     }
 

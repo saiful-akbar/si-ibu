@@ -8,10 +8,15 @@ const handleDelete = (id, namaBagian) => {
     bootbox.confirm({
         title: "Peringatan!",
         message: `
-            <ul>
-                <li>Yakin ingin menghapus bagian <strong>${namaBagian}</strong> ?</li>
-                <li>Semua data terkait atau data yang berelasi dengan data ini juga akan terhapus.</li>
-            </ul>
+            Yakin ingin menghapus bagian <strong>${namaBagian}</strong> ?
+
+            <div class="alert alert-info mt-3" role="alert">
+                <h5 class="alert-heading">
+                    <i class="dripicons-information mr-1"></i>
+                    Info
+                </h5>
+                <p>Bagian tidak dapat dihapus jika memlikin data pada relasi user dan akun belanja!</p>
+            </div>
         `,
         buttons: {
             confirm: {

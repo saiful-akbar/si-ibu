@@ -13,7 +13,7 @@ class Divisi extends Model
     protected $table = 'divisi';
     protected $fillable = [
         'nama_divisi',
-        'aktif',
+        'active',
     ];
 
     /**
