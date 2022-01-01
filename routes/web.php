@@ -132,6 +132,14 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/budget,read')
             ->name('budget');
 
+        Route::get('/{budget}/switch', [BudgetController::class, 'switch'])
+            ->middleware('menu:/budget,update')
+            ->name('budget.switch');
+
+        Route::patch('/{budget}/switch', [BudgetController::class, 'updateSwitch'])
+            ->middleware('menu:/budget,update')
+            ->name('budget.switch.update');
+
         Route::get('/create', [BudgetController::class, 'create'])
             ->middleware('menu:/budget,create')
             ->name('budget.create');
@@ -140,7 +148,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/budget,create')
             ->name('budget.store');
 
-        Route::get('/{budget}', [BudgetController::class, 'show'])
+        Route::get('/{budget}/show', [BudgetController::class, 'show'])
             ->middleware('menu:/budget,read')
             ->name('budget.show');
 
@@ -155,6 +163,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{budget}', [BudgetController::class, 'delete'])
             ->middleware('menu:/budget,delete')
             ->name('budget.delete');
+
+        Route::get('/{id}/datatable', [BudgetController::class, 'getDatatable'])
+            ->middleware('menu:/budget,read')
+            ->name('budget.datatable');
     });
 
     /**

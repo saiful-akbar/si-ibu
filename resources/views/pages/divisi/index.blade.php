@@ -14,10 +14,7 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($user_akses->pivot->create == 1)
-                                <a
-                                    href="{{ route('bagian.create') }}"
-                                    class="btn btn-rounded btn-primary"
-                                >
+                                <a href="{{ route('bagian.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Tambah Bagian</span>
                                 </a>
@@ -27,25 +24,13 @@
 
                         {{-- form search --}}
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form
-                                action="{{ route('bagian') }}"
-                                method="GET"
-                                autocomplete="off"
-                            >
+                            <form action="{{ route('bagian') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
-                                    <input
-                                        type="search"
-                                        name="search"
-                                        placeholder="Cari bagian..."
-                                        class="form-control"
-                                        value="{{ request('search') }}"
-                                    />
+                                    <input type="search" name="search" placeholder="Cari bagian..." class="form-control"
+                                        value="{{ request('search') }}" />
 
                                     <div class="input-group-append">
-                                        <button
-                                            class="btn btn-secondary"
-                                            type="submit"
-                                        >
+                                        <button class="btn btn-secondary" type="submit">
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>
@@ -64,7 +49,7 @@
                                             <th>No</th>
                                             <th>Nama Bagian</th>
                                             <th>Aktif</th>
-                                            <th>Diperbarui</th>
+                                            <th>Dibuat / Diperbarui</th>
                                             @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
                                                 <th class="text-center">Aksi</th>
                                             @endif
@@ -74,7 +59,8 @@
                                         @foreach ($divisi as $data)
                                             <tr>
                                                 <td class="align-middle">
-                                                    {{ $divisi->count() * ($divisi->currentPage() - 1) + $loop->iteration }}</td>
+                                                    {{ $divisi->count() * ($divisi->currentPage() - 1) + $loop->iteration }}
+                                                </td>
                                                 <td class="align-middle">{{ ucwords($data->nama_divisi) }}</td>
                                                 <td class="align-middle">
                                                     @if ($data->active == 1)
@@ -87,13 +73,10 @@
                                                 @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
                                                     <td class="align-middle text-center">
                                                         @if ($user_akses->pivot->update == 1)
-                                                            <a
-                                                                href="{{ route('bagian.edit', ['divisi' => $data->id]) }}"
+                                                            <a href="{{ route('bagian.edit', ['divisi' => $data->id]) }}"
                                                                 class="btn btn-sm btn-success btn-icon mr-1"
-                                                                data-toggle="tooltip"
-                                                                data-original-title="Edit"
-                                                                data-placement="top"
-                                                            >
+                                                                data-toggle="tooltip" data-original-title="Edit"
+                                                                data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
                                                         @endif
@@ -101,11 +84,8 @@
                                                         @if ($user_akses->pivot->delete == 1)
                                                             <button
                                                                 onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
-                                                                class="btn btn-sm btn-danger btn-icon"
-                                                                data-toggle="tooltip"
-                                                                data-original-title="Hapus"
-                                                                data-placement="top"
-                                                            >
+                                                                class="btn btn-sm btn-danger btn-icon" data-toggle="tooltip"
+                                                                data-original-title="Hapus" data-placement="top">
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>
                                                         @endif
@@ -130,11 +110,7 @@
     </div>
 
     {{-- form delete divisi --}}
-    <form
-        id="form-delete"
-        method="post"
-        style="display: none"
-    >
+    <form id="form-delete" method="post" style="display: none">
         @method('DELETE') @csrf
     </form>
 @endsection

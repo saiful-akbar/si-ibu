@@ -90,7 +90,7 @@
                                                 </td>
                                                 <td class="align-middel text-center">
                                                     <button
-                                                        onclick="handleShowModalDetail({{ $data->id }})"
+                                                        onclick="budget.handleShowModalDetail({{ $data->id }})"
                                                         data-toggle="tooltip"
                                                         data-original-title="Detail"
                                                         data-placement="top"
@@ -100,6 +100,16 @@
                                                     </button>
 
                                                     @if ($userAccess->pivot->update == 1)
+                                                        <a
+                                                            href="{{ route('budget.switch', ['budget' => $data->id]) }}"
+                                                            class="btn btn-sm btn-primary btn-icon mr-1"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Switch Budget"
+                                                            data-placement="top"
+                                                        >
+                                                            <i class="mdi mdi-code-tags"></i>
+                                                        </a>
+
                                                         <a
                                                             href="{{ route('budget.edit', ['budget' => $data->id]) }}"
                                                             class="btn btn-sm btn-success btn-icon mr-1"
@@ -113,7 +123,7 @@
 
                                                     @if ($userAccess->pivot->delete == 1)
                                                         <button
-                                                            onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
+                                                            onclick="budget.handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
                                                             data-toggle="tooltip"
                                                             data-original-title="Hapus"
                                                             data-placement="top"
@@ -177,7 +187,7 @@
                         type="button"
                         class="close"
                         aria-label="Close"
-                        onclick="handleCloseModalDetail()"
+                        onclick="budget.handleCloseModalDetail()"
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -250,7 +260,7 @@
                     <button
                         type="button"
                         class="btn btn-dark btn-sm btn-rounded"
-                        onclick="handleCloseModalDetail()"
+                        onclick="budget.handleCloseModalDetail()"
                     >
                         <i class=" mdi mdi-close"></i>
                         <span>Tutup</span>
