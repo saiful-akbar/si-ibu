@@ -128,10 +128,12 @@ class Budget {
                 } = res.budget;
 
                 $("#id").val(id);
-                $("#jenis_belanja").val(jenis_belanja.kategori_belanja);
                 $("#tahun_anggaran").val(tahun_anggaran);
                 $("#keterangan").html(keterangan);
                 $(".note-editable").html(keterangan);
+                $("#jenis_belanja").val(
+                    `${jenis_belanja.divisi.nama_divisi} - ${jenis_belanja.kategori_belanja}`
+                );
             },
         });
     };

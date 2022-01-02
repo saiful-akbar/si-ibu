@@ -1,6 +1,10 @@
 class Transaksi {
+    constructor() {
+        this.dataTableBudget = null;
+    }
+
     /**
-     * Fungsi handle hapus data user
+     * Method handle hapus data user
      *
      * @param {int} id
      * @param {string} noDokumen
@@ -35,6 +39,10 @@ class Transaksi {
         });
     }
 
+    /**
+     * Method how modal loading
+     * @param {boolean} show
+     */
     showModalLoading(show) {
         if (show) {
             $("#modal-detail-loading").show();
@@ -46,7 +54,7 @@ class Transaksi {
     }
 
     /**
-     * Fungsi show modal detail transaksi
+     * Method show modal detail transaksi
      *
      * @param  {integer} id
      * @return {void}
@@ -81,15 +89,86 @@ class Transaksi {
     }
 
     /**
-     * Fungsi close modal detail transaksi
+     * Method close modal detail transaksi
      *
      * @return {void}
      */
     closeDetail() {
         $("#modal-detail").modal("hide");
     }
+
+    /**
+     *
+     * @param {boolean} show
+     */
+    showModalTableBudget(show) {
+        $("#modal-table-budget").modal(show ? "show" : "hide");
+
+        if (this.dataTableBudget == null) {
+            this.dataTableBudget = $("#datatable-budget").DataTable({
+                processing: true,
+                serverSide: true,
+                pageLength: 25,
+                lengthChange: false,
+                scrollX: true,
+                destroy: false,
+                info: false,
+                ajax: `${main.baseUrl}/belanja/budget/datatable`,
+                language: {
+                    paginate: {
+                        previous: "<i class='mdi mdi-chevron-left'>",
+                        next: "<i class='mdi mdi-chevron-right'>",
+                    },
+                },
+                columns: [
+                    {
+                        data: "action",
+                        name: "action",
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
+                        data: "nama_divisi",
+                        name: "nama_divisi",
+                    },
+                    {
+                        data: "kategori_belanja",
+                        name: "kategori_belanja",
+                    },
+                    {
+                        data: "tahun_anggaran",
+                        name: "tahun_anggaran",
+                    },
+                    {
+                        data: "nominal",
+                        name: "nominal",
+                        render: (data) => main.formatRupiah(data),
+                    },
+                ],
+            });
+        }
+    }
+
+    /**
+     * Method set value pada form
+     *
+     * @param {JSON} data
+     */
+    setFormValue(data) {
+        this.showModalTableBudget(false);
+
+        $("#jenis_belanja_id").val(data.id);
+        $("#tahun_anggaran").val(data.tahun_anggaran);
+        $("#sisa_budget").val(main.formatRupiah(data.nominal));
+        $("#kategori_belanja").val(
+            `${data.nama_divisi} - ${data.kategori_belanja}`
+        );
+    }
 }
 
+/**
+ * Inisialisasi class transaksi
+ */
 const transaksi = new Transaksi();
 
 $(document).ready(function () {

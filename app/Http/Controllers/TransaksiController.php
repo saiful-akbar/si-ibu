@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LaporanTransaksiExport;
+use App\Models\Budget;
 use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use Yajra\DataTables\Facades\DataTables;
 
 class TransaksiController extends Controller
 {
@@ -170,6 +172,23 @@ class TransaksiController extends Controller
     }
 
     /**
+     * ambil data sisa budget berdasarkan jenis belanjanya
+     *
+     * @param JenisBelanja $jenisBelanja
+     *
+     * @return JSON
+     */
+    public function sisaBudget(JenisBelanja $jenisBelanja)
+    {
+        $sisaBudget = Budget::where('jenis_belanja_id', $jenisBelanja->id)
+            ->sum('nominal');
+
+        return response()->json([
+            'sisaBudget' => $sisaBudget,
+        ]);
+    }
+
+    /**
      * view halaman tambah transaksi
      *
      * @return \Illuminate\Http\Response
@@ -177,9 +196,11 @@ class TransaksiController extends Controller
     public function create()
     {
         $noDocument = $this->generateNoDocument();
-        $jenisBelanja = JenisBelanja::all();
+        $divisi = Divisi::with(['jenisBelanja' => fn ($query) => $query->where('active', 1)])
+            ->where('id', Auth::user()->divisi_id)
+            ->first();
 
-        return view('pages.transaksi.create', compact('jenisBelanja', 'noDocument'));
+        return view('pages.transaksi.create', compact('divisi', 'noDocument'));
     }
 
     /**
@@ -543,5 +564,43 @@ class TransaksiController extends Controller
         return PDF::loadView('export.pdf.pdf-transaksi', $data)
             ->setPaper('a4', 'landscape')
             ->download('laporan-transaksi.pdf');
+    }
+
+    /**
+     * Fungsi membuat data tabel jenis_belanja
+     *
+     */
+    public function dataTable()
+    {
+        $budgets = Budget::leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
+            ->leftjoin('divisi', 'divisi.id', '=', 'jenis_belanja.divisi_id')
+            ->where([
+                ['divisi.active', 1],
+                ['jenis_belanja.active', 1]
+            ])
+            ->select([
+                'divisi.nama_divisi',
+                'jenis_belanja.id',
+                'jenis_belanja.kategori_belanja',
+                'budget.tahun_anggaran',
+                'budget.nominal'
+            ])
+            ->orderBy('budget.tahun_anggaran', 'desc')
+            ->orderBy('divisi.nama_divisi', 'asc')
+            ->orderBy('jenis_belanja.kategori_belanja', 'asc')
+            ->get();
+
+        return DataTables::of($budgets)
+            ->addColumn('action', function ($budget) {
+                return "
+                    <button
+                        onclick='transaksi.setFormValue({$budget})'
+                        class='btn btn-sm btn-success btn-rounded'
+                    >
+                        <i class='mdi mdi-hand-pointing-up'></i>
+                        <span>Pilih</span>
+                    </button>
+                ";
+            })->make(true);
     }
 }

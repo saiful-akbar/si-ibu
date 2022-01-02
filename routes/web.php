@@ -166,7 +166,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/{id}/datatable', [BudgetController::class, 'getDatatable'])
             ->middleware('menu:/budget,read')
-            ->name('budget.datatable');
+            ->name('budget.datatable.id');
     });
 
     /**
@@ -241,6 +241,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/export/pdf', [TransaksiController::class, 'exportPdf'])
             ->middleware('menu:/belanja,read')
             ->name('belanja.pdf');
+
+        Route::get('/budget/datatable', [TransaksiController::class, 'dataTable'])
+            ->middleware('menu:/belanja,read')
+            ->name('belanja.datatable.budget');
+
+        Route::get('/{jenisBelanja}/budget', [TransaksiController::class, 'sisaBudget'])
+            ->middleware('menu:/belanja.read')
+            ->name('belanja.sisa-budget');
     });
 
     /**

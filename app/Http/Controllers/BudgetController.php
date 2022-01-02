@@ -136,6 +136,26 @@ class BudgetController extends Controller
          */
         $validatedData = $request->validate($validateRules, $validateMessage);
 
+        $cekBudget = Budget::where([
+            ['jenis_belanja_id', $request->jenis_belanja_id],
+            ['tahun_anggaran', $request->tahun_anggaran],
+        ])->first();
+
+        /**
+         * cek apakah budget sudah pernah dibuat berdasarakan jenis_belanja dan di tahun yang sama
+         */
+        if ($cekBudget !== null) {
+            return redirect()->route('budget.create')->with('alert', [
+                'type' => 'warning',
+                'message' => "
+                    <ul>
+                        <li>Budget sudah dibuat.</li>
+                        <li>Jika anda ingin menambahkan budget pada akun belanja yang sama ditahun yang sama, anda bisa melakukan edit data pada tabel budget.</li>
+                    </ul>
+                ",
+            ]);
+        }
+
         /**
          * simpan ke database
          */
@@ -283,13 +303,6 @@ class BudgetController extends Controller
 
         return DataTables::of($budgets)
             ->addColumn('pilih', fn ($data) => $data)
-            ->setRowClass('row-clicked')
-            ->setRowData(['id' => 'test'])
-            ->setRowAttr(function ($budget) {
-                return [
-                    'data-id' => $budget->id
-                ];
-            })
             ->make(true);
     }
 

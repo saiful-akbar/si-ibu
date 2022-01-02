@@ -16,10 +16,7 @@
                     <div class="row justify-content-end">
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
-                                <a
-                                    href="{{ route('budget.create') }}"
-                                    class="btn btn-rounded btn-primary"
-                                >
+                                <a href="{{ route('budget.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Input Budget</span>
                                 </a>
@@ -27,25 +24,13 @@
                         </div>
 
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form
-                                action="{{ route('budget') }}"
-                                method="GET"
-                                autocomplete="off"
-                            >
+                            <form action="{{ route('budget') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
-                                    <input
-                                        type="search"
-                                        name="search"
-                                        placeholder="Cari budget..."
-                                        class="form-control"
-                                        value="{{ request('search') }}"
-                                    />
+                                    <input type="search" name="search" placeholder="Cari budget..." class="form-control"
+                                        value="{{ request('search') }}" />
 
                                     <div class="input-group-append">
-                                        <button
-                                            class="btn btn-secondary"
-                                            type="submit"
-                                        >
+                                        <button class="btn btn-secondary" type="submit">
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>
@@ -59,11 +44,12 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-hover nowrap">
+                                <table class="table table-hover nowrap w-100 table-centered">
                                     <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>Tahun Anggaran</th>
+                                            <th>Bagian</th>
                                             <th>Akun Belanja</th>
                                             <th>Nominal</th>
                                             <th>Dibuat / Diperbarui</th>
@@ -73,50 +59,43 @@
                                     <tbody>
                                         @foreach ($budgets as $data)
                                             <tr>
-                                                <td class="align-middle">
+                                                <td>
                                                     {{ $budgets->count() * ($budgets->currentPage() - 1) + $loop->iteration }}
                                                 </td>
-                                                <td class="align-middle">
+                                                <td>
                                                     {{ $data->tahun_anggaran }}
                                                 </td>
-                                                <td class="align-middle">
-                                                    {{ ucwords($data->nama_divisi) }} - {{ $data->kategori_belanja }}
+                                                <td>
+                                                    {{ ucwords($data->nama_divisi) }}
                                                 </td>
-                                                <td class="align-middle">
+                                                <td>
+                                                    {{ $data->kategori_belanja }}
+                                                </td>
+                                                <td>
                                                     Rp. {{ number_format($data->nominal) }}
                                                 </td>
-                                                <td class="align-middle">
+                                                <td>
                                                     {{ $data->updated_at }}
                                                 </td>
-                                                <td class="align-middel text-center">
-                                                    <button
-                                                        onclick="budget.handleShowModalDetail({{ $data->id }})"
-                                                        data-toggle="tooltip"
-                                                        data-original-title="Detail"
-                                                        data-placement="top"
-                                                        class="btn btn-sm btn-info btn-icon mr-1"
-                                                    >
+                                                <td class="text-center">
+                                                    <button onclick="budget.handleShowModalDetail({{ $data->id }})"
+                                                        data-toggle="tooltip" data-original-title="Detail"
+                                                        data-placement="top" class="btn btn-sm btn-info btn-icon mr-1">
                                                         <i class="mdi mdi-eye-outline"></i>
                                                     </button>
 
                                                     @if ($userAccess->pivot->update == 1)
-                                                        <a
-                                                            href="{{ route('budget.switch', ['budget' => $data->id]) }}"
+                                                        <a href="{{ route('budget.switch', ['budget' => $data->id]) }}"
                                                             class="btn btn-sm btn-primary btn-icon mr-1"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Switch Budget"
-                                                            data-placement="top"
-                                                        >
+                                                            data-toggle="tooltip" data-original-title="Switch Budget"
+                                                            data-placement="top">
                                                             <i class="mdi mdi-code-tags"></i>
                                                         </a>
 
-                                                        <a
-                                                            href="{{ route('budget.edit', ['budget' => $data->id]) }}"
+                                                        <a href="{{ route('budget.edit', ['budget' => $data->id]) }}"
                                                             class="btn btn-sm btn-success btn-icon mr-1"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Edit"
-                                                            data-placement="top"
-                                                        >
+                                                            data-toggle="tooltip" data-original-title="Edit"
+                                                            data-placement="top">
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
                                                     @endif
@@ -124,11 +103,8 @@
                                                     @if ($userAccess->pivot->delete == 1)
                                                         <button
                                                             onclick="budget.handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Hapus"
-                                                            data-placement="top"
-                                                            class="btn btn-sm btn-danger btn-icon"
-                                                        >
+                                                            data-toggle="tooltip" data-original-title="Hapus"
+                                                            data-placement="top" class="btn btn-sm btn-danger btn-icon">
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>
                                                     @endif
@@ -153,52 +129,28 @@
     </div>
 
     {{-- form delete data budget --}}
-    <form
-        method="POST"
-        id="form-delete-budget"
-    >
+    <form method="POST" id="form-delete-budget">
         @method('DELETE')
         @csrf
     </form>
 
     {{-- modal detail --}}
-    <div
-        class="modal fade"
-        id="modal-detail"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="detail"
-        aria-hidden="true"
-    >
-        <div
-            class="modal-dialog modal-dialog-scrollable"
-            role="document"
-        >
+    <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="detail" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5
-                        class="modal-title"
-                        id="detail"
-                    >
+                    <h5 class="modal-title" id="detail">
                         DETAIL BUDGET
                     </h5>
 
-                    <button
-                        type="button"
-                        class="close"
-                        aria-label="Close"
-                        onclick="budget.handleCloseModalDetail()"
-                    >
+                    <button type="button" class="close" aria-label="Close"
+                        onclick="budget.handleCloseModalDetail()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-center align-items-center">
-                        <div
-                            id="loading-modal"
-                            class="spinner-border text-primary"
-                            role="status"
-                        ></div>
+                        <div id="loading-modal" class="spinner-border text-primary" role="status"></div>
                     </div>
 
                     {{-- modal detail conten --}}
@@ -257,11 +209,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-dark btn-sm btn-rounded"
-                        onclick="budget.handleCloseModalDetail()"
-                    >
+                    <button type="button" class="btn btn-dark btn-sm btn-rounded" onclick="budget.handleCloseModalDetail()">
                         <i class=" mdi mdi-close"></i>
                         <span>Tutup</span>
                     </button>
