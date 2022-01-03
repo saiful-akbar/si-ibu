@@ -16,30 +16,8 @@ class JenisBelanja extends Model
     protected $table = 'jenis_belanja';
     protected $fillable = [
         'kategori_belanja',
-        'divisi_id',
         'active',
     ];
-
-    /**
-     * Relasi onr to many dengan tabel transaksi
-     *
-     * @return object
-     */
-    public function transaksi(): object
-    {
-        return $this->hasMany(Transaksi::class, 'jenis_belanja_id', 'id');
-    }
-
-    /**
-     * divisi
-     * Relasi one to many dengan tabel dvisi
-     *
-     * @return object
-     */
-    public function divisi(): object
-    {
-        return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
-    }
 
     /**
      * Relasi one to many dengan tabel budget

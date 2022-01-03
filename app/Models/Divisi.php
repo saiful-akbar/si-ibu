@@ -29,13 +29,13 @@ class Divisi extends Model
 
     /**
      * jenisBelanja
-     * Relasi one to many dengan tabel jenis_belanja
+     * Relasi one to many dengan tabel budget
      *
      * @return object
      */
-    public function jenisBelanja(): object
+    public function budget(): object
     {
-        return $this->hasMany(JenisBelanja::class, 'divisi_id', 'id');
+        return $this->hasMany(Budget::class, 'divisi_id', 'id');
     }
 
     /**

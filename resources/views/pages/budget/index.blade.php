@@ -62,21 +62,11 @@
                                                 <td>
                                                     {{ $budgets->count() * ($budgets->currentPage() - 1) + $loop->iteration }}
                                                 </td>
-                                                <td>
-                                                    {{ $data->tahun_anggaran }}
-                                                </td>
-                                                <td>
-                                                    {{ ucwords($data->nama_divisi) }}
-                                                </td>
-                                                <td>
-                                                    {{ $data->kategori_belanja }}
-                                                </td>
-                                                <td>
-                                                    Rp. {{ number_format($data->nominal) }}
-                                                </td>
-                                                <td>
-                                                    {{ $data->updated_at }}
-                                                </td>
+                                                <td>{{ $data->tahun_anggaran }}</td>
+                                                <td>{{ ucwords($data->nama_divisi) }}</td>
+                                                <td>{{ $data->kategori_belanja }}</td>
+                                                <td>Rp. {{ number_format($data->nominal) }}</td>
+                                                <td>{{ $data->updated_at }}</td>
                                                 <td class="text-center">
                                                     <button onclick="budget.handleShowModalDetail({{ $data->id }})"
                                                         data-toggle="tooltip" data-original-title="Detail"

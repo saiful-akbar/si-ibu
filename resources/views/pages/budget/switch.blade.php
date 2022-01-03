@@ -29,14 +29,25 @@
 
                         {{-- input dari akun belanja --}}
                         <div class="form-group row mb-3">
-                            <label for="dariJenisBelanja" class="col-md-3 col-sm-12 col-form-label">
+                            <label for="dari_jenis_belanja" class="col-md-3 col-sm-12 col-form-label">
                                 Dari Akun belanja
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input disabled type="text" id="dariJenisBelanja" name="dariJenisBelanja"
-                                    class="form-control"
-                                    value="{{ $budget->jenisBelanja->divisi->nama_divisi }} - {{ $budget->jenisBelanja->kategori_belanja }}" />
+                                <input disabled type="text" id="dari_jenis_belanja" name="dari_jenis_belanja"
+                                    class="form-control" value="{{ $budget->jenisBelanja->kategori_belanja }}" />
+                            </div>
+                        </div>
+
+                        {{-- input dari divisi --}}
+                        <div class="form-group row mb-3">
+                            <label for="dari_divisi" class="col-md-3 col-sm-12 col-form-label">
+                                Dari Bagian
+                            </label>
+
+                            <div class="col-md-9 col-sm-12">
+                                <input disabled type="text" id="dari_divisi" name="dari_divisi" class="form-control"
+                                    value="{{ $budget->divisi->nama_divisi }}" />
                             </div>
                         </div>
 
@@ -105,6 +116,22 @@
                             </div>
                         </div>
 
+                        {{-- input bagian (Divisi) --}}
+                        <div class="form-group row mb-3">
+                            <label for="divisi" class="col-md-3 col-sm-12 col-form-label">
+                                Bagian <small class="text-danger ml-1">*</small>
+                            </label>
+
+                            <div class="col-md-9 col-sm-12">
+                                <input required readonly type="text" id="divisi" name="divisi" value="{{ old('divisi') }}"
+                                    class="form-control @error('divisi') is-invalid @enderror" placeholder="Bagian..." />
+
+                                @error('divisi')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         {{-- input tahun anggaran --}}
                         <div class="form-group row mb-3">
                             <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
@@ -113,7 +140,7 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input required readonly type="number" id="tahun_anggaran" name="tahun_anggaran"
-                                    placeholder="Masukan tahun anggaran..." max="9999" min="0"
+                                    placeholder="Tahun anggaran..." max="9999" min="0"
                                     value="{{ old('tahun_anggaran') }}"
                                     class="form-control @error('tahun_anggaran') is-invalid @enderror" />
 

@@ -75,32 +75,32 @@ class TransaksiController extends Controller
          * Validasi rule
          */
         $validateRules = [
-            'periodeAwal' => [],
-            'periodeAkhir' => [],
+            'periode_awal' => [],
+            'periode_akhir' => [],
             'divisi' => [],
-            'jenisBelanja' => [],
-            'noDokumen' => [],
+            'jenis_belanja' => [],
+            'no_dokumen' => [],
         ];
 
         /**
          * Pesan error validasi
          */
         $validateErrorMessage = [
-            'periodeAwal.required' => 'Periode harus diisi.',
-            'periodeAwal.date' => 'Periode harus tanggal yang valid.',
-            'periodeAkhir.required' => 'Periode harus diisi.',
-            'periodeAkhir.date' => 'Periode harus tanggal yang valid.',
+            'periode_awal.required' => 'Periode harus diisi.',
+            'periode_awal.date' => 'Periode harus tanggal yang valid.',
+            'periode_akhir.required' => 'Periode harus diisi.',
+            'periode_akhir.date' => 'Periode harus tanggal yang valid.',
             'divisi.exists' => 'Divisi tidak ada. Pilih divisi yang ditentukan.',
-            'jenisBelanja.exists' => 'Jenis belanja tidak ada. Pilih jenis belanja yang ditentukan.',
-            'noDokumen.exists' => 'No dokumen tidak ditemukan.',
+            'jenis_belanja.exists' => 'Jenis belanja tidak ada. Pilih jenis belanja yang ditentukan.',
+            'no_dokumen.exists' => 'No dokumen tidak ditemukan.',
         ];
 
         /**
-         * jika periodeAwal & periodeAkhir dikirim tambahkan validasi
+         * jika periode_awal & periode_akhir dikirim tambahkan validasi
          */
-        if ($request->periodeAwal || $request->periodeAkhir) {
-            array_push($validateRules['periodeAwal'], 'required', 'date');
-            array_push($validateRules['periodeAkhir'], 'required', 'date');
+        if ($request->periode_awal || $request->periode_akhir) {
+            array_push($validateRules['periode_awal'], 'required', 'date');
+            array_push($validateRules['periode_akhir'], 'required', 'date');
         }
 
         /**
@@ -113,15 +113,15 @@ class TransaksiController extends Controller
         /**
          * jika no dokumen diisi tambahkan validasi
          */
-        if ($request->noDokumen != null) {
-            array_push($validateRules['noDokumen'], 'exists:transaksi,no_dokumen');
+        if ($request->no_dokumen != null) {
+            array_push($validateRules['no_dokumen'], 'exists:transaksi,no_dokumen');
         }
 
         /**
          * jika jenis belanja dipilah tambahkan validasi
          */
-        if ($request->jenisBelanja != null) {
-            array_push($validateRules['jenisBelanja'], 'exists:jenis_belanja,kategori_belanja');
+        if ($request->jenis_belanja != null) {
+            array_push($validateRules['jenis_belanja'], 'exists:jenis_belanja,kategori_belanja');
         }
 
         /**
@@ -132,30 +132,49 @@ class TransaksiController extends Controller
         /**
          * Query join table transaksi, divisi, user & profil
          */
-        $query = Transaksi::with(['divisi', 'jenisBelanja', 'user.profil'])
-            ->whereBetween('transaksi.tanggal', [$request->periodeAwal, $request->periodeAkhir]);
+        $query = Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
+            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
+            ->leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
+            ->leftJoin('user', 'user.id', '=', 'transaksi.user_id')
+            ->leftJoin('profil', 'profil.user_id', '=', 'user.id')
+            ->select([
+                'transaksi.id',
+                'transaksi.budget_id',
+                'transaksi.tanggal',
+                'transaksi.kegiatan',
+                'transaksi.jumlah_nominal',
+                'transaksi.approval',
+                'transaksi.no_dokumen',
+                'transaksi.file_dokumen',
+                'transaksi.created_at',
+                'transaksi.updated_at',
+                'budget.divisi_id',
+                'budget.jenis_belanja_id',
+                'jenis_belanja.kategori_belanja',
+                'divisi.nama_divisi',
+                'profil.nama_lengkap',
+            ])
+            ->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
 
         /**
          * jika divisi dipilih tambahkan query
          */
         if ($request->divisi != null) {
-            $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
-            $query->where('divisi_id',  $divisi->id);
+            $query->where('divisi.nama_divisi',  $request->divisi);
         }
 
         /**
          * jika jenis belanja dipilih tambahkan query
          */
-        if ($request->jenisBelanja != null) {
-            $jenisBelanja = JenisBelanja::where('kategori_belanja', $request->jenisBelanja)->first();
-            $query->where('jenis_belanja_id',  $jenisBelanja->id);
+        if ($request->jenis_belanja != null) {
+            $query->where('jenis_belanja.kategori_belanja',  $request->jenis_belanja);
         }
 
         /**
          * jika no dokumen dipilih tambahkan validasi
          */
-        if ($request->noDokumen != null) {
-            $query->where('no_dokumen',  $request->noDokumen);
+        if ($request->no_dokumen != null) {
+            $query->where('transaksi.no_dokumen',  $request->no_dokumen);
         }
 
         /**
@@ -166,8 +185,8 @@ class TransaksiController extends Controller
         return view('pages.transaksi.index', [
             'transactions' => $query->paginate(25)->withQueryString(),
             'userAccess' => Auth::user()->menuItem->where('href', '/belanja')->first(),
-            'divisi' => Divisi::all(),
-            'jenisBelanja' => JenisBelanja::all(),
+            'divisi' => Divisi::where('active', 1)->get(),
+            'jenisBelanja' => JenisBelanja::where('active', 1)->get(),
         ]);
     }
 
@@ -196,11 +215,7 @@ class TransaksiController extends Controller
     public function create()
     {
         $noDocument = $this->generateNoDocument();
-        $divisi = Divisi::with(['jenisBelanja' => fn ($query) => $query->where('active', 1)])
-            ->where('id', Auth::user()->divisi_id)
-            ->first();
-
-        return view('pages.transaksi.create', compact('divisi', 'noDocument'));
+        return view('pages.transaksi.create', compact('noDocument'));
     }
 
     /**
@@ -211,17 +226,24 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
+        $budget = Budget::find($request->budget_id);
+
         /**
          * validasi rule
          */
         $validateRules = [
-            'tanggal' => ['required', 'date'],
-            'approval' => ['required', 'max:100'],
+            // jenis belanja
+            'budget_id' => ['required', 'exists:budget,id'],
+            'kategori_belanja' => [],
+            'nama_divisi' => [],
+            'tahun_anggaran' => [],
+            'sisa_budget' => [],
 
             // kegiatan
-            'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
+            'tanggal' => ['required', 'date'],
             'kegiatan' => ['required', 'max:100'],
-            'jumlah_nominal' => ['required', 'numeric', 'min:0'],
+            'approval' => ['required', 'max:100'],
+            'jumlah_nominal' => ['required', 'numeric', 'min:0', "max:{$budget->nominal}"],
 
             // dokumen
             'no_dokumen' => ['required', 'unique:transaksi,no_dokumen', 'max:100']
@@ -237,13 +259,14 @@ class TransaksiController extends Controller
             'approval.max' => 'Nama approval tidak lebih dari 100 karakter.',
 
             // kegiatan
-            'jenis_belanja_id.required' => 'Jenis belanja harus dipilih.',
-            'jenis_belanja_id.exists' => 'Jenis belanja tidak terdaftar. Silakan pilih jenis belanja.',
+            'budget_id.required' => 'Akun belanja harus dipilih.',
+            'budget_id.exists' => 'Akun belanja tidak ada. Silakan pilih akun belanja yang ditentukan.',
             'kegiatan.required' => 'Kegiatan tidak boleh kosong.',
             'kegiatan.max' => 'Kegiatan tidak boleh lebih dari 100 karakter.',
             'jumlah_nominal.required' => 'Jumlah nominal tidak boleh kosong.',
             'jumlah_nominal.numeric' => 'Jumlah nominal harus bertipe angka yang valid.',
             'jumlah_nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
+            'jumlah_nominal.max' => 'Jumlah nominal harus kurang atau samadengan sisa budget.',
 
             // dokumen
             'no_dokumen.required' => 'Nomer dokumen harus diisi.',
@@ -263,28 +286,44 @@ class TransaksiController extends Controller
         /**
          * jalankan validasi
          */
-        $validatedData = $request->validate($validateRules, $validateErrorMessage);
-
-        $validatedData['user_id'] = Auth::user()->id;
-        $validatedData['divisi_id'] = Auth::user()->divisi->id;
-        $validatedData['uraian'] = $request->uraian ?? null;
+        $request->validate($validateRules, $validateErrorMessage);
 
         /**
          * cek file_dokumen di upload atau tidak
          * jika di upload simpan pada storage
          */
+        $fileDocument = null;
         if ($request->hasFile('file_dokumen')) {
             $file = $request->file('file_dokumen');
             $extension = $file->extension();
             $fileName = strtoupper($request->no_dokumen) . '.' . $extension;
-            $validatedData['file_dokumen'] = $file->storeAs('transaksi', $fileName);
+            $fileDocument = $file->storeAs('transaksi', $fileName);
         }
 
         /**
          * simpan ke database
          */
         try {
-            Transaksi::create($validatedData);
+            /**
+             * buat transaksi
+             */
+            Transaksi::create([
+                'user_id' => Auth::user()->id,
+                'budget_id' => $request->budget_id,
+                'tanggal' => $request->tanggal,
+                'kegiatan' => $request->kegiatan,
+                'jumlah_nominal' => $request->jumlah_nominal,
+                'approval' => $request->approval,
+                'no_dokumen' => $request->no_dokumen,
+                'file_dokumen' => $fileDocument,
+                'uraian' => $request->uraian ?? null,
+            ]);
+
+            /**
+             * kurangi budget
+             */
+            $budget->nominal = $budget->nominal - $request->jumlah_nominal;
+            $budget->save();
         } catch (\Exception $e) {
             return redirect()
                 ->route('belanja.create')
@@ -506,8 +545,8 @@ class TransaksiController extends Controller
         /**
          * Query join table transaksi, divisi, user & profil
          */
-        $query = Transaksi::with(['divisi', 'jenisBelanja', 'user.profil'])
-            ->whereBetween('transaksi.tanggal', [$request->periodeAwal, $request->periodeAkhir]);
+        $query = Transaksi::with(['budget.divisi', 'budget.jenisBelanja', 'user.profil'])
+            ->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
 
         /**
          * cek apakan request divis dipilih atau tidak
@@ -572,23 +611,18 @@ class TransaksiController extends Controller
      */
     public function dataTable()
     {
-        $budgets = Budget::leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
-            ->leftjoin('divisi', 'divisi.id', '=', 'jenis_belanja.divisi_id')
-            ->where([
-                ['divisi.active', 1],
-                ['jenis_belanja.active', 1]
-            ])
+        $budgets = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
+            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
             ->select([
-                'divisi.nama_divisi',
-                'jenis_belanja.id',
-                'jenis_belanja.kategori_belanja',
+                'budget.id',
                 'budget.tahun_anggaran',
-                'budget.nominal'
-            ])
-            ->orderBy('budget.tahun_anggaran', 'desc')
-            ->orderBy('divisi.nama_divisi', 'asc')
-            ->orderBy('jenis_belanja.kategori_belanja', 'asc')
-            ->get();
+                'budget.nominal',
+                'jenis_belanja.kategori_belanja',
+                'divisi.nama_divisi',
+            ])->where([
+                ['divisi.active', 1],
+                ['jenis_belanja.active', 1],
+            ])->get();
 
         return DataTables::of($budgets)
             ->addColumn('action', function ($budget) {

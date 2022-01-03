@@ -19,17 +19,16 @@
         @method('POST')
         @csrf
 
-        {{-- form divisi, tanggal & approval --}}
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <h4 class="header-title mt-2">Form Tambah Belanja</h4>
+                    <div class="card-header pt-3">
+                        <h4 class="header-title">Akun Belanja</h4>
                     </div>
 
                     <div class="card-body">
 
-                        <input type="hidden" name="jenis_belanja_id" id="jenis_belanja_id" required>
+                        <input type="hidden" name="budget_id" id="budget_id" required>
 
                         {{-- Input jenis belanja (akun belanja) --}}
                         <div class="form-group row mb-3">
@@ -37,9 +36,8 @@
                                 Akun Belanja <small class="text-danger ml-1">*</small>
                             </label>
 
-                            <div class="input-group col-md-9 col-sm-12 ">
-                                <div class="input-group-prepend class=" form-control @error('kategori_belanja') is-invalid
-                                    @enderror">
+                            <div class="input-group col-md-9 col-sm-12">
+                                <div class="input-group-prepend">
                                     <button type="button" class="btn btn-sm btn-info" data-toggle="tooltip"
                                         data-original-title="Pilih akun belanja" data-placement="top"
                                         onclick="transaksi.showModalTableBudget(true)">
@@ -48,68 +46,72 @@
                                 </div>
 
                                 <input type="text" name="kategori_belanja" id="kategori_belanja"
-                                    class="form-control @error('kategori_belanja') is-invalid @enderror"
+                                    class="form-control @error('budget_id') is-invalid @enderror"
                                     placeholder="Pilih akun belanja..." value="{{ old('kategori_belanja') }}" readonly
                                     required />
+
+                                @error('budget_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            @error('kategori_belanja')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
 
                         {{-- input tahun anggaran & sisa budget --}}
                         <div class="form-group row mb-3">
-                            <label for="sisaBudget" class="col-md-3 col-sm-12 col-form-label">
-                                Sisa Budget <small class="text-danger ml-1">*</small>
-                            </label>
-
-                            <div class="col-md-9 col-sm-12 input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        Th
-                                    </span>
-                                </div>
-
-                                <input readonly type="number" id="tahun_anggaran" name="tahun_anggaran"
-                                    value="{{ old('tahun_anggaran') }}" class="form-control"
-                                    placeholder="Tahun Anggaran..." />
-
-                                <input readonly type="text" id="sisa_budget" name="sisa_budget"
-                                    value="{{ old('sisa_budget') }}" class="form-control"
-                                    placeholder="Sisa budget..." />
-                            </div>
-                        </div>
-
-                        {{-- input tanggal --}}
-                        <div class="form-group row mb-3">
-                            <label for="tanggal" class="col-md-3 col-sm-12 col-form-label">
-                                Tgl Transaksi Belanja <small class="text-danger ml-1">*</small>
+                            <label for="nama_divisi" class="col-md-3 col-sm-12 col-form-label">
+                                Bagian
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="date" id="tanggal" name="tanggal" placeholder="Masukan tanggal..."
-                                    value="{{ old('tanggal') }}"
-                                    class="form-control @error('tanggal') is-invalid @enderror" required />
+                                <input readonly required type="text" id="nama_divisi" name="nama_divisi"
+                                    value="{{ old('nama_divisi') }}"
+                                    class="form-control @error('nama_divisi') is-invalid @enderror"
+                                    placeholder="Bagian..." />
 
-                                @error('tanggal')
+                                @error('nama_divisi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
-                        {{-- input nama approval --}}
+                        {{-- input tahun anggaran & sisa budget --}}
                         <div class="form-group row mb-3">
-                            <label for="approval" class="col-md-3 col-sm-12 col-form-label">
-                                Nama Approval <small class="text-danger ml-1">*</small>
+                            <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
+                                Tahun Anggaran
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="text" id="approval" name="approval" placeholder="Masukan nama approval..."
-                                    value="{{ old('approval') }}"
-                                    class="form-control @error('approval') is-invalid @enderror" required />
+                                <input readonly type="number" id="tahun_anggaran" name="tahun_anggaran"
+                                    value="{{ old('tahun_anggaran') }}"
+                                    class="form-control @error('tahun_anggaran') is-invalid @enderror"
+                                    placeholder="Tahun Anggaran..." />
 
-                                @error('approval')
+                                @error('tahun_anggaran')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- input sisa budget --}}
+                        <div class="form-group row mb-3">
+                            <label for="sisa_budget" class="col-md-3 col-sm-12 col-form-label">
+                                Sisa Budget
+                            </label>
+
+                            <div class="col-md-9 col-sm-12 input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        Rp.
+                                    </span>
+                                </div>
+
+                                <input readonly type="text" id="sisa_budget" name="sisa_budget"
+                                    value="{{ old('sisa_budget') }}"
+                                    class="form-control @error('sisa_budget') is-invalid @enderror"
+                                    placeholder="Sisa budget..." />
+
+                                @error('sisa_budget')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -119,7 +121,6 @@
                 </div>
             </div>
         </div>
-        {{-- form divisi, tanggal & approval --}}
 
         {{-- input kegiatan, jumlah nominal & uraian --}}
         <div class="row">
@@ -130,6 +131,23 @@
                     </div>
 
                     <div class="card-body">
+
+                        {{-- input tanggal --}}
+                        <div class="form-group row mb-3">
+                            <label for="tanggal" class="col-md-3 col-sm-12 col-form-label">
+                                Tanggal <small class="text-danger ml-1">*</small>
+                            </label>
+
+                            <div class="col-md-9 col-sm-12">
+                                <input type="date" id="tanggal" name="tanggal"
+                                    placeholder="Masukan tanggal transaksi belanja..." value="{{ old('tanggal') }}"
+                                    class="form-control @error('tanggal') is-invalid @enderror" required />
+
+                                @error('tanggal')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
                         {{-- input kegiatan --}}
                         <div class="form-group row mb-3">
@@ -154,12 +172,35 @@
                                 Jumlah Nominal <small class="text-danger ml-1">*</small>
                             </label>
 
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-9 col-sm-12 input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        Rp.
+                                    </span>
+                                </div>
+
                                 <input type="number" id="jumlah_nominal" name="jumlah_nominal" min="0"
                                     placeholder="Masukan jumlah nominal..." value="{{ old('jumlah_nominal') }}"
                                     class="form-control @error('jumlah_nominal') is-invalid @enderror" required />
 
                                 @error('jumlah_nominal')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- input nama approval --}}
+                        <div class="form-group row mb-3">
+                            <label for="approval" class="col-md-3 col-sm-12 col-form-label">
+                                Nama Approval <small class="text-danger ml-1">*</small>
+                            </label>
+
+                            <div class="col-md-9 col-sm-12">
+                                <input type="text" id="approval" name="approval" placeholder="Masukan nama approval..."
+                                    value="{{ old('approval') }}"
+                                    class="form-control @error('approval') is-invalid @enderror" required />
+
+                                @error('approval')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

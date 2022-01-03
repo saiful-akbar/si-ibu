@@ -27,31 +27,6 @@
                                 @method('POST')
                                 @csrf
 
-                                {{-- input divisi (bagian) --}}
-                                <div class="form-group row mb-3">
-                                    <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
-                                        Bagian <small class="text-danger">*</small>
-                                    </label>
-
-                                    <div class="col-md-9 col-sm-12">
-                                        <select required name="divisi_id" id="divisi_id" data-toggle="select2"
-                                            class="form-control select2 @error('divisi_id') is-invalid @enderror">
-                                            <option disabled @if (!old('divisi_id')) selected @endif>
-                                                -- Pilih Bagian --
-                                            </option>
-
-                                            @foreach ($divisions as $divisi)
-                                                <option value="{{ $divisi->id }}" @if (old('divisi_id') == $divisi->id) selected @endif>
-                                                    {{ $divisi->nama_divisi }}</option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('divisi_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
                                 {{-- input kategori belanja --}}
                                 <div class="form-group row mb-3">
                                     <label for="kategori_belanja" class="col-md-3 col-sm-12 col-form-label">

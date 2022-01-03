@@ -17,42 +17,18 @@ class JenisBelanjaSeeder extends Seeder
         DB::table('jenis_belanja')->insert([
             [
                 'kategori_belanja' => "Barang",
-                'divisi_id' => $this->getIdDivisi('it'),
                 'active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'kategori_belanja' => "Jasa",
-                'divisi_id' => $this->getIdDivisi('it'),
                 'active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'kategori_belanja' => "Orang",
-                'divisi_id' => $this->getIdDivisi('it'),
-                'active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'kategori_belanja' => "Barang",
-                'divisi_id' => $this->getIdDivisi('accounting'),
-                'active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'kategori_belanja' => "Jasa",
-                'divisi_id' => $this->getIdDivisi('accounting'),
-                'active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'kategori_belanja' => "Orang",
-                'divisi_id' => $this->getIdDivisi('accounting'),
                 'active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),

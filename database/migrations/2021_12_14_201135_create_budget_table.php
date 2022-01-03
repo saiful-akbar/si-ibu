@@ -15,6 +15,7 @@ class CreateBudgetTable extends Migration
     {
         Schema::create('budget', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('divisi_id');
             $table->unsignedBigInteger('jenis_belanja_id');
             $table->year('tahun_anggaran');
             $table->decimal('nominal', 18, 0);
@@ -25,6 +26,11 @@ class CreateBudgetTable extends Migration
             $table->foreign('jenis_belanja_id')
                 ->references('id')
                 ->on('jenis_belanja');
+
+            // relasi dengan tabel divisi
+            $table->foreign('divisi_id')
+                ->references('id')
+                ->on('divisi');
         });
     }
 

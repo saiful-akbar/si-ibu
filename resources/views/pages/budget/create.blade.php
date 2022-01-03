@@ -30,6 +30,32 @@
                     <form action="{{ route('budget.store') }}" method="POST">
                         @method('POST') @csrf
 
+                        {{-- Input akun bagian (divisi_id) --}}
+                        <div class="form-group row mb-3">
+                            <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
+                                Bagian <small class="text-danger ml-1">*</small>
+                            </label>
+
+                            <div class="col-md-9 col-sm-12">
+                                <select required name="divisi_id" id="divisi_id" data-toggle="select2"
+                                    class="form-control select2 @error('divisi_id') is-invalid @enderror">
+                                    <option disabled @if (!old('divisi_id')) selected @endif>
+                                        Pilih Bagian
+                                    </option>
+
+                                    @foreach ($divisions as $divisi)
+                                        <option value="{{ $divisi->id }}" @if (old('divisi_id') == $divisi->id) selected @endif>
+                                            {{ $divisi->nama_divisi }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('divisi_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         {{-- Input akun belanja (jenis_belanja_id) --}}
                         <div class="form-group row mb-3">
                             <label for="jenis_belanja_id" class="col-md-3 col-sm-12 col-form-label">
@@ -40,20 +66,13 @@
                                 <select required name="jenis_belanja_id" id="jenis_belanja_id" data-toggle="select2"
                                     class="form-control select2 @error('jenis_belanja_id') is-invalid @enderror">
                                     <option disabled @if (!old('jenis_belanja_id')) selected @endif>
-                                        -- Pilih Akun Belanja --
+                                        Pilih Akun Belanja
                                     </option>
 
-                                    @foreach ($divisions as $divisi)
-                                        <optgroup label="{{ $divisi->nama_divisi }}">
-                                            @foreach ($divisi->jenisBelanja as $jenisBelanja)
-                                                @if ($jenisBelanja->active == 1)
-                                                    <option value="{{ $jenisBelanja->id }}" @if (old('jenis_belanja_id') == $jenisBelanja->id) selected @endif>
-                                                        {{ ucwords($divisi->nama_divisi) }} -
-                                                        {{ $jenisBelanja->kategori_belanja }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        </optgroup>
+                                    @foreach ($jenisBelanja as $jBelanja)
+                                        <option value="{{ $jBelanja->id }}" @if (old('jenis_belanja_id') == $jBelanja->id) selected @endif>
+                                            {{ $jBelanja->kategori_belanja }}
+                                        </option>
                                     @endforeach
                                 </select>
 

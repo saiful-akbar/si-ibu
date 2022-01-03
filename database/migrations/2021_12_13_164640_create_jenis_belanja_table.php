@@ -15,15 +15,9 @@ class CreateJenisBelanjaTable extends Migration
     {
         Schema::create('jenis_belanja', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('divisi_id');
-            $table->string('kategori_belanja', 128);
+            $table->string('kategori_belanja', 128)->unique();
             $table->boolean('active')->default(true);
             $table->timestamps();
-
-            // relasi dengan table divisi
-            $table->foreign('divisi_id')
-                ->references('id')
-                ->on('divisi');
         });
     }
 

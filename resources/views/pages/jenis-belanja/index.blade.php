@@ -47,7 +47,6 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Bagian</th>
                                             <th>Ketergori Belanja</th>
                                             <th>Aktif</th>
                                             <th>Dibuat / Diperbarui</th>
@@ -64,7 +63,6 @@
                                                 <td class="align-middel">
                                                     {{ $jenisBelanja->count() * ($jenisBelanja->currentPage() - 1) + $loop->iteration }}
                                                 </td>
-                                                <td class="align-middle">{{ $data->nama_divisi }}</td>
                                                 <td class="align-middle">{{ $data->kategori_belanja }}</td>
                                                 <td class="align-middle">
                                                     @if ($data->active == 1)

@@ -121,19 +121,18 @@ class Budget {
             success: (res) => {
                 const {
                     id,
-                    jenis_belanja,
                     tahun_anggaran,
                     keterangan,
-                    nominal,
+                    jenis_belanja,
+                    divisi,
                 } = res.budget;
 
                 $("#id").val(id);
+                $("#jenis_belanja").val(jenis_belanja.kategori_belanja);
+                $("#divisi").val(divisi.nama_divisi);
                 $("#tahun_anggaran").val(tahun_anggaran);
                 $("#keterangan").html(keterangan);
                 $(".note-editable").html(keterangan);
-                $("#jenis_belanja").val(
-                    `${jenis_belanja.divisi.nama_divisi} - ${jenis_belanja.kategori_belanja}`
-                );
             },
         });
     };
@@ -164,26 +163,15 @@ class Budget {
                     },
                     columns: [
                         {
-                            data: "pilih",
+                            data: "action",
+                            name: "action",
+                            className: "text-center",
                             orderable: false,
                             searchable: false,
-                            render: (data) => {
-                                const budget = JSON.parse(data);
-
-                                return `
-                                    <button
-                                        class="btn btn-sm btn-success btn-rounded"
-                                        onclick="budget.setValueSwitchBudget(${budget.id})"
-                                    >
-                                        <i class="mdi mdi-hand-pointing-up"></i>
-                                        <span>Pilih</span>
-                                    </button>
-                                `;
-                            },
                         },
                         {
-                            data: "jenis_belanja.divisi.nama_divisi",
-                            name: "jenis_belanja.divisi.nama_divisi",
+                            data: "divisi.nama_divisi",
+                            name: "divisi.nama_divisi",
                         },
                         {
                             data: "jenis_belanja.kategori_belanja",
@@ -196,7 +184,7 @@ class Budget {
                         {
                             data: "nominal",
                             name: "nominal",
-                            render: (data) => main.formatRupiah(data),
+                            render: (data) => "Rp. " + main.formatRupiah(data),
                         },
                     ],
                 });

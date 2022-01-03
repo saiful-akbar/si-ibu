@@ -113,6 +113,8 @@ class Transaksi {
                 scrollX: true,
                 destroy: false,
                 info: false,
+                scrollY: "300px",
+                scrollCollapse: true,
                 ajax: `${main.baseUrl}/belanja/budget/datatable`,
                 language: {
                     paginate: {
@@ -142,7 +144,7 @@ class Transaksi {
                     {
                         data: "nominal",
                         name: "nominal",
-                        render: (data) => main.formatRupiah(data),
+                        render: (data) => "Rp. " + main.formatRupiah(data),
                     },
                 ],
             });
@@ -157,12 +159,12 @@ class Transaksi {
     setFormValue(data) {
         this.showModalTableBudget(false);
 
-        $("#jenis_belanja_id").val(data.id);
+        $("#budget_id").val(data.id);
+        $("#kategori_belanja").val(data.kategori_belanja);
+        $("#nama_divisi").val(data.nama_divisi);
         $("#tahun_anggaran").val(data.tahun_anggaran);
         $("#sisa_budget").val(main.formatRupiah(data.nominal));
-        $("#kategori_belanja").val(
-            `${data.nama_divisi} - ${data.kategori_belanja}`
-        );
+        $("#jumlah_nominal").attr("max", data.nominal);
     }
 }
 
