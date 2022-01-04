@@ -26,10 +26,12 @@
                     <span>Detail Akses</span>
                 </a>
 
-                <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" class="nav-link mb-2">
-                    <i class="mdi mdi-square-edit-outline mr-2"></i>
-                    <span>Edit Akses</span>
-                </a>
+                @if ($userAccess->pivot->update == 1)
+                    <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" class="nav-link mb-2">
+                        <i class="mdi mdi-square-edit-outline mr-2"></i>
+                        <span>Edit Akses</span>
+                    </a>
+                @endif
             </div>
 
             <hr>
@@ -47,7 +49,7 @@
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover nowrap">
+                                <table class="table table-centered w-100 nowrap">
                                     <thead>
                                         <tr>
                                             <th>Menu</th>
@@ -64,7 +66,7 @@
                                                     <i class="{{ $menuItem->icon }} mr-2"></i>
                                                     {{ ucwords($menuItem->nama_menu) }}
                                                 </td>
-                                                <td class="text-center align-middle">
+                                                <td class="text-center">
                                                     @if (!empty($user->menuItem->find($menuItem->id)) && $user->menuItem->find($menuItem->id)->pivot->create == 1)
                                                         <i class="mdi mdi-check text-success h3"></i>
                                                     @else
@@ -72,7 +74,7 @@
                                                     @endif
                                                 </td>
 
-                                                <td class="text-center align-middle">
+                                                <td class="text-center">
                                                     @if (!empty($user->menuItem->find($menuItem->id)) && $user->menuItem->find($menuItem->id)->pivot->read == 1)
                                                         <i class="mdi mdi-check text-success h3"></i>
                                                     @else
@@ -80,7 +82,7 @@
                                                     @endif
                                                 </td>
 
-                                                <td class="text-center align-middle">
+                                                <td class="text-center">
                                                     @if (!empty($user->menuItem->find($menuItem->id)) && $user->menuItem->find($menuItem->id)->pivot->update == 1)
                                                         <i class="mdi mdi-check text-success h3"></i>
                                                     @else
@@ -88,7 +90,7 @@
                                                     @endif
                                                 </td>
 
-                                                <td class="text-center align-middle">
+                                                <td class="text-center">
                                                     @if (!empty($user->menuItem->find($menuItem->id)) && $user->menuItem->find($menuItem->id)->pivot->delete == 1)
                                                         <i class="mdi mdi-check text-success h3"></i>
                                                     @else

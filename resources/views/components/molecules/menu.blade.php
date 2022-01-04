@@ -1,7 +1,5 @@
 @php
-use App\Models\User;
-
-$user = User::with('menuHeader', 'menuItem')->find(Auth::user()->id);
+$user = App\Models\User::with('menuHeader', 'menuItem')->find(Auth::user()->id);
 @endphp
 
 <ul class="metismenu side-nav">
@@ -12,14 +10,8 @@ $user = User::with('menuHeader', 'menuItem')->find(Auth::user()->id);
             @foreach ($user->menuItem as $menuItem)
                 @if ($menuItem->menu_header_id == $menuHeader->id && $menuItem->pivot->read == 1)
                     <li class="side-nav-item {{ Request::is(trim($menuItem->href, '/') . '*') ? 'mm-active' : null }}">
-                        <a
-                            href="{{ url($menuItem->href) }}"
-                            class="side-nav-link"
-                        >
-                            <i
-                                class="{{ $menuItem->icon }}"
-                                style="font-size: 1em;"
-                            ></i>
+                        <a href="{{ url($menuItem->href) }}" class="side-nav-link">
+                            <i class="{{ $menuItem->icon }}" style="font-size: 1em;"></i>
                             <span>{{ ucwords($menuItem->nama_menu) }}</span>
                         </a>
                     </li>

@@ -25,10 +25,12 @@
                     <span>Detail Akses</span>
                 </a>
 
-                <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" class="nav-link mb-2 active show">
-                    <i class="mdi mdi-square-edit-outline mr-2"></i>
-                    <span>Edit Akses</span>
-                </a>
+                @if ($userAccess->pivot->update == 1)
+                    <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" class="nav-link mb-2 active show">
+                        <i class="mdi mdi-square-edit-outline mr-2"></i>
+                        <span>Edit Akses</span>
+                    </a>
+                @endif
             </div>
 
             <hr>
