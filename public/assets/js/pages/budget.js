@@ -104,95 +104,6 @@ class Budget {
     handleCloseModalDetail = () => {
         $("#modal-detail").modal("hide");
     };
-
-    /**
-     * Set value form switch budget
-     *
-     * @param {object} budget
-     */
-    setValueSwitchBudget = (id) => {
-        this.showModalTable(false);
-
-        $.ajax({
-            type: "GET",
-            url: `${main.baseUrl}/budget/${id}/show`,
-            data: { _token: main.csrfToken },
-            dataType: "json",
-            success: (res) => {
-                const {
-                    id,
-                    tahun_anggaran,
-                    keterangan,
-                    jenis_belanja,
-                    divisi,
-                } = res.budget;
-
-                $("#id").val(id);
-                $("#jenis_belanja").val(jenis_belanja.kategori_belanja);
-                $("#divisi").val(divisi.nama_divisi);
-                $("#tahun_anggaran").val(tahun_anggaran);
-                $("#keterangan").html(keterangan);
-                $(".note-editable").html(keterangan);
-            },
-        });
-    };
-
-    /**
-     * handle show modal table
-     * @param {boolean} show
-     */
-    showModalTable = (show, id = null) => {
-        if (show) {
-            $("#modal-table-budget").modal("show");
-
-            if (this.dataTable == null) {
-                this.dataTable = $("#datatable-budget").DataTable({
-                    processing: true,
-                    serverSide: true,
-                    pageLength: 25,
-                    lengthChange: false,
-                    scrollX: true,
-                    destroy: false,
-                    info: false,
-                    ajax: `${main.baseUrl}/budget/${id}/datatable`,
-                    language: {
-                        paginate: {
-                            previous: "<i class='mdi mdi-chevron-left'>",
-                            next: "<i class='mdi mdi-chevron-right'>",
-                        },
-                    },
-                    columns: [
-                        {
-                            data: "action",
-                            name: "action",
-                            className: "text-center",
-                            orderable: false,
-                            searchable: false,
-                        },
-                        {
-                            data: "divisi.nama_divisi",
-                            name: "divisi.nama_divisi",
-                        },
-                        {
-                            data: "jenis_belanja.kategori_belanja",
-                            name: "jenis_belanja.kategori_belanja",
-                        },
-                        {
-                            data: "tahun_anggaran",
-                            name: "tahun_anggaran",
-                        },
-                        {
-                            data: "nominal",
-                            name: "nominal",
-                            render: (data) => "Rp. " + main.formatRupiah(data),
-                        },
-                    ],
-                });
-            }
-        } else {
-            $("#modal-table-budget").modal("hide");
-        }
-    };
 }
 
 /**
@@ -203,11 +114,12 @@ const budget = new Budget();
 /**
  * Jalankan fungsi seletal document dimuat
  */
-$(document).ready(function() {
+$(document).ready(function () {
     /**
      * summernote keterangan
      */
     $("#keterangan").summernote({
+        required: true,
         height: 230,
         lang: "id-ID",
         toolbar: [

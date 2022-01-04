@@ -163,7 +163,7 @@ class Transaksi {
         $("#kategori_belanja").val(data.kategori_belanja);
         $("#nama_divisi").val(data.nama_divisi);
         $("#tahun_anggaran").val(data.tahun_anggaran);
-        $("#sisa_budget").val(main.formatRupiah(data.nominal));
+        $("#sisa_budget").val(data.nominal);
         $("#jumlah_nominal").attr("max", data.nominal);
     }
 }

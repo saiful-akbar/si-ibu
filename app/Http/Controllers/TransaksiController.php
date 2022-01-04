@@ -228,27 +228,22 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         /**
-         * Ambil data budget berdasarkan "id" budget yang di-request
-         */
-        $budget = Budget::find($request->budget_id);
-
-        /**
          * validasi rule
          */
         $validateRules = [
 
             // jenis belanja
             'budget_id' => ['required', 'exists:budget,id'],
-            'kategori_belanja' => [],
-            'nama_divisi' => [],
-            'tahun_anggaran' => [],
-            'sisa_budget' => [],
+            'kategori_belanja' => ['required', 'exists:jenis_belanja,kategori_belanja'],
+            'nama_divisi' => ['required', 'exists:divisi,nama_divisi'],
+            'tahun_anggaran' => ['required', 'numeric', 'min:1900', 'max:9999'],
+            'sisa_budget' => ['required', 'numeric'],
 
             // kegiatan
             'tanggal' => ['required', 'date'],
             'kegiatan' => ['required', 'max:100'],
             'approval' => ['required', 'max:100'],
-            'jumlah_nominal' => ['required', 'numeric', 'min:0', "max:{$budget->nominal}"],
+            'jumlah_nominal' => ['required', 'numeric', 'min:0', "max:{$request->sisa_budget}"],
 
             // dokumen
             'no_dokumen' => ['required', 'unique:transaksi,no_dokumen', 'max:100']
@@ -259,7 +254,17 @@ class TransaksiController extends Controller
          */
         $validateErrorMessage = [
             'budget_id.required' => 'Akun belanja harus dipilih.',
-            'budget_id.exists' => 'Akun belanja tidak ada. Silakan pilih akun belanja yang ditentukan.',
+            'budget_id.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'kategori_belanja.required' => 'Akun belanja harus dipilih.',
+            'kategori_belanja.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'nama_divisi.required' => 'Bagian tidak boleh kosong.',
+            'nama_divisi.exists' => 'Bagian tidak ada.',
+            'tahun_anggaran.required' => 'Tahun anggaran tidak boleh kosong.',
+            'tahun_anggaran.numeric' => 'Tahun anggaran harus tahun yang valid (yyyy).',
+            'tahun_anggaran.min' => 'Tahun anggaran tidak boleh kurang dari tahun 1900.',
+            'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari tahun 9999.',
+            'sisa_budget.required' => 'Sisa budget tidak boleh kosong.',
+            'sisa_budget.numeric' => 'Sisa budget harus bertipe angka yang valid.',
 
             // kegiatan
             'tanggal.required' => 'Tanggal tidak boleh kosong.',
@@ -271,7 +276,7 @@ class TransaksiController extends Controller
             'jumlah_nominal.required' => 'Jumlah nominal tidak boleh kosong.',
             'jumlah_nominal.numeric' => 'Jumlah nominal harus bertipe angka yang valid.',
             'jumlah_nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
-            'jumlah_nominal.max' => 'Jumlah nominal harus kurang atau samadengan sisa budget.',
+            'jumlah_nominal.max' => 'Jumlah nominal harus kurang atau sama dengan sisa budget.',
 
             // dokumen
             'no_dokumen.required' => 'Nomer dokumen harus diisi.',
@@ -293,6 +298,11 @@ class TransaksiController extends Controller
          * jalankan validasi
          */
         $request->validate($validateRules, $validateErrorMessage);
+
+        /**
+         * Ambil data budget berdasarkan "id" budget yang di-request
+         */
+        $budget = Budget::find($request->budget_id);
 
         /**
          * cek file_dokumen di upload atau tidak
@@ -329,7 +339,6 @@ class TransaksiController extends Controller
              */
             $budget->nominal = $budget->nominal - $request->jumlah_nominal;
             $budget->save();
-        
         } catch (\Exception $e) {
 
             /**
@@ -362,7 +371,7 @@ class TransaksiController extends Controller
      */
     public function show(Transaksi $transaksi)
     {
-        $query = Transaksi::with('divisi', 'jenisBelanja', 'user.profil')
+        $query = Transaksi::with('budget', 'user.profil')
             ->where('id', $transaksi->id)
             ->first();
 
@@ -642,7 +651,7 @@ class TransaksiController extends Controller
                 return "
                     <button
                         onclick='transaksi.setFormValue({$budget})'
-                        class='btn btn-sm btn-success btn-rounded'
+                        class='btn btn-sm btn-success btn-rounded btn-sm'
                     >
                         <i class='mdi mdi-hand-pointing-up'></i>
                         <span>Pilih</span>

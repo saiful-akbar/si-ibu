@@ -18,7 +18,8 @@ class CreateBudgetTable extends Migration
             $table->unsignedBigInteger('divisi_id');
             $table->unsignedBigInteger('jenis_belanja_id');
             $table->year('tahun_anggaran');
-            $table->decimal('nominal', 18, 0);
+            $table->decimal('nominal', 18, 0)->default(0);
+            $table->decimal('sisa_nominal', 18, 0)->default(0);
             $table->text('keterangan')->nullable()->default(null);
             $table->timestamps();
 

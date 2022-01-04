@@ -15,10 +15,10 @@
                 <div class="card-body">
 
                     {{-- button tambah & form search --}}
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($user_akses->pivot->create == 1)
-                                <a href="{{ route('user.create') }}" class="btn btn-rounded btn-primary">
+                                <a href="{{ route('user.create') }}" class="btn btn-rounded btn-primary btn-sm">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Tambah User Baru</span>
                                 </a>
@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-hover nowrap">
+                                <table class="table nowrap table-centered w-100">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -89,15 +89,15 @@
                                                 <td class="align-middle">{{ $user->updated_at }}</td>
                                                 <td class="align-middle text-center">
                                                     <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
-                                                        class="btn btn-sm btn-info btn-icon mr-1" data-toggle="tooltip"
+                                                        class="btn btn-sm btn-light btn-icon mr-1" data-toggle="tooltip"
                                                         data-original-title="Menu Akses">
                                                         <i class="mdi mdi-key"></i>
                                                     </a>
 
                                                     @if ($user_akses->pivot->update == 1)
                                                         <a href="{{ route('user.edit', ['user' => $user->id]) }}"
-                                                            class="btn btn-sm btn-success btn-icon mr-1"
-                                                            data-toggle="tooltip" data-original-title="Edit">
+                                                            class="btn btn-sm btn-light btn-icon mr-1" data-toggle="tooltip"
+                                                            data-original-title="Edit">
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
                                                     @endif
@@ -105,7 +105,7 @@
                                                     @if ($user_akses->pivot->delete == 1)
                                                         <button
                                                             onclick="handleDelete({{ $user->id }}, '{{ $user->username }}')"
-                                                            class="btn btn-sm btn-danger btn-icon" data-toggle="tooltip"
+                                                            class="btn btn-sm btn-light btn-icon" data-toggle="tooltip"
                                                             data-original-title="Hapus">
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>

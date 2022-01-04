@@ -138,8 +138,7 @@ class JenisBelanjaController extends Controller
          */
         $validateRules = [
             'kategori_belanja' => ['required', 'max:100'],
-            'divisi_id' => ['required', 'exists:divisi,id'],
-            'active' => []
+            'active' => ['boolean']
         ];
 
 
@@ -149,14 +148,23 @@ class JenisBelanjaController extends Controller
         $validateErrorMessage = [
             'kategori_belanja.required' => 'Kategori belanja tidak boleh kosong.',
             'kategori_belanja.max' => 'Kategori belanja tidak boleh lebih dari 100 karakter.',
-            'divisi_id.required' => 'Bagian harus dipilih.',
-            'divisi_id.exists' => 'Bagian tidak terdaftar. Pilih bagian yang sudah ditentukan.',
+            'kategori_belanja.unique' => 'Kategori belanja sudah ada.',
+            'active.boolean' => 'Active harus bernilai true (1) atau false (0).',
         ];
+
+        /**
+         * cek kategori belanja dirubah atau tidak
+         * tambahkan validasi unique
+         */
+        if ($request->kategori_belanja != $jenisBelanja->kategori_belanja) {
+            array_push($validateRules['kategori_belanja'], 'unique:jenis_belanja,kategori_belanja');
+        }
 
         /**
          * jalankan validasi
          */
         $validatedData = $request->validate($validateRules, $validateErrorMessage);
+
         $validatedData['kategori_belanja'] = ucwords($request->kategori_belanja);
         $validatedData['active'] = isset($request->active) ? true : false;
 
@@ -173,7 +181,7 @@ class JenisBelanjaController extends Controller
                 ]);
         }
 
-        return redirect()->route('jenis-belanja.edit', ['jenisBelanja' => $jenisBelanja->id])
+        return redirect()->route('jenis-belanja')
             ->with('alert', [
                 'type' => 'success',
                 'message' => 'Data jenis belanja berhasil dirubah.',
@@ -189,17 +197,17 @@ class JenisBelanjaController extends Controller
      */
     public function delete(JenisBelanja $jenisBelanja)
     {
-        $relasiData = JenisBelanja::with('budget', 'transaksi')->find($jenisBelanja->id);
+        $relasiData = JenisBelanja::with('budget')->find($jenisBelanja->id);
 
         /**
          * cek apakah ada data transaksi & budget yang berelasi dengan jenis_belanja ini
          */
-        if (count($relasiData->budget) > 0 && count($relasiData->transaksi) > 0) {
+        if (count($relasiData->budget) > 0) {
             return redirect()
                 ->route('jenis-belanja')
                 ->with('alert', [
                     'type' => 'warning',
-                    'message' => "Gagal menghapus data akun belanja {$jenisBelanja->divisi->nama_divisi}-{$jenisBelanja->kategori_belanja}. Data akun belanja ini memiliki data relasi dengan budget & transaksi belanja. ",
+                    'message' => "Gagal menghapus data akun belanja {$jenisBelanja->divisi->nama_divisi}-{$jenisBelanja->kategori_belanja}. Data akun belanja ini memiliki data relasi dengan budget. ",
                 ]);
         }
 

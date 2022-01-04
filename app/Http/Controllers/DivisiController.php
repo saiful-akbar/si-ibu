@@ -167,7 +167,6 @@ class DivisiController extends Controller
              * Update ke database
              */
             Divisi::where('id', $divisi->id)->update($validatedData);
-
         } catch (\Exception $e) {
 
             /**
@@ -209,7 +208,7 @@ class DivisiController extends Controller
             return redirect()->route('divisi')
                 ->with('alert', [
                     'type' => 'warning',
-                    'message' => "Gagal menghapus data. Bagian <b>{$divisi->nama_divisi}</b> memiliki relasi dengan user & akun belanja.",
+                    'message' => "Gagal menghapus data. Bagian <b>{$divisi->nama_divisi}</b> memiliki data relasi dengan user & budget.",
                 ]);
         }
 

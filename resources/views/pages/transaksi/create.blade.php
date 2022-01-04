@@ -7,8 +7,8 @@
     {{-- button kembali --}}
     <div class="row">
         <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('belanja') }}" class="btn btn-dark btn-rounded">
-                <i class="dripicons-chevron-left"></i>
+            <a href="{{ route('belanja') }}" class="btn btn-dark btn-sm btn-rounded">
+                <i class="mdi mdi-chevron-double-left"></i>
                 <span>Kembali</span>
             </a>
         </div>
@@ -32,7 +32,7 @@
                         {{-- Input jenis belanja (akun belanja) --}}
                         <div class="form-group row mb-3">
                             <label for="jenis_belanja" class="col-md-3 col-sm-12 col-form-label">
-                                Akun Belanja <small class="text-danger ml-1">*</small>
+                                Akun Belanja <small class="text-danger">*</small>
                             </label>
 
                             <div class="input-group col-md-9 col-sm-12">
@@ -45,11 +45,11 @@
                                 </div>
 
                                 <input type="text" name="kategori_belanja" id="kategori_belanja"
-                                    class="form-control @error('budget_id') is-invalid @enderror"
+                                    class="form-control @error('kategori_belanja') is-invalid @enderror"
                                     placeholder="Pilih akun belanja..." value="{{ old('kategori_belanja') }}" readonly
                                     required />
 
-                                @error('budget_id')
+                                @error('kategori_belanja')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -59,7 +59,7 @@
                         {{-- input tahun anggaran & sisa budget --}}
                         <div class="form-group row mb-3">
                             <label for="nama_divisi" class="col-md-3 col-sm-12 col-form-label">
-                                Bagian
+                                Bagian <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -77,7 +77,7 @@
                         {{-- input tahun anggaran & sisa budget --}}
                         <div class="form-group row mb-3">
                             <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
-                                Tahun Anggaran
+                                Tahun Anggaran <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -95,7 +95,7 @@
                         {{-- input sisa budget --}}
                         <div class="form-group row mb-3">
                             <label for="sisa_budget" class="col-md-3 col-sm-12 col-form-label">
-                                Sisa Budget
+                                Sisa Budget <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12 input-group">
@@ -134,7 +134,7 @@
                         {{-- input tanggal --}}
                         <div class="form-group row mb-3">
                             <label for="tanggal" class="col-md-3 col-sm-12 col-form-label">
-                                Tanggal <small class="text-danger ml-1">*</small>
+                                Tanggal <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -151,7 +151,7 @@
                         {{-- input kegiatan --}}
                         <div class="form-group row mb-3">
                             <label for="kegiatan" class="col-md-3 col-sm-12 col-form-label">
-                                Kegiatan <small class="text-danger ml-1">*</small>
+                                Kegiatan <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -168,7 +168,7 @@
                         {{-- input jumlah_nominal --}}
                         <div class="form-group row mb-3">
                             <label for="jumlah_nominal" class="col-md-3 col-sm-12 col-form-label">
-                                Jumlah Nominal <small class="text-danger ml-1">*</small>
+                                Jumlah Nominal <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12 input-group">
@@ -191,7 +191,7 @@
                         {{-- input nama approval --}}
                         <div class="form-group row mb-3">
                             <label for="approval" class="col-md-3 col-sm-12 col-form-label">
-                                Nama Approval <small class="text-danger ml-1">*</small>
+                                Nama Approval <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -235,7 +235,7 @@
                         {{-- input no dokumen --}}
                         <div class="form-group row mb-3">
                             <label for="no_dokumen" class="col-md-3 col-sm-12 col-form-label">
-                                No Dokumen <small class="text-danger ml-1">*</small>
+                                No Dokumen <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -259,7 +259,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="file_dokumen">
-                                            <span type="button" class="btn btn-primary btn-rounded">
+                                            <span type="button" class="btn btn-primary btn-sm btn-rounded">
                                                 <i class="mdi mdi-upload-outline"></i>
                                                 <span>Unggah File</span>
                                             </span>
@@ -290,12 +290,12 @@
         {{-- button submit & reset --}}
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-info btn-rounded mr-2">
+                <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
                     <i class="mdi mdi-content-save"></i>
                     <span>Simpan</span>
                 </button>
 
-                <button type="reset" class="btn btn-secondary btn-rounded">
+                <button type="reset" class="btn btn-outline-dark btn-sm btn-rounded">
                     <i class="mdi mdi-close"></i>
                     <span>Reset</span>
                 </button>

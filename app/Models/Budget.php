@@ -16,6 +16,7 @@ class Budget extends Model
         'jenis_belanja_id',
         'tahun_anggaran',
         'nominal',
+        'sisa_nominal',
         'keterangan'
     ];
 

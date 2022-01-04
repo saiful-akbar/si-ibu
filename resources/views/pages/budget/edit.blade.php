@@ -11,29 +11,30 @@
     {{-- button kembali --}}
     <div class="row">
         <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('budget') }}" class="btn btn-rounded btn-dark">
-                <i class="dripicons-chevron-left"></i>
+            <a href="{{ route('budget') }}" class="btn btn-rounded btn-dark btn-sm">
+                <i class="mdi mdi-chevron-double-left"></i>
                 <span>Kembali</span>
             </a>
         </div>
     </div>
 
     {{-- card form edit budget --}}
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="header-title mt-2">Form Edit Budget</h4>
-                </div>
+    <form action="{{ route('budget.update', ['budget' => $budget->id]) }}" method="POST">
+        @method('PATCH') @csrf
 
-                <div class="card-body">
-                    <form action="{{ route('budget.update', ['budget' => $budget->id]) }}" method="POST">
-                        @method('PATCH') @csrf
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">Form Edit Budget</h4>
+                    </div>
+
+                    <div class="card-body">
 
                         {{-- Input akun bagian (divisi_id) --}}
                         <div class="form-group row mb-3">
                             <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
-                                Bagian <small class="text-danger ml-1">*</small>
+                                Bagian <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -59,7 +60,7 @@
                         {{-- Input akun belanja (jenis_belanja_id) --}}
                         <div class="form-group row mb-3">
                             <label for="jenis_belanja_id" class="col-md-3 col-sm-12 col-form-label">
-                                Akun Belanja <small class="text-danger ml-1">*</small>
+                                Akun Belanja <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -85,7 +86,7 @@
                         {{-- input tahun anggaran --}}
                         <div class="form-group row mb-3">
                             <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
-                                Tahun Anggaran <small class="text-danger ml-1">*</small>
+                                Tahun Anggaran <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -103,7 +104,7 @@
                         {{-- input nominal --}}
                         <div class="form-group row mb-3">
                             <label for="nominal" class="col-md-3 col-sm-12 col-form-label">
-                                Nominal <small class="text-danger ml-1">*</small>
+                                Nominal <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12 input-group">
@@ -123,37 +124,50 @@
                             </div>
                         </div>
 
-                        {{-- input Keterangan --}}
-                        <div class="form-group row mb-3">
-                            <label for="keterangan" class="col-md-3 col-sm-12 col-form-label">
-                                Keterangan
-                            </label>
-
-                            <div class="col-md-9 col-sm-12">
-                                <textarea name="keterangan" id="keterangan" rows="10" placeholder="Masukan keterangan..."
-                                    class="form-control">{{ old('keterangan', $budget->keterangan) }}</textarea>
-                            </div>
-                        </div>
-
-                        {{-- button submit & reset --}}
-                        <div class="form-group mb-0 justify-content-end row">
-                            <div class="col-md-9 col-sm-12">
-                                <button type="submit" class="btn btn-info btn-rounded mr-2">
-                                    <i class="mdi mdi-content-save"></i>
-                                    <span>Simpan</span>
-                                </button>
-
-                                <button type="reset" class="btn btn-rounded btn-secondary">
-                                    <i class="mdi mdi-close"></i>
-                                    <span>Reset</span>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        {{-- input keterangan --}}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">
+                            Keterangan <small class="text-danger">*</small>
+                        </h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <textarea name="keterangan" id="keterangan" rows="10" placeholder="Masukan keterangan..."
+                                class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan') }}</textarea>
+
+                            @error('keterangan')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- button submit & reset --}}
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
+                            <i class="mdi mdi-content-save"></i>
+                            <span>Simpan</span>
+                        </button>
+
+                        <button type="reset" class="btn btn-rounded btn-outline-dark btn-sm">
+                            <i class="mdi mdi-close"></i>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end input keterangan --}}
+
+    </form>
     {{-- end card form edit budget --}}
 
 @endsection

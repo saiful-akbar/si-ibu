@@ -13,10 +13,10 @@
                 <div class="card-body">
 
                     {{-- button tambah & form search --}}
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
-                                <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary">
+                                <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary btn-sm">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Tambah Akun Belanja</span>
                                 </a>
@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-hover nowrap">
+                                <table class="table nowrap table-centered">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -60,25 +60,25 @@
                                     <tbody>
                                         @foreach ($jenisBelanja as $data)
                                             <tr>
-                                                <td class="align-middel">
+                                                <td>
                                                     {{ $jenisBelanja->count() * ($jenisBelanja->currentPage() - 1) + $loop->iteration }}
                                                 </td>
-                                                <td class="align-middle">{{ $data->kategori_belanja }}</td>
-                                                <td class="align-middle">
+                                                <td>{{ $data->kategori_belanja }}</td>
+                                                <td>
                                                     @if ($data->active == 1)
                                                         <i class="mdi mdi-check text-success h3"></i>
                                                     @else
                                                         <i class="mdi mdi mdi-close text-danger h3"></i>
                                                     @endif
                                                 </td>
-                                                <td class="align-middle">{{ $data->updated_at->format('d M Y H:i') }}
+                                                <td>{{ $data->updated_at->format('d M Y H:i') }}
                                                 </td>
 
                                                 @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
-                                                    <td class="align-middle text-center">
+                                                    <td class="text-center">
                                                         @if ($userAccess->pivot->update == 1)
                                                             <a href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
-                                                                class="btn btn-sm btn-success btn-icon mr-1"
+                                                                class="btn btn-sm btn-light btn-icon mr-1"
                                                                 data-toggle="tooltip" data-original-title="Edit"
                                                                 data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
@@ -86,7 +86,7 @@
                                                         @endif
 
                                                         @if ($userAccess->pivot->delete == 1)
-                                                            <button class="btn btn-sm btn-danger btn-icon"
+                                                            <button class="btn btn-sm btn-light btn-icon"
                                                                 data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top"
                                                                 onclick="handleDelete({{ $data->id }}, '{{ $data->kategori_belanja }}', '{{ $data->nama_divisi }}')">
@@ -139,7 +139,7 @@
                             <i class="dripicons-information mr-1"></i>
                             Info
                         </h5>
-                        <p>Akun belanja tidak dapat dihapus jika memilikin data pada relasi <b>budget</b> dan <b>transaksi belanja</b>!</p>
+                        <p>Akun belanja tidak dapat dihapus jika memilikin data pada relasi <b>budget</b>!</p>
                     </div>
                 `,
                 buttons: {

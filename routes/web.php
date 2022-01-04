@@ -169,10 +169,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{budget}', [BudgetController::class, 'delete'])
             ->middleware('menu:/budget,delete')
             ->name('budget.delete');
-
-        Route::get('/{id}/datatable', [BudgetController::class, 'dataTable'])
-            ->middleware('menu:/budget,read')
-            ->name('budget.datatable.id');
     });
 
 

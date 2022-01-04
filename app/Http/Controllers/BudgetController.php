@@ -13,6 +13,16 @@ use Yajra\DataTables\DataTables;
 class BudgetController extends Controller
 {
     /**
+     * custom date untuk keterangan.
+     *
+     * @return string
+     */
+    private function dateKeterangan(): string
+    {
+        return '<p><small>' . date('d M Y H:i') . '</small></p><hr/>';
+    }
+
+    /**
      * index
      * view halaman budget
      *
@@ -30,6 +40,8 @@ class BudgetController extends Controller
                 'budget.id',
                 'budget.tahun_anggaran',
                 'budget.nominal',
+                'budget.sisa_nominal',
+                'budget.created_at',
                 'budget.updated_at',
                 'divisi.nama_divisi',
                 'jenis_belanja.kategori_belanja',
@@ -123,7 +135,7 @@ class BudgetController extends Controller
             'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:1900'],
             'nominal' => ['required', 'numeric', 'min:0'],
-            'keterangan' => [],
+            'keterangan' => ['required'],
         ];
 
         /**
@@ -141,12 +153,19 @@ class BudgetController extends Controller
             'nominal.required' => 'Nilai nominal tidak boleh kosong.',
             'nominal.numeric' => 'Nilai nominal harus bertipe numerik atau angka.',
             'nominal.min' => 'Nilai nominal tidak boleh kurang dari 0.',
+            'keterangan.required' => 'Keterangan harus diisi.',
         ];
 
         /**
          * jalankan validasi
          */
         $validatedData = $request->validate($validateRules, $validateMessage);
+
+        /**
+         * isi sisa_nominal sesuai nominal yang di-input.
+         */
+        $validatedData['sisa_nominal'] = $request->nominal;
+        $validatedData['keterangan'] = $this->dateKeterangan() . $request->keterangan . '<br>';
 
         /**
          * ambil data budget berdasarkan divisi_id, jenis_belanja_id & tahun
@@ -225,7 +244,7 @@ class BudgetController extends Controller
             'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:0'],
             'nominal' => ['required', 'numeric', 'min:0'],
-            'keterangan' => [],
+            'keterangan' => ['required'],
         ];
 
         /**
@@ -243,12 +262,19 @@ class BudgetController extends Controller
             'nominal.required' => 'Nilai nominal tidak boleh kosong.',
             'nominal.numeric' => 'Nilai nominal harus bertipe numerik atau angka.',
             'nominal.min' => 'Nilai nominal tidak boleh kurang dari 0.',
+            'keterangan.required' => 'Keterangan harus diisi.',
         ];
 
         /**
          * jalankan validasi
          */
         $validatedData = $request->validate($validateRules, $validateMessage);
+
+        /**
+         * masukan sisa_nominal & keterangan ke $validatedData
+         */
+        $validatedData['sisa_nominal'] = $budget->sisa_nominal;
+        $validatedData['keterangan'] = $budget->keterangan . $this->dateKeterangan() . $request->keterangan . '<br>';
 
         /**
          * Cek apakah divisi_id, jenis_belanja_id & tahun anggaran dirubah atau tidak
@@ -280,6 +306,16 @@ class BudgetController extends Controller
                     ",
                     ]);
             }
+        }
+
+        /**
+         * cek nominal bertambah atau berkurang
+         */
+        if ($request->nominal > $budget->nominal) {
+            $validatedData['sisa_nominal'] = $budget->sisa_nominal + ($request->nominal - $budget->nominal);
+        } else if ($request->nominal < $budget->nominal) {
+            $sisa = $budget->sisa_nominal - ($budget->nominal - $request->nominal);
+            $validatedData['sisa_nominal'] = $sisa < 0 ? 0 : $sisa;
         }
 
         /**
@@ -367,39 +403,6 @@ class BudgetController extends Controller
     }
 
     /**
-     * datatables
-     *
-     * @return JSON
-     */
-    public function dataTable($id)
-    {
-        /**
-         * Ambil data budget selain "id" yang di request
-         * 
-         * @var array
-         */
-        $budgets = Budget::with('jenisBelanja', 'divisi')
-            ->where('id', '!=', $id)
-            ->get();
-
-        /**
-         * return datatable
-         */
-        return DataTables::of($budgets)
-            ->addColumn('action', function ($query) {
-                return '
-                    <button
-                        class="btn btn-sm btn-success btn-rounded"
-                        onclick="budget.setValueSwitchBudget(' . $query->id . ')"
-                    >
-                        <i class="mdi mdi-hand-pointing-up"></i>
-                        <span>Pilih</span>
-                    </button>
-                ';
-            })->make(true);
-    }
-
-    /**
      * Update switch anggaran (budget)
      *
      * @param Request $request
@@ -413,25 +416,30 @@ class BudgetController extends Controller
          * aturan validasi
          */
         $validatedRules = [
-            'id' => ['required', 'exists:budget,id'],
-            'jenis_belanja' => ['required'],
+            'divisi_id' => ['required', 'exists:divisi,id'],
+            'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:1900'],
-            'nominal' => ['required', 'numeric', "max:{$budget->nominal}", 'min:0'],
+            'nominal' => ['required', 'numeric', "max:{$budget->sisa_nominal}", 'min:0'],
+            'keterangan' => ['required'],
         ];
 
         /**
          * pesan error validasi
          */
         $validatedErrorMessage = [
-            'jenis_belanja.required' => 'Akun Belanja harus diisi.',
+            'divisi_id.required' => 'Bagian harus dipilih.',
+            'divisi_id.exists' => 'Bagian tidak ada. Pilih bagian yang ditentukan.',
+            'jenis_belanja_id.required' => 'Akun Belanja harus dipilih.',
+            'jenis_belanja_id.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
             'tahun_anggaran.required' => 'Tahun anggaran harus diisi.',
             'tahun_anggaran.numeric' => 'Tahun anggaran harus berupa tahun yang valid.',
             'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari 9999.',
             'tahun_anggaran.min' => 'Tahun anggaran tidak boleh kurang dari 1900.',
             'nominal.required' => 'Jumlah nominal harus diisi.',
             'nominal.numeric' => 'Jumlah nominal berupa angka.',
-            'nominal.max' => 'Jumlah nominal yang dialihkan melebihi jumlah nominal budget pada akun belanja yang dipilih.',
-            'nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.'
+            'nominal.max' => 'Jumlah nominal yang dialihkan melebihi sisa nominal budget pada akun belanja yang dipilih.',
+            'nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
+            'keterangan.required' => 'keterangan harus diisi',
         ];
 
         /**
@@ -440,24 +448,51 @@ class BudgetController extends Controller
         $request->validate($validatedRules, $validatedErrorMessage);
 
         /**
-         * ambil data budget saat ini
+         * Proses update switch budget
          */
-        $currentBudget = Budget::find($request->id);
-
         try {
 
             /**
-             * update budget tujuan
+             * tanggal untuk keterangan
              */
-            $currentBudget->nominal = $currentBudget->nominal + (int) $request->nominal;
-            $currentBudget->keterangan = $request->keterangan;
-            $currentBudget->save();
+            $date = '<p><small>' . date('d M Y H:i') . '</small></p><hr/>';
 
             /**
-             * update budget dari
+             * kurangi nominal & sisa_nominal pada budget yang di switch
              */
-            $budget->nominal = $budget->nominal - (int) $request->nominal;
+            $budget->sisa_nominal = $budget->sisa_nominal - $request->nominal;
+            $budget->nominal = $budget->nominal - $request->nominal;
             $budget->save();
+
+            /**
+             * ambil data budget berdasarkan divisi_id, jenis_belanja_id & tahun_anggaran yang di-input.
+             */
+            $availableBudget = Budget::where([
+                ['divisi_id', $request->divisi_id],
+                ['jenis_belanja_id', $request->jenis_belanja_id],
+                ['tahun_anggaran', $request->tahun_anggaran],
+            ])->first();
+
+            /**
+             * cek $availableBudget apakah budget sudah ada atau belum
+             * jika sudah ada, update nominal & sisa_nominal nya.
+             * jika belum, buat buat budget baru.
+             */
+            if (empty($availableBudget)) {
+                Budget::create([
+                    'divisi_id' => $request->divisi_id,
+                    'jenis_belanja_id' => $request->jenis_belanja_id,
+                    'tahun_anggaran' => $request->tahun_anggaran,
+                    'nominal' => $request->nominal,
+                    'sisa_nominal' => $request->nominal,
+                    'keterangan' => $this->dateKeterangan() . $request->keterangan . '<br>',
+                ]);
+            } else {
+                $availableBudget->nominal += $request->nominal;
+                $availableBudget->sisa_nominal += $request->nominal;
+                $availableBudget->keterangan .= $this->dateKeterangan() . $request->keterangan . '<br>';
+                $availableBudget->save();
+            }
         } catch (\Exception $e) {
 
             /**

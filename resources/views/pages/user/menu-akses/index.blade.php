@@ -4,10 +4,10 @@
 
 @section('content')
 
-    <div class="row mb-3">
-        <div class="col-12 d-flex justify-content-end">
-            <a href="{{ route('user') }}" class="btn btn-rounded btn-dark">
-                <i class="dripicons-chevron-left"></i>
+    <div class="row">
+        <div class="col-12 mb-3 d-flex justify-content-end">
+            <a href="{{ route('user') }}" class="btn btn-rounded btn-dark btn-sm">
+                <i class="mdi mdi-chevron-double-left"></i>
                 <span>Kembali</span>
             </a>
         </div>
@@ -16,43 +16,36 @@
     {{-- profil --}}
     @include('pages.user.menu-akses.profile')
 
-    {{-- tab nav --}}
     <div class="row">
-        <div class="col-12 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <ul class="nav nav-pills bg-nav-pills nav-justified">
-                        <li class="nav-item">
-                            <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}" aria-expanded="true"
-                                class="nav-link rounded-0 active">
-                                <span class="d-md-block">Detail</span>
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" aria-expanded="false"
-                                class="nav-link rounded-0 @if ($userAccess->pivot->update != 1) disabled @endif">
-                                <span class="d-md-block">Edit</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+        {{-- tabs --}}
+        <div class="col-lg-4 col-md-6-col-sm-12 mb-3">
+            <div class="nav flex-column nav-pills" id="tabs-menu-access" role="tablist" aria-orientation="vertical">
+                <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}" class="nav-link active show mb-2">
+                    <i class="mdi mdi-eye-outline mr-2"></i>
+                    <span>Detail Akses</span>
+                </a>
+
+                <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" class="nav-link mb-2">
+                    <i class="mdi mdi-square-edit-outline mr-2"></i>
+                    <span>Edit Akses</span>
+                </a>
             </div>
+
+            <hr>
         </div>
-    </div>
-    {{-- end tab nav --}}
+        {{-- end tabs --}}
 
-    {{-- tab content --}}
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="header-title mb-3">
-                        Detail User Menu Akses
-                    </h4>
+        {{-- table list menu akses --}}
+        <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
+            <div class="tab-content">
+                <div class="tab-pane fade show active">
+                    <div class="card">
+                        <div class="card-header pt-3">
+                            <h4 class="header-title">Table Menu Akses User</h4>
+                        </div>
 
-                    <div class="tab-content">
-                        <div class="tab-pane show active">
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover nowrap">
                                     <thead>
@@ -108,11 +101,12 @@
                                 </table>
                             </div>
                         </div>
-                    </div>            
+                    </div>
                 </div>
             </div>
         </div>
+        {{-- end table list menu akses --}}
+
     </div>
-    {{-- end tab content --}}
 
 @endsection

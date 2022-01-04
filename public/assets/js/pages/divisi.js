@@ -15,7 +15,7 @@ const handleDelete = (id, namaBagian) => {
                     <i class="dripicons-information mr-1"></i>
                     Info
                 </h5>
-                <p>Bagian tidak dapat dihapus jika memlikin data pada relasi user dan akun belanja!</p>
+                <p>Bagian tidak dapat dihapus jika memlikin data pada relasi <b>User</b> dan <b>Budget</b>!</p>
             </div>
         `,
         buttons: {

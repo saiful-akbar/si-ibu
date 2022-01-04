@@ -17,7 +17,7 @@
                         <div class="row">
 
                             {{-- input periode tanggal --}}
-                            <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
+                            <div class="col-lg-8 col-md-6 col-sm-12 mb-2">
                                 <div class="form-group">
                                     <label> Periode <small class="text-danger">*</small></label>
 
@@ -46,13 +46,13 @@
                                         @error('periode_akhir')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    @enderror                                    
+                                    @enderror
                                 </div>
                             </div>
                             {{-- end input periode tanggal --}}
 
                             {{-- input nama divisi --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                 <div class="form-group">
                                     <label for="divisi">Bagian</label>
 
@@ -75,7 +75,7 @@
                             {{-- end input nama divisi --}}
 
                             {{-- input jenis belanja --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                 <div class="form-group">
                                     <label for="jenis_belanja">
                                         Akun Belanja
@@ -100,7 +100,7 @@
                             {{-- end input jenis belanja --}}
 
                             {{-- input no dokumen --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                 <div class="form-group">
                                     <label for="no_dokumen">
                                         No. Dokumen
@@ -119,16 +119,13 @@
                             {{-- end input no dokumen --}}
 
                         </div>
+                    </div>
 
-                        {{-- button submit --}}
-                        <div class="row">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-info btn-rounded mr-2">
-                                    <i class="mdi mdi-filter-variant"></i>
-                                    <span>Filter</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
+                            <i class="mdi mdi-filter-variant"></i>
+                            <span>Filter</span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -147,10 +144,10 @@
                 <div class="card-body">
 
                     {{-- button tambah & form search --}}
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
-                                <a href="{{ route('belanja.create') }}" class="btn btn-primary btn-rounded">
+                                <a href="{{ route('belanja.create') }}" class="btn btn-primary btn-sm btn-rounded">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Tambah Belanja</span>
                                 </a>
@@ -159,12 +156,12 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-12 mb-3 d-flex justify-content-md-end">
                             <div class="btn-group btn-block">
-                                <button type="submit" class="btn btn-success btn-rounded btn-export"
+                                <button type="submit" class="btn btn-success btn-sm btn-rounded btn-export"
                                     data-route="{{ route('belanja.excel') }}" @if (count($transactions) <= 0) disabled @endif>
                                     <span>Export Excel</span>
                                 </button>
 
-                                <button type="submit" class="btn btn-danger btn-rounded btn-export"
+                                <button type="submit" class="btn btn-danger btn-sm btn-rounded btn-export"
                                     data-route="{{ route('belanja.pdf') }}" @if (count($transactions) <= 0) disabled @endif>
                                     <span>Cetak PDF</span>
                                 </button>
@@ -177,7 +174,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-hover table-centered w-100 nowrap">
+                                <table class="table table-centered w-100 nowrap">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -215,9 +212,8 @@
                                                     <td class="text-center">
                                                         @if ($data->file_dokumen)
                                                             <a href="{{ route('belanja.download', ['transaksi' => $data->id]) }}"
-                                                                class="btn btn-sm btn-primary btn-icon"
-                                                                data-toggle="tooltip" data-original-title="Unduh"
-                                                                data-placement="top">
+                                                                class="btn btn-sm btn-light btn-icon" data-toggle="tooltip"
+                                                                data-original-title="Unduh" data-placement="top">
                                                                 <i class="mdi mdi-download"></i>
                                                             </a>
                                                         @else
@@ -225,7 +221,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-sm btn-info btn-icon mr-1"
+                                                        <button class="btn btn-sm btn-light btn-icon mr-1"
                                                             data-toggle="tooltip" data-original-title="Detail"
                                                             data-placement="top"
                                                             onclick="transaksi.showDetail({{ $data->id }})">
@@ -234,7 +230,7 @@
 
                                                         @if ($userAccess->pivot->update == 1)
                                                             <a href="{{ route('belanja.edit', ['transaksi' => $data->id]) }}"
-                                                                class="btn btn-sm btn-success btn-icon mr-1"
+                                                                class="btn btn-sm btn-light btn-icon mr-1"
                                                                 data-toggle="tooltip" data-original-title="Edit"
                                                                 data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
@@ -242,7 +238,7 @@
                                                         @endif
 
                                                         @if ($userAccess->pivot->delete == 1)
-                                                            <button class="btn btn-sm btn-icon btn-danger"
+                                                            <button class="btn btn-sm btn-icon btn-light"
                                                                 data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top"
                                                                 onclick="transaksi.delete({{ $data->id }}, '{{ $data->no_dokumen }}')">

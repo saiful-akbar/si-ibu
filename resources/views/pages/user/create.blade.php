@@ -5,8 +5,8 @@
 @section('content')
     <div class="row">
         <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('user') }}" class="btn btn-rounded btn-dark">
-                <i class="dripicons-chevron-left"></i>
+            <a href="{{ route('user') }}" class="btn btn-rounded btn-dark btn-sm">
+                <i class="mdi mdi-chevron-double-left"></i>
                 <span>Kembali</span>
             </a>
         </div>
@@ -113,7 +113,7 @@
                                     data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}" />
 
                                 <label for="avatar" class="ml-2">
-                                    <span type="button" class="btn btn-rounded btn-primary">
+                                    <span type="button" class="btn btn-rounded btn-primary btn-sm">
                                         <i class="mdi mdi-upload-outline"></i>
                                         <span>Avatar</span>
                                     </span>
@@ -148,7 +148,7 @@
                             </div>
                         </div>
 
-                        {{-- input divisi --}}
+                        {{-- input bagian (divisi) --}}
                         <div class="form-group row mb-3">
                             <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
                                 Bagian <small class="text-danger">*</small>
@@ -158,7 +158,7 @@
                                 <select required name="divisi_id" id="divisi_id" data-toggle="select2"
                                     class="form-control select2 @error('divisi_id') is-invalid @enderror">
                                     <option disabled @if (!old('divisi_id')) selected @endif>
-                                        -- Pilih Bagian --
+                                        Pilih Bagian
                                     </option>
 
                                     @foreach ($divisions as $divisi)
@@ -190,26 +190,24 @@
                                 @enderror
                             </div>
                         </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
+                            <i class="mdi mdi-content-save"></i>
+                            <span>Simpan</span>
+                        </button>
+
+                        <button type="reset" class="btn btn-rounded btn-outline-dark btn-sm">
+                            <i class="mdi mdi-close"></i>
+                            <span>Reset</span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         {{-- end form profil --}}
-
-        {{-- button submit & reset --}}
-        <div class="row">
-            <div class="col-12">
-                <button type="submit" class="btn btn-info btn-rounded mr-2">
-                    <i class="mdi mdi-content-save"></i>
-                    <span>Simpan</span>
-                </button>
-
-                <button type="reset" class="btn btn-rounded btn-secondary">
-                    <i class="mdi mdi-close"></i>
-                    <span>Reset</span>
-                </button>
-            </div>
-        </div>
 
     </form>
 @endsection
