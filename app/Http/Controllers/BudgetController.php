@@ -22,7 +22,7 @@ class BudgetController extends Controller
     public function index(Request $request)
     {
         /**
-         * query join table budget dengan tabel divisi
+         * query join table budget dengan tabel divisi dan select kolom yang diperlukan
          */
         $query = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
             ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
@@ -33,35 +33,48 @@ class BudgetController extends Controller
                 'budget.updated_at',
                 'divisi.nama_divisi',
                 'jenis_belanja.kategori_belanja',
-            ]);
+            ])->whereBetween('budget.tahun_anggaran', [$request->periode_awal, $request->periode_akhir]);
 
         /**
-         * cek apakah ada request search atau tidak
+         * cek divisi di cari atau tidak
          */
-        if ($request->search) {
-            $query->where('budget.tahun_anggaran', 'like', "%{$request->search}%")
-                ->orWhere('budget.nominal', 'like', "%{$request->search}%")
-                ->orWhere('budget.updated_at', 'like', "%{$request->search}%")
-                ->orWhere('jenis_belanja.kategori_balanja', 'like', "%{$request->search}%")
-                ->orWhere('divisi.nama_divisi', 'like', "%{$request->search}%");
+        if (!empty($request->divisi)) {
+            $query->where('divisi.nama_divisi', $request->divisi);
         }
 
+        /**
+         * cek akun belanja (jenis_belanja) di cari atau tidak
+         */
+        if (!empty($request->jenis_belanja)) {
+            $query->where('jenis_belanja.kategori_belanja', $request->jenis_belanja);
+        }
+
+        /**
+         * Query order
+         */
         $query->orderBy('budget.tahun_anggaran', 'desc')
             ->orderBy('divisi.nama_divisi', 'asc')
             ->orderBy('budget.updated_at', 'desc');
 
 
         /**
-         * ambid data user akses untuk menu user
+         * ambil data user akses untuk menu user
          */
         $userAccess = User::with('menuItem')->find(Auth::user()->id)
             ->menuItem
             ->where('href', '/budget')
             ->first();
 
+
+
+        /**
+         * return view
+         */
         return view('pages.budget.index', [
             'budgets' => $query->paginate(25)->withQueryString(),
-            'userAccess' => $userAccess
+            'userAccess' => $userAccess,
+            'divisi' => Divisi::all(),
+            'jenisBelanja' => JenisBelanja::all(),
         ]);
     }
 
@@ -69,7 +82,6 @@ class BudgetController extends Controller
      * detail budget per id
      *
      * @param Budget $budget
-     *
      * @return json
      */
     public function show(Budget $budget)
@@ -104,7 +116,7 @@ class BudgetController extends Controller
     public function store(Request $request)
     {
         /**
-         * aturan validasi
+         * validasi rule
          */
         $validateRules = [
             'divisi_id' => ['required', 'exists:divisi,id'],
@@ -172,6 +184,9 @@ class BudgetController extends Controller
             ]);
         }
 
+        /**
+         * retur jika proses create sukses
+         */
         return redirect()->route('budget.create')->with('alert', [
             'type' => 'success',
             'message' => 'Budget berhasil ditambahkan.',
@@ -236,7 +251,8 @@ class BudgetController extends Controller
         $validatedData = $request->validate($validateRules, $validateMessage);
 
         /**
-         * Cek apakah tahun anggaran dirubah atau tidak
+         * Cek apakah divisi_id, jenis_belanja_id & tahun anggaran dirubah atau tidak
+         * jika dirubah, cek apakah sudah ada budget yang dibuat sebelumnya dengan data yang sama atau tidak
          */
         if (
             $request->divisi_id != $budget->divisi_id ||
@@ -259,7 +275,7 @@ class BudgetController extends Controller
                         'message' => "
                             <ul class='mt-0'>
                                 <li>Budget sudah dibuat.</li>
-                                <li>Jika anda ingin menambahkan nominal budget pada bagian di akun belanja pada tahun yang sama, anda bisa melakukan edit nominal.</li>
+                                <li>Jika anda ingin menambahkan nominal budget pada bagian, akun belanja & ditahun yang sama dengan data budget yang ada sebelumnya, anda bisa melakukan edit nominal.</li>
                             </ul>
                     ",
                     ]);
@@ -272,12 +288,16 @@ class BudgetController extends Controller
         try {
             Budget::where('id', $budget->id)->update($validatedData);
         } catch (\Exception $e) {
-            return redirect()->route('budget.edit', ['budget' => $budget->id])->with('alert', [
-                'type' => 'danger',
-                'message' => 'Budget gagal ditambahkan. <strong>' . $e->getMessage() . '</strong>',
-            ]);
+            return redirect()->route('budget.edit', ['budget' => $budget->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => 'Budget gagal ditambahkan. ' . $e->getMessage(),
+                ]);
         }
 
+        /**
+         * return jika proses update sukses
+         */
         return redirect()->route('budget')->with('alert', [
             'type' => 'success',
             'message' => 'Budget berhasil diperbarui.',
@@ -293,12 +313,15 @@ class BudgetController extends Controller
      */
     public function delete(Budget $budget)
     {
+        /**
+         * ambil data pada transaksi yang belasi dengan budget ini
+         */
         $relasiData = Budget::with('transaksi')->find($budget->id);
 
         /**
          * cek apakah data divisi melilik data pada relasi ke user dan jenis_belanja
          */
-        if (count($relasiData->user) > 0 && count($relasiData->jenisBelanja) > 0) {
+        if (count($relasiData->transaksi) > 0) {
             return redirect()->route('budget')
                 ->with('alert', [
                     'type' => 'warning',
@@ -307,6 +330,7 @@ class BudgetController extends Controller
         }
 
         /**
+         * Jika budget tidak memiliki data relasi pada transaksi
          * hapus budget di database
          */
         try {
@@ -318,6 +342,9 @@ class BudgetController extends Controller
             ]);
         }
 
+        /**
+         * return jika hapus budget sukses
+         */
         return redirect()->route('budget')->with('alert', [
             'type' => 'success',
             'message' => '1 baris data budget berhasil dihapus.',
@@ -346,14 +373,25 @@ class BudgetController extends Controller
      */
     public function dataTable($id)
     {
+        /**
+         * Ambil data budget selain "id" yang di request
+         * 
+         * @var array
+         */
         $budgets = Budget::with('jenisBelanja', 'divisi')
             ->where('id', '!=', $id)
             ->get();
 
+        /**
+         * return datatable
+         */
         return DataTables::of($budgets)
             ->addColumn('action', function ($query) {
                 return '
-                    <button class="btn btn-sm btn-success btn-rounded" onclick="budget.setValueSwitchBudget(' . $query->id . ')">
+                    <button
+                        class="btn btn-sm btn-success btn-rounded"
+                        onclick="budget.setValueSwitchBudget(' . $query->id . ')"
+                    >
                         <i class="mdi mdi-hand-pointing-up"></i>
                         <span>Pilih</span>
                     </button>
@@ -421,12 +459,19 @@ class BudgetController extends Controller
             $budget->nominal = $budget->nominal - (int) $request->nominal;
             $budget->save();
         } catch (\Exception $e) {
+
+            /**
+             * response jika proses update switch budget gagal.
+             */
             return redirect()->route('budget.swith', ['budget' => $budget->id])->with('alert', [
                 'type' => 'danger',
                 'message' => 'Gagal melakikan switch budget. <strong>' . $e->getMessage() . '</strong>',
             ]);
         }
 
+        /**
+         * return jika update switch budget sukses.
+         */
         return redirect()->route('budget')->with('alert', [
             'type' => 'success',
             'message' => 'Switch budget berhasil dilakukan.',

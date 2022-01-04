@@ -68,7 +68,7 @@ class MenuSeeder extends Seeder
                 'menu_header_id' => $this->getMenuHeader('Data Master'),
                 'nama_menu' => 'Bagian',
                 'icon' => 'fas fa-boxes',
-                'href' => '/bagian',
+                'href' => '/divisi',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

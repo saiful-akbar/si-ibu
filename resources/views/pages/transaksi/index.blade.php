@@ -19,9 +19,7 @@
                             {{-- input periode tanggal --}}
                             <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
                                 <div class="form-group">
-                                    <label>
-                                        Periode <small class="ml-1 text-danger">*</small>
-                                    </label>
+                                    <label> Periode <small class="text-danger">*</small></label>
 
                                     <div
                                         class="input-group @error('periode_awal') is-invalid @else @error('periode_akhir') is-invalid @enderror @enderror">
@@ -48,7 +46,7 @@
                                         @error('periode_akhir')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    @enderror
+                                    @enderror                                    
                                 </div>
                             </div>
                             {{-- end input periode tanggal --}}
@@ -56,9 +54,7 @@
                             {{-- input nama divisi --}}
                             <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
                                 <div class="form-group">
-                                    <label for="divisi">
-                                        Bagian
-                                    </label>
+                                    <label for="divisi">Bagian</label>
 
                                     <select id="divisi" name="divisi" data-toggle="select2"
                                         class="form-control select2 @error('divisi') is-invalid @enderror">
@@ -124,17 +120,12 @@
 
                         </div>
 
-                        {{-- button submit & reset --}}
+                        {{-- button submit --}}
                         <div class="row">
                             <div class="col-12">
                                 <button type="submit" class="btn btn-info btn-rounded mr-2">
                                     <i class="mdi mdi-filter-variant"></i>
                                     <span>Filter</span>
-                                </button>
-
-                                <button type="reset" class="btn btn-rounded btn-secondary">
-                                    <i class="mdi mdi-close"></i>
-                                    <span>Reset</span>
                                 </button>
                             </div>
                         </div>
@@ -186,7 +177,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-hover nowrap">
+                                <table class="table table-hover table-centered w-100 nowrap">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -208,40 +199,20 @@
                                         @if (count($transactions) > 0)
                                             @foreach ($transactions as $data)
                                                 <tr>
-                                                    <td class="align-middle">
+                                                    <td>
                                                         {{ $transactions->count() * ($transactions->currentPage() - 1) + $loop->iteration }}
                                                     </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->nama_divisi }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->kategori_belanja }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->nama_lengkap }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->tanggal }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->kegiatan }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        Rp. {{ number_format($data->jumlah_nominal) }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->approval }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->no_dokumen }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->created_at }}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ $data->updated_at }}
-                                                    </td>
-                                                    <td class="align-middle text-center">
+                                                    <td>{{ $data->nama_divisi }}</td>
+                                                    <td>{{ $data->kategori_belanja }}</td>
+                                                    <td>{{ $data->nama_lengkap }}</td>
+                                                    <td>{{ $data->tanggal }}</td>
+                                                    <td>{{ $data->kegiatan }}</td>
+                                                    <td>Rp. {{ number_format($data->jumlah_nominal) }}</td>
+                                                    <td>{{ $data->approval }}</td>
+                                                    <td>{{ $data->no_dokumen }}</td>
+                                                    <td>{{ $data->created_at }}</td>
+                                                    <td>{{ $data->updated_at }}</td>
+                                                    <td class="text-center">
                                                         @if ($data->file_dokumen)
                                                             <a href="{{ route('belanja.download', ['transaksi' => $data->id]) }}"
                                                                 class="btn btn-sm btn-primary btn-icon"
@@ -253,7 +224,7 @@
                                                             File tidak tersedia
                                                         @endif
                                                     </td>
-                                                    <td class="align-middle text-center">
+                                                    <td class="text-center">
                                                         <button class="btn btn-sm btn-info btn-icon mr-1"
                                                             data-toggle="tooltip" data-original-title="Detail"
                                                             data-placement="top"

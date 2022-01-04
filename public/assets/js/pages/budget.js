@@ -203,7 +203,7 @@ const budget = new Budget();
 /**
  * Jalankan fungsi seletal document dimuat
  */
-$(document).ready(function () {
+$(document).ready(function() {
     /**
      * summernote keterangan
      */

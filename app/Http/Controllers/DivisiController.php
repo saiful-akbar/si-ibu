@@ -29,7 +29,7 @@ class DivisiController extends Controller
          */
         $user_akses = User::with('menuItem')->find(Auth::user()->id)
             ->menuItem
-            ->where('href', '/bagian')
+            ->where('href', '/divisi')
             ->first();
 
         return view('pages.divisi.index', [
@@ -56,34 +56,44 @@ class DivisiController extends Controller
      * Membuat atau menambah data divisi baru
      *
      * @param Request $request
-     *
      * @return redirect
      */
     public function store(Request $request)
     {
-        // validasi rules
+        /**
+         * validasi rules
+         * @var array
+         */
         $validateRules = [
             'nama_divisi' => ['required', 'max:100', 'unique:divisi,nama_divisi'],
             'active' => []
         ];
 
-        // pesan validasi error
+        /**
+         * pesan validasi error
+         * @var array
+         */
         $validate_message = [
             'nama_divisi.required' => 'Nama bagian tidak boleh kosong.',
             'nama_divisi.max' => 'Panjang nama tidak boleh lebih dari 100 karakter.',
             'nama_divisi.unique' => 'Nama bagian sudah digunakan.',
         ];
 
-        // validasi
+        /**
+         * Jalankan validasi
+         * @var array
+         */
         $validate = $request->validate($validateRules, $validate_message);
 
         $validate['nama_divisi'] = ucwords($validate['nama_divisi']);
         $validate['active'] = isset($request->active) ? true : false;
 
-        // simpan ke database
+        /**
+         * Tambahkan ke database.
+         */
         Divisi::create($validate);
 
-        return redirect()->route('bagian.create')->with('alert', [
+        return redirect()->route('divisi.create')->with('alert', [
             'type' => 'success',
             'message' => '1 data bagian berhasil ditambahkan',
         ]);
@@ -115,42 +125,65 @@ class DivisiController extends Controller
      */
     public function update(Request $request, Divisi $divisi)
     {
-        // validasi rules
+        /**
+         * validasi rules
+         * @var array
+         */
         $validateRules = [
             'nama_divisi' => ['required', 'max:100'],
             'active' => []
         ];
 
-        // pesan validasi error
+        /**
+         * pesan validasi error
+         * @var array
+         */
         $validateErrorMessage = [
             'nama_divisi.required' => 'Nama bagian tidak boleh kosong.',
             'nama_divisi.max' => 'Panjang nama tidak boleh lebih dari 100 karakter.',
             'nama_divisi.unique' => 'Nama bagian sudah digunakan.',
         ];
 
-        // cek apakah value dirubah atau tidak
+        /**
+         * cek nama_divisi dirubah atau tidak
+         * jika dirubah tambahkan validasi rule untuk nama_divisi
+         */
         if ($request->nama_divisi != $divisi->nama_divisi) {
             $validateRules = ['nama_divisi' => ['required', 'max:100', 'unique:divisi,nama_divisi']];
         }
 
-        // validasi
+        /**
+         * Jalankan validasi
+         * @var array
+         */
         $validatedData = $request->validate($validateRules, $validateErrorMessage);
 
         $validatedData['nama_divisi'] = ucwords($validatedData['nama_divisi']);
         $validatedData['active'] = isset($request->active) ? true : false;
 
-        // update ke database
         try {
+
+            /**
+             * Update ke database
+             */
             Divisi::where('id', $divisi->id)->update($validatedData);
+
         } catch (\Exception $e) {
-            return redirect()->route('bagian.edit', ['divisi' => $divisi->id])
+
+            /**
+             * Return jika proses update gagal.
+             */
+            return redirect()->route('divisi.edit', ['divisi' => $divisi->id])
                 ->with('alert', [
                     'type' => 'danger',
                     'message' => 'Gagal memperbarui data bagian. <strong>' . $e->getMessage() . '</strong>',
                 ]);
         }
 
-        return redirect()->route('bagian.edit', ['divisi' => $divisi->id])->with('alert', [
+        /**
+         * return jika proses update berhasil.
+         */
+        return redirect()->route('divisi')->with('alert', [
             'type' => 'success',
             'message' => 'Data bagian berhasil diperbarui',
         ]);
@@ -162,18 +195,18 @@ class DivisiController extends Controller
      * Hapus data divisi
      *
      * @param Divisi $divisi
-     *
      * @return redirect
      */
     public function delete(Divisi $divisi)
     {
-        $relasiData = Divisi::with('user', 'jenisBelanja')->find($divisi->id);
+        $relasiData = Divisi::with('user', 'budget')->find($divisi->id);
 
         /**
          * cek apakah data divisi melilik data pada relasi ke user dan jenis_belanja
+         * jika ada batalkan proses hapus.
          */
-        if (count($relasiData->user) > 0 && count($relasiData->jenisBelanja) > 0) {
-            return redirect()->route('bagian')
+        if (count($relasiData->user) > 0 || count($relasiData->budget) > 0) {
+            return redirect()->route('divisi')
                 ->with('alert', [
                     'type' => 'warning',
                     'message' => "Gagal menghapus data. Bagian <b>{$divisi->nama_divisi}</b> memiliki relasi dengan user & akun belanja.",
@@ -186,14 +219,17 @@ class DivisiController extends Controller
         try {
             Divisi::destroy($divisi->id);
         } catch (\Exception $e) {
-            return redirect()->route('bagian')
+            return redirect()->route('divisi')
                 ->with('alert', [
                     'type' => 'danger',
                     'message' => 'Gagal menghapus data bagian. <strong>' . $e->getMessage() . '</strong>',
                 ]);
         }
 
-        return redirect()->route('bagian')->with('alert', [
+        /**
+         * Return jika proses delete sukses.
+         */
+        return redirect()->route('divisi')->with('alert', [
             'type' => 'success',
             'message' => '1 data bagian berhasil dihapus',
         ]);

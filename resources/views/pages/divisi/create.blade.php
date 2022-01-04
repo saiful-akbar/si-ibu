@@ -3,18 +3,17 @@
 @section('title', 'Tambah Bagian Baru')
 
 @section('content')
+
     <div class="row">
         <div class="col-12 mb-3 d-flex justify-content-end">
-            <a
-                href="{{ route('bagian') }}"
-                class="btn btn-rounded btn-dark"
-            >
+            <a href="{{ route('divisi') }}" class="btn btn-rounded btn-dark">
                 <i class="dripicons-chevron-left"></i>
                 <span>Kembali</span>
             </a>
         </div>
     </div>
 
+    {{-- form tambah divisi --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -25,21 +24,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <form
-                                class="form-horizontal"
-                                action="{{ route('bagian.store') }}"
-                                method="post"
-                                autocomplete="off"
-                            >
-                                @method('POST')
-                                @csrf
+                            <form class="form-horizontal" action="{{ route('divisi.store') }}" method="post" autocomplete="off">
+                                @method('POST') @csrf
 
                                 {{-- input nama divisi --}}
                                 <div class="form-group row mb-3">
-                                    <label
-                                        for="nama_divisi"
-                                        class="col-md-3 col-sm-12 col-form-label"
-                                    >
+                                    <label for="nama_divisi" class="col-md-3 col-sm-12 col-form-label">
                                         Nama Bagian <small class="text-danger">*</small>
                                     </label>
 
@@ -72,10 +62,7 @@
                                                 @if (old('active', true)) checked @endif
                                             />
 
-                                            <label
-                                                class="custom-control-label"
-                                                for="active"
-                                            >
+                                            <label class="custom-control-label" for="active">
                                                 Aktif
                                             </label>
                                         </div>
@@ -85,18 +72,12 @@
                                 {{-- button submit & reset --}}
                                 <div class="form-group mb-0 justify-content-end row">
                                     <div class="col-md-9 col-sm-12">
-                                        <button
-                                            type="submit"
-                                            class="btn btn-info btn-rounded mr-2"
-                                        >
+                                        <button type="submit" class="btn btn-info btn-rounded mr-2">
                                             <i class="mdi mdi-content-save"></i>
                                             <span>Simpan</span>
                                         </button>
 
-                                        <button
-                                            type="reset"
-                                            class="btn btn-rounded btn-secondary"
-                                        >
+                                        <button type="reset" class="btn btn-rounded btn-secondary">
                                             <i class="mdi mdi-close"></i>
                                             <span>Reset</span>
                                         </button>
@@ -109,4 +90,6 @@
             </div>
         </div>
     </div>
+    {{-- end form tambah divisi --}}
+
 @endsection

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::redirect('/', 'dashboard');
 
+
 /**
  * Route middleware guest
  */
@@ -22,6 +23,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login.view');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
+
 
 /**
  * Route middleware auth
@@ -32,6 +34,7 @@ Route::middleware('auth')->group(function () {
      * Route logout
      */
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
     /**
      * Route dashboard
@@ -54,34 +57,36 @@ Route::middleware('auth')->group(function () {
             ->name('dashboard.jenisBelanja');
     });
 
+
     /**
      * Route dvisi
      */
-    Route::prefix('/bagian')->group(function () {
+    Route::prefix('/divisi')->group(function () {
         Route::get('/', [DivisiController::class, 'index'])
-            ->middleware('menu:/bagian,read')
-            ->name('bagian');
+            ->middleware('menu:/divisi,read')
+            ->name('divisi');
 
         Route::get('/create', [DivisiController::class, 'create'])
-            ->middleware('menu:/bagian,create')
-            ->name('bagian.create');
+            ->middleware('menu:/divisi,create')
+            ->name('divisi.create');
 
         Route::post('/', [DivisiController::class, 'store'])
-            ->middleware('menu:/bagian,create')
-            ->name('bagian.store');
+            ->middleware('menu:/divisi,create')
+            ->name('divisi.store');
 
         Route::get('/{divisi}/edit', [DivisiController::class, 'edit'])
-            ->middleware('menu:/bagian,update')
-            ->name('bagian.edit');
+            ->middleware('menu:/divisi,update')
+            ->name('divisi.edit');
 
         Route::patch('/{divisi}', [DivisiController::class, 'update'])
-            ->middleware('menu:/bagian,update')
-            ->name('bagian.update');
+            ->middleware('menu:/divisi,update')
+            ->name('divisi.update');
 
         Route::delete('/{divisi}', [DivisiController::class, 'delete'])
-            ->middleware('menu:/bagian,delete')
-            ->name('bagian.delete');
+            ->middleware('menu:/divisi,delete')
+            ->name('divisi.delete');
     });
+
 
     /**
      * Route user
@@ -123,6 +128,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/user,update')
             ->name('user.menu-akses.update');
     });
+
 
     /**
      * Route budget
@@ -169,6 +175,7 @@ Route::middleware('auth')->group(function () {
             ->name('budget.datatable.id');
     });
 
+
     /**
      * Route jenis belanja
      */
@@ -197,6 +204,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/jenis-belanja,delete')
             ->name('jenis-belanja.delete');
     });
+
 
     /**
      * Route transaksi
@@ -251,6 +259,7 @@ Route::middleware('auth')->group(function () {
             ->name('belanja.sisa-budget');
     });
 
+
     /**
      * Route profil
      */
@@ -277,6 +286,7 @@ Route::middleware('auth')->group(function () {
             ->name('profil.pengaturan.tema');
     });
 });
+
 
 /**
  * Route fallback 404 jika url tidak tersedia

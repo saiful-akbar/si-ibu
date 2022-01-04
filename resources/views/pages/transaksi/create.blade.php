@@ -15,9 +15,8 @@
     </div>
 
     {{-- Form input budget --}}
-    <form action="{{ route('belanja.store') }}" method="POST" enctype="multipart/form-data">
-        @method('POST')
-        @csrf
+    <form action="{{ route('belanja.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+        @method('POST') @csrf
 
         <div class="row">
             <div class="col-12 mb-3">

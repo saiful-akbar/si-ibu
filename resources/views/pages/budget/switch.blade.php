@@ -13,11 +13,13 @@
             </a>
         </div>
     </div>
+    {{-- end button kembali --}}
 
+    {{-- form switch budget --}}
     <form action="{{ route('budget.switch.update', ['budget' => $budget->id]) }}" method="POST">
         @method('PATCH') @csrf
 
-        {{-- form dari akun belanja --}}
+        {{-- input dari akun belanja --}}
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
@@ -27,7 +29,7 @@
 
                     <div class="card-body">
 
-                        {{-- input dari akun belanja --}}
+                        {{-- input dari akun belanja (jenis_belanja) --}}
                         <div class="form-group row mb-3">
                             <label for="dari_jenis_belanja" class="col-md-3 col-sm-12 col-form-label">
                                 Dari Akun belanja
@@ -80,10 +82,12 @@
                                     value="{{ number_format($budget->nominal) }}" class="form-control" />
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+        {{-- end input dari akun belanja --}}
 
         {{-- form untuk akun belanja --}}
         <div class="row">
@@ -94,11 +98,14 @@
                     </div>
 
                     <div class="card-body">
+
+                        {{-- input:hidden id budget --}}
                         <input type="hidden" name="id" id="id" value="{{ old('id') }}" required />
 
+                        {{-- input untuk akun belanja (jenis_belanja) --}}
                         <div class="form-group row mb-3">
                             <label for="jenis_belanja" class="col-md-3 col-sm-12 col-form-label">
-                                Akun Belanja <small class="text-danger ml-1">*</small>
+                                Akun Belanja <small class="text-danger">*</small>
                             </label>
 
                             <div class="input-group col-md-9 col-sm-12">
@@ -116,10 +123,10 @@
                             </div>
                         </div>
 
-                        {{-- input bagian (Divisi) --}}
+                        {{-- input bagian (divisi) --}}
                         <div class="form-group row mb-3">
                             <label for="divisi" class="col-md-3 col-sm-12 col-form-label">
-                                Bagian <small class="text-danger ml-1">*</small>
+                                Bagian <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -135,7 +142,7 @@
                         {{-- input tahun anggaran --}}
                         <div class="form-group row mb-3">
                             <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
-                                Tahun Anggaran <small class="text-danger ml-1">*</small>
+                                Tahun Anggaran <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
@@ -153,7 +160,7 @@
                         {{-- input nominal --}}
                         <div class="form-group row mb-3">
                             <label for="nominal" class="col-md-3 col-sm-12 col-form-label">
-                                Nominal yang ingin dialihkan <small class="text-danger ml-1">*</small>
+                                Nominal <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12 input-group">
@@ -163,8 +170,8 @@
                                     </span>
                                 </div>
 
-                                <input required type="number" id="nominal" name="nominal" placeholder="Masukan nominal..."
-                                    value="{{ old('nominal') }}" min="0"
+                                <input required type="number" id="nominal" name="nominal" placeholder="Masukan nominal yang akan dialihkan..."
+                                    value="{{ old('nominal') }}" min="0" max="{{ $budget->nominal }}"
                                     class="form-control @error('nominal') is-invalid @enderror" />
 
                                 @error('nominal')
@@ -184,10 +191,12 @@
                                     class="form-control">{{ old('keterangan') }}</textarea>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+        {{-- end form untuk akun belanja --}}
 
         {{-- button submit & reset --}}
         <div class="row">
@@ -203,8 +212,10 @@
                 </button>
             </div>
         </div>
+        {{-- end button submit & reset --}}
 
     </form>
+    {{-- form switch budget --}}
 
     {{-- modal table list budget per akun belanja --}}
     <div id="modal-table-budget" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -243,9 +254,12 @@
             </div>
         </div>
     </div>
+    {{-- end modal table list budget per akun belanja --}}
+
 @endsection
 
 @push('css')
+
     {{-- custom editor --}}
     <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
 
@@ -254,10 +268,12 @@
     <link href="{{ asset('assets/css/vendor/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/vendor/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/vendor/select.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+
 @endpush
 
 @section('js')
-    {{-- custom edito --}}
+
+    {{-- custom editor --}}
     <script src="{{ asset('assets/js/vendor/summernote-bs4.min.js') }}"></script>
 
     {{-- datatables --}}
@@ -275,4 +291,5 @@
 
     {{-- budget page js --}}
     <script src="{{ asset('assets/js/pages/budget.js') }}"></script>
+
 @endsection

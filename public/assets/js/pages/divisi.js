@@ -32,7 +32,7 @@ const handleDelete = (id, namaBagian) => {
             if (result) {
                 const form = $("#form-delete");
 
-                form.attr("action", `${main.baseUrl}/bagian/${id}`);
+                form.attr("action", `${main.baseUrl}/divisi/${id}`);
                 form.submit();
             }
         },

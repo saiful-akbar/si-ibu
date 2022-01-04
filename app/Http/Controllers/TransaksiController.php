@@ -17,7 +17,7 @@ use Yajra\DataTables\Facades\DataTables;
 class TransaksiController extends Controller
 {
     /**
-     * generate no dokumen baru
+     * generate nomer dokumen baru
      *
      * @return string
      */
@@ -182,6 +182,9 @@ class TransaksiController extends Controller
          */
         $query->orderBy('tanggal', 'desc')->orderBy('divisi_id', 'asc');
 
+        /**
+         * return view
+         */
         return view('pages.transaksi.index', [
             'transactions' => $query->paginate(25)->withQueryString(),
             'userAccess' => Auth::user()->menuItem->where('href', '/belanja')->first(),
@@ -199,9 +202,7 @@ class TransaksiController extends Controller
      */
     public function sisaBudget(JenisBelanja $jenisBelanja)
     {
-        $sisaBudget = Budget::where('jenis_belanja_id', $jenisBelanja->id)
-            ->sum('nominal');
-
+        $sisaBudget = Budget::where('jenis_belanja_id', $jenisBelanja->id)->sum('nominal');
         return response()->json([
             'sisaBudget' => $sisaBudget,
         ]);
@@ -226,12 +227,16 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
+        /**
+         * Ambil data budget berdasarkan "id" budget yang di-request
+         */
         $budget = Budget::find($request->budget_id);
 
         /**
          * validasi rule
          */
         $validateRules = [
+
             // jenis belanja
             'budget_id' => ['required', 'exists:budget,id'],
             'kategori_belanja' => [],
@@ -253,16 +258,16 @@ class TransaksiController extends Controller
          * pesan error validasi
          */
         $validateErrorMessage = [
-            'tanggal.required' => 'Tanggal tidak boleh kosong.',
-            'tanggal.date' => 'Tanggal tidak valid, masukan tanggal yang valid.',
-            'approval.required' => 'Nama approval tidak boleh kosong.',
-            'approval.max' => 'Nama approval tidak lebih dari 100 karakter.',
-
-            // kegiatan
             'budget_id.required' => 'Akun belanja harus dipilih.',
             'budget_id.exists' => 'Akun belanja tidak ada. Silakan pilih akun belanja yang ditentukan.',
+
+            // kegiatan
+            'tanggal.required' => 'Tanggal tidak boleh kosong.',
+            'tanggal.date' => 'Tanggal tidak valid, masukan tanggal yang valid.',
             'kegiatan.required' => 'Kegiatan tidak boleh kosong.',
             'kegiatan.max' => 'Kegiatan tidak boleh lebih dari 100 karakter.',
+            'approval.required' => 'Nama approval tidak boleh kosong.',
+            'approval.max' => 'Nama approval tidak lebih dari 100 karakter.',
             'jumlah_nominal.required' => 'Jumlah nominal tidak boleh kosong.',
             'jumlah_nominal.numeric' => 'Jumlah nominal harus bertipe angka yang valid.',
             'jumlah_nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
@@ -275,12 +280,13 @@ class TransaksiController extends Controller
         ];
 
         /**
-         * cek jika file dokumen di upload
+         * cek file dokmen diupload atau tidak
+         * jika diupload tambah validari rules & pesan error validasi.
          */
         if ($request->file_dokumen) {
             $validateRules['file_dokumen'] = ['file', 'max:5000'];
             $validateErrorMessage['file_dokumen.file'] = 'File dokumen gagal diupload.';
-            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 5 megabytes / 5.000 kilobytes.';
+            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 5.000 kilobytes.';
         }
 
         /**
@@ -293,6 +299,7 @@ class TransaksiController extends Controller
          * jika di upload simpan pada storage
          */
         $fileDocument = null;
+
         if ($request->hasFile('file_dokumen')) {
             $file = $request->file('file_dokumen');
             $extension = $file->extension();
@@ -300,12 +307,10 @@ class TransaksiController extends Controller
             $fileDocument = $file->storeAs('transaksi', $fileName);
         }
 
-        /**
-         * simpan ke database
-         */
         try {
+
             /**
-             * buat transaksi
+             * tambah transaksi
              */
             Transaksi::create([
                 'user_id' => Auth::user()->id,
@@ -324,7 +329,12 @@ class TransaksiController extends Controller
              */
             $budget->nominal = $budget->nominal - $request->jumlah_nominal;
             $budget->save();
+        
         } catch (\Exception $e) {
+
+            /**
+             * return jika proses simpan gagal
+             */
             return redirect()
                 ->route('belanja.create')
                 ->with('alert', [
@@ -333,6 +343,9 @@ class TransaksiController extends Controller
                 ]);
         }
 
+        /**
+         * return jika proses simpan sukses.
+         */
         return redirect()
             ->route('belanja.create')
             ->with('alert', [

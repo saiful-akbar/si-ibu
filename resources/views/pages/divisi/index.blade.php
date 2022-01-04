@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($user_akses->pivot->create == 1)
-                                <a href="{{ route('bagian.create') }}" class="btn btn-rounded btn-primary">
+                                <a href="{{ route('divisi.create') }}" class="btn btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Tambah Bagian</span>
                                 </a>
@@ -24,7 +24,7 @@
 
                         {{-- form search --}}
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form action="{{ route('bagian') }}" method="GET" autocomplete="off">
+                            <form action="{{ route('divisi') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
                                     <input type="search" name="search" placeholder="Cari bagian..." class="form-control"
                                         value="{{ request('search') }}" />
@@ -50,6 +50,7 @@
                                             <th>Nama Bagian</th>
                                             <th>Aktif</th>
                                             <th>Dibuat / Diperbarui</th>
+
                                             @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
                                                 <th class="text-center">Aksi</th>
                                             @endif
@@ -70,10 +71,12 @@
                                                     @endif
                                                 </td>
                                                 <td class="align-middle">{{ $data->updated_at }}</td>
+
                                                 @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
                                                     <td class="align-middle text-center">
+                                                        
                                                         @if ($user_akses->pivot->update == 1)
-                                                            <a href="{{ route('bagian.edit', ['divisi' => $data->id]) }}"
+                                                            <a href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"
                                                                 class="btn btn-sm btn-success btn-icon mr-1"
                                                                 data-toggle="tooltip" data-original-title="Edit"
                                                                 data-placement="top">
@@ -89,6 +92,7 @@
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>
                                                         @endif
+
                                                     </td>
                                                 @endif
                                             </tr>
