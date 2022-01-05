@@ -4883,6 +4883,7 @@ input[type="submit"].btn-block {
 .card-footer {
     padding: 0.75rem 1.5rem;
     background-color: #464f5b;
+    /* background-color: #37404a; */
     border-top: 1px solid #4d5764;
 }
 .card-footer:last-child {
@@ -6014,7 +6015,8 @@ a.close.disabled {
     flex-direction: column;
     width: 100%;
     pointer-events: auto;
-    background-color: #464f5b;
+    /* background-color: #464f5b; */
+    background-color: #37404a;
     background-clip: padding-box;
     border: 0 solid transparent;
     border-radius: 0.2rem;
@@ -6049,6 +6051,7 @@ a.close.disabled {
     border-bottom: 1px solid #515c69;
     border-top-left-radius: calc(0.3rem - 1px);
     border-top-right-radius: calc(0.3rem - 1px);
+    background-color: #464f5b;
 }
 .modal-header .close {
     padding: 1rem 1rem;
@@ -6064,6 +6067,7 @@ a.close.disabled {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     padding: 1rem;
+    background-color: #37404a;
 }
 .modal-footer {
     display: -webkit-box;
@@ -6081,6 +6085,7 @@ a.close.disabled {
     border-top: 1px solid #515c69;
     border-bottom-right-radius: calc(0.3rem - 1px);
     border-bottom-left-radius: calc(0.3rem - 1px);
+    background-color: #464f5b;
 }
 .modal-footer > * {
     margin: 0.25rem;

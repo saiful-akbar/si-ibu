@@ -179,7 +179,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Bagian</th>
-                                            <th>Jenis Belanja</th>
+                                            <th>Akun Belanja</th>
                                             <th>Submitter</th>
                                             <th>Tanggal</th>
                                             <th>Kegiatan</th>
@@ -188,7 +188,6 @@
                                             <th>No. Dokumen</th>
                                             <th>Dibuat</th>
                                             <th>Diperbarui</th>
-                                            <th class="text-center">Unduh File</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -209,17 +208,6 @@
                                                     <td>{{ $data->no_dokumen }}</td>
                                                     <td>{{ $data->created_at }}</td>
                                                     <td>{{ $data->updated_at }}</td>
-                                                    <td class="text-center">
-                                                        @if ($data->file_dokumen)
-                                                            <a href="{{ route('belanja.download', ['transaksi' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon" data-toggle="tooltip"
-                                                                data-original-title="Unduh" data-placement="top">
-                                                                <i class="mdi mdi-download"></i>
-                                                            </a>
-                                                        @else
-                                                            File tidak tersedia
-                                                        @endif
-                                                    </td>
                                                     <td class="text-center">
                                                         <button class="btn btn-sm btn-light btn-icon mr-1"
                                                             data-toggle="tooltip" data-original-title="Detail"

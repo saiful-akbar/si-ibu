@@ -249,10 +249,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/budget/datatable', [TransaksiController::class, 'dataTable'])
             ->middleware('menu:/belanja,read')
             ->name('belanja.datatable.budget');
-
-        Route::get('/{jenisBelanja}/budget', [TransaksiController::class, 'sisaBudget'])
-            ->middleware('menu:/belanja.read')
-            ->name('belanja.sisa-budget');
     });
 
 

@@ -71,19 +71,44 @@ class Transaksi {
             success: (res) => {
                 this.showModalLoading(false);
 
-                $("#detail-user").text(res.transaksi.user.profil.nama_lengkap);
-                $("#detail-divisi").text(res.transaksi.divisi.nama_divisi);
-                $("#detail-jenis-belanja").text(
-                    res.transaksi.jenis_belanja.kategori_belanja
-                );
-                $("#detail-tanggal").text(res.transaksi.tanggal);
-                $("#detail-kegiatan").text(res.transaksi.kegiatan);
+                const { nama_divisi } = res.transaksi.budget.divisi;
+                const { kategori_belanja } = res.transaksi.budget.jenis_belanja;
+                const { nama_lengkap } = res.transaksi.user.profil;
+                const {
+                    uraian,
+                    tanggal,
+                    approval,
+                    kegiatan,
+                    no_dokumen,
+                    jumlah_nominal,
+                    created_at,
+                    updated_at,
+                } = res.transaksi;
+
+                $("#detail-uraian").html(uraian);
+                $("#detail-nama-divisi").text(nama_divisi);
+                $("#detail-kategori-belanja").text(kategori_belanja);
+                $("#detail-submitter").text(nama_lengkap);
+                $("#detail-approval").text(approval);
+                $("#detail-created-at").text(created_at);
+                $("#detail-updated-at").text(updated_at);
+                $("#detail-kegiatan").text(kegiatan);
+                $("#detail-tanggal").text(tanggal);
+                $("#detail-no-dokumen").text(no_dokumen);
                 $("#detail-jumlah-nominal").text(
-                    main.formatRupiah(res.transaksi.jumlah_nominal)
+                    "Rp. " + main.formatRupiah(jumlah_nominal)
                 );
-                $("#detail-no-dokumen").text(res.transaksi.no_dokumen);
-                $("#detail-uraian").html(res.transaksi.uraian);
-                $("#detail-approval").text(res.transaksi.approval);
+
+                if (res.download !== null) {
+                    $("#detail-download-dokumen").html(`
+                        <a href="${res.download}" class="btn btn-light btn-sm btn-rounded">
+                            <i class="mdi mdi-download"></i>
+                            <span>Unduh</span>
+                        </a>
+                    `);
+                } else {
+                    $("#detail-download-dokumen").text("File tidak tersedia");
+                }
             },
         });
     }
@@ -130,20 +155,20 @@ class Transaksi {
                         searchable: false,
                     },
                     {
-                        data: "nama_divisi",
-                        name: "nama_divisi",
-                    },
-                    {
-                        data: "kategori_belanja",
-                        name: "kategori_belanja",
-                    },
-                    {
                         data: "tahun_anggaran",
                         name: "tahun_anggaran",
                     },
                     {
-                        data: "nominal",
-                        name: "nominal",
+                        data: "divisi.nama_divisi",
+                        name: "divisi.nama_divisi",
+                    },
+                    {
+                        data: "jenisbelanja.kategori_belanja",
+                        name: "jenisbelanja.kategori_belanja",
+                    },
+                    {
+                        data: "sisa_nominal",
+                        name: "sisa_nominal",
                         render: (data) => "Rp. " + main.formatRupiah(data),
                     },
                 ],
@@ -156,15 +181,15 @@ class Transaksi {
      *
      * @param {JSON} data
      */
-    setFormValue(data) {
+    setFormValue(id, tahunAnggaran, namaDivisi, kategoriBelanja, sisaNominal) {
         this.showModalTableBudget(false);
 
-        $("#budget_id").val(data.id);
-        $("#kategori_belanja").val(data.kategori_belanja);
-        $("#nama_divisi").val(data.nama_divisi);
-        $("#tahun_anggaran").val(data.tahun_anggaran);
-        $("#sisa_budget").val(data.nominal);
-        $("#jumlah_nominal").attr("max", data.nominal);
+        $("#budget_id").val(id);
+        $("#kategori_belanja").val(kategoriBelanja);
+        $("#nama_divisi").val(namaDivisi);
+        $("#tahun_anggaran").val(tahunAnggaran);
+        $("#sisa_budget").val(sisaNominal);
+        $("#jumlah_nominal").attr("max", sisaNominal);
     }
 }
 

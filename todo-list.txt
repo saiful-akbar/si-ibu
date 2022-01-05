@@ -17,13 +17,13 @@ Selasa, 04 Januari 20222, 21:15
 	1.6. buat halaman detail budget plus data transaksinya.
 
 2. transaksi belanja (transaksi)
-	2.1. update tambah transaksi belanja.
-		2.1.1. gunakan sisa_budget sebagai nominal maksimal untuk input jumlah_nominal.
-		2.1.2. kurangi sisa_budget sesuai dengan id budget yang dipilih pada table budget sesuai jumlah_nominal yang diinput.
-	2.2 update edit transaksi belanja.
-		2.2.1. cek apakah jumlah_nominal bertambah atau berkurang.
-			2.2.1.1. jika jumlah_nominal bertambah, ambil selisih dari (jumlah_nominal baru - jumlah_nominal lama) sebagai pengurang dari sisa_budget pada tabel budget.
-			2.2.1.2. jika jumlah_nominal berkurang, ambil selisih dari (jumlah_nominal lama - jumlah_nominal baru) sebagai pengurang dari sisa_budget pada table budget.
+	2.1 (ok). update tambah transaksi belanja.
+		2.1.1 (ok). gunakan sisa_budget sebagai nominal maksimal untuk input jumlah_nominal.
+		2.1.2 (ok). kurangi sisa_budget sesuai dengan id budget yang dipilih pada table budget sesuai jumlah_nominal yang diinput.
+	2.2 (ok). update edit transaksi belanja.
+		2.2.1 (ok). cek apakah jumlah_nominal bertambah atau berkurang.
+			2.2.1.1 (ok). jika jumlah_nominal bertambah, ambil selisih dari (jumlah_nominal baru - jumlah_nominal lama) sebagai pengurang dari sisa_budget pada tabel budget.
+			2.2.1.2 (ok). jika jumlah_nominal berkurang, ambil selisih dari (jumlah_nominal lama - jumlah_nominal baru) sebagai penambah dari sisa_budget pada table budget.
 	2.3. buat halaman detail belanja (transaksi).
 	2.4. update export excel & print pdf belanja (transaksi).
 

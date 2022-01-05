@@ -18,11 +18,12 @@
     <form action="{{ route('belanja.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
         @method('POST') @csrf
 
+        {{-- input akun belanja (jenis_belanja) & bagian (divisi) --}}
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="header-title">Akun Belanja</h4>
+                        <h4 class="header-title">Budget</h4>
                     </div>
 
                     <div class="card-body">
@@ -45,18 +46,23 @@
                                 </div>
 
                                 <input type="text" name="kategori_belanja" id="kategori_belanja"
-                                    class="form-control @error('kategori_belanja') is-invalid @enderror"
+                                    class="form-control @error('kategori_belanja') is-invalid @enderror @error('budget_id') is-invalid @enderror"
                                     placeholder="Pilih akun belanja..." value="{{ old('kategori_belanja') }}" readonly
                                     required />
 
                                 @error('kategori_belanja')
                                     <div class="invalid-feedback">{{ $message }}</div>
+                                @else
+                                    @error('budget_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 @enderror
+
                             </div>
 
                         </div>
 
-                        {{-- input tahun anggaran & sisa budget --}}
+                        {{-- input bagian (divisi) --}}
                         <div class="form-group row mb-3">
                             <label for="nama_divisi" class="col-md-3 col-sm-12 col-form-label">
                                 Bagian <small class="text-danger">*</small>
@@ -74,7 +80,7 @@
                             </div>
                         </div>
 
-                        {{-- input tahun anggaran & sisa budget --}}
+                        {{-- input tahun anggaran --}}
                         <div class="form-group row mb-3">
                             <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
                                 Tahun Anggaran <small class="text-danger">*</small>
@@ -120,6 +126,7 @@
                 </div>
             </div>
         </div>
+        {{-- end input akun belanja (jenis_belanja) & bagian (divisi) --}}
 
         {{-- input kegiatan, jumlah nominal & uraian --}}
         <div class="row">
@@ -205,17 +212,6 @@
                             </div>
                         </div>
 
-                        {{-- input uraian --}}
-                        <div class="form-group row mb-3">
-                            <label for="uraian" class="col-md-3 col-sm-12 col-form-label">
-                                Uraian
-                            </label>
-
-                            <div class="col-md-9 col-sm-12">
-                                <textarea name="uraian" id="uraian" class="form-control">{{ old('uraian') }}</textarea>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -287,20 +283,40 @@
         </div>
         {{-- end input dokumen & file dokumen --}}
 
-        {{-- button submit & reset --}}
+        {{-- input uraian --}}
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
-                    <i class="mdi mdi-content-save"></i>
-                    <span>Simpan</span>
-                </button>
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <h3 class="header-title">
+                            Uraian <small class="text-danger">*</small>
+                        </h3>
+                    </div>
 
-                <button type="reset" class="btn btn-outline-dark btn-sm btn-rounded">
-                    <i class="mdi mdi-close"></i>
-                    <span>Reset</span>
-                </button>
+                    <div class="card-body">
+                        <textarea name="uraian" id="uraian"
+                            class="form-control @error('uraian') is-invalid @enderror">{{ old('uraian') }}</textarea>
+
+                        @error('uraian')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
+                            <i class="mdi mdi-content-save"></i>
+                            <span>Simpan</span>
+                        </button>
+
+                        <button type="reset" class="btn btn-outline-dark btn-sm btn-rounded">
+                            <i class="mdi mdi-close"></i>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
+        {{-- end input uraian --}}
 
     </form>
     {{-- end form input budget --}}

@@ -17,20 +17,20 @@
     {{-- Form input budget --}}
     <form action="{{ route('belanja.update', ['transaksi' => $transaksi->id]) }}" method="POST"
         enctype="multipart/form-data" autocomplete="off">
-
         @method('PATCH') @csrf
 
+        {{-- input akun belanja (jenis_belanja) & bagian (divisi) --}}
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="header-title">Akun Belanja</h4>
+                        <h4 class="header-title">Budget</h4>
                     </div>
 
                     <div class="card-body">
 
-                        <input type="hidden" name="budget_id" id="budget_id"
-                            value="{{ old('budget_id', $transaksi->budget->id) }}" required>
+                        <input type="hidden" name="budget_id" id="budget_id" required
+                            value="{{ old('budget_id', $transaksi->budget->id) }}" />
 
                         {{-- Input jenis belanja (akun belanja) --}}
                         <div class="form-group row mb-3">
@@ -48,7 +48,7 @@
                                 </div>
 
                                 <input type="text" name="kategori_belanja" id="kategori_belanja"
-                                    class="form-control @error('kategori_belanja') is-invalid @enderror"
+                                    class="form-control @error('kategori_belanja') is-invalid @enderror @error('budget_id') is-invalid @enderror"
                                     placeholder="Pilih akun belanja..."
                                     value="{{ old('kategori_belanja', $transaksi->budget->jenisBelanja->kategori_belanja) }}"
                                     readonly required />
@@ -56,11 +56,15 @@
                                 @error('kategori_belanja')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                @error('budget_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                         </div>
 
-                        {{-- input tahun anggaran & sisa budget --}}
+                        {{-- input bagian (divisi) --}}
                         <div class="form-group row mb-3">
                             <label for="nama_divisi" class="col-md-3 col-sm-12 col-form-label">
                                 Bagian <small class="text-danger">*</small>
@@ -68,8 +72,8 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input readonly required type="text" id="nama_divisi" name="nama_divisi"
-                                    value="{{ old('nama_divisi', $transaksi->budget->divisi->nama_divisi) }}"
                                     class="form-control @error('nama_divisi') is-invalid @enderror"
+                                    value="{{ old('nama_divisi', $transaksi->budget->divisi->nama_divisi) }}"
                                     placeholder="Bagian..." />
 
                                 @error('nama_divisi')
@@ -78,7 +82,7 @@
                             </div>
                         </div>
 
-                        {{-- input tahun anggaran & sisa budget --}}
+                        {{-- input tahun anggaran --}}
                         <div class="form-group row mb-3">
                             <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
                                 Tahun Anggaran <small class="text-danger">*</small>
@@ -86,8 +90,8 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input readonly type="number" id="tahun_anggaran" name="tahun_anggaran"
-                                    value="{{ old('tahun_anggaran', $transaksi->budget->tahun_anggaran) }}"
                                     class="form-control @error('tahun_anggaran') is-invalid @enderror"
+                                    value="{{ old('tahun_anggaran', $transaksi->budget->tahun_anggaran) }}"
                                     placeholder="Tahun Anggaran..." />
 
                                 @error('tahun_anggaran')
@@ -110,8 +114,8 @@
                                 </div>
 
                                 <input readonly type="text" id="sisa_budget" name="sisa_budget"
-                                    value="{{ old('sisa_budget', $transaksi->budget->nominal) }}"
                                     class="form-control @error('sisa_budget') is-invalid @enderror"
+                                    value="{{ old('sisa_budget', $transaksi->budget->sisa_nominal) }}"
                                     placeholder="Sisa budget..." />
 
                                 @error('sisa_budget')
@@ -124,8 +128,9 @@
                 </div>
             </div>
         </div>
+        {{-- end input akun belanja (jenis_belanja) & bagian (divisi) --}}
 
-        {{-- input kegiatan, jumlah nominal & uraian --}}
+        {{-- input kegiatan --}}
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card">
@@ -143,9 +148,9 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input type="date" id="tanggal" name="tanggal"
-                                    placeholder="Masukan tanggal transaksi belanja..." value="{{ old('tanggal') }}"
-                                    class="form-control @error('tanggal', $transaksi->tanggal) is-invalid @enderror"
-                                    required />
+                                    placeholder="Masukan tanggal transaksi belanja..."
+                                    value="{{ old('tanggal', $transaksi->tanggal) }}"
+                                    class="form-control @error('tanggal') is-invalid @enderror" required />
 
                                 @error('tanggal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -161,7 +166,7 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input type="text" id="kegiatan" name="kegiatan" placeholder="Masukan kegiatan..."
-                                    value="{{ old('kegiatan') }}"
+                                    value="{{ old('kegiatan', $transaksi->kegiatan) }}"
                                     class="form-control @error('kegiatan') is-invalid @enderror" required />
 
                                 @error('kegiatan')
@@ -184,7 +189,8 @@
                                 </div>
 
                                 <input type="number" id="jumlah_nominal" name="jumlah_nominal" min="0"
-                                    placeholder="Masukan jumlah nominal..." value="{{ old('jumlah_nominal') }}"
+                                    placeholder="Masukan jumlah nominal..."
+                                    value="{{ old('jumlah_nominal', $transaksi->jumlah_nominal) }}"
                                     class="form-control @error('jumlah_nominal') is-invalid @enderror" required />
 
                                 @error('jumlah_nominal')
@@ -201,7 +207,7 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input type="text" id="approval" name="approval" placeholder="Masukan nama approval..."
-                                    value="{{ old('approval') }}"
+                                    value="{{ old('approval', $transaksi->approval) }}"
                                     class="form-control @error('approval') is-invalid @enderror" required />
 
                                 @error('approval')
@@ -210,22 +216,11 @@
                             </div>
                         </div>
 
-                        {{-- input uraian --}}
-                        <div class="form-group row mb-3">
-                            <label for="uraian" class="col-md-3 col-sm-12 col-form-label">
-                                Uraian
-                            </label>
-
-                            <div class="col-md-9 col-sm-12">
-                                <textarea name="uraian" id="uraian" class="form-control">{{ old('uraian') }}</textarea>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
         </div>
-        {{-- end input kegiatan, jumlah nominal & uraian --}}
+        {{-- end input kegiatan --}}
 
         {{-- input dokumen & file dokumen --}}
         <div class="row">
@@ -272,7 +267,11 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <span id="file-name" class="text-nowrap d-none h5" data-action="create"></span>
+                                        <span id="file-name"
+                                            data-file="{{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}"
+                                            data-action="edit">
+                                            {{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}
+                                        </span>
                                     </div>
                                 </div>
 
@@ -292,20 +291,40 @@
         </div>
         {{-- end input dokumen & file dokumen --}}
 
-        {{-- button submit & reset --}}
+        {{-- input uraian --}}
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
-                    <i class="mdi mdi-content-save"></i>
-                    <span>Simpan</span>
-                </button>
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <h3 class="header-title">
+                            Uraian <small class="text-danger">*</small>
+                        </h3>
+                    </div>
 
-                <button type="reset" class="btn btn-outline-dark btn-sm btn-rounded">
-                    <i class="mdi mdi-close"></i>
-                    <span>Reset</span>
-                </button>
+                    <div class="card-body">
+                        <textarea name="uraian" id="uraian"
+                            class="form-control @error('uraian') is-invalid @enderror">{{ old('uraian', $transaksi->uraian) }}</textarea>
+
+                        @error('uraian')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
+                            <i class="mdi mdi-content-save"></i>
+                            <span>Simpan</span>
+                        </button>
+
+                        <button type="reset" class="btn btn-outline-dark btn-sm btn-rounded">
+                            <i class="mdi mdi-close"></i>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
+        {{-- end input uraian --}}
 
     </form>
     {{-- end form input budget --}}
