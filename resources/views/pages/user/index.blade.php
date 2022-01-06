@@ -104,7 +104,7 @@
 
                                                     @if ($user_akses->pivot->delete == 1)
                                                         <button
-                                                            onclick="handleDelete({{ $user->id }}, '{{ $user->username }}')"
+                                                            onclick="handleDelete({{ $user->id }})"
                                                             class="btn btn-sm btn-light btn-icon" data-toggle="tooltip"
                                                             data-original-title="Hapus">
                                                             <i class="mdi mdi-delete"></i>

@@ -25,11 +25,15 @@ class CreateUserMenuItemTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on('user');
+                ->on('user')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->foreign('menu_item_id')
                 ->references('id')
-                ->on('menu_item');
+                ->on('menu_item')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

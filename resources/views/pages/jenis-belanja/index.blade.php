@@ -89,7 +89,7 @@
                                                             <button class="btn btn-sm btn-light btn-icon"
                                                                 data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top"
-                                                                onclick="handleDelete({{ $data->id }}, '{{ $data->kategori_belanja }}', '{{ $data->nama_divisi }}')">
+                                                                onclick="handleDelete({{ $data->id }})">
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>
                                                         @endif
@@ -128,28 +128,35 @@
          * @param {int} id
          * @param {string} username
          */
-        function handleDelete(id, jenisBelanja, divisi) {
+        function handleDelete(id) {
             bootbox.confirm({
-                title: "Peringatan!",
+                title: `<h5 class='mt-2'>Anda ingin menghapus akun belanja ?</h5>`,
                 message: `
-                    Yakin ingin menghapus akun belanja <strong>${jenisBelanja}</strong> pada divisi <strong>${divisi}</strong> ?
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">
+                            <i class="dripicons-warning"></i>
+                            Peringatan!
+                        </h4>
+                        
+                        <ul>
+                            <li>Tindakan ini tidak dapat dibatalkan.</li>
+                            <li>Akun belanja yang dihapus tidak dapat dikembalikan.</li>
+                            <li>Pastikan anda berhati-hati dalam menghapus.</li>
+                        </ul>
 
-                    <div class="alert alert-info mt-3" role="alert">
-                        <h5 class="alert-heading">
-                            <i class="dripicons-information mr-1"></i>
-                            Info
-                        </h5>
-                        <p>Akun belanja tidak dapat dihapus jika memilikin data pada relasi <b>budget</b>!</p>
+                        <p>
+                            <b>NB:</b> Akun belanja tidak dapat dihapus jika memilikin data pada relasi <b>budget</b>!
+                        </p>
                     </div>
                 `,
                 buttons: {
                     confirm: {
                         label: "Hapus",
-                        className: "btn-danger btn-rounded btn-sm",
+                        className: "btn btn-danger btn-sm btn-rounded",
                     },
                     cancel: {
                         label: "Batal",
-                        className: "btn-secondary btn-rounded btn-sm",
+                        className: "btn btn-sm btn-outline-dark btn-rounded",
                     },
                 },
                 callback: (result) => {

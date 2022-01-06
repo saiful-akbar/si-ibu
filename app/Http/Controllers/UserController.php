@@ -350,10 +350,10 @@ class UserController extends Controller
          * jika ada batalkan delete.
          */
         if (count($transaksiByUser) > 0) {
-            return redirect()->route('bagian')
+            return redirect()->route('user')
                 ->with('alert', [
                     'type' => 'warning',
-                    'message' => "Gagal menghapus data. User <b>{$user->profil->nama_lengkap}</b> memiliki data relasi transaksi belanja.",
+                    'message' => "Penghapusan dibatalkan. User <b>{$user->profil->nama_lengkap}</b> memiliki relasi pada data <b>Transaksi Belanja</b>.",
                 ]);
         }
 
@@ -371,7 +371,7 @@ class UserController extends Controller
 
         return redirect()->route('user')->with('alert', [
             'type' => 'success',
-            'message' => '1 data user berhasil dihapus.',
+            'message' => '1 user berhasil dihapus.',
         ]);
     }
 

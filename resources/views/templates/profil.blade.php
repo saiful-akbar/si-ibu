@@ -46,7 +46,7 @@
     <div class="row">
 
         {{-- tabs setting --}}
-        <div class="col-md-4 col-sm-12 mb-3">
+        <div class="col-lg-3 col-md-4 col-sm-12 mb-3">
             <div class="nav flex-column nav-pills" id="tabs-profil" role="tablist" aria-orientation="vertical">
                 <a href="{{ route('profil') }}"
                     class="nav-link mb-2 {{ Request::is('profil') ? 'active show' : null }}">
@@ -70,7 +70,7 @@
         {{-- tabs setting --}}
 
         {{-- setting --}}
-        <div class="col-md-8 col-sm-12">
+        <div class="col-lg-9 col-md-8 col-sm-12">
             <div class="row">
                 <div class="col-12">
                     <div class="tab-content">

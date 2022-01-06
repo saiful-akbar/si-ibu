@@ -170,7 +170,7 @@
 
                                                         @if ($userAccess->pivot->delete == 1)
                                                             <button
-                                                                onclick="budget.handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
+                                                                onclick="budget.handleDelete({{ $data->id }})"
                                                                 data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top" class="btn btn-sm btn-light btn-icon">
                                                                 <i class="mdi mdi-delete"></i>

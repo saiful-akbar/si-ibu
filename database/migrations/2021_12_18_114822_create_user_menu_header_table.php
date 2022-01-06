@@ -22,11 +22,15 @@ class CreateUserMenuHeaderTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on('user');
+                ->on('user')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->foreign('menu_header_id')
                 ->references('id')
-                ->on('menu_header');
+                ->on('menu_header')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

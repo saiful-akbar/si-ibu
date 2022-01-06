@@ -361,7 +361,7 @@ class BudgetController extends Controller
             return redirect()->route('budget')
                 ->with('alert', [
                     'type' => 'warning',
-                    'message' => "Gagal menghapus data. Budget yang ingin anda hapus memiliki relasi data dengan transaksi.",
+                    'message' => "Penghapusan dibatalkan. Budget yang ingin anda hapus memiliki relasi pada data <b>Transaksi belanja</b>.",
                 ]);
         }
 

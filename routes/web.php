@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 
 /**
- * Route awal
+ * Redirect
  */
 Route::permanentRedirect('/', 'dashboard');
 

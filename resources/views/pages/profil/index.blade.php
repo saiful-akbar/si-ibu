@@ -6,23 +6,20 @@
     <div class="row">
         <div class="col-12">
 
-            <div class="card">
-                <div class="card-header pt-3">
-                    <h4 class="header-title">Ubah Profil</h4>
-                </div>
+            {{-- form edit profil --}}
+            <form action="{{ route('profil.update') }}" method="POST" enctype="multipart/form-data">
+                @method('PATCH') @csrf
 
-                <div class="card-body">
-                    <form
-                        action="{{ route('profil.update') }}"
-                        method="POST"
-                        enctype="multipart/form-data"
-                    >
-                        @method('PATCH')
-                        @csrf
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <h4 class="header-title">Ubah Profil</h4>
+                    </div>
+
+                    <div class="card-body">                    
 
                         {{-- input avatar --}}
-                        <div class="row">
-                            <div class="col-12 mb-3">
+                        <div class="row justify-content-end">
+                            <div class="col-md-8 col-sm-12 mb-3">
                                 @if ($profil->avatar != null)
                                     <img
                                         id="avatar-view"
@@ -41,14 +38,8 @@
                                     />
                                 @endif
 
-                                <label
-                                    for="avatar"
-                                    class="ml-2"
-                                >
-                                    <span
-                                        type="button"
-                                        class="btn btn-rounded btn-primary"
-                                    >
+                                <label for="avatar" class="ml-2">
+                                    <span type="button" class="btn btn-rounded btn-primary btn-sm">
                                         <i class="mdi mdi-upload-outline"></i>
                                         <span>Avatar</span>
                                     </span>
@@ -74,12 +65,12 @@
                         </div>
 
                         {{-- input nama lengkap --}}
-                        <div class="row">
-                            <div class="col-12 mb-3 form-group">
-                                <label for="nama_lengkap">
-                                    Nama Lengkap <small class="text-danger">*</small>
-                                </label>
+                        <div class="form-group row">
+                            <label for="nama_lengkap" class="col-md-4 col-sm-12 col-form-label">
+                                Nama Lengkap <small class="text-danger">*</small>
+                            </label>
 
+                            <div class="col-md-8 col-sm-12">
                                 <input
                                     required
                                     type="text"
@@ -96,30 +87,24 @@
                             </div>
                         </div>
 
-                        {{-- button submit & reset --}}
-                        <div class="row">
-                            <div class="col-12">
-                                <button
-                                    type="submit"
-                                    class="btn btn-sm btn-info btn-rounded mr-2"
-                                >
-                                    <i class="mdi mdi-content-save"></i>
-                                    <span>Simpan</span>
-                                </button>
+                    </div> {{-- end card-body --}}
 
-                                <button
-                                    type="reset"
-                                    class="btn btn-sm btn-rounded btn-secondary"
-                                >
-                                    <i class="mdi mdi-close"></i>
-                                    <span>Reset</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-sm btn-info btn-rounded mr-2">
+                            <i class="mdi mdi-content-save"></i>
+                            <span>Simpan</span>
+                        </button>
 
-                    </form>
-                </div>
-            </div>
+                        <button type="reset" class="btn btn-sm btn-rounded btn-outline-dark">
+                            <i class="mdi mdi-close"></i>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div> {{-- end card --}}
+
+            </form>
+            {{-- end form edit profil --}}
+
         </div>
     </div>
 @endsection
@@ -127,15 +112,14 @@
 @section('js-profil')
     <script>
         $(document).ready(function() {
+
             /**
              * View avatar
              */
             $("#avatar").change(function(e) {
                 e.preventDefault();
 
-                const {
-                    files
-                } = $(this)[0];
+                const { files } = $(this)[0];
 
                 if (files) {
                     $("#avatar-view").attr("src", URL.createObjectURL(files[0]));
@@ -146,9 +130,7 @@
              * Kembalikan avatar ketika form direset
              */
             $("button[type=reset]").click(function() {
-                const avatarView = $("#avatar-view");
-
-                avatarView.attr("src", avatarView.data("src"));
+                $("#avatar-view").attr("src", avatarView.data("src"));
             });
         });
     </script>

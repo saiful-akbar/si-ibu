@@ -7,25 +7,34 @@ class Budget {
      * Fungsi handle hapus data budget
      *
      * @param {int} id
-     * @param {string} divisi
      */
-    handleDelete = (id, divisi) => {
+    handleDelete = (id) => {
         bootbox.confirm({
-            title: "Peringatan!",
+            title: "<h5 class='mt-2'>Anda ingin menghapus budget ?</h5>",
             message: `
-            <ul>
-                <li>Yakin ingin menghapus budget pada divisi <strong>${divisi}</strong> ?</li>
-                <li>Semua data terkait atau data yang berelasi dengan budget divisi ini juga akan terhapus.</li>
-            </ul>
-        `,
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">
+                        <i class="dripicons-warning"></i>
+                        Peringatan!
+                    </h4>
+                    
+                    <ul>
+                        <li>Tindakan ini tidak dapat dibatalkan.</li>
+                        <li>Budget yang dihapus tidak dapat dikembalikan.</li>
+                        <li>Pastikan anda berhati-hati dalam menghapus.</li>
+                    </ul>
+
+                    <p><b>NB:</b> Budget tidak dapat dihapus jika memiliki data relasi pada <b>Transaksi Belanja</b>!</p>
+                </div>
+            `,
             buttons: {
                 confirm: {
                     label: "Hapus",
-                    className: "btn-danger btn-rounded btn-sm",
+                    className: "btn btn-danger btn-sm btn-rounded",
                 },
                 cancel: {
                     label: "Batal",
-                    className: "btn-secondary btn-rounded btn-sm",
+                    className: "btn btn-sm btn-outline-dark btn-rounded",
                 },
             },
             callback: (result) => {
@@ -114,7 +123,7 @@ const budget = new Budget();
 /**
  * Jalankan fungsi seletal document dimuat
  */
-$(document).ready(function () {
+$(document).ready(function() {
     /**
      * summernote keterangan
      */

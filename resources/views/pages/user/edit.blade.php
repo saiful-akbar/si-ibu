@@ -22,7 +22,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="header-title mt-2">
-                            Form Edit User Akun
+                            User Akun
                         </h4>
                     </div>
 
@@ -108,7 +108,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="header-title mt-2">
-                            Form Edit User Profil
+                            User Profil
                         </h4>
                     </div>
 
