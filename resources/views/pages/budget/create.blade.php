@@ -6,19 +6,14 @@
     <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
+@section('btn-kembali')
+    <a href="{{ route('budget') }}" class="btn btn-rounded btn-light btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
+
 @section('content')
-
-    {{-- button kembali --}}
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('budget') }}" class="btn btn-rounded btn-dark btn-sm">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
-
-    {{-- card form input budget --}}
     <form action="{{ route('budget.store') }}" method="POST">
         @method('POST') @csrf
 
@@ -168,8 +163,6 @@
         {{-- end input keterangan --}}
 
     </form>
-    {{-- end card form input budget --}}
-
 @endsection
 
 @section('js')

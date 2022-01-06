@@ -1,6 +1,12 @@
-.page-title,
 .button-menu-mobile {
     line-height: 100% !important;
+}
+
+.header-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .topbar-title {
@@ -65,19 +71,4 @@ body[data-leftbar-compact-mode="condensed"] {
 select.select2.is-invalid + span.select2-container {
     border: 1px solid #fa5c7c !important;
     border-radius: 0.25rem;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-    line-height: 100% !important;
 }

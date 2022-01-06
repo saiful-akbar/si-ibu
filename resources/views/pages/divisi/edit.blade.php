@@ -2,15 +2,14 @@
 
 @section('title', 'Edit Bagian')
 
+@section('btn-kembali')
+    <a href="{{ route('divisi') }}" class="btn btn-rounded btn-secondary btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
+
 @section('content')
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('divisi') }}" class="btn btn-sm btn-rounded btn-dark">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
 
     {{-- form edit divisi --}}
     <div class="row">
