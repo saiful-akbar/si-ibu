@@ -1,18 +1,15 @@
 @extends('templates.main')
 
-@section('title', 'User Menu Akses')
+@section('title', 'Edit Menu Akses')
+
+@section('btn-kembali')
+    <a href="{{ route('user') }}" class="btn btn-rounded btn-light btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('user') }}" class="btn btn-rounded btn-dark btn-sm">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
-
-    {{-- profil --}}
     @include('pages.user.menu-akses.profile')
 
     <div class="row">
@@ -191,7 +188,6 @@
         {{-- form user akses --}}
 
     </div>
-
 @endsection
 
 @section('js')

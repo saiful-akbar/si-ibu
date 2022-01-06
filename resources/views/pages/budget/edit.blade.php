@@ -6,19 +6,14 @@
     <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
+@section('btn-kembali')
+    <a href="{{ route('budget') }}" class="btn btn-rounded btn-light btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
+
 @section('content')
-
-    {{-- button kembali --}}
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('budget') }}" class="btn btn-rounded btn-dark btn-sm">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
-
-    {{-- card form edit budget --}}
     <form action="{{ route('budget.update', ['budget' => $budget->id]) }}" method="POST">
         @method('PATCH') @csrf
 
@@ -124,6 +119,30 @@
                             </div>
                         </div>
 
+                        {{-- input nominal --}}
+                        <div class="form-group row">
+                            <label for="sisa_nominal" class="col-md-3 col-sm-12 col-form-label">
+                                Sisa Nominal Budget <small class="text-danger">*</small>
+                            </label>
+
+                            <div class="col-md-9 col-sm-12 input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        Rp
+                                    </span>
+                                </div>
+
+                                <input required readonly type="number" id="sisa_nominal" name="sisa_nominal"
+                                    placeholder="Masukan sisa_nominal..." min="0"
+                                    value="{{ old('sisa_nominal', $budget->sisa_nominal) }}"
+                                    class="form-control @error('sisa_nominal') is-invalid @enderror" />
+
+                                @error('sisa_nominal')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -168,8 +187,6 @@
         {{-- end input keterangan --}}
 
     </form>
-    {{-- end card form edit budget --}}
-
 @endsection
 
 @section('js')

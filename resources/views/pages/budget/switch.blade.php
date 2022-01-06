@@ -2,20 +2,14 @@
 
 @section('title', 'Switch Budget')
 
+@section('btn-kembali')
+    <a href="{{ route('budget') }}" class="btn btn-rounded btn-light btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
+
 @section('content')
-
-    {{-- button kembali --}}
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('belanja') }}" class="btn btn-dark btn-sm btn-rounded">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
-    {{-- end button kembali --}}
-
-    {{-- form switch budget --}}
     <form action="{{ route('budget.switch.update', ['budget' => $budget->id]) }}" method="POST">
         @method('PATCH') @csrf
 
@@ -236,8 +230,6 @@
         {{-- end input keterangan --}}
 
     </form>
-    {{-- form switch budget --}}
-
 @endsection
 
 @push('css')

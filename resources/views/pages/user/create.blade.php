@@ -2,16 +2,14 @@
 
 @section('title', 'Tambah User')
 
-@section('content')
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('user') }}" class="btn btn-rounded btn-dark btn-sm">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
+@section('btn-kembali')
+    <a href="{{ route('user') }}" class="btn btn-rounded btn-light btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
 
+@section('content')
     <form name="user_form" enctype="multipart/form-data" action="{{ route('user.store') }}" method="POST"
         autocomplete="off">
         @method('POST') @csrf

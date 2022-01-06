@@ -2,16 +2,14 @@
 
 @section('title', 'Edit Akun Belanja')
 
-@section('content')
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('jenis-belanja') }}" class="btn btn-rounded btn-dark btn-sm">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
+@section('btn-kembali')
+    <a href="{{ route('jenis-belanja') }}" class="btn btn-rounded btn-light btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
 
+@section('content')
     <div class="row">
         <div class="col-12">
             <form class="form-horizontal"

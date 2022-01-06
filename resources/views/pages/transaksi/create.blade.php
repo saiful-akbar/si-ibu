@@ -2,17 +2,14 @@
 
 @section('title', 'Tambah Belanja')
 
-@section('content')
+@section('btn-kembali')
+    <a href="{{ route('belanja') }}" class="btn btn-rounded btn-light btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
 
-    {{-- button kembali --}}
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('belanja') }}" class="btn btn-dark btn-sm btn-rounded">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
+@section('content')
 
     {{-- Form input budget --}}
     <form action="{{ route('belanja.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">

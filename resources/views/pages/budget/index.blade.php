@@ -128,7 +128,10 @@
                                             <th>Sisa Nominal</th>
                                             <th>Dibuat</th>
                                             <th>Diperbarui</th>
-                                            <th class="text-center">Aksi</th>
+
+                                            @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
+                                                <th class="text-center">Aksi</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -145,38 +148,36 @@
                                                     <td>Rp. {{ number_format($data->sisa_nominal) }}</td>
                                                     <td>{{ $data->created_at }}</td>
                                                     <td>{{ $data->updated_at }}</td>
-                                                    <td class="table-action text-center">
-                                                        <button onclick="budget.handleShowModalDetail({{ $data->id }})"
-                                                            data-toggle="tooltip" data-original-title="Detail"
-                                                            data-placement="top" class="btn btn-sm btn-light btn-icon mr-1">
-                                                            <i class="mdi mdi-eye-outline"></i>
-                                                        </button>
 
-                                                        @if ($userAccess->pivot->update == 1)
-                                                            <a href="{{ route('budget.switch', ['budget' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon mr-1"
-                                                                data-toggle="tooltip" data-original-title="Switch Budget"
-                                                                data-placement="top">
-                                                                <i class="mdi mdi-code-tags"></i>
-                                                            </a>
+                                                    @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
+                                                        <td class="table-action text-center">
+                                                            @if ($userAccess->pivot->update == 1)
+                                                                <a href="{{ route('budget.switch', ['budget' => $data->id]) }}"
+                                                                    class="btn btn-sm btn-light btn-icon mr-1"
+                                                                    data-toggle="tooltip"
+                                                                    data-original-title="Switch Budget"
+                                                                    data-placement="top">
+                                                                    <i class="mdi mdi-code-tags"></i>
+                                                                </a>
 
-                                                            <a href="{{ route('budget.edit', ['budget' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon mr-1"
-                                                                data-toggle="tooltip" data-original-title="Edit"
-                                                                data-placement="top">
-                                                                <i class="mdi mdi-square-edit-outline"></i>
-                                                            </a>
-                                                        @endif
+                                                                <a href="{{ route('budget.edit', ['budget' => $data->id]) }}"
+                                                                    class="btn btn-sm btn-light btn-icon mr-1"
+                                                                    data-toggle="tooltip" data-original-title="Edit"
+                                                                    data-placement="top">
+                                                                    <i class="mdi mdi-square-edit-outline"></i>
+                                                                </a>
+                                                            @endif
 
-                                                        @if ($userAccess->pivot->delete == 1)
-                                                            <button
-                                                                onclick="budget.handleDelete({{ $data->id }})"
-                                                                data-toggle="tooltip" data-original-title="Hapus"
-                                                                data-placement="top" class="btn btn-sm btn-light btn-icon">
-                                                                <i class="mdi mdi-delete"></i>
-                                                            </button>
-                                                        @endif
-                                                    </td>
+                                                            @if ($userAccess->pivot->delete == 1)
+                                                                <button onclick="budget.handleDelete({{ $data->id }})"
+                                                                    data-toggle="tooltip" data-original-title="Hapus"
+                                                                    data-placement="top"
+                                                                    class="btn btn-sm btn-light btn-icon">
+                                                                    <i class="mdi mdi-delete"></i>
+                                                                </button>
+                                                            @endif
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         @else

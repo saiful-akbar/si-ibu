@@ -655,32 +655,64 @@ class TransaksiController extends Controller
      */
     public function fillter($request)
     {
-        /**
-         * Query join table transaksi, divisi, user & profil
-         */
-        $query = Transaksi::with(['budget.divisi', 'budget.jenisBelanja', 'user.profil'])
-            ->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
+        $query = Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
+            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
+            ->leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
+            ->leftJoin('user', 'user.id', '=', 'transaksi.user_id')
+            ->leftJoin('profil', 'profil.user_id', '=', 'user.id')
+            ->select([
+                'transaksi.id',
+                'transaksi.budget_id',
+                'transaksi.tanggal',
+                'transaksi.kegiatan',
+                'transaksi.jumlah_nominal',
+                'transaksi.approval',
+                'transaksi.no_dokumen',
+                'transaksi.file_dokumen',
+                'transaksi.uraian',
+                'transaksi.created_at',
+                'transaksi.updated_at',
+                'budget.divisi_id',
+                'budget.jenis_belanja_id',
+                'jenis_belanja.kategori_belanja',
+                'divisi.nama_divisi',
+                'profil.nama_lengkap',
+            ])->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
 
         /**
-         * cek apakan request divis dipilih atau tidak
+         * jika divisi dipilih tambahkan query
          */
         if ($request->divisi != null) {
-            $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
+            $query->where('divisi.nama_divisi',  $request->divisi);
+        }
 
-            if ($divisi) {
-                $query->where('divisi_id',  $divisi->id);
-            }
+        /**
+         * jika jenis belanja dipilih tambahkan query
+         */
+        if ($request->jenis_belanja != null) {
+            $query->where('jenis_belanja.kategori_belanja',  $request->jenis_belanja);
+        }
+
+        /**
+         * jika no dokumen dipilih tambahkan validasi
+         */
+        if ($request->no_dokumen != null) {
+            $query->where('transaksi.no_dokumen',  $request->no_dokumen);
         }
 
         /**
          * hitung jumlah nominal;
          */
-        $totalTransaksi = $query->sum('jumlah_nominal');
+        $totalTransaksi = $query->sum('transaksi.jumlah_nominal');
 
         /**
          * buat order
          */
-        $laporanTransaksi = $query->orderBy('tanggal', 'asc')->orderBy('divisi_id', 'asc')->get();
+        $laporanTransaksi = $query
+            ->orderBy('transaksi.tanggal', 'asc')
+            ->orderBy('divisi.nama_divisi', 'asc')
+            ->orderBy('jenis_belanja.kategori_belanja', 'asc')
+            ->get();
 
 
         return [
@@ -699,7 +731,7 @@ class TransaksiController extends Controller
     public function exportExcel(Request $request)
     {
         $data = $this->fillter($request);
-        return Excel::download(new LaporanTransaksiExport($data), 'laporan-transaksi.xlsx');
+        return Excel::download(new LaporanTransaksiExport($data), 'Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.xlsx');
     }
 
     /**
@@ -713,9 +745,11 @@ class TransaksiController extends Controller
     {
         $data = $this->fillter($request);
 
+        // return view('export.pdf.pdf-transaksi', $data);
+
         return PDF::loadView('export.pdf.pdf-transaksi', $data)
             ->setPaper('a4', 'landscape')
-            ->download('laporan-transaksi.pdf');
+            ->download('Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.pdf');
     }
 
     /**

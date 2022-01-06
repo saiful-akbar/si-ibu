@@ -2,11 +2,10 @@
 <html lang="id">
 
 <head>
-    <meta
-        http-equiv="Content-Type"
-        content="text/html; charset=utf-8"
-    />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
     <title>Laporan Transaksi</title>
+
     <style>
         * {
             padding: 0;
@@ -43,6 +42,10 @@
             text-align: center !important;
         }
 
+        .text-right {
+            text-align: right !important;
+        }
+
         .table-padding tr th,
         .table-padding tr td {
             padding: 5px 5px;
@@ -75,7 +78,7 @@
         .logo {
             margin-bottom: 15px;
             line-height: 100%;
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: 800;
             position: absolute;
             right: 0;
@@ -96,34 +99,30 @@
                     <tr>
                         <th>Periode</th>
                         <td>:</td>
-                        <td>{{ request('periodeAwal') }} ~ {{ request('periodeAkhir') }}</td>
+                        <td>{{ request('periode_awal') }} ~ {{ request('periode_akhir') }}</td>
                     </tr>
                     <tr>
                         <th>Waktu Cetak</th>
                         <td>:</td>
-                        <td>{{ date('Y-m-d H:i') }}</td>
+                        <td>{{ date('Y-m-d, H:i:s') }}</td>
                     </tr>
                 </table>
             </div>
 
-            <h1 class="logo">{{ env('APP_NAME', 'Laravel') }}</h1>
+            <h1 class="logo">{{ config('app.name') }}</h1>
         </header>
-        <table
-            class="table table-border table-padding"
-            width="100%"
-        >
+        <table class="table table-border table-padding" width="100%">
             <thead>
                 <tr>
                     <th class="text-center">No</th>
                     <th class="text-center">Tanggal</th>
                     <th class="text-center">Bagian</th>
-                    <th class="text-center">Seksi</th>
+                    <th class="text-center">Akun Belanja</th>
                     <th class="text-center">Submitter</th>
-                    <th class="text-center">Jenis Belanja</th>
+                    <th class="text-center">Approval</th>
                     <th class="text-center">Kegiatan</th>
                     <th class="text-center">Uraian</th>
                     <th class="text-center">No. Dokumen</th>
-                    <th class="text-center">Approval</th>
                     <th class="text-center">Jml Nominal</th>
                 </tr>
             </thead>
@@ -132,22 +131,21 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $laporan->tanggal }}</td>
-                        <td>{{ $laporan->divisi->nama_divisi }}</td>
-                        <td>{{ $laporan->user->seksi }}</td>
-                        <td>{{ $laporan->user->profil->nama_lengkap }}</td>
-                        <td>{{ $laporan->jenisBelanja->kategori_belanja }}</td>
+                        <td>{{ $laporan->nama_divisi }}</td>
+                        <td>{{ $laporan->kategori_belanja }}</td>
+                        <td>{{ $laporan->nama_lengkap }}</td>
+                        <td>{{ $laporan->approval }}</td>
                         <td>{{ $laporan->kegiatan }}</td>
                         <td>{!! $laporan->uraian !!}</td>
                         <td>{{ $laporan->no_dokumen }}</td>
-                        <td>{{ $laporan->approval }}</td>
-                        <td>Rp. {{ number_format($laporan->jumlah_nominal) }}</td>
+                        <td class="text-right">Rp. {{ number_format($laporan->jumlah_nominal) }}</td>
                     </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="10">Grand Total</th>
-                    <th>Rp. {{ number_format($totalTransaksi) }}</th>
+                    <th colspan="9">Grand Total</th>
+                    <th class="text-right">Rp. {{ number_format($totalTransaksi) }}</th>
                 </tr>
             </tfoot>
         </table>

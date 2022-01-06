@@ -2,16 +2,14 @@
 
 @section('title', 'Edit User')
 
-@section('content')
-    <div class="row">
-        <div class="col-12 mb-3 d-flex justify-content-end">
-            <a href="{{ route('user') }}" class="btn btn-rounded btn-dark btn-sm">
-                <i class="mdi mdi-chevron-double-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-    </div>
+@section('btn-kembali')
+    <a href="{{ route('user') }}" class="btn btn-rounded btn-light btn-sm">
+        <i class="mdi mdi-chevron-double-left"></i>
+        <span>Kembali</span>
+    </a>
+@endsection
 
+@section('content')
     <form name="user_form" enctype="multipart/form-data" action="{{ route('user.update', ['user' => $user->id]) }}"
         method="POST" autocomplete="off">
         @method('PATCH') @csrf
@@ -174,13 +172,9 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <select
-                                    required
-                                    name="divisi_id"
-                                    id="divisi_id"
+                                <select required name="divisi_id" id="divisi_id"
                                     class="form-control select2 @error('divisi_id') is-invalid @enderror"
-                                    data-toggle="select2"
-                                >
+                                    data-toggle="select2">
                                     <option disabled @if (!old('divisi_id', $user->divisi->id)) selected @endif>
                                         Pilih Bagian
                                     </option>
