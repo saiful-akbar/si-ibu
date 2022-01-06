@@ -10,10 +10,11 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+
 /**
  * Route awal
  */
-Route::redirect('/', 'dashboard');
+Route::permanentRedirect('/', 'dashboard');
 
 
 /**
