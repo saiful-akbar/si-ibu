@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class JenisBelanjaController extends Controller
         /**
          * ambil semua data jenis_belanja
          */
-        $query = JenisBelanja::select('id', 'kategori_belanja', 'updated_at');
+        $query = JenisBelanja::select('id', 'kategori_belanja', 'active', 'updated_at');
 
         /**
          * cek jika ada request search atau tidak
@@ -30,14 +31,12 @@ class JenisBelanjaController extends Controller
         }
 
         /**
-         * buat order
-         */
-        $query->orderBy('kategori_belanja', 'asc');
-
-        /**
          * buat paginasi
          */
-        $jenisBelanja = $query->paginate(25)->withQueryString();
+        $jenisBelanja = $query
+            ->orderBy('kategori_belanja', 'asc')
+            ->paginate(25)
+            ->withQueryString();
 
         /**
          * ambid data user akses untuk menu divisi
@@ -73,6 +72,7 @@ class JenisBelanjaController extends Controller
          */
         $validateRules = [
             'kategori_belanja' => ['required', 'max:100', 'unique:jenis_belanja,kategori_belanja'],
+            'active' => []
         ];
 
         /**
@@ -81,13 +81,15 @@ class JenisBelanjaController extends Controller
         $validateErrorMessage = [
             'kategori_belanja.required' => 'Kategori belanja tidak boleh kosong.',
             'kategori_belanja.max' => 'Kategori belanja tidak boleh lebih dari 100 karakter.',
-            'kategori_belanja.unique' => 'Kategori belanja sudah digunakan.',
+            'kategori_belanja.unique' => 'Kategori belanja sudah ada.',
         ];
 
         /**
          * jalankan validasi
          */
         $validatedData = $request->validate($validateRules, $validateErrorMessage);
+        $validatedData['kategori_belanja'] = ucwords($request->kategori_belanja);
+        $validatedData['active'] = isset($request->active) ? true : false;
 
         /**
          * simpan data ke database
@@ -97,13 +99,13 @@ class JenisBelanjaController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('jenis-belanja.create')->with('alert', [
                 'type' => 'danger',
-                'message' => 'Gagal menambahkan data jenis belanja. ' . $e->getMessage(),
+                'message' => 'Akun belanja gagal ditambahkan. ' . $e->getMessage(),
             ]);
         }
 
         return redirect()->route('jenis-belanja.create')->with('alert', [
             'type' => 'success',
-            'message' => '1 data jenis belanja berhasil ditambahkan.',
+            'message' => '1 akun jenis belanja berhasil ditambahkan.',
         ]);
     }
 
@@ -116,7 +118,9 @@ class JenisBelanjaController extends Controller
      */
     public function edit(JenisBelanja $jenisBelanja)
     {
-        return view('pages.jenis-belanja.edit', compact('jenisBelanja'));
+        $divisions = Divisi::where('active', 1)->get();
+
+        return view('pages.jenis-belanja.edit', compact('jenisBelanja', 'divisions'));
     }
 
     /**
@@ -134,6 +138,7 @@ class JenisBelanjaController extends Controller
          */
         $validateRules = [
             'kategori_belanja' => ['required', 'max:100'],
+            'active' => ['boolean']
         ];
 
 
@@ -143,14 +148,16 @@ class JenisBelanjaController extends Controller
         $validateErrorMessage = [
             'kategori_belanja.required' => 'Kategori belanja tidak boleh kosong.',
             'kategori_belanja.max' => 'Kategori belanja tidak boleh lebih dari 100 karakter.',
+            'kategori_belanja.unique' => 'Kategori belanja sudah ada.',
+            'active.boolean' => 'Active harus bernilai true (1) atau false (0).',
         ];
 
         /**
-         * cek apakah kategori belanja dirubah atau tidak
+         * cek kategori belanja dirubah atau tidak
+         * tambahkan validasi unique
          */
         if ($request->kategori_belanja != $jenisBelanja->kategori_belanja) {
             array_push($validateRules['kategori_belanja'], 'unique:jenis_belanja,kategori_belanja');
-            $validateErrorMessage['kategori_belanja.unique'] = 'Kategori belanja sudah digunakan.';
         }
 
         /**
@@ -158,12 +165,14 @@ class JenisBelanjaController extends Controller
          */
         $validatedData = $request->validate($validateRules, $validateErrorMessage);
 
+        $validatedData['kategori_belanja'] = ucwords($request->kategori_belanja);
+        $validatedData['active'] = isset($request->active) ? true : false;
+
         /**
          * simpan data ke database
          */
         try {
-            $jenisBelanja->kategori_belanja = $validatedData['kategori_belanja'];
-            $jenisBelanja->save();
+            $jenisBelanja->update($validatedData);
         } catch (\Exception $e) {
             return redirect()->route('jenis-belanja.edit', ['jenisBelanja' => $jenisBelanja->id])
                 ->with('alert', [
@@ -172,7 +181,7 @@ class JenisBelanjaController extends Controller
                 ]);
         }
 
-        return redirect()->route('jenis-belanja.edit', ['jenisBelanja' => $jenisBelanja->id])
+        return redirect()->route('jenis-belanja')
             ->with('alert', [
                 'type' => 'success',
                 'message' => 'Data jenis belanja berhasil dirubah.',
@@ -188,6 +197,23 @@ class JenisBelanjaController extends Controller
      */
     public function delete(JenisBelanja $jenisBelanja)
     {
+        $relasiData = JenisBelanja::with('budget')->find($jenisBelanja->id);
+
+        /**
+         * cek apakah ada data transaksi & budget yang berelasi dengan jenis_belanja ini
+         */
+        if (count($relasiData->budget) > 0) {
+            return redirect()
+                ->route('jenis-belanja')
+                ->with('alert', [
+                    'type' => 'warning',
+                    'message' => "Gagal menghapus data akun belanja {$jenisBelanja->divisi->nama_divisi}-{$jenisBelanja->kategori_belanja}. Data akun belanja ini memiliki data relasi dengan budget. ",
+                ]);
+        }
+
+        /**
+         * Proses hapus
+         */
         try {
             JenisBelanja::destroy($jenisBelanja->id);
         } catch (\Exception $e) {
@@ -195,7 +221,7 @@ class JenisBelanjaController extends Controller
                 ->route('jenis-belanja')
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Gagal menghapus data jenis belanja. ' . $e->getMessage(),
+                    'message' => 'Gagal menghapus data akun belanja. ' . $e->getMessage(),
                 ]);
         }
 
@@ -203,7 +229,7 @@ class JenisBelanjaController extends Controller
             ->route('jenis-belanja')
             ->with('alert', [
                 'type' => 'success',
-                'message' => '1 data jenis belanja berhasil dihapus.',
+                'message' => '1 akun belanja berhasil dihapus.',
             ]);
     }
 }

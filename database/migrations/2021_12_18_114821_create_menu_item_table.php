@@ -23,9 +23,7 @@ class CreateMenuItemTable extends Migration
 
             $table->foreign('menu_header_id')
                 ->references('id')
-                ->on('menu_header')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+                ->on('menu_header');
         });
     }
 

@@ -1,50 +1,35 @@
 @extends('templates.main')
 
-@section('title', 'Jenis Belanja')
+@section('title', 'Akun Belanja')
 
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="header-title mt-2">Tabel Jenis Belanja</h4>
+                    <h4 class="header-title mt-2">Tabel Akun Belanja</h4>
                 </div>
 
                 <div class="card-body">
 
                     {{-- button tambah & form search --}}
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
-                                <a
-                                    href="{{ route('jenis-belanja.create') }}"
-                                    class="btn btn-rounded btn-primary"
-                                >
+                                <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary btn-sm">
                                     <i class="mdi mdi-plus"></i>
-                                    <span>Tambah Jenis Belanja</span>
+                                    <span>Tambah Akun Belanja</span>
                                 </a>
                             @endif
                         </div>
 
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form
-                                action="{{ route('jenis-belanja') }}"
-                                method="GET"
-                                autocomplete="off"
-                            >
+                            <form action="{{ route('jenis-belanja') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
-                                    <input
-                                        type="search"
-                                        name="search"
-                                        placeholder="Cari jenis belanja..."
-                                        class="form-control"
-                                        value="{{ request('search') }}"
-                                    />
+                                    <input type="search" name="search" placeholder="Cari akun belanja..."
+                                        class="form-control" value="{{ request('search') }}" />
                                     <div class="input-group-append">
-                                        <button
-                                            class="btn btn-secondary"
-                                            type="submit"
-                                        >
+                                        <button class="btn btn-secondary" type="submit">
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>
@@ -58,12 +43,13 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-hover nowrap">
+                                <table class="table nowrap table-centered">
                                     <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>Ketergori Belanja</th>
-                                            <th>Diperbarui</th>
+                                            <th>Aktif</th>
+                                            <th>Dibuat / Diperbarui</th>
 
                                             @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
                                                 <th class="text-center">Aksi</th>
@@ -74,34 +60,36 @@
                                     <tbody>
                                         @foreach ($jenisBelanja as $data)
                                             <tr>
-                                                <td class="align-middel">
+                                                <td>
                                                     {{ $jenisBelanja->count() * ($jenisBelanja->currentPage() - 1) + $loop->iteration }}
                                                 </td>
-                                                <td class="align-middle">{{ $data->kategori_belanja }}</td>
-                                                <td class="align-middle">{{ $data->updated_at->format('d M Y H:i') }}</td>
+                                                <td>{{ $data->kategori_belanja }}</td>
+                                                <td>
+                                                    @if ($data->active == 1)
+                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                    @else
+                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $data->updated_at->format('d M Y H:i') }}
+                                                </td>
 
                                                 @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
-                                                    <td class="align-middle text-center">
+                                                    <td class="text-center">
                                                         @if ($userAccess->pivot->update == 1)
-                                                            <a
-                                                                href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
-                                                                class="btn btn-sm btn-success btn-icon mr-1"
-                                                                data-toggle="tooltip"
-                                                                data-original-title="Edit"
-                                                                data-placement="top"
-                                                            >
+                                                            <a href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
+                                                                class="btn btn-sm btn-light btn-icon mr-1"
+                                                                data-toggle="tooltip" data-original-title="Edit"
+                                                                data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
                                                         @endif
 
                                                         @if ($userAccess->pivot->delete == 1)
-                                                            <button
-                                                                class="btn btn-sm btn-danger btn-icon"
-                                                                data-toggle="tooltip"
-                                                                data-original-title="Hapus"
+                                                            <button class="btn btn-sm btn-light btn-icon"
+                                                                data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top"
-                                                                onclick="handleDelete({{ $data->id }}, '{{ $data->kategori_belanja }}')"
-                                                            >
+                                                                onclick="handleDelete({{ $data->id }})">
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>
                                                         @endif
@@ -127,10 +115,7 @@
     </div>
 
     {{-- form delete --}}
-    <form
-        method="POST"
-        id="form-delete-jenis-belanja"
-    >
+    <form method="POST" id="form-delete-jenis-belanja">
         @method('DELETE') @csrf
     </form>
 @endsection
@@ -143,23 +128,35 @@
          * @param {int} id
          * @param {string} username
          */
-        function handleDelete(id, jenisBelanja) {
+        function handleDelete(id) {
             bootbox.confirm({
-                title: "Peringatan!",
+                title: `<h5 class='mt-2'>Anda ingin menghapus akun belanja ?</h5>`,
                 message: `
-                    <ul>
-                        <li>Yakin ingin menghapus jenis belanja "<strong>${jenisBelanja}</strong>" ?</li>
-                        <li>Semua data terkait atau data yang berelasi dengan data ini juga akan terhapus.</li>
-                    </ul>
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">
+                            <i class="dripicons-warning"></i>
+                            Peringatan!
+                        </h4>
+                        
+                        <ul>
+                            <li>Tindakan ini tidak dapat dibatalkan.</li>
+                            <li>Akun belanja yang dihapus tidak dapat dikembalikan.</li>
+                            <li>Pastikan anda berhati-hati dalam menghapus.</li>
+                        </ul>
+
+                        <p>
+                            <b>NB:</b> Akun belanja tidak dapat dihapus jika memilikin data pada relasi <b>budget</b>!
+                        </p>
+                    </div>
                 `,
                 buttons: {
                     confirm: {
                         label: "Hapus",
-                        className: "btn-danger btn-rounded btn-sm",
+                        className: "btn btn-danger btn-sm btn-rounded",
                     },
                     cancel: {
                         label: "Batal",
-                        className: "btn-secondary btn-rounded btn-sm",
+                        className: "btn btn-sm btn-outline-dark btn-rounded",
                     },
                 },
                 callback: (result) => {

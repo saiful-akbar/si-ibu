@@ -3,6 +3,95 @@
 @section('title', 'Budget')
 
 @section('content')
+
+    {{-- form filter --}}
+    <div class="row">
+        <div class="col-12 mb-3">
+            <form action="{{ route('budget') }}" method="GET">
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <h4 class="header-title">Filter</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+
+                            {{-- input periode tahun --}}
+                            <div class="col-lg-8 col-md-12 col-sm-12 mb-2">
+                                <div class="form-group">
+                                    <label>Periode Tahun <small class="text-danger">*</small></label>
+
+                                    <div class="input-group">
+                                        <input required name="periode_awal" type="number" id="periode_awal"
+                                            placeholder="Awal periode tahun..." min="1900" max="9999"
+                                            value="{{ old('periode_awal', request('periode_awal')) }}"
+                                            class="form-control" />
+
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="mdi mdi-chevron-double-right"></i>
+                                            </span>
+                                        </div>
+
+                                        <input required name="periode_akhir" type="number" id="periode_akhir"
+                                            placeholder="Akhir periode tahun..." min="1900" max="9999"
+                                            value="{{ old('periode_akhir', request('periode_akhir')) }}"
+                                            class="form-control @error('periode_akhir') is-invalid @enderror" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- input bagian (divisi) --}}
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                <div class="form-group">
+                                    <label for="divisi">Bagian</label>
+
+                                    <select id="divisi" name="divisi" data-toggle="select2" class="form-control select2">
+                                        <option value="{{ null }}">Semua Bagian</option>
+
+                                        @foreach ($divisi as $div)
+                                            <option value="{{ $div->nama_divisi }}" @if (request('divisi') == $div->nama_divisi) selected @endif>
+                                                {{ $div->nama_divisi }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            {{-- input akun belanja (jenis_belanja) --}}
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                <div class="form-group">
+                                    <label for="jenis_belanja">Akun Belanja</label>
+
+                                    <select id="jenis_belanja" name="jenis_belanja" data-toggle="select2"
+                                        class="form-control select2">
+                                        <option value="{{ null }}">Semua Akun Belanja</option>
+
+                                        @foreach ($jenisBelanja as $jBelanja)
+                                            <option value="{{ $jBelanja->kategori_belanja }}" @if (request('jenis_belanja') == $jBelanja->kategori_belanja) selected @endif>
+                                                {{ $jBelanja->kategori_belanja }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info btn-rounded btn-sm">
+                            <i class="mdi mdi-filter-variant"></i>
+                            <span>Filter</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{-- end form filter --}}
+
+    {{-- table budget --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -12,119 +101,89 @@
 
                 <div class="card-body">
 
-                    {{-- button tambah & form search --}}
-                    <div class="row justify-content-end">
-                        <div class="col-md-6 col-sm-12 mb-3">
+                    {{-- button tambah --}}
+                    <div class="row">
+                        <div class="col-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
-                                <a
-                                    href="{{ route('budget.create') }}"
-                                    class="btn btn-rounded btn-primary"
-                                >
+                                <a href="{{ route('budget.create') }}" class="btn btn-sm btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Input Budget</span>
                                 </a>
                             @endif
                         </div>
-
-                        <div class="col-md-6 col-sm-12 mb-3">
-                            <form
-                                action="{{ route('budget') }}"
-                                method="GET"
-                                autocomplete="off"
-                            >
-                                <div class="input-group">
-                                    <input
-                                        type="search"
-                                        name="search"
-                                        placeholder="Cari budget..."
-                                        class="form-control"
-                                        value="{{ request('search') }}"
-                                    />
-
-                                    <div class="input-group-append">
-                                        <button
-                                            class="btn btn-secondary"
-                                            type="submit"
-                                        >
-                                            <i class="uil-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
-                    {{-- end button tambah & form search --}}
 
                     {{-- table --}}
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-hover nowrap">
+                                <table class="table nowrap w-100 table-centered">
                                     <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>Tahun Anggaran</th>
-                                            <th>Divisi</th>
+                                            <th>Bagian</th>
+                                            <th>Akun Belanja</th>
                                             <th>Nominal</th>
+                                            <th>Sisa Nominal</th>
+                                            <th>Dibuat</th>
                                             <th>Diperbarui</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($budgets as $data)
-                                            <tr>
-                                                <td class="align-middle">
-                                                    {{ $budgets->count() * ($budgets->currentPage() - 1) + $loop->iteration }}
-                                                </td>
-                                                <td class="align-middle">
-                                                    {{ $data->tahun_anggaran }}
-                                                </td>
-                                                <td class="align-middle">
-                                                    {{ ucwords($data->nama_divisi) }}
-                                                </td>
-                                                <td class="align-middle">
-                                                    Rp. {{ number_format($data->nominal) }}
-                                                </td>
-                                                <td class="align-middle">
-                                                    {{ $data->updated_at }}
-                                                </td>
-                                                <td class="align-middel text-center">
-                                                    <button
-                                                        onclick="handleShowModalDetail({{ $data->id }})"
-                                                        data-toggle="tooltip"
-                                                        data-original-title="Detail"
-                                                        data-placement="top"
-                                                        class="btn btn-sm btn-info btn-icon mr-1"
-                                                    >
-                                                        <i class="mdi mdi-eye-outline"></i>
-                                                    </button>
-
-                                                    @if ($userAccess->pivot->update == 1)
-                                                        <a
-                                                            href="{{ route('budget.edit', ['budget' => $data->id]) }}"
-                                                            class="btn btn-sm btn-success btn-icon mr-1"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Edit"
-                                                            data-placement="top"
-                                                        >
-                                                            <i class="mdi mdi-square-edit-outline"></i>
-                                                        </a>
-                                                    @endif
-
-                                                    @if ($userAccess->pivot->delete == 1)
-                                                        <button
-                                                            onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Hapus"
-                                                            data-placement="top"
-                                                            class="btn btn-sm btn-danger btn-icon"
-                                                        >
-                                                            <i class="mdi mdi-delete"></i>
+                                        @if (count($budgets) > 0)
+                                            @foreach ($budgets as $data)
+                                                <tr>
+                                                    <td>
+                                                        {{ $budgets->count() * ($budgets->currentPage() - 1) + $loop->iteration }}
+                                                    </td>
+                                                    <td>{{ $data->tahun_anggaran }}</td>
+                                                    <td>{{ ucwords($data->nama_divisi) }}</td>
+                                                    <td>{{ $data->kategori_belanja }}</td>
+                                                    <td>Rp. {{ number_format($data->nominal) }}</td>
+                                                    <td>Rp. {{ number_format($data->sisa_nominal) }}</td>
+                                                    <td>{{ $data->created_at }}</td>
+                                                    <td>{{ $data->updated_at }}</td>
+                                                    <td class="table-action text-center">
+                                                        <button onclick="budget.handleShowModalDetail({{ $data->id }})"
+                                                            data-toggle="tooltip" data-original-title="Detail"
+                                                            data-placement="top" class="btn btn-sm btn-light btn-icon mr-1">
+                                                            <i class="mdi mdi-eye-outline"></i>
                                                         </button>
-                                                    @endif
-                                                </td>
+
+                                                        @if ($userAccess->pivot->update == 1)
+                                                            <a href="{{ route('budget.switch', ['budget' => $data->id]) }}"
+                                                                class="btn btn-sm btn-light btn-icon mr-1"
+                                                                data-toggle="tooltip" data-original-title="Switch Budget"
+                                                                data-placement="top">
+                                                                <i class="mdi mdi-code-tags"></i>
+                                                            </a>
+
+                                                            <a href="{{ route('budget.edit', ['budget' => $data->id]) }}"
+                                                                class="btn btn-sm btn-light btn-icon mr-1"
+                                                                data-toggle="tooltip" data-original-title="Edit"
+                                                                data-placement="top">
+                                                                <i class="mdi mdi-square-edit-outline"></i>
+                                                            </a>
+                                                        @endif
+
+                                                        @if ($userAccess->pivot->delete == 1)
+                                                            <button
+                                                                onclick="budget.handleDelete({{ $data->id }})"
+                                                                data-toggle="tooltip" data-original-title="Hapus"
+                                                                data-placement="top" class="btn btn-sm btn-light btn-icon">
+                                                                <i class="mdi mdi-delete"></i>
+                                                            </button>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="8" class="text-center">Tidak ada data budget.</td>
                                             </tr>
-                                        @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -141,93 +200,81 @@
             </div>
         </div>
     </div>
+    {{-- end table budget --}}
 
     {{-- form delete data budget --}}
-    <form
-        method="POST"
-        id="form-delete-budget"
-    >
-        @method('DELETE')
-        @csrf
+    <form method="POST" id="form-delete-budget">
+        @method('DELETE') @csrf
     </form>
 
     {{-- modal detail --}}
-    <div
-        class="modal fade"
-        id="modal-detail"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="detail"
-        aria-hidden="true"
-    >
-        <div
-            class="modal-dialog modal-dialog-scrollable modal-lg"
-            role="document"
-        >
+    <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="detail" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5
-                        class="modal-title"
-                        id="detail"
-                    >DETAIL BUDGET</h5>
-                    <button
-                        type="button"
-                        class="close"
-                        aria-label="Close"
-                        onclick="handleCloseModalDetail()"
-                    >
+                    <h5 class="modal-title" id="detail">
+                        DETAIL BUDGET
+                    </h5>
+
+                    <button type="button" class="close" aria-label="Close"
+                        onclick="budget.handleCloseModalDetail()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-center align-items-center">
-                        <div
-                            id="loading-modal"
-                            class="spinner-border text-primary"
-                            role="status"
-                        ></div>
+                        <div id="loading-modal" class="spinner-border text-primary" role="status"></div>
                     </div>
 
                     {{-- modal detail conten --}}
                     <div id="modal-detail-content">
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Divisi :</strong>
-                                <div id="detail-divisi"></div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Tahun Anggaran :</strong>
-                                <div id="detail-tahun-anggaran"></div>
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Divisi :</strong>
+                                <span id="detail-divisi"></span>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Nominal :</strong>
-                                <div id="detail-nominal"></div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Dibuat Pada :</strong>
-                                <div id="detail-created"></div>
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Akun Belanja :</strong>
+                                <span id="detail-akun-belanja"></span>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                <strong>Diperbarui Pada :</strong>
-                                <div id="detail-updated"></div>
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Tahun Anggaran :</strong>
+                                <span id="detail-tahun-anggaran"></span>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Nominal :</strong>
+                                <span id="detail-nominal"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Dibuat :</strong>
+                                <span id="detail-created"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 mb-2">
+                                <strong class="mr-2">Diperbarui :</strong>
+                                <span id="detail-updated"></span>
+                            </div>
+                        </div>
+
+                        <hr class="mb-3">
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <strong>Keterangan :</strong>
-                                <div
-                                    class="mt-1"
-                                    id="detail-keterangan"
-                                ></div>
+                                <p id="detail-keterangan"></p>
                             </div>
                         </div>
                     </div>
@@ -235,11 +282,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-dark"
-                        onclick="handleCloseModalDetail()"
-                    >
+                    <button type="button" class="btn btn-dark btn-sm btn-rounded" onclick="budget.handleCloseModalDetail()">
                         <i class=" mdi mdi-close"></i>
                         <span>Tutup</span>
                     </button>
@@ -247,6 +290,8 @@
             </div>
         </div>
     </div>
+    {{-- end modal detail --}}
+
 @endsection
 
 @section('js')

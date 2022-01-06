@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LaporanTransaksiExport;
+use App\Models\Budget;
 use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
@@ -11,11 +12,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use Yajra\DataTables\Facades\DataTables;
 
 class TransaksiController extends Controller
 {
     /**
-     * generate no dokumen baru
+     * generate nomer dokumen baru
      *
      * @return string
      */
@@ -59,7 +61,7 @@ class TransaksiController extends Controller
                 break;
         }
 
-        return $format;
+        return trim($format);
     }
 
     /**
@@ -73,32 +75,32 @@ class TransaksiController extends Controller
          * Validasi rule
          */
         $validateRules = [
-            'periodeAwal' => [],
-            'periodeAkhir' => [],
+            'periode_awal' => [],
+            'periode_akhir' => [],
             'divisi' => [],
-            'jenisBelanja' => [],
-            'noDokumen' => [],
+            'jenis_belanja' => [],
+            'no_dokumen' => [],
         ];
 
         /**
          * Pesan error validasi
          */
         $validateErrorMessage = [
-            'periodeAwal.required' => 'Periode harus diisi.',
-            'periodeAwal.date' => 'Periode harus tanggal yang valid.',
-            'periodeAkhir.required' => 'Periode harus diisi.',
-            'periodeAkhir.date' => 'Periode harus tanggal yang valid.',
+            'periode_awal.required' => 'Periode harus diisi.',
+            'periode_awal.date' => 'Periode harus tanggal yang valid.',
+            'periode_akhir.required' => 'Periode harus diisi.',
+            'periode_akhir.date' => 'Periode harus tanggal yang valid.',
             'divisi.exists' => 'Divisi tidak ada. Pilih divisi yang ditentukan.',
-            'jenisBelanja.exists' => 'Jenis belanja tidak ada. Pilih jenis belanja yang ditentukan.',
-            'noDokumen.exists' => 'No dokumen tidak ditemukan.',
+            'jenis_belanja.exists' => 'Jenis belanja tidak ada. Pilih jenis belanja yang ditentukan.',
+            'no_dokumen.exists' => 'No dokumen tidak ditemukan.',
         ];
 
         /**
-         * jika periodeAwal & periodeAkhir dikirim tambahkan validasi
+         * jika periode_awal & periode_akhir dikirim tambahkan validasi
          */
-        if ($request->periodeAwal || $request->periodeAkhir) {
-            array_push($validateRules['periodeAwal'], 'required', 'date');
-            array_push($validateRules['periodeAkhir'], 'required', 'date');
+        if ($request->periode_awal || $request->periode_akhir) {
+            array_push($validateRules['periode_awal'], 'required', 'date');
+            array_push($validateRules['periode_akhir'], 'required', 'date');
         }
 
         /**
@@ -111,15 +113,15 @@ class TransaksiController extends Controller
         /**
          * jika no dokumen diisi tambahkan validasi
          */
-        if ($request->noDokumen != null) {
-            array_push($validateRules['noDokumen'], 'exists:transaksi,no_dokumen');
+        if ($request->no_dokumen != null) {
+            array_push($validateRules['no_dokumen'], 'exists:transaksi,no_dokumen');
         }
 
         /**
          * jika jenis belanja dipilah tambahkan validasi
          */
-        if ($request->jenisBelanja != null) {
-            array_push($validateRules['jenisBelanja'], 'exists:jenis_belanja,kategori_belanja');
+        if ($request->jenis_belanja != null) {
+            array_push($validateRules['jenis_belanja'], 'exists:jenis_belanja,kategori_belanja');
         }
 
         /**
@@ -130,30 +132,49 @@ class TransaksiController extends Controller
         /**
          * Query join table transaksi, divisi, user & profil
          */
-        $query = Transaksi::with(['divisi', 'jenisBelanja', 'user.profil'])
-            ->whereBetween('transaksi.tanggal', [$request->periodeAwal, $request->periodeAkhir]);
+        $query = Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
+            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
+            ->leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
+            ->leftJoin('user', 'user.id', '=', 'transaksi.user_id')
+            ->leftJoin('profil', 'profil.user_id', '=', 'user.id')
+            ->select([
+                'transaksi.id',
+                'transaksi.budget_id',
+                'transaksi.tanggal',
+                'transaksi.kegiatan',
+                'transaksi.jumlah_nominal',
+                'transaksi.approval',
+                'transaksi.no_dokumen',
+                'transaksi.file_dokumen',
+                'transaksi.created_at',
+                'transaksi.updated_at',
+                'budget.divisi_id',
+                'budget.jenis_belanja_id',
+                'jenis_belanja.kategori_belanja',
+                'divisi.nama_divisi',
+                'profil.nama_lengkap',
+            ])
+            ->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
 
         /**
          * jika divisi dipilih tambahkan query
          */
         if ($request->divisi != null) {
-            $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
-            $query->where('divisi_id',  $divisi->id);
+            $query->where('divisi.nama_divisi',  $request->divisi);
         }
 
         /**
          * jika jenis belanja dipilih tambahkan query
          */
-        if ($request->jenisBelanja != null) {
-            $jenisBelanja = JenisBelanja::where('kategori_belanja', $request->jenisBelanja)->first();
-            $query->where('jenis_belanja_id',  $jenisBelanja->id);
+        if ($request->jenis_belanja != null) {
+            $query->where('jenis_belanja.kategori_belanja',  $request->jenis_belanja);
         }
 
         /**
          * jika no dokumen dipilih tambahkan validasi
          */
-        if ($request->noDokumen != null) {
-            $query->where('no_dokumen',  $request->noDokumen);
+        if ($request->no_dokumen != null) {
+            $query->where('transaksi.no_dokumen',  $request->no_dokumen);
         }
 
         /**
@@ -161,11 +182,14 @@ class TransaksiController extends Controller
          */
         $query->orderBy('tanggal', 'desc')->orderBy('divisi_id', 'asc');
 
+        /**
+         * return view
+         */
         return view('pages.transaksi.index', [
             'transactions' => $query->paginate(25)->withQueryString(),
             'userAccess' => Auth::user()->menuItem->where('href', '/belanja')->first(),
-            'divisi' => Divisi::all(),
-            'jenisBelanja' => JenisBelanja::all(),
+            'divisi' => Divisi::where('active', 1)->get(),
+            'jenisBelanja' => JenisBelanja::where('active', 1)->get(),
         ]);
     }
 
@@ -177,9 +201,7 @@ class TransaksiController extends Controller
     public function create()
     {
         $noDocument = $this->generateNoDocument();
-        $jenisBelanja = JenisBelanja::all();
-
-        return view('pages.transaksi.create', compact('jenisBelanja', 'noDocument'));
+        return view('pages.transaksi.create', compact('noDocument'));
     }
 
     /**
@@ -194,77 +216,132 @@ class TransaksiController extends Controller
          * validasi rule
          */
         $validateRules = [
-            'tanggal' => ['required', 'date'],
-            'approval' => ['required', 'max:100'],
+
+            // budget
+            'budget_id' => ['required', 'exists:budget,id'],
+            'nama_divisi' => ['required', 'exists:divisi,nama_divisi'],
+            'kategori_belanja' => ['required', 'exists:jenis_belanja,kategori_belanja'],
+            'tahun_anggaran' => ['required', 'numeric', 'exists:budget,tahun_anggaran'],
+            'sisa_budget' => ['required', 'numeric'],
 
             // kegiatan
-            'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
+            'tanggal' => ['required', 'date'],
             'kegiatan' => ['required', 'max:100'],
-            'jumlah_nominal' => ['required', 'numeric', 'min:0'],
+            'approval' => ['required', 'max:100'],
+            'jumlah_nominal' => ['required', 'numeric', 'min:0', "max:{$request->sisa_budget}"],
 
             // dokumen
-            'no_dokumen' => ['required', 'unique:transaksi,no_dokumen', 'max:100']
+            'no_dokumen' => ['required', 'unique:transaksi,no_dokumen', 'max:100'],
+
+            // uraian
+            'uraian' => ['required'],
         ];
 
         /**
          * pesan error validasi
          */
         $validateErrorMessage = [
-            'tanggal.required' => 'Tanggal tidak boleh kosong.',
-            'tanggal.date' => 'Tanggal tidak valid, masukan tanggal yang valid.',
-            'approval.required' => 'Nama approval tidak boleh kosong.',
-            'approval.max' => 'Nama approval tidak lebih dari 100 karakter.',
+
+            // budget
+            'budget_id.required' => 'Akun belanja harus dipilih.',
+            'budget_id.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+
+            'nama_divisi.required' => 'Bagian harus diisi.',
+            'nama_divisi.exists' => 'Bagian tidak ada.',
+
+            'kategori_belanja.required' => 'Akun belanja harus dipilih.',
+            'kategori_belanja.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+
+            'tahun_anggaran.required' => 'Tahun anggaran harus diisi.',
+            'tahun_anggaran.numeric' => 'Tahun anggaran harus tahun yang valid (yyyy).',
+            'tahun_anggaran.exists' => 'Tidak ada budget pada tahun anggaran yang masukan.',
+
+            'sisa_budget.required' => 'Sisa budget harus diisi.',
+            'sisa_budget.numeric' => 'Sisa budget harus bertipe angka yang valid.',
 
             // kegiatan
-            'jenis_belanja_id.required' => 'Jenis belanja harus dipilih.',
-            'jenis_belanja_id.exists' => 'Jenis belanja tidak terdaftar. Silakan pilih jenis belanja.',
-            'kegiatan.required' => 'Kegiatan tidak boleh kosong.',
+            'tanggal.required' => 'Tanggal harus diisi.',
+            'tanggal.date' => 'Tanggal tidak valid, masukan tanggal yang valid.',
+
+            'kegiatan.required' => 'Kegiatan harus diisi.',
             'kegiatan.max' => 'Kegiatan tidak boleh lebih dari 100 karakter.',
-            'jumlah_nominal.required' => 'Jumlah nominal tidak boleh kosong.',
+
+            'approval.required' => 'Nama approval harus diisi.',
+            'approval.max' => 'Nama approval tidak lebih dari 100 karakter.',
+
+            'jumlah_nominal.required' => 'Jumlah nominal harus diisi.',
             'jumlah_nominal.numeric' => 'Jumlah nominal harus bertipe angka yang valid.',
             'jumlah_nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
+            'jumlah_nominal.max' => 'Jumlah nominal melebihi sisa nominal budget.',
 
             // dokumen
             'no_dokumen.required' => 'Nomer dokumen harus diisi.',
             'no_dokumen.unique' => 'Nomer dokumen sudah digunakan.',
             'no_dokumen.max' => 'Nomer dokumen tidak boleh lebih dari 100 karakter.',
+
+            // uraian
+            'uraian.required' => 'Uraian harus diisi.'
         ];
 
         /**
-         * cek jika file dokumen di upload
+         * cek file dokmen diupload atau tidak
+         * jika diupload tambah validari rules & pesan error validasi.
          */
         if ($request->file_dokumen) {
             $validateRules['file_dokumen'] = ['file', 'max:5000'];
             $validateErrorMessage['file_dokumen.file'] = 'File dokumen gagal diupload.';
-            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 5 megabytes / 5.000 kilobytes.';
+            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 5.000 kilobytes.';
         }
 
         /**
          * jalankan validasi
          */
-        $validatedData = $request->validate($validateRules, $validateErrorMessage);
+        $request->validate($validateRules, $validateErrorMessage);
 
-        $validatedData['user_id'] = Auth::user()->id;
-        $validatedData['divisi_id'] = Auth::user()->divisi->id;
-        $validatedData['uraian'] = $request->uraian ?? null;
+        /**
+         * Ambil data budget berdasarkan "id" budget yang di-request
+         */
+        $budget = Budget::find($request->budget_id);
 
         /**
          * cek file_dokumen di upload atau tidak
          * jika di upload simpan pada storage
          */
+        $fileDocument = null;
         if ($request->hasFile('file_dokumen')) {
             $file = $request->file('file_dokumen');
             $extension = $file->extension();
             $fileName = strtoupper($request->no_dokumen) . '.' . $extension;
-            $validatedData['file_dokumen'] = $file->storeAs('transaksi', $fileName);
+            $fileDocument = $file->storeAs('transaksi', $fileName);
         }
 
-        /**
-         * simpan ke database
-         */
         try {
-            Transaksi::create($validatedData);
+
+            /**
+             * tambah transaksi
+             */
+            Transaksi::create([
+                'user_id' => Auth::user()->id,
+                'budget_id' => $request->budget_id,
+                'tanggal' => $request->tanggal,
+                'kegiatan' => $request->kegiatan,
+                'jumlah_nominal' => $request->jumlah_nominal,
+                'approval' => $request->approval,
+                'no_dokumen' => $request->no_dokumen,
+                'file_dokumen' => $fileDocument,
+                'uraian' => $request->uraian ?? null,
+            ]);
+
+            /**
+             * kurangi sisa_nominal pada budget
+             */
+            $budget->sisa_nominal -= $request->jumlah_nominal;
+            $budget->save();
         } catch (\Exception $e) {
+
+            /**
+             * return jika proses simpan gagal
+             */
             return redirect()
                 ->route('belanja.create')
                 ->with('alert', [
@@ -273,6 +350,9 @@ class TransaksiController extends Controller
                 ]);
         }
 
+        /**
+         * return jika proses simpan sukses.
+         */
         return redirect()
             ->route('belanja.create')
             ->with('alert', [
@@ -289,12 +369,13 @@ class TransaksiController extends Controller
      */
     public function show(Transaksi $transaksi)
     {
-        $query = Transaksi::with('divisi', 'jenisBelanja', 'user.profil')
-            ->where('id', $transaksi->id)
-            ->first();
+        $result = Transaksi::with('budget.divisi', 'budget.jenisBelanja', 'user.profil')
+            ->find($transaksi->id);
+        $linkDownload = $result->file_dokumen != null ? route('belanja.download', ['transaksi' => $result->id]) : null;
 
         return response()->json([
-            'transaksi' => $query,
+            'transaksi' => $result,
+            'download' => $linkDownload
         ]);
     }
 
@@ -306,8 +387,7 @@ class TransaksiController extends Controller
      */
     public function edit(Transaksi $transaksi)
     {
-        $jenisBelanja = JenisBelanja::all();
-        return view('pages.transaksi.edit', compact('transaksi', 'jenisBelanja'));
+        return view('pages.transaksi.edit', compact('transaksi'));
     }
 
     /**
@@ -323,36 +403,49 @@ class TransaksiController extends Controller
          * validasi rule
          */
         $validateRules = [
+            'budget_id' => ['required', 'exists:budget,id'],
+            'nama_divisi' => ['required', 'exists:divisi,nama_divisi'],
+            'kategori_belanja' => ['required', 'exists:jenis_belanja,kategori_belanja'],
+            'tahun_anggaran' => ['required', 'numeric', 'exists:budget,tahun_anggaran'],
+            'sisa_budget' => ['required', 'numeric'],
             'tanggal' => ['required', 'date'],
-            'approval' => ['required', 'max:100'],
-
-            // kegiatan
-            'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'kegiatan' => ['required', 'max:100'],
-            'jumlah_nominal' => ['required', 'numeric', 'min:0'],
+            'approval' => ['required', 'max:100'],
+            'jumlah_nominal' => ['required', 'numeric', 'min:0', "max:{$request->sisa_budget}"],
+            'uraian' => ['required'],
         ];
 
         /**
          * pesan error validasi
          */
         $validateErrorMessage = [
-            'tanggal.required' => 'Tanggal tidak boleh kosong.',
+            'budget_id.required' => 'Akun belanja harus dipilih.',
+            'budget_id.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'nama_divisi.required' => 'Bagian harus diisi.',
+            'nama_divisi.exists' => 'Bagian tidak ada.',
+            'kategori_belanja.required' => 'Akun belanja harus dipilih.',
+            'kategori_belanja.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'tahun_anggaran.required' => 'Tahun anggaran harus diisi.',
+            'tahun_anggaran.numeric' => 'Tahun anggaran harus tahun yang valid (yyyy).',
+            'tahun_anggaran.exists' => 'Tidak ada budget pada tahun anggaran yang masukan.',
+            'sisa_budget.required' => 'Sisa budget harus diisi.',
+            'sisa_budget.numeric' => 'Sisa budget harus bertipe angka yang valid.',
+            'tanggal.required' => 'Tanggal harus diisi.',
             'tanggal.date' => 'Tanggal tidak valid, masukan tanggal yang valid.',
-            'approval.required' => 'Nama approval tidak boleh kosong.',
-            'approval.max' => 'Nama approval tidak lebih dari 100 karakter.',
-
-            // kegiatan
-            'jenis_belanja_id.required' => 'Jenis belanja harus dipilih.',
-            'jenis_belanja_id.exists' => 'Jenis belanja tidak terdaftar. Silakan pilih jenis belanja.',
-            'kegiatan.required' => 'Kegiatan tidak boleh kosong.',
+            'kegiatan.required' => 'Kegiatan harus diisi.',
             'kegiatan.max' => 'Kegiatan tidak boleh lebih dari 100 karakter.',
-            'jumlah_nominal.required' => 'Jumlah nominal tidak boleh kosong.',
+            'approval.required' => 'Nama approval harus diisi.',
+            'approval.max' => 'Nama approval tidak lebih dari 100 karakter.',
+            'jumlah_nominal.required' => 'Jumlah nominal harus diisi.',
             'jumlah_nominal.numeric' => 'Jumlah nominal harus bertipe angka yang valid.',
             'jumlah_nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
+            'jumlah_nominal.max' => 'Jumlah nominal melebihi sisa nominal budget.',
+            'uraian.required' => 'Uraian harus diisi.'
         ];
 
         /**
          * cek apakah no dokumen dirubah atau tidak
+         * jika dirubah tambahkan validasi
          */
         if ($request->no_dokumen != $transaksi->no_dokumen) {
             $validateRules['no_dokumen'] = ['required', 'unique:transaksi,no_dokumen', 'max:100'];
@@ -363,30 +456,32 @@ class TransaksiController extends Controller
 
         /**
          * cek jika file dokumen di upload
+         * jika diupload tambahakan validasi
          */
         if ($request->file_dokumen) {
             $validateRules['file_dokumen'] = ['file', 'max:5000'];
             $validateErrorMessage['file_dokumen.file'] = 'File dokumen gagal diupload.';
-            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 5 megabytes / 5.000 kilobytes.';
+            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 5.000 kilobytes.';
         }
 
         /**
          * jalankan validasi
          */
-        $validatedData = $request->validate($validateRules, $validateErrorMessage);
-
-        $validatedData['user_id'] = Auth::user()->id;
-        $validatedData['divisi_id'] = Auth::user()->divisi->id;
-        $validatedData['uraian'] = $request->uraian ?? null;
+        $request->validate($validateRules, $validateErrorMessage);
 
         /**
          * cek jika no_dokumen dirubah tetapi file_dokumen tidak dirubah
-         * maka rename nama file dokumen di storage
+         * maka rename nama file_dokumen di storage
          */
-        if ($request->no_dokumen != $transaksi->no_dokumen && !$request->hasFile('file_dokumen')) {
-            $fileDokumenNewName = str_replace($transaksi->no_dokumen, $request->no_dokumen, $transaksi->file_dokumen);
-            Storage::move($transaksi->file_dokumen, $fileDokumenNewName);
-            $validatedData['file_dokumen'] = $fileDokumenNewName;
+        $fileDokumen = $transaksi->file_dokumen;
+
+        if (
+            $request->no_dokumen != $transaksi->no_dokumen &&
+            !$request->hasFile('file_dokumen')
+        ) {
+            $namaFileDokumen = str_replace($transaksi->no_dokumen, $request->no_dokumen, $transaksi->file_dokumen);
+            Storage::move($transaksi->file_dokumen, $namaFileDokumen);
+            $fileDokumen = $namaFileDokumen;
         }
 
         /**
@@ -394,20 +489,95 @@ class TransaksiController extends Controller
          * jika dirubah hapus file_dokumen yang lama dan upload file_dokumen yang baru.
          */
         if ($request->hasFile('file_dokumen')) {
+
+            /**
+             * hapus file_dokumen lama dari storage
+             */
             Storage::delete($transaksi->file_dokumen);
 
+            /**
+             * simpan file_dokumen baru ke storage
+             */
             $file = $request->file('file_dokumen');
             $extension = $file->extension();
             $fileName = strtoupper($request->no_dokumen) . '.' . $extension;
-            $validatedData['file_dokumen'] = $file->storeAs('transaksi', $fileName);
+            $fileDokumen = $file->storeAs('transaksi', $fileName);
         }
 
         /**
          * update database
          */
         try {
-            Transaksi::where('id', $transaksi->id)->update($validatedData);
+
+            /**
+             * cek budget dirubah atau tidak
+             * jika dirubah tambah nominal dan sisa_budget pada budget yang lama.
+             * kurangi nominal dan sisa_nominal pada budget yang baru.
+             */
+            if ($transaksi->budget_id != $request->budget_id) {
+
+                /**
+                 * kembalikan (tambah) sisa_budget pada budget akun belanja yang lama
+                 */
+                $budgetLama = Budget::find($transaksi->budget_id);
+                $budgetLama->sisa_nominal += $transaksi->jumlah_nominal;
+                $budgetLama->save();
+
+                /**
+                 * kurangi sisa_nominal pada budget akun belanja yang baru
+                 */
+                $budgetBaru = Budget::find($request->budget_id);
+                $budgetBaru->sisa_nominal -= $request->jumlah_nominal;
+                $budgetBaru->save();
+            } else {
+
+                /**
+                 * ambil data budget lama
+                 */
+                $budgetLama = Budget::find($transaksi->budget_id);
+
+                /**
+                 * jika budget tidak dirubah
+                 * cek jumlah nominal lebih banyak atau lebih sedikit dari jumlah_nominal sebelumnya.
+                 * update sisa_nominal budget pada akun belanja (jenis_belanja) yang lama.
+                 */
+                if ($request->jumlah_nominal > $transaksi->jumlah_nominal) {
+
+                    /**
+                     * kurangi sisa_nominal pada budget lama
+                     */
+                    $budgetLama->sisa_nominal -= $request->jumlah_nominal - $transaksi->jumlah_nominal;
+                    $budgetLama->save();
+                } else if ($request->jumlah_nominal < $transaksi->jumlah_nominal) {
+
+                    /**
+                     * jika jumlah_nominal baru lebih sedikit dari jumlah_nominal lama.
+                     * tambahkan sisa_nominal budget pada akun belanja (jenis_belanja) lama.
+                     */
+                    $budgetLama->sisa_nominal += $transaksi->jumlah_nominal - $request->jumlah_nominal;
+                    $budgetLama->save();
+                }
+            }
+
+            /**
+             * update data transaksi (belanja)
+             */
+            Transaksi::where('id', $transaksi->id)
+                ->update([
+                    'user_id' => Auth::user()->id,
+                    'budget_id' => $request->budget_id,
+                    'tanggal' => $request->tanggal,
+                    'jumlah_nominal' => $request->jumlah_nominal,
+                    'approval' => $request->approval,
+                    'no_dokumen' => $request->no_dokumen,
+                    'file_dokumen' => $fileDokumen,
+                    'uraian' => $request->uraian,
+                ]);
         } catch (\Exception $e) {
+
+            /**
+             * response jika proses update gagal
+             */
             return redirect()
                 ->route('belanja.edit', ['transaksi' => $transaksi->id])
                 ->with('alert', [
@@ -416,6 +586,9 @@ class TransaksiController extends Controller
                 ]);
         }
 
+        /**
+         * response update sukses
+         */
         return redirect()
             ->route('belanja.edit', ['transaksi' => $transaksi->id])
             ->with('alert', [
@@ -485,8 +658,8 @@ class TransaksiController extends Controller
         /**
          * Query join table transaksi, divisi, user & profil
          */
-        $query = Transaksi::with(['divisi', 'jenisBelanja', 'user.profil'])
-            ->whereBetween('transaksi.tanggal', [$request->periodeAwal, $request->periodeAkhir]);
+        $query = Transaksi::with(['budget.divisi', 'budget.jenisBelanja', 'user.profil'])
+            ->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
 
         /**
          * cek apakan request divis dipilih atau tidak
@@ -543,5 +716,27 @@ class TransaksiController extends Controller
         return PDF::loadView('export.pdf.pdf-transaksi', $data)
             ->setPaper('a4', 'landscape')
             ->download('laporan-transaksi.pdf');
+    }
+
+    /**
+     * Fungsi membuat data tabel jenis_belanja
+     *
+     */
+    public function dataTable()
+    {
+        $budgets = Budget::with('divisi', 'jenisbelanja')->get();
+
+        return DataTables::of($budgets)
+            ->addColumn('action', function ($budget) {
+                return "
+                    <button
+                        onclick='transaksi.setFormValue({$budget->id}, {$budget->tahun_anggaran}, \"{$budget->divisi->nama_divisi}\", \"{$budget->jenisBelanja->kategori_belanja}\", {$budget->sisa_nominal})'
+                        class='btn btn-sm btn-success btn-rounded btn-sm'
+                    >
+                        <i class='mdi mdi-hand-pointing-up'></i>
+                        <span>Pilih</span>
+                    </button>
+                ";
+            })->make(true);
     }
 }

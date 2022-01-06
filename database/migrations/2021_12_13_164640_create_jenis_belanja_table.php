@@ -16,6 +16,7 @@ class CreateJenisBelanjaTable extends Migration
         Schema::create('jenis_belanja', function (Blueprint $table) {
             $table->id();
             $table->string('kategori_belanja', 128)->unique();
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

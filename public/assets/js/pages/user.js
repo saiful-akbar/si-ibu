@@ -4,23 +4,33 @@
  * @param {int} id
  * @param {string} username
  */
-function handleDelete(id, username) {
+function handleDelete(id) {
     bootbox.confirm({
-        title: "Peringatan!",
+        title: "<h5 class='mt-2'>Anda ingin menghapus user ?</h5>",
         message: `
-            <ul>
-                <li>Yakin ingin menghapus user <strong>${username}</strong> ?</li>
-                <li>Semua data terkait atau data yang berelasi dengan data ini juga akan terhapus.</li>
-            </ul>
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">
+                    <i class="dripicons-warning"></i>
+                    Peringatan!
+                </h4>
+                
+                <ul>
+                    <li>Tindakan ini tidak dapat dibatalkan.</li>
+                    <li>User yang dihapus tidak dapat dikembalikan.</li>
+                    <li>Pastikan anda berhati-hati dalam menghapus data.</li>
+                </ul>
+
+                <p><b>NB:</b> User tidak dapat dihapus jika memiliki data relasi pada <b>Transaksi Belanja</b>!</p>
+            </div>
         `,
         buttons: {
             confirm: {
                 label: "Hapus",
-                className: "btn-danger btn-rounded btn-sm",
+                className: "btn btn-danger btn-sm btn-rounded",
             },
             cancel: {
                 label: "Batal",
-                className: "btn-secondary btn-rounded btn-sm",
+                className: "btn btn-sm btn-outline-dark btn-rounded",
             },
         },
         callback: (result) => {
@@ -34,11 +44,11 @@ function handleDelete(id, username) {
     });
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     /**
      * View avatar
      */
-    $("#avatar").change(function (e) {
+    $("#avatar").change(function(e) {
         e.preventDefault();
 
         const { files } = $(this)[0];
@@ -51,7 +61,7 @@ $(document).ready(function () {
     /**
      * Kembalikan avatar ketika form direset
      */
-    $("button[type=reset]").click(function () {
+    $("button[type=reset]").click(function() {
         const avatarView = $("#avatar-view");
 
         avatarView.attr("src", avatarView.data("src"));
@@ -60,7 +70,7 @@ $(document).ready(function () {
     /**
      * Disable atau aktifkan form update user menu akses
      */
-    $(".menu-headers").change(function (e) {
+    $(".menu-headers").change(function(e) {
         const isChecked = $(this).is(":checked");
         const headerName = $(this).data("header-name");
 
@@ -70,7 +80,7 @@ $(document).ready(function () {
     /**
      * Dissable atau aktifkan password di halaman edit
      */
-    $("#is-disable-password").change(function (e) {
+    $("#is-disable-password").change(function(e) {
         const isChecked = $(this).is(":checked");
 
         $("#password").attr("disabled", !isChecked);

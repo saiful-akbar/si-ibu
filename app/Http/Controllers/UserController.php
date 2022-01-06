@@ -6,6 +6,7 @@ use App\Models\Divisi;
 use App\Models\MenuHeader;
 use App\Models\MenuItem;
 use App\Models\Profil;
+use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -134,8 +135,8 @@ class UserController extends Controller
             'avatar.max' => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
             'nama_lengkap.required' => 'Nama lengkap harus diisi.',
             'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
-            'divisi_id.required' => 'Divisi harus dipilih.',
-            'divisi_id.exists' => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
+            'divisi_id.required' => 'Bagian harus dipilih.',
+            'divisi_id.exists' => 'Bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
         ];
 
         /**
@@ -263,8 +264,8 @@ class UserController extends Controller
             'avatar.max' => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
             'nama_lengkap.required' => 'Nama lengkap harus diisi.',
             'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
-            'divisi_id.required' => 'Divisi harus dipilih.',
-            'divisi_id.exists' => 'Divisi tidak terdaftar. Anda harus memilih divisi yang telah ditentukan.',
+            'divisi_id.required' => 'Bagian harus dipilih.',
+            'divisi_id.exists' => 'Bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
         ];
 
         /**
@@ -339,6 +340,26 @@ class UserController extends Controller
      */
     public function delete(User $user)
     {
+        /**
+         * ambil data transkasi berdasarkan user yang ingin dihapus.
+         */
+        $transaksiByUser = Transaksi::where('user_id', $user->id)->get();
+
+        /**
+         * cek apakah ada transaksi yang dilakukan user ini.
+         * jika ada batalkan delete.
+         */
+        if (count($transaksiByUser) > 0) {
+            return redirect()->route('user')
+                ->with('alert', [
+                    'type' => 'warning',
+                    'message' => "Penghapusan dibatalkan. User <b>{$user->profil->nama_lengkap}</b> memiliki relasi pada data <b>Transaksi Belanja</b>.",
+                ]);
+        }
+
+        /**
+         * Proses delete user jika tidak ada data transaksi yang dibuat.
+         */
         try {
             User::destroy($user->id);
         } catch (\Exception $e) {
@@ -350,7 +371,7 @@ class UserController extends Controller
 
         return redirect()->route('user')->with('alert', [
             'type' => 'success',
-            'message' => '1 data user berhasil dihapus.',
+            'message' => '1 user berhasil dihapus.',
         ]);
     }
 

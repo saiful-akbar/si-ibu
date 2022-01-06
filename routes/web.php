@@ -1,22 +1,21 @@
 <?php
 
-use App\Exports\UsersExport;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\JenisBelanjaController;
-use App\Http\Controllers\LaporanTransaksiController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Maatwebsite\Excel\Facades\Excel;
+
 
 /**
- * Route awal
+ * Redirect
  */
-Route::redirect('/', 'dashboard');
+Route::permanentRedirect('/', 'dashboard');
+
 
 /**
  * Route middleware guest
@@ -25,6 +24,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login.view');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
+
 
 /**
  * Route middleware auth
@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
      * Route logout
      */
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
     /**
      * Route dashboard
@@ -57,34 +58,36 @@ Route::middleware('auth')->group(function () {
             ->name('dashboard.jenisBelanja');
     });
 
+
     /**
      * Route dvisi
      */
-    Route::prefix('/bagian')->group(function () {
+    Route::prefix('/divisi')->group(function () {
         Route::get('/', [DivisiController::class, 'index'])
-            ->middleware('menu:/bagian,read')
-            ->name('bagian');
+            ->middleware('menu:/divisi,read')
+            ->name('divisi');
 
         Route::get('/create', [DivisiController::class, 'create'])
-            ->middleware('menu:/bagian,create')
-            ->name('bagian.create');
+            ->middleware('menu:/divisi,create')
+            ->name('divisi.create');
 
         Route::post('/', [DivisiController::class, 'store'])
-            ->middleware('menu:/bagian,create')
-            ->name('bagian.store');
+            ->middleware('menu:/divisi,create')
+            ->name('divisi.store');
 
         Route::get('/{divisi}/edit', [DivisiController::class, 'edit'])
-            ->middleware('menu:/bagian,update')
-            ->name('bagian.edit');
+            ->middleware('menu:/divisi,update')
+            ->name('divisi.edit');
 
         Route::patch('/{divisi}', [DivisiController::class, 'update'])
-            ->middleware('menu:/bagian,update')
-            ->name('bagian.update');
+            ->middleware('menu:/divisi,update')
+            ->name('divisi.update');
 
         Route::delete('/{divisi}', [DivisiController::class, 'delete'])
-            ->middleware('menu:/bagian,delete')
-            ->name('bagian.delete');
+            ->middleware('menu:/divisi,delete')
+            ->name('divisi.delete');
     });
+
 
     /**
      * Route user
@@ -127,6 +130,7 @@ Route::middleware('auth')->group(function () {
             ->name('user.menu-akses.update');
     });
 
+
     /**
      * Route budget
      */
@@ -134,6 +138,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [BudgetController::class, 'index'])
             ->middleware('menu:/budget,read')
             ->name('budget');
+
+        Route::get('/{budget}/switch', [BudgetController::class, 'switch'])
+            ->middleware('menu:/budget,update')
+            ->name('budget.switch');
+
+        Route::patch('/{budget}/switch', [BudgetController::class, 'updateSwitch'])
+            ->middleware('menu:/budget,update')
+            ->name('budget.switch.update');
 
         Route::get('/create', [BudgetController::class, 'create'])
             ->middleware('menu:/budget,create')
@@ -143,7 +155,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/budget,create')
             ->name('budget.store');
 
-        Route::get('/{budget}', [BudgetController::class, 'show'])
+        Route::get('/{budget}/show', [BudgetController::class, 'show'])
             ->middleware('menu:/budget,read')
             ->name('budget.show');
 
@@ -159,6 +171,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/budget,delete')
             ->name('budget.delete');
     });
+
 
     /**
      * Route jenis belanja
@@ -188,6 +201,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/jenis-belanja,delete')
             ->name('jenis-belanja.delete');
     });
+
 
     /**
      * Route transaksi
@@ -232,7 +246,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/export/pdf', [TransaksiController::class, 'exportPdf'])
             ->middleware('menu:/belanja,read')
             ->name('belanja.pdf');
+
+        Route::get('/budget/datatable', [TransaksiController::class, 'dataTable'])
+            ->middleware('menu:/belanja,read')
+            ->name('belanja.datatable.budget');
     });
+
 
     /**
      * Route profil
@@ -260,6 +279,7 @@ Route::middleware('auth')->group(function () {
             ->name('profil.pengaturan.tema');
     });
 });
+
 
 /**
  * Route fallback 404 jika url tidak tersedia

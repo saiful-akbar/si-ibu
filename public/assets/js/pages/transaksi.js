@@ -1,6 +1,10 @@
 class Transaksi {
+    constructor() {
+        this.dataTableBudget = null;
+    }
+
     /**
-     * Fungsi handle hapus data user
+     * Method handle hapus data user
      *
      * @param {int} id
      * @param {string} noDokumen
@@ -35,6 +39,10 @@ class Transaksi {
         });
     }
 
+    /**
+     * Method how modal loading
+     * @param {boolean} show
+     */
     showModalLoading(show) {
         if (show) {
             $("#modal-detail-loading").show();
@@ -46,7 +54,7 @@ class Transaksi {
     }
 
     /**
-     * Fungsi show modal detail transaksi
+     * Method show modal detail transaksi
      *
      * @param  {integer} id
      * @return {void}
@@ -63,33 +71,131 @@ class Transaksi {
             success: (res) => {
                 this.showModalLoading(false);
 
-                $("#detail-user").text(res.transaksi.user.profil.nama_lengkap);
-                $("#detail-divisi").text(res.transaksi.divisi.nama_divisi);
-                $("#detail-jenis-belanja").text(
-                    res.transaksi.jenis_belanja.kategori_belanja
-                );
-                $("#detail-tanggal").text(res.transaksi.tanggal);
-                $("#detail-kegiatan").text(res.transaksi.kegiatan);
+                const { nama_divisi } = res.transaksi.budget.divisi;
+                const { kategori_belanja } = res.transaksi.budget.jenis_belanja;
+                const { nama_lengkap } = res.transaksi.user.profil;
+                const {
+                    uraian,
+                    tanggal,
+                    approval,
+                    kegiatan,
+                    no_dokumen,
+                    jumlah_nominal,
+                    created_at,
+                    updated_at,
+                } = res.transaksi;
+
+                $("#detail-uraian").html(uraian);
+                $("#detail-nama-divisi").text(nama_divisi);
+                $("#detail-kategori-belanja").text(kategori_belanja);
+                $("#detail-submitter").text(nama_lengkap);
+                $("#detail-approval").text(approval);
+                $("#detail-created-at").text(created_at);
+                $("#detail-updated-at").text(updated_at);
+                $("#detail-kegiatan").text(kegiatan);
+                $("#detail-tanggal").text(tanggal);
+                $("#detail-no-dokumen").text(no_dokumen);
                 $("#detail-jumlah-nominal").text(
-                    main.formatRupiah(res.transaksi.jumlah_nominal)
+                    "Rp. " + main.formatRupiah(jumlah_nominal)
                 );
-                $("#detail-no-dokumen").text(res.transaksi.no_dokumen);
-                $("#detail-uraian").html(res.transaksi.uraian);
-                $("#detail-approval").text(res.transaksi.approval);
+
+                if (res.download !== null) {
+                    $("#detail-download-dokumen").html(`
+                        <a href="${res.download}" class="btn btn-light btn-sm btn-rounded">
+                            <i class="mdi mdi-download"></i>
+                            <span>Unduh</span>
+                        </a>
+                    `);
+                } else {
+                    $("#detail-download-dokumen").text("File tidak tersedia");
+                }
             },
         });
     }
 
     /**
-     * Fungsi close modal detail transaksi
+     * Method close modal detail transaksi
      *
      * @return {void}
      */
     closeDetail() {
         $("#modal-detail").modal("hide");
     }
+
+    /**
+     *
+     * @param {boolean} show
+     */
+    showModalTableBudget(show) {
+        $("#modal-table-budget").modal(show ? "show" : "hide");
+
+        if (this.dataTableBudget == null) {
+            this.dataTableBudget = $("#datatable-budget").DataTable({
+                processing: true,
+                serverSide: true,
+                pageLength: 25,
+                lengthChange: false,
+                scrollX: true,
+                destroy: false,
+                info: false,
+                scrollY: "300px",
+                scrollCollapse: true,
+                ajax: `${main.baseUrl}/belanja/budget/datatable`,
+                language: {
+                    paginate: {
+                        previous: "<i class='mdi mdi-chevron-left'>",
+                        next: "<i class='mdi mdi-chevron-right'>",
+                    },
+                },
+                columns: [
+                    {
+                        data: "action",
+                        name: "action",
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
+                        data: "tahun_anggaran",
+                        name: "tahun_anggaran",
+                    },
+                    {
+                        data: "divisi.nama_divisi",
+                        name: "divisi.nama_divisi",
+                    },
+                    {
+                        data: "jenisbelanja.kategori_belanja",
+                        name: "jenisbelanja.kategori_belanja",
+                    },
+                    {
+                        data: "sisa_nominal",
+                        name: "sisa_nominal",
+                        render: (data) => "Rp. " + main.formatRupiah(data),
+                    },
+                ],
+            });
+        }
+    }
+
+    /**
+     * Method set value pada form
+     *
+     * @param {JSON} data
+     */
+    setFormValue(id, tahunAnggaran, namaDivisi, kategoriBelanja, sisaNominal) {
+        this.showModalTableBudget(false);
+
+        $("#budget_id").val(id);
+        $("#kategori_belanja").val(kategoriBelanja);
+        $("#nama_divisi").val(namaDivisi);
+        $("#tahun_anggaran").val(tahunAnggaran);
+        $("#sisa_budget").val(sisaNominal);
+        $("#jumlah_nominal").attr("max", sisaNominal);
+    }
 }
 
+/**
+ * Inisialisasi class transaksi
+ */
 const transaksi = new Transaksi();
 
 $(document).ready(function () {
