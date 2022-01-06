@@ -42,13 +42,13 @@
 
     {{-- Page css --}}
     @yield('css')
-
 </head>
 
-<body class="loading @guest authentication-bg pb-0 @endguest" @guest data-layout-config='{"darkMode": false}' @endguest
-    @auth
-        data-layout-config='{"darkMode": {{ auth()->user()->pengaturan->tema == 'dark' ? 'true' : 'false' }},"leftSideBarTheme": "dark"}'
-    @endauth>
+<body
+    class="loading
+    @guest authentication-bg pb-0 @endguest" @guest data-layout-config='{"darkMode": false}' @endguest
+    @auth data-layout-config='{"darkMode": {{ auth()->user()->pengaturan->tema == 'dark' ? 'true' : 'false' }},"leftSideBarTheme": "dark"}' @endauth
+>
 
     {{-- Pre-loader --}}
     <div id="preloader">
@@ -80,7 +80,7 @@
                     {{-- Topbar Start --}}
                     @include('components.organisms.topbar')
 
-                    <div class="container-fluid pt-4 pb-4">
+                    <div class="container-fluid pt-3">
 
                         {{-- alert notifikasi --}}
                         @include('components.organisms.alert')
@@ -93,7 +93,9 @@
                 {{-- Footer --}}
                 @include('components.organisms.footer')
 
-            </div> {{-- End Page content --}}
+            </div>
+            {{-- End Page content --}}
+        
         </div>
 
         {{-- scroll to top --}}

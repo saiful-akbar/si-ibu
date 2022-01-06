@@ -20,7 +20,7 @@
                             @if ($user_akses->pivot->create == 1)
                                 <a href="{{ route('user.create') }}" class="btn btn-rounded btn-primary btn-sm">
                                     <i class="mdi mdi-plus"></i>
-                                    <span>Tambah User Baru</span>
+                                    <span>Tambah User</span>
                                 </a>
                             @endif
                         </div>

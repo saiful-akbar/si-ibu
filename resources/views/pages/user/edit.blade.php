@@ -96,6 +96,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -173,8 +174,13 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <select required name="divisi_id" id="divisi_id"
-                                    class="custom-select @error('divisi_id') is-invalid @enderror">
+                                <select
+                                    required
+                                    name="divisi_id"
+                                    id="divisi_id"
+                                    class="form-control select2 @error('divisi_id') is-invalid @enderror"
+                                    data-toggle="select2"
+                                >
                                     <option disabled @if (!old('divisi_id', $user->divisi->id)) selected @endif>
                                         Pilih Bagian
                                     </option>

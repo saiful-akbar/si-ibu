@@ -1,6 +1,6 @@
 @extends('templates.main')
 
-@section('title', 'Tambah User Baru')
+@section('title', 'Tambah User')
 
 @section('content')
     <div class="row">
