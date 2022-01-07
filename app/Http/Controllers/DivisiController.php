@@ -33,7 +33,7 @@ class DivisiController extends Controller
             ->first();
 
         return view('pages.divisi.index', [
-            'divisi' => $divisi->paginate(25)->withQueryString(),
+            'divisi' => $divisi->simplePaginate(25)->withQueryString(),
             'user_akses' => $user_akses
         ]);
     }

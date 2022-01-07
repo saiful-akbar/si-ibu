@@ -115,7 +115,7 @@
 
                     {{-- table --}}
                     <div class="row">
-                        <div class="col-12 mb-3">
+                        <div class="col-12">
                             <div class="table-responsive">
                                 <table class="table nowrap w-100 table-centered">
                                     <thead>
@@ -191,13 +191,33 @@
                         </div>
 
                         {{-- table pagination --}}
-                        <div class="col-12 d-flex justify-content-end">
+                        <div class="col-12 d-flex justify-content-end my-3">
                             {{ $budgets->links() }}
                         </div>
                     </div>
                     {{-- end table --}}
 
                 </div>
+
+                {{-- total nominal & total sisa_nominal --}}
+                <div class="card-footer pt-3">
+                    <div class="float-sm-right">
+                        <p class="font-14">
+                            <strong>Total Nominal : </strong>
+                            <span class="float-right ml-2">
+                                Rp. {{ number_format($totalNominal) }}
+                            </span>
+                        </p>
+                        <p class="font-14">
+                            <strong>Total Sisa Nominal : </strong>
+                            <span class="float-right ml-2">
+                                Rp. {{ number_format($totalSisaNominal) }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                {{-- end total nominal & total sisa_nominal --}}
+
             </div>
         </div>
     </div>
@@ -207,91 +227,7 @@
     <form method="POST" id="form-delete-budget">
         @method('DELETE') @csrf
     </form>
-
-    {{-- modal detail --}}
-    <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="detail" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detail">
-                        DETAIL BUDGET
-                    </h5>
-
-                    <button type="button" class="close" aria-label="Close"
-                        onclick="budget.handleCloseModalDetail()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div id="loading-modal" class="spinner-border text-primary" role="status"></div>
-                    </div>
-
-                    {{-- modal detail conten --}}
-                    <div id="modal-detail-content">
-                        <div class="row">
-                            <div class="col-sm-12 mb-2">
-                                <strong class="mr-2">Divisi :</strong>
-                                <span id="detail-divisi"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 mb-2">
-                                <strong class="mr-2">Akun Belanja :</strong>
-                                <span id="detail-akun-belanja"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 mb-2">
-                                <strong class="mr-2">Tahun Anggaran :</strong>
-                                <span id="detail-tahun-anggaran"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 mb-2">
-                                <strong class="mr-2">Nominal :</strong>
-                                <span id="detail-nominal"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 mb-2">
-                                <strong class="mr-2">Dibuat :</strong>
-                                <span id="detail-created"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 mb-2">
-                                <strong class="mr-2">Diperbarui :</strong>
-                                <span id="detail-updated"></span>
-                            </div>
-                        </div>
-
-                        <hr class="mb-3">
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <p id="detail-keterangan"></p>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- end modal detail conten --}}
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark btn-sm btn-rounded" onclick="budget.handleCloseModalDetail()">
-                        <i class=" mdi mdi-close"></i>
-                        <span>Tutup</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- end modal detail --}}
+    {{-- end form delete budget --}}
 
 @endsection
 

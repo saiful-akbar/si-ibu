@@ -186,7 +186,7 @@ class TransaksiController extends Controller
          * return view
          */
         return view('pages.transaksi.index', [
-            'transactions' => $query->paginate(25)->withQueryString(),
+            'transactions' => $query->simplePaginate(25)->withQueryString(),
             'userAccess' => Auth::user()->menuItem->where('href', '/belanja')->first(),
             'divisi' => Divisi::where('active', 1)->get(),
             'jenisBelanja' => JenisBelanja::where('active', 1)->get(),

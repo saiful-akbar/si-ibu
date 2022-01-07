@@ -4,12 +4,12 @@
 
 @section('content')
 
-    {{-- chart global dvisi --}}
+    {{-- chart semua bagian (divisi) --}}
     <div class="row">
-        <div class="col-12 mb-3">
+        <div class="col-sm-12 mb-3">
             <div class="card">
                 <div class="card-header pt-3">
-                    <h4 class="header-title">Global Chart Budget</h4>
+                    <h4 class="header-title">Pie Chart Budget Semua Bagian</h4>
                 </div>
 
                 <div class="card-body">
@@ -17,10 +17,7 @@
 
                         {{-- chart global --}}
                         <div class="col-lg-6 col-sm-12 mb-3">
-                            <div
-                                id="global-chart"
-                                class="apex-charts"
-                            ></div>
+                            <div id="global-chart" class="apex-charts"></div>
                         </div>
                         {{-- end chart global --}}
 
@@ -31,16 +28,9 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="periode-global">Periode Tahun</label>
-                                        <select
-                                            id="periode-global"
-                                            class="form-control select2"
-                                            data-toggle="select2"
-                                        >
+                                        <select id="periode-global" class="form-control select2" data-toggle="select2">
                                             @foreach ($years as $year)
-                                                <option
-                                                    value="{{ $year }}"
-                                                    @if ($year == date('Y')) selected @endif
-                                                >
+                                                <option value="{{ $year }}" @if ($year == date('Y')) selected @endif>
                                                     {{ $year }}
                                                 </option>
                                             @endforeach
@@ -52,36 +42,24 @@
                             </div>
                             {{-- end form select periode chart global --}}
 
-                            {{-- descripsi chart global --}}
+                            {{-- deskripsi --}}
                             <div class="row">
                                 <div class="col-12 chart-widget-list">
                                     <p>
                                         Bagian
-                                        <span
-                                            class="float-right"
-                                            id="global-divisi"
-                                        ></span>
+                                        <span class="float-right" id="global-divisi"></span>
                                     </p>
                                     <p>
                                         Total Budget
-                                        <span
-                                            class="float-right"
-                                            id="global-total-budget"
-                                        ></span>
+                                        <span class="float-right" id="global-total-budget"></span>
                                     </p>
                                     <p>
                                         <i class="mdi mdi-square text-success"></i> Total Belanja
-                                        <span
-                                            class="float-right"
-                                            id="global-total-belanja"
-                                        ></span>
+                                        <span class="float-right" id="global-total-belanja"></span>
                                     </p>
                                     <p>
                                         <i class="mdi mdi-square text-primary"></i> Sisa Budget
-                                        <span
-                                            class="float-right"
-                                            id="global-sisa-budget"
-                                        ></span>
+                                        <span class="float-right" id="global-sisa-budget"></span>
                                     </p>
                                 </div>
                             </div>
@@ -93,10 +71,70 @@
             </div>
         </div>
     </div>
-    {{-- chart global divisi --}}
+    {{-- chart semua bagian (divisi) --}}
 
-    {{-- chart per divisi --}}
     @if ($isAdmin)
+
+        {{-- chart per jenis belanja --}}
+        <div class="row">
+            <div class="col-sm-12 mb-3">
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <h4 class="header-title">Bar Chart Per Akun Belanja</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+
+                            {{-- Inpur tahun --}}
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="tahun-akun-belanja-chart">Periode Tahun</label>
+                                    <select id="tahun-akun-belanja-chart" class="form-control select2"
+                                        data-toggle="select2">
+                                        @foreach ($years as $year)
+                                            <option value="{{ $year }}" @if ($year == date('Y')) selected @endif>
+                                                {{ $year }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- end input tahun --}}
+
+                            {{-- Input akun belanja --}}
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="akun-belanja-chart">Akun Belanja</label>
+
+                                    <select id="akun-belanja-chart" class="form-control select2" data-toggle="select2">
+                                        <option value="all" selected>Semua Akun Belanja</option>
+
+                                        @foreach ($jenisBelanja as $jBelanja)
+                                            <option value="{{ $jBelanja->id }}">
+                                                {{ $jBelanja->kategori_belanja }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- end input akun belanja --}}
+
+                        </div>
+
+                        {{-- chart per akun belanja (jenis_belanja) --}}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="chart-admin-jenis-belanja" class="apex-charts"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end chart per jenis belanja --}}
+
+        {{-- chart per divisi --}}
         <div class="row">
             @foreach ($divisi as $data)
                 <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
@@ -110,11 +148,8 @@
                             {{-- chart per divisi --}}
                             <div class="row">
                                 <div class="col-12 mb-3">
-                                    <div
-                                        class="apex-charts divisi-chart"
-                                        data-divisi-id="{{ $data->id }}"
-                                        id="divisi-{{ $data->id }}"
-                                    ></div>
+                                    <div class="apex-charts divisi-chart" data-divisi-id="{{ $data->id }}"
+                                        id="divisi-{{ $data->id }}"></div>
                                 </div>
                             </div>
                             {{-- end chart per divisi --}}
@@ -123,17 +158,11 @@
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <div class="form-group">
-                                        <select
-                                            id="periode-divisi-{{ $data->id }}"
+                                        <select id="periode-divisi-{{ $data->id }}"
                                             class="form-control form-control-sm select2 periode-divisi"
-                                            data-toggle="select2"
-                                            data-divisi-id="{{ $data->id }}"
-                                        >
+                                            data-toggle="select2" data-divisi-id="{{ $data->id }}">
                                             @foreach ($years as $year)
-                                                <option
-                                                    value="{{ $year }}"
-                                                    @if ($year == date('Y')) selected @endif
-                                                >
+                                                <option value="{{ $year }}" @if ($year == date('Y')) selected @endif>
                                                     {{ $year }}
                                                 </option>
                                             @endforeach
@@ -149,26 +178,20 @@
                                     <div class="chart-widget-list">
                                         <p>
                                             Total Budget
-                                            <span
-                                                class="float-right"
-                                                id="total-budget-divisi-{{ $data->id }}"
-                                            ></span>
+                                            <span class="float-right"
+                                                id="total-budget-divisi-{{ $data->id }}"></span>
                                         </p>
                                         <p class="mb-0">
                                             <i class="mdi mdi-square text-success"></i>
                                             Total Belanja
-                                            <span
-                                                class="float-right"
-                                                id="total-belanja-divisi-{{ $data->id }}"
-                                            ></span>
+                                            <span class="float-right"
+                                                id="total-belanja-divisi-{{ $data->id }}"></span>
                                         </p>
                                         <p>
                                             <i class="mdi mdi-square text-danger"></i>
                                             Sisa Budget
-                                            <span
-                                                class="float-right"
-                                                id="sisa-budget-divisi-{{ $data->id }}"
-                                            ></span>
+                                            <span class="float-right"
+                                                id="sisa-budget-divisi-{{ $data->id }}"></span>
                                         </p>
                                     </div>
                                 </div>
@@ -180,7 +203,11 @@
                 </div>
             @endforeach
         </div>
+        {{-- end chart per divisi --}}
+
     @else
+
+        {{-- chart line per bagian (divisi) --}}
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -193,16 +220,10 @@
                             <div class="col-md-6 col-sm-12 mb-3">
                                 <div class="form-group">
                                     <label for="periode-global">Periode Tahun</label>
-                                    <select
-                                        id="periode-divisi-jenis-belanja"
-                                        class="form-control select2"
-                                        data-toggle="select2"
-                                    >
+                                    <select id="periode-divisi-jenis-belanja" class="form-control select2"
+                                        data-toggle="select2">
                                         @foreach ($years as $year)
-                                            <option
-                                                value="{{ $year }}"
-                                                @if ($year == date('Y')) selected @endif
-                                            >
+                                            <option value="{{ $year }}" @if ($year == date('Y')) selected @endif>
                                                 {{ $year }}
                                             </option>
                                         @endforeach
@@ -213,20 +234,17 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div
-                                    id="chart-jenis-belanja"
-                                    data-divisi-id="{{ Auth::user()->divisi->id }}"
-                                    class="apex-charts"
-                                    data-colors="#727cf5,#0acf97"
-                                ></div>
+                                <div id="chart-jenis-belanja" data-divisi-id="{{ Auth::user()->divisi->id }}"
+                                    class="apex-charts" data-colors="#727cf5,#0acf97"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        {{-- chart line per bagian (divisi) --}}
+
     @endif
-    {{-- end chart per divisi --}}
 
 @endsection
 

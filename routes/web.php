@@ -11,11 +11,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-/**
- * Redirect
- */
-Route::permanentRedirect('/', 'dashboard');
-
 
 /**
  * Route middleware guest
@@ -45,17 +40,21 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/dashboard,read')
             ->name('dashboard');
 
-        Route::get('/{year}', [DashboardController::class, 'globalChart'])
+        Route::get('/{year}', [DashboardController::class, 'chartPieGlobalDivisi'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.global');
 
-        Route::get('/divisi/{divisi}/{year}', [DashboardController::class, 'divisiChart'])
+        Route::get('/admin/{divisi}/{year}/divisi', [DashboardController::class, 'chartPiePerDivisi'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.divisi');
 
-        Route::get('/jenis-belanja/{divisi}/{year}', [DashboardController::class, 'jenisBelanjaChart'])
+        // Route::get('/admin/{jenisBelanja}/{year}/jenis-belanja', [DashboardController::class, 'chartBarPerJenisBelanja'])
+        //     ->middleware('menu:/dashboard,read')
+        //     ->name('dashboard.jenisBelanja');
+
+        Route::get('/divisi/{divisi}/{year}/jenis-belanja', [DashboardController::class, 'chartLinePerJenisBelanja'])
             ->middleware('menu:/dashboard,read')
-            ->name('dashboard.jenisBelanja');
+            ->name('dashboard.divisi.jenisBelanja');
     });
 
 
@@ -279,6 +278,12 @@ Route::middleware('auth')->group(function () {
             ->name('profil.pengaturan.tema');
     });
 });
+
+
+/**
+ * Redirect
+ */
+Route::permanentRedirect('/', 'dashboard');
 
 
 /**

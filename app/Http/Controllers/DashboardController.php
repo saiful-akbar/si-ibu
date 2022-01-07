@@ -7,11 +7,14 @@ use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
 use App\Models\User;
+use App\Traits\UserAccessTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    use UserAccessTrait;
+
     /**
      * view halaman dashboard
      *
@@ -21,10 +24,40 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        /**
+         * ambil data user auth
+         */
+        $authUser = Auth::user();
+
+        /**
+         * ambil akses menu user
+         */
+        $userAccess = $this->getAccess($authUser->id, '/dashboard');
+
+        $isAdmin = false;
+
+        /**
+         * Cek apakah user mempunyai full akses atau tidak
+         */
+        if (
+            $userAccess->create == 1 &&
+            $userAccess->read == 1 &&
+            $userAccess->update == 1 &&
+            $userAccess->delete == 1
+        ) {
+            $isAdmin = true;
+        }
+
+        /**
+         * Ambil data busget
+         */
         $queryYear = Budget::select('tahun_anggaran')
             ->orderBy('tahun_anggaran', 'desc')
             ->get();
 
+        /**
+         * ambil tahun yang ada pada pada budget
+         */
         $years = [];
         foreach ($queryYear as $budget) {
             if (!in_array($budget->tahun_anggaran, $years)) {
@@ -32,27 +65,17 @@ class DashboardController extends Controller
             }
         }
 
+        /**
+         * ambil data divisi
+         */
         $divisi = Divisi::all();
 
         /**
-         * ambid data user akses untuk menu dashboard
+         * Ambil data akun belanja (jenis_belanja)
          */
-        $userAccess = User::with('menuItem')->find(Auth::user()->id)->menuItem->where('href', '/dashboard')->first();
-        $create = $userAccess->pivot->create;
-        $read = $userAccess->pivot->read;
-        $update = $userAccess->pivot->update;
-        $delete = $userAccess->pivot->delete;
+        $jenisBelanja = JenisBelanja::all();
 
-        $isAdmin = false;
-
-        /**
-         * Cek apakah user mempunyai full akses atau tidak
-         */
-        if ($create == 1 && $read == 1 && $update == 1 && $delete == 1) {
-            $isAdmin = true;
-        }
-
-        return view('pages.dashboard.index', compact('years', 'divisi', 'isAdmin'));
+        return view('pages.dashboard.index', compact('years', 'divisi', 'isAdmin', 'jenisBelanja'));
     }
 
 
@@ -63,62 +86,79 @@ class DashboardController extends Controller
      *
      * @return json
      */
-    public function globalChart(int $year)
+    public function chartPieGlobalDivisi(int $year)
     {
         /**
-         * jumlahkan nominal budget berdasarkan tahun dan id divisi user yang sedang login
+         * ambil data user auth
+         */
+        $authUser = Auth::user();
+
+        /**
+         * ambil akses menu user
+         */
+        $userAccess = $this->getAccess($authUser->id, '/dashboard');
+
+        /**
+         * ambil bagian (divisi) user
+         */
+        $namaDivisi = $authUser->divisi->nama_divisi;
+
+
+        /**
+         * total nominal pada budget
+         * berdasarkan bagian (divisi) & tahun
          */
         $totalBudget = Budget::where([
-            ['tahun_anggaran', $year],
-            ['divisi_id', Auth::user()->divisi_id]
+            ['divisi_id', $authUser->divisi_id],
+            ['tahun_anggaran', $year]
         ])->sum('nominal');
 
         /**
-         * jumlahkan nominal transaksi berdasarkan tahun dan id divisi user yang sedang login
+         * total jumlah_nominal pada belanja (transaksi)
+         * berdasarkan bagian (divisi) & tahun
          */
-        $totalTransaksi = Transaksi::where([
-            ['tanggal', 'like', "%{$year}%"],
-            ['divisi_id', Auth::user()->divisi_id]
-        ])->sum('jumlah_nominal');
+        $totalTransaksi = Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
+            ->where([
+                ['budget.divisi_id', $authUser->divisi_id],
+                ['transaksi.tanggal', 'like', "%{$year}%"],
+            ])->sum('transaksi.jumlah_nominal');;
 
         /**
-         * ambid data user akses untuk menu dashboard
+         * cek user superadmin atau tidak
+         * jika iya,
+         * totalkan budget seluruh bagian (divisi) berdasarkan tahun &
+         * total kan seluruh jumlah_nominal transaksi berdasarkan tahun
          */
-        $userAccess = User::with('menuItem')->find(Auth::user()->id)->menuItem->where('href', '/dashboard')->first();
-        $create = $userAccess->pivot->create;
-        $read = $userAccess->pivot->read;
-        $update = $userAccess->pivot->update;
-        $delete = $userAccess->pivot->delete;
-        $divisi = Auth::user()->divisi->nama_divisi;
-
-
-        /**
-         * Cek apakah user mempunyai full akses atau tidak
-         */
-        if ($create == 1 && $read == 1 && $update == 1 && $delete == 1) {
+        if (
+            $userAccess->create == 1 &&
+            $userAccess->read == 1 &&
+            $userAccess->update == 1 &&
+            $userAccess->delete == 1
+        ) {
             $totalBudget = Budget::where('tahun_anggaran', $year)->sum('nominal');
-            $totalTransaksi = Transaksi::where('tanggal', 'like', "{$year}%")->sum('jumlah_nominal');
-            $divisi = 'Semua Bagian';
+            $totalTransaksi = Transaksi::where('tanggal', 'like', "%{$year}%")->sum('jumlah_nominal');
+
+            /**
+             * jika user super admin ubah $divisi menjadi "semua bagian (divisi)"
+             */
+            $namaDivisi = "Semua Bagian";
         }
 
         /**
-         * buat sisa budget
+         * total sisa budget
          */
-        $sisaBudget = 0;
-        if ($totalBudget - $totalTransaksi >= 0) {
-            $sisaBudget = $totalBudget - $totalTransaksi;
-        }
-
+        $sisa = $totalBudget - $totalTransaksi;
+        $sisaBudget = $sisa < 0 ? 0 : $sisa;
 
         /**
          * response
          */
         return response()->json([
-            'year' => $year,
-            'totalBudget' => $totalBudget,
-            'totalTransaksi' => $totalTransaksi,
-            'sisaBudget' => $sisaBudget,
-            'divisi' => $divisi,
+            'tahun' => (int) $year,
+            'totalBudget' => (int) $totalBudget,
+            'totalTransaksi' => (int) $totalTransaksi,
+            'sisaBudget' => (int) $sisaBudget,
+            'namaDivisi' => $namaDivisi,
         ], 200);
     }
 
@@ -130,31 +170,32 @@ class DashboardController extends Controller
      *
      * @return json
      */
-    public function divisiChart(Divisi $divisi, int $year)
+    public function chartPiePerDivisi(Divisi $divisi, int $year)
     {
         /**
-         * ambid data user akses untuk menu dashboard
+         * ambil data user auth
          */
-        $userAccess = User::with('menuItem')
-            ->find(Auth::user()->id)
-            ->menuItem
-            ->where('href', '/dashboard')
-            ->first();
-
-        $create = $userAccess->pivot->create;
-        $read = $userAccess->pivot->read;
-        $update = $userAccess->pivot->update;
-        $delete = $userAccess->pivot->delete;
+        $authUser = Auth::user();
 
         /**
-         * Cek apakah user mempunyai full akses atau tidak
+         * ambil akses menu user
          */
-        if ($create == 0 || $read == 0 || $update == 0 || $delete == 0) {
+        $userAccess = $this->getAccess($authUser->id, '/dashboard');
+
+        /**
+         * Cek apakah user mempunyai full akses (superadmin) atau tidak
+         */
+        if (
+            $userAccess->create == 0 ||
+            $userAccess->read == 0 ||
+            $userAccess->update == 0 ||
+            $userAccess->delete == 0
+        ) {
             return response()->json([], 403);
         }
 
         /**
-         * jumlahkan nominal budget berdasarkan tahun dan id divisi user yang sedang login
+         * Total nominal budget berdsarkan bagian (divisi) & tahun
          */
         $totalBudget = Budget::where([
             ['tahun_anggaran', $year],
@@ -162,31 +203,38 @@ class DashboardController extends Controller
         ])->sum('nominal');
 
         /**
-         * jumlahkan nominal transaksi berdasarkan tahun dan id divisi user yang sedang login
+         * Toal jumlah_nominal belanja (transaksi) berdasarkan bagian (divisi) & tahun
          */
-        $totalTransaksi = Transaksi::where([
-            ['tanggal', 'like', "%{$year}%"],
-            ['divisi_id', $divisi->id]
-        ])->sum('jumlah_nominal');
+        $totalTransaksi = Transaksi::leftJoin('budget', 'budget.id', 'transaksi.budget_id')
+            ->where([
+                ['transaksi.tanggal', 'like', "%{$year}%"],
+                ['budget.divisi_id', $divisi->id]
+            ])->sum('jumlah_nominal');
 
         /**
-         * buat sisa budget
+         * total sisa budget
          */
-        $sisaBudget = 0;
-        if ($totalBudget - $totalTransaksi >= 0) {
-            $sisaBudget = $totalBudget - $totalTransaksi;
-        }
+        $sisa = $totalBudget - $totalTransaksi;
+        $sisaBudget = $sisa < 0 ? 0 : $sisa;
 
         return response()->json([
-            'year' => $year,
-            'totalBudget' => $totalBudget,
-            'totalTransaksi' => $totalTransaksi,
-            'sisaBudget' => $sisaBudget,
-            'divisi' => $divisi->nama_divisi,
+            'tahun' => (int) $year,
+            'totalBudget' => (int) $totalBudget,
+            'totalTransaksi' => (int) $totalTransaksi,
+            'sisaBudget' => (int) $sisaBudget,
+            'namaDivisi' => $divisi->nama_divisi,
         ], 200);
     }
 
-    public function jenisBelanjaChart(Divisi $divisi, int $year): Object
+    /**
+     * Jenis belanja chart
+     *
+     * @param Divisi $divisi
+     * @param int $year
+     *
+     * @return Object
+     */
+    public function chartLinePerJenisBelanja(Divisi $divisi, int $year): Object
     {
         /**
          * ambid data user akses untuk menu dashboard

@@ -8,7 +8,6 @@ use App\Models\JenisBelanja;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Yajra\DataTables\DataTables;
 
 class BudgetController extends Controller
 {
@@ -68,6 +67,12 @@ class BudgetController extends Controller
             ->orderBy('divisi.nama_divisi', 'asc')
             ->orderBy('budget.updated_at', 'desc');
 
+        /**
+         * jumlah total nominal dan total sisa_nominal budget
+         */
+        $totalNominal = $query->sum('nominal');
+        $totalSisaNominal = $query->sum('sisa_nominal');
+
 
         /**
          * ambil data user akses untuk menu user
@@ -83,10 +88,12 @@ class BudgetController extends Controller
          * return view
          */
         return view('pages.budget.index', [
-            'budgets' => $query->paginate(25)->withQueryString(),
+            'budgets' => $query->simplePaginate(25)->withQueryString(),
             'userAccess' => $userAccess,
             'divisi' => Divisi::all(),
             'jenisBelanja' => JenisBelanja::all(),
+            'totalNominal' => $totalNominal,
+            'totalSisaNominal' => $totalSisaNominal,
         ]);
     }
 
