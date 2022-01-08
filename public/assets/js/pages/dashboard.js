@@ -7,7 +7,7 @@ class Dashboard {
     setChartPieGlobalDivisi(year) {
         $.ajax({
             type: "get",
-            url: `${main.baseUrl}/dashboard/${year}`,
+            url: `${main.baseUrl}/dashboard/chart/${year}`,
             dataType: "json",
             success: function (res) {
                 $("#global-divisi").text(res.namaDivisi);
@@ -27,8 +27,7 @@ class Dashboard {
                 // chart options
                 const options = {
                     chart: {
-                        height: 350,
-                        width: 350,
+                        height: 300,
                         type: "pie",
                     },
                     legend: {
@@ -37,7 +36,7 @@ class Dashboard {
                     fill: {
                         type: "gradient",
                     },
-                    series: [1000, 500],
+                    series: [res.totalTransaksi, res.sisaBudget],
                     labels: ["Total Belanja", "Sisa Budget"],
                     colors: ["#0acf97", "#727cf5"],
                     responsive: [
@@ -45,8 +44,7 @@ class Dashboard {
                             breakpoint: 480,
                             options: {
                                 chart: {
-                                    height: "100%",
-                                    width: "100%",
+                                    height: 220,
                                 },
                             },
                         },
@@ -65,6 +63,66 @@ class Dashboard {
     }
 
     /**
+     * Fungsi set chart bar per akun belanja (jenis_belanja)
+     *
+     * @param {int} year Tahun periode
+     * @param {int} jenisBelanjaId Jenis belanja id
+     */
+    chartPiePerJenisBelanja(jenisBelanjaId, periode) {
+        $.ajax({
+            type: "get",
+            url: `${main.baseUrl}/dashboard/chart/admin/${jenisBelanjaId}/${periode}/jenis-belanja`,
+            dataType: "json",
+            success: function (res) {
+                $("#admin-jbelanja-total-belanja").text(
+                    "Rp. " + main.formatRupiah(res.data.totalBelanja)
+                );
+
+                const options = {
+                    chart: {
+                        height: 350,
+                        type: "pie",
+                    },
+                    fill: {
+                        type: "gradient",
+                    },
+                    legend: {
+                        show: true,
+                        position: "bottom",
+                        itemMargin: {
+                            horizontal: 5,
+                            vertical: 5,
+                        },
+                    },
+                    series: [...res.data.series],
+                    labels: [...res.data.labels],
+                    responsive: [
+                        {
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    height: 290,
+                                },
+                                legend: {
+                                    position: "bottom",
+                                },
+                            },
+                        },
+                    ],
+                };
+
+                const chart = new ApexCharts(
+                    document.querySelector("#chart-admin-jenis-belanja"),
+                    options
+                );
+
+                chart.render();
+                chart.updateSeries(res.data.series);
+            },
+        });
+    }
+
+    /**
      * Fungsi set chart per divisi
      *
      * @param {int} id
@@ -73,7 +131,7 @@ class Dashboard {
     setChartPiePerDivisi(id, year) {
         $.ajax({
             type: "get",
-            url: `${main.baseUrl}/dashboard/admin/${id}/${year}/divisi`,
+            url: `${main.baseUrl}/dashboard/chart/admin/${id}/${year}/divisi`,
             dataType: "json",
             success: (res) => {
                 $(`#total-budget-divisi-${id}`).text(
@@ -91,7 +149,6 @@ class Dashboard {
                 const options = {
                     chart: {
                         height: 230,
-                        width: 230,
                         type: "donut",
                     },
                     legend: {
@@ -106,7 +163,6 @@ class Dashboard {
                             options: {
                                 chart: {
                                     height: "100%",
-                                    width: "100%",
                                 },
                             },
                         },
@@ -132,10 +188,10 @@ class Dashboard {
      *
      * @return void
      */
-    setChartLinePerJenisBelanja(idDivisi, year) {
+    setChartLinePerJenisBelanja(periode) {
         $.ajax({
             type: "get",
-            url: `${main.baseUrl}/dashboard/divisi/${idDivisi}/${year}/jenis-belanja`,
+            url: `${main.baseUrl}/dashboard/chart/divisi/${periode}/jenis-belanja`,
             dataType: "json",
             success: (res) => {
                 const options = {
@@ -149,6 +205,10 @@ class Dashboard {
                             left: -7,
                             top: 7,
                         },
+                    },
+                    title: {
+                        text: "Grafik Transaksi Belanja per Akun Belanja",
+                        align: "left",
                     },
                     stroke: { curve: "smooth", with: 4 },
                     series: res.data,
@@ -172,9 +232,19 @@ class Dashboard {
                         axisBorder: { show: true },
                     },
                     yaxis: {
+                        title: {
+                            text: "Nominal Belanja",
+                        },
                         labels: {
                             formatter: (yLabel) => main.formatRupiah(yLabel),
-                            offsetX: -15,
+                        },
+                    },
+                    legend: {
+                        position: "bottom",
+                        horizontalAlign: "center",
+                        itemMargin: {
+                            horizontal: 5,
+                            vertical: 5,
                         },
                     },
                 };
@@ -188,69 +258,6 @@ class Dashboard {
                 chart.updateSeries(res.data);
             },
         });
-    }
-
-    /**
-     * Fungsi set chart bar per akun belanja (jenis_belanja)
-     *
-     * @param {int} year Tahun periode
-     * @param {int} jenisBelanjaId Jenis belanja id
-     */
-    setChartLinePerJenisBelanja(year, jenisBelanjaId) {
-        const options = {
-            series: [
-                {
-                    name: "Total Budget",
-                    data: [44, 55, 41, 56, 38, 72],
-                },
-                {
-                    name: "Total Belanja",
-                    data: [53, 32, 33, 67, 36, 58],
-                },
-            ],
-            xaxis: {
-                categories: [
-                    "IT",
-                    "Accounting",
-                    "Warehouse",
-                    "Marketing",
-                    "Finance",
-                    "Autdit",
-                ],
-            },
-            chart: {
-                type: "bar",
-                height: "auto",
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                    dataLabels: {
-                        position: "top",
-                    },
-                },
-            },
-            dataLabels: {
-                enabled: true,
-                offsetX: -6,
-            },
-            stroke: {
-                show: true,
-                width: 1,
-                colors: ["#fff"],
-            },
-            tooltip: {
-                shared: true,
-                intersect: false,
-            },
-        };
-
-        const chart = new ApexCharts(
-            document.querySelector("#chart-admin-jenis-belanja"),
-            options
-        );
-
-        chart.render();
     }
 }
 
@@ -269,30 +276,48 @@ $(document).ready(function () {
     const ElChartAdminJenisBelanja = $("#chart-admin-jenis-belanja");
 
     /**
-     * Jalankan fungsi setChartLinePerJenisBelanja ketika user admin
+     * Jalankan fungsi chartPiePerJenisBelanja ketika user admin
      */
     if (ElChartAdminJenisBelanja.length > 0) {
-        dashboard.setChartLinePerJenisBelanja(new Date().getFullYear(), "all");
+        dashboard.chartPiePerJenisBelanja("all", new Date().getFullYear());
+
+        /**
+         * handle change select #chart-admin-jbelanja-periode
+         */
+        $("#chart-admin-jbelanja-periode").change(function (e) {
+            e.preventDefault();
+
+            const periode = $(this).val();
+            const jenisBelanjaId = $("#chart-admin-jbelanja").val();
+
+            dashboard.chartPiePerJenisBelanja(jenisBelanjaId, periode);
+        });
+
+        /**
+         * handle change select #chart-admin-jbelanja
+         */
+        $("#chart-admin-jbelanja").change(function (e) {
+            e.preventDefault();
+
+            const periode = $("#chart-admin-jbelanja-periode").val();
+            const jenisBelanjaId = $(this).val();
+
+            dashboard.chartPiePerJenisBelanja(jenisBelanjaId, periode);
+        });
     }
 
     /**
      * jalankan fungsi setChartLinePerJenisBelanja ketika user bukan admin
      */
     if (ElChartPerJenisBelanja.length > 0) {
-        dashboard.setChartLinePerJenisBelanja(
-            ElChartPerJenisBelanja.data("divisi-id"),
-            new Date().getFullYear()
-        );
+        dashboard.setChartLinePerJenisBelanja(new Date().getFullYear());
 
         /**
          * handle jika periode divisi per jenis belanja dirubah
          */
         $("#periode-divisi-jenis-belanja").change(function (e) {
             e.preventDefault();
-            dashboard.setChartLinePerJenisBelanja(
-                ElChartPerJenisBelanja.data("divisi-id"),
-                $(this).val()
-            );
+            dashboard.setChartLinePerJenisBelanja($(this).val());
         });
     }
 

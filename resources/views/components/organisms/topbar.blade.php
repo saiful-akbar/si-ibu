@@ -37,7 +37,7 @@
                     <span>Profil</span>
                 </a>
                 <a href="{{ route('logout') }}" class="dropdown-item notify-item">
-                    <i class="mdi mdi-logout mr-1"></i>
+                    <i class="mdi mdi-logout text-danger mr-1"></i>
                     <span>Logout</span>
                 </a>
 

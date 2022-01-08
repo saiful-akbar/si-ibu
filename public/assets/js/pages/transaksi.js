@@ -159,12 +159,12 @@ class Transaksi {
                         name: "tahun_anggaran",
                     },
                     {
-                        data: "divisi.nama_divisi",
-                        name: "divisi.nama_divisi",
+                        data: "nama_divisi",
+                        name: "nama_divisi",
                     },
                     {
-                        data: "jenisbelanja.kategori_belanja",
-                        name: "jenisbelanja.kategori_belanja",
+                        data: "kategori_belanja",
+                        name: "kategori_belanja",
                     },
                     {
                         data: "sisa_nominal",

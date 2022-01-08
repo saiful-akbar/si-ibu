@@ -758,13 +758,24 @@ class TransaksiController extends Controller
      */
     public function dataTable()
     {
-        $budgets = Budget::with('divisi', 'jenisbelanja')->get();
+        $budgets = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
+            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
+            ->select([
+                'budget.id',
+                'budget.tahun_anggaran',
+                'budget.sisa_nominal',
+                'divisi.nama_divisi',
+                'jenis_belanja.kategori_belanja',
+            ])->orderBy('budget.tahun_anggaran', 'desc')
+            ->orderBy('divisi.nama_divisi', 'asc')
+            ->orderBy('jenis_belanja.kategori_belanja', 'asc')
+            ->get();
 
         return DataTables::of($budgets)
             ->addColumn('action', function ($budget) {
                 return "
                     <button
-                        onclick='transaksi.setFormValue({$budget->id}, {$budget->tahun_anggaran}, \"{$budget->divisi->nama_divisi}\", \"{$budget->jenisBelanja->kategori_belanja}\", {$budget->sisa_nominal})'
+                        onclick='transaksi.setFormValue({$budget->id}, {$budget->tahun_anggaran}, \"{$budget->nama_divisi}\", \"{$budget->kategori_belanja}\", {$budget->sisa_nominal})'
                         class='btn btn-sm btn-success btn-rounded btn-sm'
                     >
                         <i class='mdi mdi-hand-pointing-up'></i>

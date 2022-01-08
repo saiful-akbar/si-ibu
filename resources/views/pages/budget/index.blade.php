@@ -115,7 +115,7 @@
 
                     {{-- table --}}
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 mb-3">
                             <div class="table-responsive">
                                 <table class="table nowrap w-100 table-centered">
                                     <thead>
@@ -128,10 +128,7 @@
                                             <th>Sisa Nominal</th>
                                             <th>Dibuat</th>
                                             <th>Diperbarui</th>
-
-                                            @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
-                                                <th class="text-center">Aksi</th>
-                                            @endif
+                                            <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -148,36 +145,37 @@
                                                     <td>Rp. {{ number_format($data->sisa_nominal) }}</td>
                                                     <td>{{ $data->created_at }}</td>
                                                     <td>{{ $data->updated_at }}</td>
+                                                    <td class="table-action text-center">
+                                                        <button onclick="budget.detail(true, {{ $data->id }})"
+                                                            data-toggle="tooltip" data-original-title="Detail"
+                                                            data-placement="top" class="btn btn-sm btn-light btn-icon mr-1">
+                                                            <i class="mdi mdi-eye-outline"></i>
+                                                        </button>
 
-                                                    @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
-                                                        <td class="table-action text-center">
-                                                            @if ($userAccess->pivot->update == 1)
-                                                                <a href="{{ route('budget.switch', ['budget' => $data->id]) }}"
-                                                                    class="btn btn-sm btn-light btn-icon mr-1"
-                                                                    data-toggle="tooltip"
-                                                                    data-original-title="Switch Budget"
-                                                                    data-placement="top">
-                                                                    <i class="mdi mdi-code-tags"></i>
-                                                                </a>
+                                                        @if ($userAccess->pivot->update == 1)
+                                                            <a href="{{ route('budget.switch', ['budget' => $data->id]) }}"
+                                                                class="btn btn-sm btn-light btn-icon mr-1"
+                                                                data-toggle="tooltip" data-original-title="Switch Budget"
+                                                                data-placement="top">
+                                                                <i class="mdi mdi-code-tags"></i>
+                                                            </a>
 
-                                                                <a href="{{ route('budget.edit', ['budget' => $data->id]) }}"
-                                                                    class="btn btn-sm btn-light btn-icon mr-1"
-                                                                    data-toggle="tooltip" data-original-title="Edit"
-                                                                    data-placement="top">
-                                                                    <i class="mdi mdi-square-edit-outline"></i>
-                                                                </a>
-                                                            @endif
+                                                            <a href="{{ route('budget.edit', ['budget' => $data->id]) }}"
+                                                                class="btn btn-sm btn-light btn-icon mr-1"
+                                                                data-toggle="tooltip" data-original-title="Edit"
+                                                                data-placement="top">
+                                                                <i class="mdi mdi-square-edit-outline"></i>
+                                                            </a>
+                                                        @endif
 
-                                                            @if ($userAccess->pivot->delete == 1)
-                                                                <button onclick="budget.handleDelete({{ $data->id }})"
-                                                                    data-toggle="tooltip" data-original-title="Hapus"
-                                                                    data-placement="top"
-                                                                    class="btn btn-sm btn-light btn-icon">
-                                                                    <i class="mdi mdi-delete"></i>
-                                                                </button>
-                                                            @endif
-                                                        </td>
-                                                    @endif
+                                                        @if ($userAccess->pivot->delete == 1)
+                                                            <button onclick="budget.handleDelete({{ $data->id }})"
+                                                                data-toggle="tooltip" data-original-title="Hapus"
+                                                                data-placement="top" class="btn btn-sm btn-light btn-icon">
+                                                                <i class="mdi mdi-delete"></i>
+                                                            </button>
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @else
@@ -189,35 +187,37 @@
                                 </table>
                             </div>
                         </div>
-
-                        {{-- table pagination --}}
-                        <div class="col-12 d-flex justify-content-end my-3">
-                            {{ $budgets->links() }}
-                        </div>
                     </div>
                     {{-- end table --}}
 
-                </div>
-
-                {{-- total nominal & total sisa_nominal --}}
-                <div class="card-footer pt-3">
-                    <div class="float-sm-right">
-                        <p class="font-14">
-                            <strong>Total Nominal : </strong>
-                            <span class="float-right ml-2">
-                                Rp. {{ number_format($totalNominal) }}
-                            </span>
-                        </p>
-                        <p class="font-14">
-                            <strong>Total Sisa Nominal : </strong>
-                            <span class="float-right ml-2">
-                                Rp. {{ number_format($totalSisaNominal) }}
-                            </span>
-                        </p>
+                    {{-- table pagination --}}
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-end mb-3">
+                            {{ $budgets->links() }}
+                        </div>
                     </div>
-                </div>
-                {{-- end total nominal & total sisa_nominal --}}
+                    {{-- end table pagination --}}
 
+                    {{-- total --}}
+                    <div class="row justify-content-end">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <th>Total Nominal : </th>
+                                        <td class="text-right">Rp. {{ number_format($totalNominal) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Sisa Nominal : </th>
+                                        <td class="text-right">Rp. {{ number_format($totalSisaNominal) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{-- end total --}}
+
+                </div>
             </div>
         </div>
     </div>
@@ -228,6 +228,9 @@
         @method('DELETE') @csrf
     </form>
     {{-- end form delete budget --}}
+
+    {{-- modal detail budget --}}
+    @include('pages.budget.detail')
 
 @endsection
 

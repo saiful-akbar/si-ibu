@@ -10,7 +10,7 @@
     <meta name="base-url" content="{{ url('/') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>@yield('title') - {{ config('app.name') }}</title>
+    <title>@yield('title') | {{ config('app.name') }}</title>
 
     {{-- App favicon --}}
     <link href="{{ asset('assets/images/favicon.ico') }}" rel="shortcut icon" />
@@ -44,11 +44,7 @@
     @yield('css')
 </head>
 
-<body class="loading
-    @guest authentication-bg pb-0 @endguest" @guest data-layout-config='{"darkMode": false}'
-        @endguest @auth
-        data-layout-config='{"darkMode": {{ auth()->user()->pengaturan->tema == 'dark' ? 'true' : 'false' }},"leftSideBarTheme": "dark"}'
-    @endauth>
+<body class="loading @guest authentication-bg pb-0 @endguest" data-leftbar-theme="dark">
 
     {{-- Pre-loader --}}
     <div id="preloader">

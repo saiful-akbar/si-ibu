@@ -17,7 +17,7 @@ class Budget {
                         <i class="dripicons-warning"></i>
                         Peringatan!
                     </h4>
-                    
+
                     <ul>
                         <li>Tindakan ini tidak dapat dibatalkan.</li>
                         <li>Budget yang dihapus tidak dapat dikembalikan.</li>
@@ -53,13 +53,13 @@ class Budget {
      *
      * @param {boolean} show
      */
-    showHideLoadingModal = (show) => {
-        const loading = $("#loading-modal");
-        const content = $("#modal-detail-content");
+    showLoading = (show) => {
+        const loading = $("#detail-loading");
+        const content = $("#detail-content");
 
         if (show) {
-            content.hide();
             loading.show();
+            content.hide();
         } else {
             loading.hide();
             content.show();
@@ -71,38 +71,12 @@ class Budget {
      *
      * @param {int} id
      */
-    handleShowModalDetail = (id) => {
-        $("#modal-detail").modal("show");
+    detail = (show, budgetId = null) => {
+        $("#detail-budget").modal(show ? "show" : "hide");
 
-        this.showHideLoadingModal(true);
-
-        // request api
-        $.ajax({
-            type: "GET",
-            url: `${main.baseUrl}/budget/${id}/show`,
-            data: { _token: main.csrfToken },
-            dataType: "json",
-            success: (res) => {
-                this.showHideLoadingModal(false);
-
-                const {
-                    jenis_belanja,
-                    tahun_anggaran,
-                    nominal,
-                    created_at,
-                    updated_at,
-                    keterangan,
-                } = res.budget;
-
-                $("#detail-divisi").text(jenis_belanja.divisi.nama_divisi);
-                $("#detail-akun-belanja").text(jenis_belanja.kategori_belanja);
-                $("#detail-tahun-anggaran").text(tahun_anggaran);
-                $("#detail-nominal").text(main.formatRupiah(nominal));
-                $("#detail-created").text(created_at);
-                $("#detail-updated").text(updated_at);
-                $("#detail-keterangan").html(keterangan);
-            },
-        });
+        if (show) {
+            this.showLoading(false);
+        }
     };
 
     /**
@@ -123,7 +97,7 @@ const budget = new Budget();
 /**
  * Jalankan fungsi seletal document dimuat
  */
-$(document).ready(function() {
+$(document).ready(function () {
     /**
      * summernote keterangan
      */

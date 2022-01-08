@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Budget;
 use App\Models\Divisi;
 use App\Models\JenisBelanja;
+use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -105,9 +106,13 @@ class BudgetController extends Controller
      */
     public function show(Budget $budget)
     {
+        $data = Budget::with('divisi', 'jenisBelanja', 'transaksi')->find($budget->id);
+        $totalNominalTransaksi = Transaksi::where('budget_id', $budget->id)->sum('jumlah_nominal');
+
         return response()->json([
-            'budget' => Budget::with('jenisBelanja', 'divisi')->find($budget->id),
-        ]);
+            'budget' => $data,
+            'totalNominalTransaksi' => $totalNominalTransaksi,
+        ], 200);
     }
 
     /**

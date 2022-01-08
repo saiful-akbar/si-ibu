@@ -40,19 +40,19 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/dashboard,read')
             ->name('dashboard');
 
-        Route::get('/{year}', [DashboardController::class, 'chartPieGlobalDivisi'])
+        Route::get('/chart/{year}', [DashboardController::class, 'chartPieGlobalDivisi'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.global');
 
-        Route::get('/admin/{divisi}/{year}/divisi', [DashboardController::class, 'chartPiePerDivisi'])
+        Route::get('/chart/admin/{divisi}/{year}/divisi', [DashboardController::class, 'chartPiePerDivisi'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.divisi');
 
-        // Route::get('/admin/{jenisBelanja}/{year}/jenis-belanja', [DashboardController::class, 'chartBarPerJenisBelanja'])
-        //     ->middleware('menu:/dashboard,read')
-        //     ->name('dashboard.jenisBelanja');
+        Route::get('/chart/admin/{jenisBelanjaId}/{periode}/jenis-belanja', [DashboardController::class, 'chartPiePerJenisBelanja'])
+            ->middleware('menu:/dashboard,read')
+            ->name('dashboard.admin.jenisBelanja');
 
-        Route::get('/divisi/{divisi}/{year}/jenis-belanja', [DashboardController::class, 'chartLinePerJenisBelanja'])
+        Route::get('/chart/divisi/{year}/jenis-belanja', [DashboardController::class, 'chartLinePerJenisBelanja'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.divisi.jenisBelanja');
     });
