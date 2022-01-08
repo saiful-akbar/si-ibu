@@ -5,7 +5,7 @@
 -   git
 -   Aktifkan `extension=gd` pada php.ini untuk fitur export excel dan domPDF
 
-## Instalasi
+## Development Instalasi
 
 1.  Clone repository
 
@@ -29,13 +29,13 @@ cp .env.example .env
 
 4.  Buat database di mysql
 5.  Buka file .env di text editor
-6.  Ubah value pada variable database di file `.env` sesuai dengan pengaturan database anda
+6.  Ubah value pada variable `DB_` di file `.env` sesuai dengan pengaturan database anda
 
 ```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=db_laravel_anggaran
+DB_DATABASE=db_anggaran
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -52,4 +52,46 @@ php artisan migrate:fresh --seed
 
 ```bash
 php artisan serve
+```
+
+## Production / Deployment
+
+1. Copy file .htaccess
+
+```bash
+cp .htaccess.example .htaccess
+```
+
+2.  Buka file .env di text editor
+3.  Ubah value pada variable `DB_` & `APP_` di file `.env`
+
+```
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://domain.com
+
+DB_CONNECTION=
+DB_HOST=
+DB_PORT=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+```
+
+4. Optimasi Autoloader
+
+```bash
+composer install --optimize-autoloader --no-dev
+```
+
+5. Mengoptimalkan Route Loading
+
+```bash
+php artisan route:cache
+```
+
+6. Mengoptimalkan View Loading
+
+```bash
+php artisan view:cache
 ```
