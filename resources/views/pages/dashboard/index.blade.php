@@ -76,83 +76,8 @@
 
     @if ($isAdmin)
 
-        {{-- chart per jenis belanja --}}
         <div class="row">
             <div class="col-sm-12 mb-3">
-                <div class="card">
-                    <div class="card-header pt-3">
-                        <h4 class="header-title">Chart transaksi belanja per akun belanja</h4>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="row">
-
-                            {{-- chart per akun belanja (jenis_belanja) --}}
-                            <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
-                                <div id="chart-admin-jenis-belanja" class="apex-charts"></div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-
-                                {{-- input filter --}}
-                                <div class="row">
-                                    <div class="col-12 mb-3">
-                                        {{-- Inpur tahun --}}
-                                        <div class="form-group">
-                                            <label for="chart-admin-jbelanja-periode">Periode Tahun</label>
-
-                                            <select id="chart-admin-jbelanja-periode"
-                                                class="form-control form-control-sm select2" data-toggle="select2">
-                                                @foreach ($years as $year)
-                                                    <option value="{{ $year }}" @if ($year == date('Y')) selected @endif>
-                                                        {{ $year }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        {{-- end input tahun --}}
-
-                                        {{-- Input akun belanja --}}
-                                        <div class="form-group">
-                                            <label for="chart-admin-jbelanja">Akun Belanja</label>
-
-                                            <select id="chart-admin-jbelanja" class="form-control form-control-sm select2"
-                                                data-toggle="select2">
-                                                <option value="all" selected>Semua Akun Belanja</option>
-
-                                                @foreach ($jenisBelanja as $jBelanja)
-                                                    <option value="{{ $jBelanja->id }}">
-                                                        {{ $jBelanja->kategori_belanja }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        {{-- end input akun belanja --}}
-                                    </div>
-                                </div>
-                                {{-- end input filter --}}
-
-                                {{-- deskripsi --}}
-                                <div class="row">
-                                    <div class="col-12 chart-widget-list">
-                                        <p>
-                                            Total Belanja
-                                            <span class="float-right" id="admin-jbelanja-total-belanja"></span>
-                                        </p>
-                                    </div>
-                                </div>
-                                {{-- end deskripsi chart global --}}
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- end chart per jenis belanja --}}
-
-        <div class="row">
-            <div class="col-sm-12 mb-3 mt-3">
                 <h4 class="header-title">
                     Chart budget per bagian
                 </h4>
@@ -230,6 +155,81 @@
             @endforeach
         </div>
         {{-- end chart per divisi --}}
+
+        {{-- Chart transaksi belanja per akun belanja --}}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <h4 class="header-title">Chart transaksi belanja per akun belanja</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+
+                            {{-- chart per akun belanja (jenis_belanja) --}}
+                            <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
+                                <div id="chart-admin-jenis-belanja" class="apex-charts"></div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+
+                                {{-- input filter --}}
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        {{-- Inpur tahun --}}
+                                        <div class="form-group">
+                                            <label for="chart-admin-jbelanja-periode">Periode Tahun</label>
+
+                                            <select id="chart-admin-jbelanja-periode"
+                                                class="form-control form-control-sm select2" data-toggle="select2">
+                                                @foreach ($years as $year)
+                                                    <option value="{{ $year }}" @if ($year == date('Y')) selected @endif>
+                                                        {{ $year }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        {{-- end input tahun --}}
+
+                                        {{-- Input akun belanja --}}
+                                        <div class="form-group">
+                                            <label for="chart-admin-jbelanja">Akun Belanja</label>
+
+                                            <select id="chart-admin-jbelanja" class="form-control form-control-sm select2"
+                                                data-toggle="select2">
+                                                <option value="all" selected>Semua Akun Belanja</option>
+
+                                                @foreach ($jenisBelanja as $jBelanja)
+                                                    <option value="{{ $jBelanja->id }}">
+                                                        {{ $jBelanja->kategori_belanja }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        {{-- end input akun belanja --}}
+                                    </div>
+                                </div>
+                                {{-- end input filter --}}
+
+                                {{-- deskripsi --}}
+                                <div class="row">
+                                    <div class="col-12 chart-widget-list">
+                                        <p>
+                                            Total Belanja
+                                            <span class="float-right" id="admin-jbelanja-total-belanja"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                                {{-- end deskripsi chart global --}}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end Chart transaksi belanja per akun belanja --}}
 
     @else
 

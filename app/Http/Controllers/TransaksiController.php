@@ -245,30 +245,23 @@ class TransaksiController extends Controller
             // budget
             'budget_id.required' => 'Akun belanja harus dipilih.',
             'budget_id.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
-
             'nama_divisi.required' => 'Bagian harus diisi.',
             'nama_divisi.exists' => 'Bagian tidak ada.',
-
             'kategori_belanja.required' => 'Akun belanja harus dipilih.',
             'kategori_belanja.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
-
             'tahun_anggaran.required' => 'Tahun anggaran harus diisi.',
             'tahun_anggaran.numeric' => 'Tahun anggaran harus tahun yang valid (yyyy).',
             'tahun_anggaran.exists' => 'Tidak ada budget pada tahun anggaran yang masukan.',
-
             'sisa_budget.required' => 'Sisa budget harus diisi.',
             'sisa_budget.numeric' => 'Sisa budget harus bertipe angka yang valid.',
 
             // kegiatan
             'tanggal.required' => 'Tanggal harus diisi.',
             'tanggal.date' => 'Tanggal tidak valid, masukan tanggal yang valid.',
-
             'kegiatan.required' => 'Kegiatan harus diisi.',
             'kegiatan.max' => 'Kegiatan tidak boleh lebih dari 100 karakter.',
-
             'approval.required' => 'Nama approval harus diisi.',
             'approval.max' => 'Nama approval tidak lebih dari 100 karakter.',
-
             'jumlah_nominal.required' => 'Jumlah nominal harus diisi.',
             'jumlah_nominal.numeric' => 'Jumlah nominal harus bertipe angka yang valid.',
             'jumlah_nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
@@ -760,7 +753,11 @@ class TransaksiController extends Controller
     {
         $budgets = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
             ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
-            ->select([
+            ->where([
+                ['divisi.id', Auth::user()->divisi_id],
+                ['divisi.active', 1],
+                ['jenis_belanja.active', 1],
+            ])->select([
                 'budget.id',
                 'budget.tahun_anggaran',
                 'budget.sisa_nominal',

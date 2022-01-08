@@ -187,6 +187,38 @@ class BudgetController extends Controller
         $validatedData['keterangan'] = $request->keterangan;
 
         /**
+         * cek apakah divisi_id yang dipilih aktif atau tidak
+         * jika tidak aktif tampilkan pesan error
+         */
+        if (Divisi::find($request->divisi_id)->active != 1) {
+            return redirect()->route('budget.create')->with('alert', [
+                'type' => 'danger',
+                'message' => "
+                    <ul class='mt-0'>
+                        <li>Bagian tidak aktif</li>
+                        <li>Anda tidak bisa membuat budget pada bagian yang tidak aktif.</li>
+                    </ul>
+                ",
+            ]);
+        }
+
+        /**
+         * cek apakah jenis_belanja_id yang dipilih aktif atau tidak
+         * jika tidak aktif tampilkan pesan error
+         */
+        if (JenisBelanja::find($request->jenis_belanja_id)->active != 1) {
+            return redirect()->route('budget.create')->with('alert', [
+                'type' => 'danger',
+                'message' => "
+                    <ul class='mt-0'>
+                        <li>Akun belanja tidak aktif</li>
+                        <li>Anda tidak bisa membuat budget pada akun belanja yang tidak aktif.</li>
+                    </ul>
+                ",
+            ]);
+        }
+
+        /**
          * ambil data budget berdasarkan divisi_id, jenis_belanja_id & tahun
          */
         $cekBudget = Budget::where([
@@ -293,6 +325,40 @@ class BudgetController extends Controller
          */
         $validatedData['sisa_nominal'] = $budget->sisa_nominal;
         $validatedData['keterangan'] = $request->keterangan;
+
+        /**
+         * cek apakah divisi_id yang dipilih aktif atau tidak
+         * jika tidak aktif tampilkan pesan error
+         */
+        if (Divisi::find($request->divisi_id)->active != 1) {
+            return redirect()->route('budget.edit', ['budget' => $budget->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => "
+                        <ul class='mt-0'>
+                            <li>Bagian tidak aktif</li>
+                            <li>Anda tidak bisa membuat budget pada bagian yang tidak aktif.</li>
+                        </ul>
+                    ",
+                ]);
+        }
+
+        /**
+         * cek apakah jenis_belanja_id yang dipilih aktif atau tidak
+         * jika tidak aktif tampilkan pesan error
+         */
+        if (JenisBelanja::find($request->jenis_belanja_id)->active != 1) {
+            return redirect()->route('budget.edit', ['budget' => $budget->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => "
+                        <ul class='mt-0'>
+                            <li>Akun belanja tidak aktif</li>
+                            <li>Anda tidak bisa membuat budget pada akun belanja yang tidak aktif.</li>
+                        </ul>
+                    ",
+                ]);
+        }
 
         /**
          * Cek apakah divisi_id, jenis_belanja_id & tahun anggaran dirubah atau tidak
@@ -463,6 +529,40 @@ class BudgetController extends Controller
          * jalankan validasi
          */
         $request->validate($validatedRules, $validatedErrorMessage);
+
+        /**
+         * cek apakah divisi_id yang dipilih aktif atau tidak
+         * jika tidak aktif tampilkan pesan error
+         */
+        if (Divisi::find($request->divisi_id)->active != 1) {
+            return redirect()->route('budget.switch', ['budget' => $budget->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => "
+                        <ul class='mt-0'>
+                            <li>Bagian tidak aktif</li>
+                            <li>Anda tidak bisa membuat budget pada bagian yang tidak aktif.</li>
+                        </ul>
+                    ",
+                ]);
+        }
+
+        /**
+         * cek apakah jenis_belanja_id yang dipilih aktif atau tidak
+         * jika tidak aktif tampilkan pesan error
+         */
+        if (JenisBelanja::find($request->jenis_belanja_id)->active != 1) {
+            return redirect()->route('budget.switch', ['budget' => $budget->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => "
+                        <ul class='mt-0'>
+                            <li>Akun belanja tidak aktif</li>
+                            <li>Anda tidak bisa membuat budget pada akun belanja yang tidak aktif.</li>
+                        </ul>
+                    ",
+                ]);
+        }
 
         /**
          * Proses update switch budget

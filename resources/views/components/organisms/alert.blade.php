@@ -22,7 +22,7 @@
                     </h4>
                 </div>
 
-                <p>{!! session('alert')['message'] !!}</p>
+                <div>{!! session('alert')['message'] !!}</div>
             </div>
         </div>
     </div>
