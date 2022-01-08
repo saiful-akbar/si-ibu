@@ -7,6 +7,7 @@ use App\Models\Budget;
 use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
+use App\Traits\UserAccessTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -16,6 +17,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TransaksiController extends Controller
 {
+    use UserAccessTrait;
+
     /**
      * generate nomer dokumen baru
      *
@@ -72,6 +75,29 @@ class TransaksiController extends Controller
     public function index(Request $request)
     {
         /**
+         * ambil user menu akses
+         */
+        $userAccess = $this->getAccess(Auth::user()->id, '/belanja');
+
+        /**
+         * true jika user full akses
+         * false jika user tidak full akses
+         */
+        $isAdmin = false;
+
+        /**
+         * cek apakah user memiliki full akses
+         */
+        if (
+            $userAccess->create == 1 &&
+            $userAccess->read == 1 &&
+            $userAccess->update == 1 &&
+            $userAccess->delete == 1
+        ) {
+            $isAdmin = true;
+        }
+
+        /**
          * Validasi rule
          */
         $validateRules = [
@@ -104,24 +130,30 @@ class TransaksiController extends Controller
         }
 
         /**
-         * jika divisi dipilih tambahkan validasi
-         */
-        if ($request->divisi != null) {
-            array_push($validateRules['divisi'], 'exists:divisi,nama_divisi');
-        }
-
-        /**
-         * jika no dokumen diisi tambahkan validasi
-         */
-        if ($request->no_dokumen != null) {
-            array_push($validateRules['no_dokumen'], 'exists:transaksi,no_dokumen');
-        }
-
-        /**
          * jika jenis belanja dipilah tambahkan validasi
          */
         if ($request->jenis_belanja != null) {
             array_push($validateRules['jenis_belanja'], 'exists:jenis_belanja,kategori_belanja');
+        }
+
+        /**
+         * Cek user admin atau tidak
+         */
+        if ($isAdmin) {
+
+            /**
+             * jika divisi dipilih tambahkan validasi
+             */
+            if ($request->divisi != null) {
+                array_push($validateRules['divisi'], 'exists:divisi,nama_divisi');
+            }
+
+            /**
+             * jika no dokumen diisi tambahkan validasi
+             */
+            if ($request->no_dokumen != null) {
+                array_push($validateRules['no_dokumen'], 'exists:transaksi,no_dokumen');
+            }
         }
 
         /**
@@ -153,15 +185,7 @@ class TransaksiController extends Controller
                 'jenis_belanja.kategori_belanja',
                 'divisi.nama_divisi',
                 'profil.nama_lengkap',
-            ])
-            ->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
-
-        /**
-         * jika divisi dipilih tambahkan query
-         */
-        if ($request->divisi != null) {
-            $query->where('divisi.nama_divisi',  $request->divisi);
-        }
+            ])->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
 
         /**
          * jika jenis belanja dipilih tambahkan query
@@ -171,16 +195,36 @@ class TransaksiController extends Controller
         }
 
         /**
-         * jika no dokumen dipilih tambahkan validasi
+         * Cek user admin atau tidak
          */
-        if ($request->no_dokumen != null) {
-            $query->where('transaksi.no_dokumen',  $request->no_dokumen);
+        if ($isAdmin) {
+
+            /**
+             * jika divisi dipilih tambahkan query
+             */
+            if ($request->divisi != null) {
+                $query->where('divisi.nama_divisi',  $request->divisi);
+            }
+
+
+            /**
+             * jika no dokumen dipilih tambahkan validasi
+             */
+            if ($request->no_dokumen != null) {
+                $query->where('transaksi.no_dokumen',  $request->no_dokumen);
+            }
+        } else {
+
+            /**
+             * query berdasarkan divisi user yang sedang login
+             */
+            $query->where('budget.divisi_id', Auth::user()->divisi->id);
         }
 
         /**
          * buat order
          */
-        $query->orderBy('tanggal', 'desc')->orderBy('divisi_id', 'asc');
+        $query->orderBy('tanggal', 'desc')->orderBy('budget.divisi_id', 'asc');
 
         /**
          * return view
@@ -190,6 +234,7 @@ class TransaksiController extends Controller
             'userAccess' => Auth::user()->menuItem->where('href', '/belanja')->first(),
             'divisi' => Divisi::where('active', 1)->get(),
             'jenisBelanja' => JenisBelanja::where('active', 1)->get(),
+            'isAdmin' => $isAdmin,
         ]);
     }
 
@@ -234,7 +279,7 @@ class TransaksiController extends Controller
             'no_dokumen' => ['required', 'unique:transaksi,no_dokumen', 'max:100'],
 
             // uraian
-            'uraian' => ['required'],
+            'uraian' => [],
         ];
 
         /**
@@ -271,9 +316,6 @@ class TransaksiController extends Controller
             'no_dokumen.required' => 'Nomer dokumen harus diisi.',
             'no_dokumen.unique' => 'Nomer dokumen sudah digunakan.',
             'no_dokumen.max' => 'Nomer dokumen tidak boleh lebih dari 100 karakter.',
-
-            // uraian
-            'uraian.required' => 'Uraian harus diisi.'
         ];
 
         /**
@@ -405,7 +447,7 @@ class TransaksiController extends Controller
             'kegiatan' => ['required', 'max:100'],
             'approval' => ['required', 'max:100'],
             'jumlah_nominal' => ['required', 'numeric', 'min:0', "max:{$request->sisa_budget}"],
-            'uraian' => ['required'],
+            'uraian' => [],
         ];
 
         /**
@@ -433,7 +475,6 @@ class TransaksiController extends Controller
             'jumlah_nominal.numeric' => 'Jumlah nominal harus bertipe angka yang valid.',
             'jumlah_nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
             'jumlah_nominal.max' => 'Jumlah nominal melebihi sisa nominal budget.',
-            'uraian.required' => 'Uraian harus diisi.'
         ];
 
         /**
@@ -564,7 +605,7 @@ class TransaksiController extends Controller
                     'approval' => $request->approval,
                     'no_dokumen' => $request->no_dokumen,
                     'file_dokumen' => $fileDokumen,
-                    'uraian' => $request->uraian,
+                    'uraian' => $request->uraian ?? null,
                 ]);
         } catch (\Exception $e) {
 
@@ -648,6 +689,32 @@ class TransaksiController extends Controller
      */
     public function fillter($request)
     {
+        /**
+         * ambil user menu akses
+         */
+        $userAccess = $this->getAccess(Auth::user()->id, '/belanja');
+
+        /**
+         * true jika user full akses
+         * false jika user tidak full akses
+         */
+        $isAdmin = false;
+
+        /**
+         * cek apakah user memiliki full akses
+         */
+        if (
+            $userAccess->create == 1 &&
+            $userAccess->read == 1 &&
+            $userAccess->update == 1 &&
+            $userAccess->delete == 1
+        ) {
+            $isAdmin = true;
+        }
+
+        /**
+         * Query data belanja (transaksi)
+         */
         $query = Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
             ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
             ->leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
@@ -673,13 +740,6 @@ class TransaksiController extends Controller
             ])->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
 
         /**
-         * jika divisi dipilih tambahkan query
-         */
-        if ($request->divisi != null) {
-            $query->where('divisi.nama_divisi',  $request->divisi);
-        }
-
-        /**
          * jika jenis belanja dipilih tambahkan query
          */
         if ($request->jenis_belanja != null) {
@@ -687,10 +747,30 @@ class TransaksiController extends Controller
         }
 
         /**
-         * jika no dokumen dipilih tambahkan validasi
+         * Cek user sebagai admin atau tidak
          */
-        if ($request->no_dokumen != null) {
-            $query->where('transaksi.no_dokumen',  $request->no_dokumen);
+        if ($isAdmin) {
+
+            /**
+             * jika divisi dipilih tambahkan query
+             */
+            if ($request->divisi != null) {
+                $query->where('divisi.nama_divisi',  $request->divisi);
+            }
+
+
+            /**
+             * jika no dokumen dipilih tambahkan validasi
+             */
+            if ($request->no_dokumen != null) {
+                $query->where('transaksi.no_dokumen',  $request->no_dokumen);
+            }
+        } else {
+
+            /**
+             * query berdasarkan divisi user yang sedang login
+             */
+            $query->where('budget.divisi_id', Auth::user()->divisi->id);
         }
 
         /**

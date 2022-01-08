@@ -22,7 +22,7 @@ trait UserAccessTrait
     {
         $access = User::with('menuItem')
             ->find($userId)
-            ->menuItem
+            ->menuItem()
             ->where('href', $path)
             ->first();
 

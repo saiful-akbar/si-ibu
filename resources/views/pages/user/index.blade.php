@@ -55,7 +55,8 @@
                                             <th>Divisi</th>
                                             <th>Seksi</th>
                                             <th>Aktif</th>
-                                            <th>Dibuat / Diperbarui</th>
+                                            <th>Dibuat</th>
+                                            <th>Diperbarui</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -86,6 +87,7 @@
                                                         <i class="mdi mdi mdi-close text-danger h3"></i>
                                                     @endif
                                                 </td>
+                                                <td class="align-middle">{{ $user->created_at }}</td>
                                                 <td class="align-middle">{{ $user->updated_at }}</td>
                                                 <td class="align-middle text-center">
                                                     <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
@@ -103,8 +105,7 @@
                                                     @endif
 
                                                     @if ($user_akses->pivot->delete == 1)
-                                                        <button
-                                                            onclick="handleDelete({{ $user->id }})"
+                                                        <button onclick="handleDelete({{ $user->id }})"
                                                             class="btn btn-sm btn-light btn-icon" data-toggle="tooltip"
                                                             data-original-title="Hapus">
                                                             <i class="mdi mdi-delete"></i>

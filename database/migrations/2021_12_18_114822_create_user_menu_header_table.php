@@ -17,7 +17,7 @@ class CreateUserMenuHeaderTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('menu_header_id');
-            $table->boolean('read');
+            $table->boolean('read')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')

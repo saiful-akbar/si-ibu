@@ -50,6 +50,7 @@ class UserController extends Controller
             'user.username',
             'user.seksi',
             'user.active',
+            'user.created_at',
             'user.updated_at',
             'profil.avatar',
             'profil.nama_lengkap',

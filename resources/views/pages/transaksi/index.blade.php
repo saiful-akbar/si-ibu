@@ -51,29 +51,6 @@
                             </div>
                             {{-- end input periode tanggal --}}
 
-                            {{-- input nama divisi --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                                <div class="form-group">
-                                    <label for="divisi">Bagian</label>
-
-                                    <select id="divisi" name="divisi" data-toggle="select2"
-                                        class="form-control select2 @error('divisi') is-invalid @enderror">
-                                        <option value="{{ null }}">Semua Bagian</option>
-
-                                        @foreach ($divisi as $div)
-                                            <option value="{{ $div->nama_divisi }}" @if (old('divisi', request('divisi')) == $div->nama_divisi) selected @endif>
-                                                {{ $div->nama_divisi }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('divisi')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            {{-- end input nama divisi --}}
-
                             {{-- input jenis belanja --}}
                             <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                 <div class="form-group">
@@ -99,24 +76,51 @@
                             </div>
                             {{-- end input jenis belanja --}}
 
-                            {{-- input no dokumen --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                                <div class="form-group">
-                                    <label for="no_dokumen">
-                                        No. Dokumen
-                                    </label>
+                            @if ($isAdmin)
 
-                                    <input type="search" name="no_dokumen"
-                                        value="{{ old('no_dokumen', request('no_dokumen')) }}"
-                                        class="form-control @error('no_dokumen') is-invalid @enderror" id="no_dokumen"
-                                        placeholder="Masukan no dokumen..." />
+                                {{-- input nama bagian (divisi) --}}
+                                <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                    <div class="form-group">
+                                        <label for="divisi">Bagian</label>
 
-                                    @error('no_dokumen')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                        <select id="divisi" name="divisi" data-toggle="select2"
+                                            class="form-control select2 @error('divisi') is-invalid @enderror">
+                                            <option value="{{ null }}">Semua Bagian</option>
+
+                                            @foreach ($divisi as $div)
+                                                <option value="{{ $div->nama_divisi }}" @if (old('divisi', request('divisi')) == $div->nama_divisi) selected @endif>
+                                                    {{ $div->nama_divisi }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('divisi')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            {{-- end input no dokumen --}}
+                                {{-- end input nama bagian (divisi) --}}
+
+                                {{-- input no dokumen --}}
+                                <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                    <div class="form-group">
+                                        <label for="no_dokumen">
+                                            No. Dokumen
+                                        </label>
+
+                                        <input type="search" name="no_dokumen"
+                                            value="{{ old('no_dokumen', request('no_dokumen')) }}"
+                                            class="form-control @error('no_dokumen') is-invalid @enderror" id="no_dokumen"
+                                            placeholder="Masukan no dokumen..." />
+
+                                        @error('no_dokumen')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                {{-- end input no dokumen --}}
+
+                            @endif
 
                         </div>
                     </div>
@@ -268,9 +272,15 @@
     {{-- form export excel & print pdf --}}
     <form id="form-export">
         @method('GET') @csrf
+
         <input type="hidden" name="periode_awal" value="{{ old('periode_awal', request('periode_awal')) }}" />
         <input type="hidden" name="periode_akhir" value="{{ old('periode_akhir', request('periode_akhir')) }}" />
-        <input type="hidden" name="divisi" value="{{ old('divisi', request('divisi')) }}" />
+        <input type="hidden" name="jenis_belanja" value="{{ old('jenis_belanja', request('jenis_belanja')) }}" />
+
+        @if ($isAdmin)
+            <input type="hidden" name="divisi" value="{{ old('divisi', request('divisi')) }}" />
+            <input type="hidden" name="no_dokumen" value="{{ old('no_dokumen', request('no_dokumen')) }}" />
+        @endif
     </form>
 
     {{-- modal detail --}}

@@ -13,7 +13,7 @@ function handleDelete(id) {
                     <i class="dripicons-warning"></i>
                     Peringatan!
                 </h4>
-                
+
                 <ul>
                     <li>Tindakan ini tidak dapat dibatalkan.</li>
                     <li>User yang dihapus tidak dapat dikembalikan.</li>
@@ -44,11 +44,11 @@ function handleDelete(id) {
     });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     /**
      * View avatar
      */
-    $("#avatar").change(function(e) {
+    $("#avatar").change(function (e) {
         e.preventDefault();
 
         const { files } = $(this)[0];
@@ -61,26 +61,26 @@ $(document).ready(function() {
     /**
      * Kembalikan avatar ketika form direset
      */
-    $("button[type=reset]").click(function() {
+    $("button[type=reset]").click(function () {
         const avatarView = $("#avatar-view");
 
         avatarView.attr("src", avatarView.data("src"));
     });
 
     /**
-     * Disable atau aktifkan form update user menu akses
+     * Disable atau aktifkan form edit user menu akses
      */
-    $(".menu-headers").change(function(e) {
+    $(".menu-headers").change(function (e) {
         const isChecked = $(this).is(":checked");
-        const headerName = $(this).data("header-name");
+        const headerName = $(this).data("header");
 
         $(`.${headerName}`).attr("disabled", !isChecked);
     });
 
     /**
-     * Dissable atau aktifkan password di halaman edit
+     * Dissable atau aktifkan password di halaman edit user
      */
-    $("#is-disable-password").change(function(e) {
+    $("#is-disable-password").change(function (e) {
         const isChecked = $(this).is(":checked");
 
         $("#password").attr("disabled", !isChecked);

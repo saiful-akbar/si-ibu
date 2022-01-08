@@ -25,7 +25,7 @@
 
                     <div class="card-body">
 
-                        <input type="hidden" name="budget_id" id="budget_id" required>
+                        <input type="hidden" name="budget_id" id="budget_id" value="{{ old('budget_id') }}" required>
 
                         {{-- Input jenis belanja (akun belanja) --}}
                         <div class="form-group row mb-3">
@@ -286,7 +286,7 @@
                 <div class="card">
                     <div class="card-header pt-3">
                         <h3 class="header-title">
-                            Uraian <small class="text-danger">*</small>
+                            Uraian
                         </h3>
                     </div>
 

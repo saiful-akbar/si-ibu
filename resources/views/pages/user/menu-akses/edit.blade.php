@@ -57,14 +57,13 @@
                                                     <div class="form-group mt-2">
                                                         <div class="custom-control custom-checkbox">
                                                             <input name="menuHeader[{{ $menuHeader->id }}][read]"
-                                                                id="{{ str_replace(' ', '_', strtolower($menuHeader->nama_header)) }}"
-                                                                type="checkbox"
+                                                                id="header_{{ $menuHeader->id }}" type="checkbox"
                                                                 class="custom-control-input form-control-lg menu-headers"
-                                                                data-header-name="{{ str_replace(' ', '_', strtolower($menuHeader->nama_header)) }}"
+                                                                data-header="header_{{ $menuHeader->id }}"
                                                                 @if (isset($user->menuHeader->find($menuHeader->id)->pivot) && $user->menuHeader->find($menuHeader->id)->pivot->read == 1) checked @endif />
 
                                                             <label class="custom-control-label"
-                                                                for="{{ str_replace(' ', '_', strtolower($menuHeader->nama_header)) }}">
+                                                                for="header_{{ $menuHeader->id }}">
                                                                 {{ ucwords($menuHeader->nama_header) }}
                                                             </label>
                                                         </div>
@@ -99,12 +98,12 @@
                                                         <div class="custom-control custom-checkbox">
                                                             <input type="checkbox"
                                                                 name="menuItem[{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}][create]"
-                                                                class="custom-control-input {{ str_replace(' ', '_', strtolower($menuHeader->nama_header)) }}"
-                                                                id="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}-create"
+                                                                class="custom-control-input header_{{ $menuHeader->id }}"
+                                                                id="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}_create"
                                                                 @if (isset($user->menuItem->find($menuItem->id)->pivot) && $user->menuItem->find($menuItem->id)->pivot->create == 1) checked @endif @if (!isset($user->menuHeader->find($menuHeader->id)->pivot) || $user->menuHeader->find($menuHeader->id)->pivot->read != 1) disabled @endif />
 
                                                             <label class="custom-control-label"
-                                                                for="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}-create">
+                                                                for="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}_create">
                                                                 Create
                                                             </label>
                                                         </div>
@@ -115,12 +114,12 @@
                                                         <div class="custom-control custom-checkbox">
                                                             <input type="checkbox"
                                                                 name="menuItem[{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}][read]"
-                                                                class="custom-control-input {{ str_replace(' ', '_', strtolower($menuHeader->nama_header)) }}"
-                                                                id="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}-read"
+                                                                class="custom-control-input header_{{ $menuHeader->id }}"
+                                                                id="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}_read"
                                                                 @if (isset($user->menuItem->find($menuItem->id)->pivot) && $user->menuItem->find($menuItem->id)->pivot->read == 1) checked @endif @if (!isset($user->menuHeader->find($menuHeader->id)->pivot) || $user->menuHeader->find($menuHeader->id)->pivot->read != 1) disabled @endif />
 
                                                             <label class="custom-control-label"
-                                                                for="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}-read">
+                                                                for="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}_read">
                                                                 Read
                                                             </label>
                                                         </div>
@@ -131,12 +130,12 @@
                                                         <div class="custom-control custom-checkbox">
                                                             <input type="checkbox"
                                                                 name="menuItem[{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}][update]"
-                                                                class="custom-control-input {{ str_replace(' ', '_', strtolower($menuHeader->nama_header)) }}"
-                                                                id="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}-update"
+                                                                class="custom-control-input header_{{ $menuHeader->id }}"
+                                                                id="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}_update"
                                                                 @if (isset($user->menuItem->find($menuItem->id)->pivot) && $user->menuItem->find($menuItem->id)->pivot->update == 1) checked @endif @if (!isset($user->menuHeader->find($menuHeader->id)->pivot) || $user->menuHeader->find($menuHeader->id)->pivot->read != 1) disabled @endif />
 
                                                             <label class="custom-control-label"
-                                                                for="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}-update">
+                                                                for="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}_update">
                                                                 Update
                                                             </label>
                                                         </div>
@@ -147,12 +146,12 @@
                                                         <div class="custom-control custom-checkbox">
                                                             <input type="checkbox"
                                                                 name="menuItem[{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}][delete]"
-                                                                class="custom-control-input {{ str_replace(' ', '_', strtolower($menuHeader->nama_header)) }}"
-                                                                id="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}-delete"
+                                                                class="custom-control-input header_{{ $menuHeader->id }}"
+                                                                id="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}_delete"
                                                                 @if (isset($user->menuItem->find($menuItem->id)->pivot) && $user->menuItem->find($menuItem->id)->pivot->delete == 1) checked @endif @if (!isset($user->menuHeader->find($menuHeader->id)->pivot) || $user->menuHeader->find($menuHeader->id)->pivot->read != 1) disabled @endif />
 
                                                             <label class="custom-control-label"
-                                                                for="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}-delete">
+                                                                for="{{ str_replace(' ', '_', strtolower($menuItem->nama_menu)) }}_delete">
                                                                 Delete
                                                             </label>
                                                         </div>

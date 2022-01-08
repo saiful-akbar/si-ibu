@@ -16,7 +16,7 @@ class DivisiController extends Controller
      */
     public function index(Request $request)
     {
-        $divisi = Divisi::select('id', 'nama_divisi', 'active', 'updated_at');
+        $divisi = Divisi::select('id', 'nama_divisi', 'active', 'created_at', 'updated_at');
 
         if ($request->search) {
             $divisi->where('nama_divisi', 'like', '%' . $request->search . '%');

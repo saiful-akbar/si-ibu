@@ -20,7 +20,7 @@ class JenisBelanjaController extends Controller
         /**
          * ambil semua data jenis_belanja
          */
-        $query = JenisBelanja::select('id', 'kategori_belanja', 'active', 'updated_at');
+        $query = JenisBelanja::select('id', 'kategori_belanja', 'active', 'created_at', 'updated_at');
 
         /**
          * cek jika ada request search atau tidak

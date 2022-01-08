@@ -17,10 +17,10 @@ class CreateUserMenuItemTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('menu_item_id');
-            $table->boolean('create');
-            $table->boolean('read');
-            $table->boolean('update');
-            $table->boolean('delete');
+            $table->boolean('create')->default(false);
+            $table->boolean('read')->default(false);
+            $table->boolean('update')->default(false);
+            $table->boolean('delete')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')

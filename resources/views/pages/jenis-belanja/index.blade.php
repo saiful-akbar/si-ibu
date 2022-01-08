@@ -49,7 +49,8 @@
                                             <th>No</th>
                                             <th>Ketergori Belanja</th>
                                             <th>Aktif</th>
-                                            <th>Dibuat / Diperbarui</th>
+                                            <th>Dibuat</th>
+                                            <th>Diperbarui</th>
 
                                             @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
                                                 <th class="text-center">Aksi</th>
@@ -71,7 +72,8 @@
                                                         <i class="mdi mdi mdi-close text-danger h3"></i>
                                                     @endif
                                                 </td>
-                                                <td>{{ $data->updated_at->format('d M Y H:i') }}
+                                                <td>{{ $data->created_at }}
+                                                <td>{{ $data->updated_at }}
                                                 </td>
 
                                                 @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
@@ -137,7 +139,7 @@
                             <i class="dripicons-warning"></i>
                             Peringatan!
                         </h4>
-                        
+
                         <ul>
                             <li>Tindakan ini tidak dapat dibatalkan.</li>
                             <li>Akun belanja yang dihapus tidak dapat dikembalikan.</li>

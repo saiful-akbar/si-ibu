@@ -294,7 +294,7 @@
                 <div class="card">
                     <div class="card-header pt-3">
                         <h3 class="header-title">
-                            Uraian <small class="text-danger">*</small>
+                            Uraian
                         </h3>
                     </div>
 

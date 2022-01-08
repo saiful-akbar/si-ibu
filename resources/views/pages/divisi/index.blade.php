@@ -49,7 +49,8 @@
                                             <th>No</th>
                                             <th>Nama Bagian</th>
                                             <th>Aktif</th>
-                                            <th>Dibuat / Diperbarui</th>
+                                            <th>Dibuat</th>
+                                            <th>Diperbarui</th>
 
                                             @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
                                                 <th class="text-center">Aksi</th>
@@ -70,6 +71,7 @@
                                                         <i class="mdi mdi mdi-close text-danger h3"></i>
                                                     @endif
                                                 </td>
+                                                <td>{{ $data->created_at }}</td>
                                                 <td>{{ $data->updated_at }}</td>
 
                                                 @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)

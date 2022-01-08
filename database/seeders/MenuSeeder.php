@@ -30,17 +30,17 @@ class MenuSeeder extends Seeder
     {
         DB::table('menu_header')->insert([
             [
-                'nama_header' => 'Halaman Utama',
+                'nama_header' => '01. Utama',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nama_header' => 'Data Master',
+                'nama_header' => '02. Data Master',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nama_header' => 'Keuangan',
+                'nama_header' => '03. Keuangan',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -56,24 +56,24 @@ class MenuSeeder extends Seeder
     public function insertMenuItem(): void
     {
         DB::table('menu_item')->insert([
+
+            /**
+             * Halaman utama
+             */
             [
-                'menu_header_id' => $this->getMenuHeader('Halaman Utama'),
+                'menu_header_id' => $this->getMenuHeader('01. Utama'),
                 'nama_menu' => 'Dashboard',
                 'icon' => 'fas fa-home',
                 'href' => '/dashboard',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+
+            /**
+             * Data Master
+             */
             [
-                'menu_header_id' => $this->getMenuHeader('Data Master'),
-                'nama_menu' => 'Bagian',
-                'icon' => 'fas fa-boxes',
-                'href' => '/divisi',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'menu_header_id' => $this->getMenuHeader('Data Master'),
+                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
                 'nama_menu' => 'Akun Belanja',
                 'icon' => 'fas fa-store',
                 'href' => '/jenis-belanja',
@@ -81,26 +81,38 @@ class MenuSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'menu_header_id' => $this->getMenuHeader('Data Master'),
+                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                'nama_menu' => 'Bagian',
+                'icon' => 'fas fa-boxes',
+                'href' => '/divisi',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
                 'nama_menu' => 'User',
                 'icon' => 'fas fa-users',
                 'href' => '/user',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+
+            /**
+             * Keuangan
+             */
             [
-                'menu_header_id' => $this->getMenuHeader('keuangan'),
-                'nama_menu' => 'Budget',
-                'icon' => 'fas fa-funnel-dollar',
-                'href' => '/budget',
+                'menu_header_id' => $this->getMenuHeader('03. keuangan'),
+                'nama_menu' => 'Belanja',
+                'icon' => 'fas fa-shopping-cart',
+                'href' => '/belanja',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'menu_header_id' => $this->getMenuHeader('keuangan'),
-                'nama_menu' => 'Belanja',
-                'icon' => 'fas fa-shopping-cart',
-                'href' => '/belanja',
+                'menu_header_id' => $this->getMenuHeader('03. keuangan'),
+                'nama_menu' => 'Budget',
+                'icon' => 'fas fa-funnel-dollar',
+                'href' => '/budget',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -118,35 +130,42 @@ class MenuSeeder extends Seeder
         DB::table('user_menu_header')->insert([
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('Halaman Utama'),
+                'menu_header_id' => $this->getMenuHeader('01. Utama'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('Data Master'),
+                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('Keuangan'),
+                'menu_header_id' => $this->getMenuHeader('03. Keuangan'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => $this->getUser('staff'),
-                'menu_header_id' => $this->getMenuHeader('Halaman Utama'),
+                'menu_header_id' => $this->getMenuHeader('01. Utama'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => $this->getUser('staff'),
-                'menu_header_id' => $this->getMenuHeader('Keuangan'),
+                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                'read' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('staff'),
+                'menu_header_id' => $this->getMenuHeader('03. Keuangan'),
                 'read' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -163,6 +182,10 @@ class MenuSeeder extends Seeder
     public function insertUserMenuItem(): void
     {
         DB::table('user_menu_item')->insert([
+
+            /**
+             * Admin
+             */
             [
                 'user_id' => $this->getUser('admin'),
                 'menu_item_id' => $this->getMenuItem('Dashboard'),
@@ -223,9 +246,33 @@ class MenuSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+
+            /**
+             * staff
+             */
             [
                 'user_id' => $this->getUser('staff'),
                 'menu_item_id' => $this->getMenuItem('Dashboard'),
+                'create' => false,
+                'read' => true,
+                'update' => false,
+                'delete' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('staff'),
+                'menu_item_id' => $this->getMenuItem('Bagian'),
+                'create' => false,
+                'read' => true,
+                'update' => false,
+                'delete' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $this->getUser('staff'),
+                'menu_item_id' => $this->getMenuItem('Akun Belanja'),
                 'create' => false,
                 'read' => true,
                 'update' => false,

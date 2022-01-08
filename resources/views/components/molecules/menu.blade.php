@@ -1,13 +1,32 @@
 @php
-$user = App\Models\User::with('menuHeader', 'menuItem')->find(Auth::user()->id);
+
+// data user login
+$authUser = App\Models\User::find(Auth::user()->id);
+
+// menu headers
+$menuHeaders = $authUser
+    ->menuHeader()
+    ->orderBy('nama_header', 'asc')
+    ->get();
+
+// menu items
+$menuItems = $authUser
+    ->menuItem()
+    ->orderBy('nama_menu', 'asc')
+    ->get();
+
 @endphp
 
 <ul class="metismenu side-nav">
-    @foreach ($user->menuHeader as $menuHeader)
-        @if (isset($menuHeader->pivot->read) && $menuHeader->pivot->read == 1)
-            <li class="side-nav-title side-nav-item mt-3">{{ $menuHeader->nama_header }}</li>
+    @foreach ($menuHeaders as $menuHeader)
 
-            @foreach ($user->menuItem as $menuItem)
+        {{-- cek akses read menu_header --}}
+        @if (isset($menuHeader->pivot->read) && $menuHeader->pivot->read == 1)
+            <li class="side-nav-title side-nav-item mt-3">{{ substr($menuHeader->nama_header, 4) }}</li>
+
+            @foreach ($menuItems as $menuItem)
+
+                {{-- Cek akses read menu_items --}}
                 @if ($menuItem->menu_header_id == $menuHeader->id && $menuItem->pivot->read == 1)
                     <li class="side-nav-item {{ Request::is(trim($menuItem->href, '/') . '*') ? 'mm-active' : null }}">
                         <a href="{{ url($menuItem->href) }}" class="side-nav-link">
@@ -16,7 +35,9 @@ $user = App\Models\User::with('menuHeader', 'menuItem')->find(Auth::user()->id);
                         </a>
                     </li>
                 @endif
+
             @endforeach
         @endif
+
     @endforeach
 </ul>
