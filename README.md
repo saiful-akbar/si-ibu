@@ -1,11 +1,11 @@
-## Persyaratan
+# Persyaratan
 
 -   php v8.x
 -   composer
 -   git
 -   Aktifkan `extension=gd` pada php.ini untuk fitur export excel dan domPDF
 
-## Development Instalasi
+# Development Instalasi
 
 1.  Clone repository
 
@@ -54,7 +54,7 @@ php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-## Production / Deployment
+# Production / Deployment
 
 1. Copy file .htaccess
 
