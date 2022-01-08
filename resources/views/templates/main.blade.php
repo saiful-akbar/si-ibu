@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Aplikasi anggarang berbasis web laravel" />
+    <meta name="description" content="Aplikasi manajemen anggaran berbasis web" />
     <meta name="author" content="Saiful Akbar" />
 
     <meta name="base-url" content="{{ url('/') }}" />
@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
     {{-- icons --}}
-    <link href="{{ asset('assets/css/vendor/fontawesome/css/all.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/vendor/fontawesome/css/all.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
     @stack('css')
