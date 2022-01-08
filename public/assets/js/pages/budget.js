@@ -75,7 +75,68 @@ class Budget {
         $("#detail-budget").modal(show ? "show" : "hide");
 
         if (show) {
-            this.showLoading(false);
+            this.showLoading(true);
+
+            $("#detail-transaksi").html("");
+
+            $.ajax({
+                type: "get",
+                url: `${main.baseUrl}/budget/${budgetId}/show`,
+                dataType: "json",
+                success: (res) => {
+                    this.showLoading(false);
+
+                    $("#detail-keterangan").html(res.budget.keterangan);
+                    $("#detail-tahun-anggaran").text(res.budget.tahun_anggaran);
+                    $("#detail-tahun-anggaran").text(res.budget.tahun_anggaran);
+                    $("#detail-divisi").text(res.budget.divisi.nama_divisi);
+                    $("#detail-jenis-belanja").text(
+                        res.budget.jenis_belanja.kategori_belanja
+                    );
+
+                    $("#detail-nominal").text(
+                        "Rp. " + main.formatRupiah(res.budget.nominal)
+                    );
+                    $("#detail-nominal-transaksi").text(
+                        "Rp. " + main.formatRupiah(res.totalNominalTransaksi)
+                    );
+                    $("#detail-sisa-nominal").text(
+                        "Rp. " + main.formatRupiah(res.budget.sisa_nominal)
+                    );
+
+                    /**
+                     * append table detail transkasi per budget
+                     */
+                    res.transaksi.map((transaksi) =>
+                        $("#detail-transaksi").append(`
+                            <tr>
+                                <td>${transaksi.tanggal}</td>
+                                <td>${transaksi.user.profil.nama_lengkap}</td>
+                                <td>${transaksi.kegiatan}</td>
+                                <td>${transaksi.approval}</td>
+                                <td>${transaksi.no_dokumen}</td>
+                                <td class="text-center">
+                                    ${
+                                        transaksi.file_dokumen !== null
+                                            ? `
+                                                <a href="${main.baseUrl}/belanja/${transaksi.id}/download" class="btn btn-light btn-sm btn-rounded">
+                                                    <i class="mdi mdi-download"></i>
+                                                    <span>Unduh</span>
+                                                </a>
+                                            `
+                                            : "File tidak tersedia"
+                                    }
+                                </td>
+                                <td class="text-right">
+                                    Rp. ${main.formatRupiah(
+                                        transaksi.jumlah_nominal
+                                    )}
+                                </td>
+                            </tr>
+                         `)
+                    );
+                },
+            });
         }
     };
 

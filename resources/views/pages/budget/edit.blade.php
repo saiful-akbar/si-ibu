@@ -161,7 +161,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <textarea name="keterangan" id="keterangan" rows="10" placeholder="Masukan keterangan..."
-                                class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan') }}</textarea>
+                                class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan', $budget->keterangan) }}</textarea>
 
                             @error('keterangan')
                                 <div class="invalid-feedback">{{ $message }}</div>

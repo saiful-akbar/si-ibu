@@ -13,16 +13,6 @@ use Illuminate\Support\Facades\Auth;
 class BudgetController extends Controller
 {
     /**
-     * custom date untuk keterangan.
-     *
-     * @return string
-     */
-    private function dateKeterangan(): string
-    {
-        return '<p><small>' . date('d M Y H:i') . '</small></p><hr/>';
-    }
-
-    /**
      * index
      * view halaman budget
      *
@@ -106,12 +96,30 @@ class BudgetController extends Controller
      */
     public function show(Budget $budget)
     {
-        $data = Budget::with('divisi', 'jenisBelanja', 'transaksi')->find($budget->id);
-        $totalNominalTransaksi = Transaksi::where('budget_id', $budget->id)->sum('jumlah_nominal');
+        /**
+         * ambil data budget
+         */
+        $data = Budget::with('divisi', 'jenisBelanja', 'transaksi')
+            ->find($budget->id);
+
+        /**
+         * ambil data belanja (transaksi)
+         */
+        $transaksi = Transaksi::with('user.profil')
+            ->where('budget_id', $budget->id)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        /**
+         * total jumlah_nominal belanja (transaksi)
+         */
+        $totalNominalTransaksi = Transaksi::where('budget_id', $budget->id)
+            ->sum('jumlah_nominal');
 
         return response()->json([
             'budget' => $data,
-            'totalNominalTransaksi' => $totalNominalTransaksi,
+            'transaksi' => $transaksi,
+            'totalNominalTransaksi' => (int) $totalNominalTransaksi,
         ], 200);
     }
 
@@ -177,7 +185,7 @@ class BudgetController extends Controller
          * isi sisa_nominal sesuai nominal yang di-input.
          */
         $validatedData['sisa_nominal'] = $request->nominal;
-        $validatedData['keterangan'] = $this->dateKeterangan() . $request->keterangan . '<br>';
+        $validatedData['keterangan'] = $request->keterangan;
 
         /**
          * ambil data budget berdasarkan divisi_id, jenis_belanja_id & tahun
@@ -286,7 +294,7 @@ class BudgetController extends Controller
          * masukan sisa_nominal & keterangan ke $validatedData
          */
         $validatedData['sisa_nominal'] = $budget->sisa_nominal;
-        $validatedData['keterangan'] = $budget->keterangan . $this->dateKeterangan() . $request->keterangan . '<br>';
+        $validatedData['keterangan'] = $request->keterangan;
 
         /**
          * Cek apakah divisi_id, jenis_belanja_id & tahun anggaran dirubah atau tidak
@@ -346,7 +354,7 @@ class BudgetController extends Controller
         /**
          * return jika proses update sukses
          */
-        return redirect()->route('budget')->with('alert', [
+        return redirect()->route('budget.edit', ['budget' => $budget->id])->with('alert', [
             'type' => 'success',
             'message' => 'Budget berhasil diperbarui.',
         ]);
@@ -465,11 +473,6 @@ class BudgetController extends Controller
         try {
 
             /**
-             * tanggal untuk keterangan
-             */
-            $date = '<p><small>' . date('d M Y H:i') . '</small></p><hr/>';
-
-            /**
              * kurangi nominal & sisa_nominal pada budget yang di switch
              */
             $budget->sisa_nominal = $budget->sisa_nominal - $request->nominal;
@@ -497,12 +500,12 @@ class BudgetController extends Controller
                     'tahun_anggaran' => $request->tahun_anggaran,
                     'nominal' => $request->nominal,
                     'sisa_nominal' => $request->nominal,
-                    'keterangan' => $this->dateKeterangan() . $request->keterangan . '<br>',
+                    'keterangan' => $request->keterangan,
                 ]);
             } else {
                 $availableBudget->nominal += $request->nominal;
                 $availableBudget->sisa_nominal += $request->nominal;
-                $availableBudget->keterangan .= $this->dateKeterangan() . $request->keterangan . '<br>';
+                $availableBudget->keterangan .= '<br>' . $request->keterangan;
                 $availableBudget->save();
             }
         } catch (\Exception $e) {
@@ -510,7 +513,7 @@ class BudgetController extends Controller
             /**
              * response jika proses update switch budget gagal.
              */
-            return redirect()->route('budget.swith', ['budget' => $budget->id])->with('alert', [
+            return redirect()->route('budget.switch', ['budget' => $budget->id])->with('alert', [
                 'type' => 'danger',
                 'message' => 'Gagal melakikan switch budget. <strong>' . $e->getMessage() . '</strong>',
             ]);
@@ -519,7 +522,7 @@ class BudgetController extends Controller
         /**
          * return jika update switch budget sukses.
          */
-        return redirect()->route('budget')->with('alert', [
+        return redirect()->route('budget.switch', ['budget' => $budget->id])->with('alert', [
             'type' => 'success',
             'message' => 'Switch budget berhasil dilakukan.',
         ]);
