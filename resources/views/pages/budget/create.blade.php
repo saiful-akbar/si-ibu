@@ -130,7 +130,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="header-title mt-2">
-                            Keterangan <small class="text-danger">*</small>
+                            Keterangan
                         </h4>
                     </div>
 

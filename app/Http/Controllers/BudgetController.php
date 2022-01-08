@@ -155,7 +155,7 @@ class BudgetController extends Controller
             'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:1900'],
             'nominal' => ['required', 'numeric', 'min:0'],
-            'keterangan' => ['required'],
+            'keterangan' => [],
         ];
 
         /**
@@ -173,7 +173,6 @@ class BudgetController extends Controller
             'nominal.required' => 'Nilai nominal tidak boleh kosong.',
             'nominal.numeric' => 'Nilai nominal harus bertipe numerik atau angka.',
             'nominal.min' => 'Nilai nominal tidak boleh kurang dari 0.',
-            'keterangan.required' => 'Keterangan harus diisi.',
         ];
 
         /**
@@ -264,7 +263,7 @@ class BudgetController extends Controller
             'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:0'],
             'nominal' => ['required', 'numeric', 'min:0'],
-            'keterangan' => ['required'],
+            'keterangan' => [],
         ];
 
         /**
@@ -282,7 +281,6 @@ class BudgetController extends Controller
             'nominal.required' => 'Nilai nominal tidak boleh kosong.',
             'nominal.numeric' => 'Nilai nominal harus bertipe numerik atau angka.',
             'nominal.min' => 'Nilai nominal tidak boleh kurang dari 0.',
-            'keterangan.required' => 'Keterangan harus diisi.',
         ];
 
         /**
@@ -440,7 +438,7 @@ class BudgetController extends Controller
             'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
             'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:1900'],
             'nominal' => ['required', 'numeric', "max:{$budget->sisa_nominal}", 'min:0'],
-            'keterangan' => ['required'],
+            'keterangan' => [],
         ];
 
         /**
@@ -459,7 +457,6 @@ class BudgetController extends Controller
             'nominal.numeric' => 'Jumlah nominal berupa angka.',
             'nominal.max' => 'Jumlah nominal yang dialihkan melebihi sisa nominal budget pada akun belanja yang dipilih.',
             'nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
-            'keterangan.required' => 'keterangan harus diisi',
         ];
 
         /**
@@ -505,7 +502,7 @@ class BudgetController extends Controller
             } else {
                 $availableBudget->nominal += $request->nominal;
                 $availableBudget->sisa_nominal += $request->nominal;
-                $availableBudget->keterangan .= '<br>' . $request->keterangan;
+                $availableBudget->keterangan .= $request->keterangan;
                 $availableBudget->save();
             }
         } catch (\Exception $e) {

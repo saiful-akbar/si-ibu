@@ -198,7 +198,7 @@
                 <div class="card">
                     <div class="card-header pt-3">
                         <h4 class="header-title">
-                            Keterangan <small class="text-danger">*</small>
+                            Keterangan
                         </h4>
                     </div>
 
