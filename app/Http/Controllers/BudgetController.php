@@ -93,12 +93,26 @@ class BudgetController extends Controller
         $totalSisaNominal = $query->sum('sisa_nominal');
 
         /**
+         * ambil data bagian (divisi)
+         */
+        $divisi = Divisi::where('active', 1)
+            ->orderBy('nama_divisi', 'asc')
+            ->get();
+
+        /**
+         * ambil data akun belanja (jenis_belanja)
+         */
+        $jenisBelanja = JenisBelanja::where('active', 1)
+            ->orderBy('kategori_belanja', 'asc')
+            ->get();
+
+        /**
          * return view
          */
         return view('pages.budget.index', [
             'budgets' => $query->simplePaginate(25)->withQueryString(),
-            'divisi' => Divisi::all(),
-            'jenisBelanja' => JenisBelanja::all(),
+            'divisi' => $divisi,
+            'jenisBelanja' => $jenisBelanja,
             'totalNominal' => $totalNominal,
             'totalSisaNominal' => $totalSisaNominal,
             'userAccess' => $userAccess,

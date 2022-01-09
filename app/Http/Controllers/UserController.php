@@ -8,6 +8,7 @@ use App\Models\MenuItem;
 use App\Models\Profil;
 use App\Models\Transaksi;
 use App\Models\User;
+use App\Traits\UserAccessTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    use UserAccessTrait;
+
     /**
      * View halaman user
      *
@@ -60,17 +63,14 @@ class UserController extends Controller
         /**
          * ambid data user akses untuk menu user
          */
-        $user_akses = User::with('menuItem')->find(Auth::user()->id)
-            ->menuItem
-            ->where('href', '/user')
-            ->first();
+        $userAccess = $this->getAccess(href: '/user');
 
         /**
          * view halaman user.
          */
         return view('pages.user.index', [
             'users' => $users->simplePaginate(25)->withQueryString(),
-            'user_akses' => $user_akses,
+            'userAccess' => $userAccess,
         ]);
     }
 
@@ -88,7 +88,9 @@ class UserController extends Controller
          *
          * @var object
          */
-        $divisions = Divisi::all();
+        $divisions = Divisi::where('active', 1)
+            ->orderBy('nama_divisi', 'asc')
+            ->get();
 
         return view('pages.user.create', compact('divisions'));
     }
@@ -224,7 +226,9 @@ class UserController extends Controller
         /**
          * ambil data divisi & rol
          */
-        $divisions = Divisi::all();
+        $divisions = Divisi::where('active', 1)
+            ->orderBy('nama_divisi', 'asc')
+            ->get();
 
         return view('pages.user.edit', compact('divisions', 'user'));
     }

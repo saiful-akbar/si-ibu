@@ -227,13 +227,27 @@ class TransaksiController extends Controller
         $query->orderBy('tanggal', 'desc')->orderBy('budget.divisi_id', 'asc');
 
         /**
+         * ambil data bagian (divisi)
+         */
+        $divisi = Divisi::where('active', 1)
+            ->orderBy('nama_divisi', 'asc')
+            ->get();
+
+        /**
+         * ambil data akun belanja (jenis_belanja)
+         */
+        $jenisBelanja = JenisBelanja::where('active', 1)
+            ->orderBy('kategori_belanja', 'asc')
+            ->get();
+
+        /**
          * return view
          */
         return view('pages.transaksi.index', [
             'transactions' => $query->simplePaginate(25)->withQueryString(),
             'userAccess' => Auth::user()->menuItem->where('href', '/belanja')->first(),
-            'divisi' => Divisi::where('active', 1)->get(),
-            'jenisBelanja' => JenisBelanja::where('active', 1)->get(),
+            'divisi' => $divisi,
+            'jenisBelanja' => $jenisBelanja,
             'isAdmin' => $isAdmin,
         ]);
     }
