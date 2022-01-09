@@ -41,22 +41,25 @@
                                 </div>
                             </div>
 
-                            {{-- input bagian (divisi) --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                                <div class="form-group">
-                                    <label for="divisi">Bagian</label>
+                            {{-- input bagian (divisi) jika user sebagai admin --}}
+                            @if ($isAdmin)
+                                <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                    <div class="form-group">
+                                        <label for="divisi">Bagian</label>
 
-                                    <select id="divisi" name="divisi" data-toggle="select2" class="form-control select2">
-                                        <option value="{{ null }}">Semua Bagian</option>
+                                        <select id="divisi" name="divisi" data-toggle="select2"
+                                            class="form-control select2">
+                                            <option value="{{ null }}">Semua Bagian</option>
 
-                                        @foreach ($divisi as $div)
-                                            <option value="{{ $div->nama_divisi }}" @if (request('divisi') == $div->nama_divisi) selected @endif>
-                                                {{ $div->nama_divisi }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                            @foreach ($divisi as $div)
+                                                <option value="{{ $div->nama_divisi }}" @if (request('divisi') == $div->nama_divisi) selected @endif>
+                                                    {{ $div->nama_divisi }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             {{-- input akun belanja (jenis_belanja) --}}
                             <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
@@ -104,7 +107,7 @@
                     {{-- button tambah --}}
                     <div class="row">
                         <div class="col-12 mb-3">
-                            @if ($userAccess->pivot->create == 1)
+                            @if ($userAccess->create == 1)
                                 <a href="{{ route('budget.create') }}" class="btn btn-sm btn-rounded btn-primary">
                                     <i class="mdi mdi-plus"></i>
                                     <span>Input Budget</span>
@@ -152,7 +155,7 @@
                                                             <i class="mdi mdi-eye-outline"></i>
                                                         </button>
 
-                                                        @if ($userAccess->pivot->update == 1)
+                                                        @if ($userAccess->update == 1)
                                                             <a href="{{ route('budget.switch', ['budget' => $data->id]) }}"
                                                                 class="btn btn-sm btn-light btn-icon mr-1"
                                                                 data-toggle="tooltip" data-original-title="Switch Budget"
@@ -168,7 +171,7 @@
                                                             </a>
                                                         @endif
 
-                                                        @if ($userAccess->pivot->delete == 1)
+                                                        @if ($userAccess->delete == 1)
                                                             <button onclick="budget.handleDelete({{ $data->id }})"
                                                                 data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top" class="btn btn-sm btn-light btn-icon">

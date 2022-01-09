@@ -7,11 +7,14 @@ use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
 use App\Models\User;
+use App\Traits\UserAccessTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class BudgetController extends Controller
 {
+    use UserAccessTrait;
+
     /**
      * index
      * view halaman budget
@@ -22,6 +25,17 @@ class BudgetController extends Controller
     public function index(Request $request)
     {
         /**
+         * ambil akses menu pada user
+         * jika full akses (create, read, update, delete) maka user dianggap sebagai admin
+         */
+        $isAdmin = $this->isAdmin(href: '/budget');
+
+        /**
+         * ambil data user akses untuk menu user
+         */
+        $userAccess = $this->getAccess(href: '/budget');
+
+        /**
          * query join table budget dengan tabel divisi dan select kolom yang diperlukan
          */
         $query = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
@@ -31,6 +45,8 @@ class BudgetController extends Controller
                 'budget.tahun_anggaran',
                 'budget.nominal',
                 'budget.sisa_nominal',
+                'budget.divisi_id',
+                'budget.jenis_belanja_id',
                 'budget.created_at',
                 'budget.updated_at',
                 'divisi.nama_divisi',
@@ -38,17 +54,29 @@ class BudgetController extends Controller
             ])->whereBetween('budget.tahun_anggaran', [$request->periode_awal, $request->periode_akhir]);
 
         /**
-         * cek divisi di cari atau tidak
-         */
-        if (!empty($request->divisi)) {
-            $query->where('divisi.nama_divisi', $request->divisi);
-        }
-
-        /**
          * cek akun belanja (jenis_belanja) di cari atau tidak
          */
         if (!empty($request->jenis_belanja)) {
             $query->where('jenis_belanja.kategori_belanja', $request->jenis_belanja);
+        }
+
+        /**
+         * cek apakah user sebagai admin atau tidak
+         */
+        if ($isAdmin) {
+
+            /**
+             * cek divisi di cari atau tidak
+             */
+            if (!empty($request->divisi)) {
+                $query->where('divisi.nama_divisi', $request->divisi);
+            }
+        } else {
+
+            /**
+             * query berdasarkan  divisi user yang sedang login
+             */
+            $query->where('budget.divisi_id', Auth::user()->divisi_id);
         }
 
         /**
@@ -64,27 +92,17 @@ class BudgetController extends Controller
         $totalNominal = $query->sum('nominal');
         $totalSisaNominal = $query->sum('sisa_nominal');
 
-
-        /**
-         * ambil data user akses untuk menu user
-         */
-        $userAccess = User::with('menuItem')->find(Auth::user()->id)
-            ->menuItem
-            ->where('href', '/budget')
-            ->first();
-
-
-
         /**
          * return view
          */
         return view('pages.budget.index', [
             'budgets' => $query->simplePaginate(25)->withQueryString(),
-            'userAccess' => $userAccess,
             'divisi' => Divisi::all(),
             'jenisBelanja' => JenisBelanja::all(),
             'totalNominal' => $totalNominal,
             'totalSisaNominal' => $totalSisaNominal,
+            'userAccess' => $userAccess,
+            'isAdmin' => $isAdmin,
         ]);
     }
 
