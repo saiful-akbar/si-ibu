@@ -118,8 +118,8 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-sm btn-rounded btn-light" onclick="transaksi.closeDetail()">
-                    <i class=" mdi mdi-close"></i>
+                <button class="btn btn-sm btn-rounded btn-dark" onclick="transaksi.closeDetail()">
+                    <i class=" mdi mdi-close-circle mr-1"></i>
                     <span>Tutup</span>
                 </button>
             </div>

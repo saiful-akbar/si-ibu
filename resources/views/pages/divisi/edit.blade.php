@@ -4,7 +4,7 @@
 
 @section('btn-kembali')
     <a href="{{ route('divisi') }}" class="btn btn-rounded btn-secondary btn-sm">
-        <i class="mdi mdi-chevron-double-left"></i>
+        <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
 @endsection
@@ -67,12 +67,12 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-sm btn-info btn-rounded mr-2">
-                            <i class="mdi mdi-content-save"></i>
+                            <i class="mdi mdi-content-save mr-1"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button type="reset" class="btn btn-sm btn-rounded btn-outline-dark">
-                            <i class="mdi mdi-close"></i>
+                        <button type="reset" class="btn btn-sm btn-rounded btn-dark">
+                            <i class="mdi mdi-close-circle mr-1"></i>
                             <span>Reset</span>
                         </button>
                     </div>

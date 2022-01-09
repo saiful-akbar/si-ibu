@@ -639,9 +639,28 @@ class TransaksiController extends Controller
      */
     public function delete(Transaksi $transaksi)
     {
+
         try {
+
+            /**
+             * update sisa_nominal pada budget
+             */
+            $budget = Budget::find($transaksi->budget_id);
+            $budget->sisa_nominal += (int) $transaksi->jumlah_nominal;
+            $budget->save();
+
+            /**
+             * cek file_dokumen ada atau tidak
+             * jika ada hapus dari storage
+             */
+            if ($transaksi->file_dokumen != null) {
+                Storage::delete($transaksi->file_dokumen);
+            }
+
+            /**
+             * Hapus data belanja (transaksi) dari database
+             */
             Transaksi::destroy($transaksi->id);
-            Storage::delete($transaksi->file_dokumen);
         } catch (\Exception $e) {
             return redirect()
                 ->route('belanja')
@@ -855,7 +874,7 @@ class TransaksiController extends Controller
                         onclick='transaksi.setFormValue({$budget->id}, {$budget->tahun_anggaran}, \"{$budget->nama_divisi}\", \"{$budget->kategori_belanja}\", {$budget->sisa_nominal})'
                         class='btn btn-sm btn-success btn-rounded btn-sm'
                     >
-                        <i class='mdi mdi-hand-pointing-up'></i>
+                        <i class='mdi mdi-hand-pointing-up mr-1'></i>
                         <span>Pilih</span>
                     </button>
                 ";

@@ -10,11 +10,11 @@ class Budget {
      */
     handleDelete = (id) => {
         bootbox.confirm({
-            title: "<h5 class='mt-2'>Anda ingin menghapus budget ?</h5>",
+            title: "Anda ingin menghapus budget ?",
             message: `
                 <div class="alert alert-danger" role="alert">
                     <h4 class="alert-heading">
-                        <i class="dripicons-warning"></i>
+                        <i class="dripicons-warning mr-1"></i>
                         Peringatan!
                     </h4>
 
@@ -29,12 +29,12 @@ class Budget {
             `,
             buttons: {
                 confirm: {
-                    label: "Hapus",
+                    label: "<i class='mdi mdi-delete mr-1'></i> Hapus",
                     className: "btn btn-danger btn-sm btn-rounded",
                 },
                 cancel: {
-                    label: "Batal",
-                    className: "btn btn-sm btn-outline-dark btn-rounded",
+                    label: "<i class='mdi mdi-close-circle mr-1'></i> Batal",
+                    className: "btn btn-sm btn-dark btn-rounded mr-2",
                 },
             },
             callback: (result) => {

@@ -127,7 +127,7 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
-                            <i class="mdi mdi-filter-variant"></i>
+                            <i class="mdi mdi-filter-variant mr-1"></i>
                             <span>Filter</span>
                         </button>
                     </div>
@@ -149,25 +149,27 @@
 
                     {{-- button tambah & form search --}}
                     <div class="row align-items-center">
-                        <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
+                        <div class="col-lg-9 col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->pivot->create == 1)
                                 <a href="{{ route('belanja.create') }}" class="btn btn-primary btn-sm btn-rounded">
-                                    <i class="mdi mdi-plus"></i>
+                                    <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Tambah Belanja</span>
                                 </a>
                             @endif
                         </div>
 
-                        <div class="col-lg-4 col-md-6 col-sm-12 mb-3 d-flex justify-content-md-end">
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-3 d-flex justify-content-md-end">
                             <div class="btn-group btn-block">
-                                <button type="submit" class="btn btn-success btn-sm btn-rounded btn-export"
+                                <button type="submit" class="btn btn-light btn-sm btn-rounded btn-export"
                                     data-route="{{ route('belanja.excel') }}" @if (count($transactions) <= 0) disabled @endif>
-                                    <span>Export Excel</span>
+                                    <i class="mdi mdi-file-excel text-success mr-1"></i>
+                                    <span>Excel</span>
                                 </button>
 
-                                <button type="submit" class="btn btn-danger btn-sm btn-rounded btn-export"
+                                <button type="submit" class="btn btn-light btn-sm btn-rounded btn-export"
                                     data-route="{{ route('belanja.pdf') }}" @if (count($transactions) <= 0) disabled @endif>
-                                    <span>Cetak PDF</span>
+                                    <i class="mdi mdi-file-pdf text-danger mr-1"></i>
+                                    <span>PDF</span>
                                 </button>
                             </div>
                         </div>
@@ -233,7 +235,7 @@
                                                             <button class="btn btn-sm btn-icon btn-light"
                                                                 data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top"
-                                                                onclick="transaksi.delete({{ $data->id }}, '{{ $data->no_dokumen }}')">
+                                                                onclick="transaksi.delete({{ $data->id }})">
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>
                                                         @endif

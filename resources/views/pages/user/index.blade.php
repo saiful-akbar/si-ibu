@@ -19,7 +19,7 @@
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($user_akses->pivot->create == 1)
                                 <a href="{{ route('user.create') }}" class="btn btn-rounded btn-primary btn-sm">
-                                    <i class="mdi mdi-plus"></i>
+                                    <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Tambah User</span>
                                 </a>
                             @endif

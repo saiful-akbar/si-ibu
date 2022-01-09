@@ -4,7 +4,7 @@
 
 @section('btn-kembali')
     <a href="{{ route('user') }}" class="btn btn-rounded btn-light btn-sm">
-        <i class="mdi mdi-chevron-double-left"></i>
+        <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
 @endsection

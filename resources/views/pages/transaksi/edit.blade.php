@@ -4,7 +4,7 @@
 
 @section('btn-kembali')
     <a href="{{ route('budget') }}" class="btn btn-rounded btn-light btn-sm">
-        <i class="mdi mdi-chevron-double-left"></i>
+        <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
 @endsection
@@ -257,14 +257,14 @@
                                     <div class="col-12">
                                         <label for="file_dokumen">
                                             <span type="button" class="btn btn-primary btn-sm btn-rounded">
-                                                <i class="mdi mdi-upload-outline"></i>
+                                                <i class="mdi mdi-upload mr-1"></i>
                                                 <span>Unggah File</span>
                                             </span>
                                         </label>
                                     </div>
 
                                     <div class="col-12">
-                                        <span id="file-name"
+                                        <span id="file-name" class="badge badge-light py-1 px-1 mt-1"
                                             data-file="{{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}"
                                             data-action="edit">
                                             {{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}
@@ -309,12 +309,12 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
-                            <i class="mdi mdi-content-save"></i>
+                            <i class="mdi mdi-content-save mr-1"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button type="reset" class="btn btn-outline-dark btn-sm btn-rounded">
-                            <i class="mdi mdi-close"></i>
+                        <button type="reset" class="btn btn-dark btn-sm btn-rounded">
+                            <i class="mdi mdi-close-circle mr-1"></i>
                             <span>Reset</span>
                         </button>
                     </div>

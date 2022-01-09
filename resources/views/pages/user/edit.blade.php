@@ -4,7 +4,7 @@
 
 @section('btn-kembali')
     <a href="{{ route('user') }}" class="btn btn-rounded btn-light btn-sm">
-        <i class="mdi mdi-chevron-double-left"></i>
+        <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
 @endsection
@@ -130,7 +130,7 @@
 
                                 <label for="avatar" class="ml-2">
                                     <span type="button" class="btn btn-rounded btn-primary btn-sm">
-                                        <i class="mdi mdi-upload-outline"></i>
+                                        <i class="mdi mdi-upload mr-1"></i>
                                         <span>Avatar</span>
                                     </span>
                                 </label>
@@ -213,12 +213,12 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
-                            <i class="mdi mdi-content-save"></i>
+                            <i class="mdi mdi-content-save mr-1"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button type="reset" class="btn btn-rounded btn-outline-dark btn-sm">
-                            <i class="mdi mdi-close"></i>
+                        <button type="reset" class="btn btn-rounded btn-dark btn-sm">
+                            <i class="mdi mdi-close-circle mr-1"></i>
                             <span>Reset</span>
                         </button>
                     </div>

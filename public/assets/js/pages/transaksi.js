@@ -7,25 +7,32 @@ class Transaksi {
      * Method handle hapus data user
      *
      * @param {int} id
-     * @param {string} noDokumen
      */
-    delete(id, noDokumen) {
+    delete(id) {
         bootbox.confirm({
-            title: "Peringatan!",
+            title: "Anda insin menghapus data belanja?",
             message: `
-                <ul>
-                    <li>Yakin ingin menghapus data belanja dengan nomer dokumen "<strong>${noDokumen}</strong>" ?</li>
-                    <li>Semua data terkait atau data yang berelasi dengan data belanja ini juga akan terhapus.</li>
-                </ul>
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">
+                        <i class="dripicons-warning mr-1"></i>
+                        Peringatan!
+                    </h4>
+
+                    <ul>
+                        <li>Tindakan ini tidak dapat dibatalkan.</li>
+                        <li>Data belanja yang dihapus tidak dapat dikembalikan.</li>
+                        <li>Pastikan anda berhati-hati dalam menghapus data.</li>
+                    </ul>
+                </div>
             `,
             buttons: {
                 confirm: {
-                    label: "Hapus",
-                    className: "btn-danger btn-rounded btn-sm",
+                    label: "<i class='mdi mdi-delete mr-1'></i> Hapus",
+                    className: "btn btn-danger btn-sm btn-rounded",
                 },
                 cancel: {
-                    label: "Batal",
-                    className: "btn-secondary btn-rounded btn-sm",
+                    label: "<i class='mdi mdi-close-circle mr-1'></i> Batal",
+                    className: "btn btn-sm btn-dark btn-rounded mr-2",
                 },
             },
             callback: (result) => {
@@ -102,7 +109,7 @@ class Transaksi {
                 if (res.download !== null) {
                     $("#detail-download-dokumen").html(`
                         <a href="${res.download}" class="btn btn-light btn-sm btn-rounded">
-                            <i class="mdi mdi-download"></i>
+                            <i class="mdi mdi-download mr-1"></i>
                             <span>Unduh</span>
                         </a>
                     `);

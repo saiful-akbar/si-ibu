@@ -100,8 +100,8 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-light btn-sm btn-rounded" onclick="budget.detail(false)">
-                    <i class=" mdi mdi-close"></i>
+                <button class="btn btn-dark btn-sm btn-rounded" onclick="budget.detail(false)">
+                    <i class=" mdi mdi-close-circle"></i>
                     Tutup
                 </button>
             </div>

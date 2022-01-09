@@ -84,7 +84,7 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-info btn-rounded btn-sm">
-                            <i class="mdi mdi-filter-variant"></i>
+                            <i class="mdi mdi-filter-variant mr-1"></i>
                             <span>Filter</span>
                         </button>
                     </div>
@@ -109,7 +109,7 @@
                         <div class="col-12 mb-3">
                             @if ($userAccess->create == 1)
                                 <a href="{{ route('budget.create') }}" class="btn btn-sm btn-rounded btn-primary">
-                                    <i class="mdi mdi-plus"></i>
+                                    <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Input Budget</span>
                                 </a>
                             @endif
