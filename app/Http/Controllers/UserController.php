@@ -160,32 +160,54 @@ class UserController extends Controller
         }
 
         /**
-         * simpan data user ke database
-         *
-         * @var object
+         * Proses create user
          */
-        $user = User::create([
-            'divisi_id' => $request->divisi_id,
-            'username' => $request->username,
-            'password' => bcrypt($request->password),
-            'seksi' => ucwords($request->seksi),
-            'active' => $user_active,
-        ]);
+        try {
 
-        /**
-         * simpan data profil
-         */
-        $user->profil()->create([
-            'avatar' => $avatar,
-            'nama_lengkap' => ucwords($request->nama_lengkap),
-        ]);
+            /**
+             * tambah data user ke database
+             *
+             * @var object
+             */
+            $user = User::create([
+                'divisi_id' => $request->divisi_id,
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'seksi' => ucwords($request->seksi),
+                'active' => $user_active,
+            ]);
+
+            /**
+             * tambah data profil
+             */
+            $user->profil()->create([
+                'avatar' => $avatar,
+                'nama_lengkap' => ucwords($request->nama_lengkap),
+            ]);
+
+            /**
+             * tambah tema
+             */
+            $user->pengaturan()->create([
+                'tema' => 'light',
+            ]);
+        } catch (\Exception $e) {
+
+            /**
+             * response jika user gagal ditambahkan
+             */
+            return redirect()->route('user.create')->with('alert', [
+                'type' => 'danger',
+                'message' => 'Gagal menambahkan user. ' . $e->getMessage(),
+            ]);
+        }
 
         /**
          * redurect ke halaman user
          */
-        return redirect()->route('user.create')->with('alert', [
+        return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
             'type' => 'success',
-            'message' => '1 user berhasil ditambahkan',
+            'message' => 'User berhasil ditambahkan. Tentukan menu akses pada user.',
         ]);
     }
 
