@@ -41,6 +41,27 @@
                     <form action="{{ route('user.menu-akses.update', ['user' => $user->id]) }}" method="POST">
                         @method('PATCH') @csrf
 
+                        {{-- alert info --}}
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+
+                                    <h4 class="alert-heading">
+                                        <i class="dripicons-information mr-1"></i> Info
+                                    </h4>
+
+                                    <p>
+                                        User akan dianggap sebagai admin pada menu jika memilika full akses (create, read,
+                                        update & delete).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- end alert info --}}
+
                         @foreach ($menuHeaders as $menuHeader)
                             <div class="row mb-3">
                                 <div class="col-12">
