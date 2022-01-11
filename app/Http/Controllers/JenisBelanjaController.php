@@ -207,7 +207,7 @@ class JenisBelanjaController extends Controller
                 ->route('jenis-belanja')
                 ->with('alert', [
                     'type' => 'warning',
-                    'message' => "Gagal menghapus data akun belanja {$jenisBelanja->divisi->nama_divisi}-{$jenisBelanja->kategori_belanja}. Data akun belanja ini memiliki data relasi dengan budget. ",
+                    'message' => "Gagal menghapus data akun belanja {$jenisBelanja->kategori_belanja}. Data akun belanja ini memiliki data relasi dengan budget. ",
                 ]);
         }
 
