@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\User;
+use App\Traits\UserAccessTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class JenisBelanjaController extends Controller
 {
+    use UserAccessTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -41,10 +44,7 @@ class JenisBelanjaController extends Controller
         /**
          * ambid data user akses untuk menu divisi
          */
-        $userAccess = User::with('menuItem')->find(Auth::user()->id)
-            ->menuItem
-            ->where('href', '/jenis-belanja')
-            ->first();
+        $userAccess = $this->getAccess(href: '/akun-belanja');
 
         return view('pages.jenis-belanja.index', compact('jenisBelanja', 'userAccess'));
     }

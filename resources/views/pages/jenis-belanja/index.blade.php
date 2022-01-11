@@ -1,8 +1,8 @@
-@extends('templates.main')
+@extends('templates.akun-belanja')
 
-@section('title', 'Akun Belanja')
+@section('title', 'Jenis Belanja')
 
-@section('content')
+@section('content-akun-belanja')
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -15,7 +15,7 @@
                     {{-- button tambah & form search --}}
                     <div class="row align-items-center">
                         <div class="col-md-6 col-sm-12 mb-3">
-                            @if ($userAccess->pivot->create == 1)
+                            @if ($userAccess->create == 1)
                                 <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary btn-sm">
                                     <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Tambah Akun Belanja</span>
@@ -52,7 +52,7 @@
                                             <th>Dibuat</th>
                                             <th>Diperbarui</th>
 
-                                            @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
+                                            @if ($userAccess->update == 1 || $userAccess->delete == 1)
                                                 <th class="text-center">Aksi</th>
                                             @endif
                                         </tr>
@@ -76,9 +76,9 @@
                                                 <td>{{ $data->updated_at }}
                                                 </td>
 
-                                                @if ($userAccess->pivot->update == 1 || $userAccess->pivot->delete == 1)
+                                                @if ($userAccess->update == 1 || $userAccess->delete == 1)
                                                     <td class="text-center">
-                                                        @if ($userAccess->pivot->update == 1)
+                                                        @if ($userAccess->update == 1)
                                                             <a href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
                                                                 class="btn btn-sm btn-light btn-icon mr-1"
                                                                 data-toggle="tooltip" data-original-title="Edit"
@@ -87,7 +87,7 @@
                                                             </a>
                                                         @endif
 
-                                                        @if ($userAccess->pivot->delete == 1)
+                                                        @if ($userAccess->delete == 1)
                                                             <button class="btn btn-sm btn-light btn-icon"
                                                                 data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top"
@@ -122,7 +122,7 @@
     </form>
 @endsection
 
-@section('js')
+@section('js-akun-belanja')
     <script>
         /**
          * Fungsi handle hapus data user

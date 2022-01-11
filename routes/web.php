@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AkunBelanjaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\JenisBelanjaController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
@@ -170,35 +172,48 @@ Route::middleware('auth')->group(function () {
             ->name('budget.delete');
     });
 
-
     /**
-     * Route jenis belanja
+     * Route akun belanja
      */
-    Route::prefix('/jenis-belanja')->group(function () {
-        Route::get('/', [JenisBelanjaController::class, 'index'])
-            ->middleware('menu:/jenis-belanja,read')
-            ->name('jenis-belanja');
+    Route::prefix('/akun-belanja')->group(function () {
 
-        Route::get('/create', [JenisBelanjaController::class, 'create'])
-            ->middleware('menu:/jenis-belanja,create')
-            ->name('jenis-belanja.create');
+        /**
+         * Route jenis belanja
+         */
+        Route::prefix('/jenis-belanja')->group(function () {
+            Route::get('/', [JenisBelanjaController::class, 'index'])
+                ->middleware('menu:/akun-belanja,read')
+                ->name('jenis-belanja');
 
-        Route::post('/', [JenisBelanjaController::class, 'store'])
-            ->middleware('menu:/jenis-belanja,create')
-            ->name('jenis-belanja.store');
+            Route::get('/create', [JenisBelanjaController::class, 'create'])
+                ->middleware('menu:/akun-belanja,create')
+                ->name('jenis-belanja.create');
 
-        Route::get('/{jenisBelanja}/edit', [JenisBelanjaController::class, 'edit'])
-            ->middleware('menu:/jenis-belanja,update')
-            ->name('jenis-belanja.edit');
+            Route::post('/', [JenisBelanjaController::class, 'store'])
+                ->middleware('menu:/akun-belanja,create')
+                ->name('jenis-belanja.store');
 
-        Route::patch('/{jenisBelanja}', [JenisBelanjaController::class, 'update'])
-            ->middleware('menu:/jenis-belanja,update')
-            ->name('jenis-belanja.update');
+            Route::get('/{jenisBelanja}/edit', [JenisBelanjaController::class, 'edit'])
+                ->middleware('menu:/akun-belanja,update')
+                ->name('jenis-belanja.edit');
 
-        Route::delete('/{jenisBelanja}', [JenisBelanjaController::class, 'delete'])
-            ->middleware('menu:/jenis-belanja,delete')
-            ->name('jenis-belanja.delete');
+            Route::patch('/{jenisBelanja}', [JenisBelanjaController::class, 'update'])
+                ->middleware('menu:/akun-belanja,update')
+                ->name('jenis-belanja.update');
+
+            Route::delete('/{jenisBelanja}', [JenisBelanjaController::class, 'delete'])
+                ->middleware('menu:/akun-belanja,delete')
+                ->name('jenis-belanja.delete');
+        });
+
+        /**
+         * Route akun belanja
+         */
+        Route::get('/', [AkunBelanjaController::class, 'index'])
+            ->middleware('menu:/akun-belanja,read')
+            ->name('akun-belanja');
     });
+
 
 
     /**

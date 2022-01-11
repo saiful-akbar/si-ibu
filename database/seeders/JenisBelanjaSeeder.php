@@ -16,19 +16,8 @@ class JenisBelanjaSeeder extends Seeder
     {
         DB::table('jenis_belanja')->insert([
             [
-                'kategori_belanja' => "Barang",
-                'active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'kategori_belanja' => "Jasa",
-                'active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'kategori_belanja' => "Orang",
+                'akun_belanja_id' => $this->getIdAkunBelanja('Barang'),
+                'kategori_belanja' => "Pengadaan pembelian barang",
                 'active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -37,16 +26,16 @@ class JenisBelanjaSeeder extends Seeder
     }
 
     /**
-     * Method untuk mengambil id divisi (bagian) berdasarkan nama divisisnya (bagiannya)
+     * Method untuk mengambil id (akun_belanja) berdasarkan nama akun belanjanya
      *
-     * @param string $nama_divisi
+     * @param string $namaAkunBelanja
      *
      * @return int
      */
-    public function getIdDivisi(string $nama_divisi): int
+    public function getIdAkunBelanja(string $namaAkunBelanja): int
     {
-        $divisi = DB::table('divisi')
-            ->where('nama_divisi', $nama_divisi)
+        $divisi = DB::table('akun_belanja')
+            ->where('nama_akun_belanja', $namaAkunBelanja)
             ->first();
 
         return $divisi->id;

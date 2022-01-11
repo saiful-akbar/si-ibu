@@ -76,7 +76,7 @@ class MenuSeeder extends Seeder
                 'menu_header_id' => $this->getMenuHeader('02. Data Master'),
                 'nama_menu' => 'Akun Belanja',
                 'icon' => 'fas fa-store',
-                'href' => '/jenis-belanja',
+                'href' => '/akun-belanja',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

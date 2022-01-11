@@ -1,7 +1,5 @@
 @extends('templates.main')
 
-@section('title', 'Profil')
-
 @section('content')
 
     {{-- profil view --}}
