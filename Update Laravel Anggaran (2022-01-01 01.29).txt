@@ -1,0 +1,15 @@
+Tanggal: 11 Januari 2022 01:29
+
+1. Akun Belanja (jenis_belanja).
+	1.1. tambah kolom "sub_kategori_belanja",
+	1.2. hilangkan atribut unique pada kolom "kategori_belanja".
+	1.3. update view tambah & edit akun belanja.
+		1.3.1. tambah input sub_kategori_belanja.
+		1.3.2. buat pilihan untuk input kategori_belanja antara buat baru atau pilih kategori_belanja yang sudah ada.
+	1.4. update method store, update & delete pada "JenisBelanjaController".
+
+2. Budget.
+	2.1. Cek apakah ada yang harus diperbarui pada tabel list, input, edit, delete, detail & switch budget.
+
+3. Dashboard.
+	3.1. Update chart pada halaman view dashboard admin & divisi.
