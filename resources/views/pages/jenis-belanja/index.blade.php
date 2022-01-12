@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="header-title mt-2">Tabel Akun Belanja</h4>
+                    <h4 class="header-title mt-2">Tabel Jenis Belanja</h4>
                 </div>
 
                 <div class="card-body">
@@ -18,7 +18,7 @@
                             @if ($userAccess->create == 1)
                                 <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary btn-sm">
                                     <i class="mdi mdi-plus-circle mr-1"></i>
-                                    <span>Tambah Akun Belanja</span>
+                                    <span>Tambah Jenis Belanja</span>
                                 </a>
                             @endif
                         </div>
@@ -26,7 +26,7 @@
                         <div class="col-md-6 col-sm-12 mb-3">
                             <form action="{{ route('jenis-belanja') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
-                                    <input type="search" name="search" placeholder="Cari akun belanja..."
+                                    <input type="search" name="search" placeholder="Cari jenis belanja..."
                                         class="form-control" value="{{ request('search') }}" />
                                     <div class="input-group-append">
                                         <button class="btn btn-secondary" type="submit">
@@ -47,10 +47,14 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Ketergori Belanja</th>
-                                            <th>Aktif</th>
-                                            <th>Dibuat</th>
-                                            <th>Diperbarui</th>
+                                            <th>Kategori Belanja</th>
+                                            <th>Akun Belanja</th>
+                                            <th class="text-center">Aktif</th>
+
+                                            @if ($isAdmin)
+                                                <th>Dibuat</th>
+                                                <th>Diperbarui</th>
+                                            @endif
 
                                             @if ($userAccess->update == 1 || $userAccess->delete == 1)
                                                 <th class="text-center">Aksi</th>
@@ -65,16 +69,19 @@
                                                     {{ $jenisBelanja->count() * ($jenisBelanja->currentPage() - 1) + $loop->iteration }}
                                                 </td>
                                                 <td>{{ $data->kategori_belanja }}</td>
-                                                <td>
+                                                <td>{{ $data->akunBelanja->nama_akun_belanja }}</td>
+                                                <td class="text-center">
                                                     @if ($data->active == 1)
-                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                        <i class="mdi mdi-check text-success h4"></i>
                                                     @else
-                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
                                                     @endif
                                                 </td>
-                                                <td>{{ $data->created_at }}
-                                                <td>{{ $data->updated_at }}
-                                                </td>
+
+                                                @if ($isAdmin)
+                                                    <td>{{ $data->created_at }}</td>
+                                                    <td>{{ $data->updated_at }}</td>
+                                                @endif
 
                                                 @if ($userAccess->update == 1 || $userAccess->delete == 1)
                                                     <td class="text-center">
@@ -165,7 +172,7 @@
                     if (result) {
                         const form = $("#form-delete-jenis-belanja");
 
-                        form.attr("action", `${main.baseUrl}/jenis-belanja/${id}`);
+                        form.attr("action", `${main.baseUrl}/akun-belanja/jenis-belanja/${id}`);
                         form.submit();
                     }
                 },

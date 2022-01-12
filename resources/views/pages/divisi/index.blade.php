@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-md-6 col-sm-12 mb-3">
-                            @if ($user_akses->pivot->create == 1)
+                            @if ($userAccess->create == 1)
                                 <a href="{{ route('divisi.create') }}" class="btn btn-sm btn-rounded btn-primary">
                                     <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Tambah Bagian</span>
@@ -48,11 +48,14 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Bagian</th>
-                                            <th>Aktif</th>
-                                            <th>Dibuat</th>
-                                            <th>Diperbarui</th>
+                                            <th class="text-center">Aktif</th>
 
-                                            @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
+                                            @if ($isAdmin)
+                                                <th>Dibuat</th>
+                                                <th>Diperbarui</th>
+                                            @endif
+
+                                            @if ($userAccess->update == 1 || $userAccess->delete == 1)
                                                 <th class="text-center">Aksi</th>
                                             @endif
                                         </tr>
@@ -64,20 +67,23 @@
                                                     {{ $divisi->count() * ($divisi->currentPage() - 1) + $loop->iteration }}
                                                 </td>
                                                 <td>{{ ucwords($data->nama_divisi) }}</td>
-                                                <td>
+                                                <td class="text-center">
                                                     @if ($data->active == 1)
-                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                        <i class="mdi mdi-check text-success h4"></i>
                                                     @else
-                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
                                                     @endif
                                                 </td>
-                                                <td>{{ $data->created_at }}</td>
-                                                <td>{{ $data->updated_at }}</td>
 
-                                                @if ($user_akses->pivot->update == 1 || $user_akses->pivot->delete == 1)
+                                                @if ($isAdmin)
+                                                    <td>{{ $data->created_at }}</td>
+                                                    <td>{{ $data->updated_at }}</td>
+                                                @endif
+
+                                                @if ($userAccess->update == 1 || $userAccess->delete == 1)
                                                     <td class="text-center">
 
-                                                        @if ($user_akses->pivot->update == 1)
+                                                        @if ($userAccess->update == 1)
                                                             <a href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"
                                                                 class="btn btn-sm btn-light btn-icon mr-1"
                                                                 data-toggle="tooltip" data-original-title="Edit"
@@ -86,7 +92,7 @@
                                                             </a>
                                                         @endif
 
-                                                        @if ($user_akses->pivot->delete == 1)
+                                                        @if ($userAccess->delete == 1)
                                                             <button
                                                                 onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
                                                                 class="btn btn-sm btn-light btn-icon" data-toggle="tooltip"

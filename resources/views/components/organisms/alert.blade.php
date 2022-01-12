@@ -8,13 +8,13 @@
 
                 <div class="d-flex align-items-center justify-content-start">
                     @if (session('alert')['type'] == 'success')
-                        <i class="dripicons-checkmark h5 mr-1"></i>
+                        <i class="dripicons-checkmark h5 mr-2"></i>
                     @elseif (session('alert')['type'] == 'danger')
-                        <i class="dripicons-wrong h5 mr-1"></i>
+                        <i class="dripicons-wrong h5 mr-2"></i>
                     @elseif (session('alert')['type'] == 'warning')
-                        <i class="dripicons-warning h5 mr-1"></i>
+                        <i class="dripicons-warning h5 mr-2"></i>
                     @else
-                        <i class="dripicons-information h5 mr-1"></i>
+                        <i class="dripicons-information h5 mr-2"></i>
                     @endif
 
                     <h4 class="alert-heading align-middle">
@@ -37,7 +37,7 @@
                 </button>
 
                 <div class="d-flex align-items-center justify-content-start">
-                    <i class="dripicons-wrong h5 mr-1"></i>
+                    <i class="dripicons-wrong h5 mr-2"></i>
                     <h4 class="alert-heading align-middle">
                         Error
                     </h4>

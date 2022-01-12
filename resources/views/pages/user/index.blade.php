@@ -52,18 +52,22 @@
                                             <th>No</th>
                                             <th>User</th>
                                             <th>Username</th>
-                                            <th>Divisi</th>
+                                            <th>Bagian</th>
                                             <th>Seksi</th>
-                                            <th>Aktif</th>
-                                            <th>Dibuat</th>
-                                            <th>Diperbarui</th>
+                                            <th class="text-center">Aktif</th>
+
+                                            @if ($isAdmin)
+                                                <th>Dibuat</th>
+                                                <th>Diperbarui</th>
+                                            @endif
+
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($users as $user)
                                             <tr>
-                                                <td class="align-middle">
+                                                <td>
                                                     {{ $users->count() * ($users->currentPage() - 1) + $loop->iteration }}
                                                 </td>
                                                 <td class="align-middle table-user">
@@ -77,19 +81,23 @@
 
                                                     {{ ucwords($user->nama_lengkap) }}
                                                 </td>
-                                                <td class="align-middle">{{ $user->username }}</td>
-                                                <td class="align-middle">{{ ucwords($user->nama_divisi) }}</td>
-                                                <td class="align-middle">{{ ucwords($user->seksi) }}</td>
-                                                <td class="align-middle">
+                                                <td>{{ $user->username }}</td>
+                                                <td>{{ ucwords($user->nama_divisi) }}</td>
+                                                <td>{{ ucwords($user->seksi) }}</td>
+                                                <td class="text-center">
                                                     @if ($user->active == 1)
-                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                        <i class="mdi mdi-check text-success h4"></i>
                                                     @else
-                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
                                                     @endif
                                                 </td>
-                                                <td class="align-middle">{{ $user->created_at }}</td>
-                                                <td class="align-middle">{{ $user->updated_at }}</td>
-                                                <td class="align-middle text-center">
+
+                                                @if ($isAdmin)
+                                                    <td>{{ $user->created_at }}</td>
+                                                    <td>{{ $user->updated_at }}</td>
+                                                @endif
+
+                                                <td class="text-center">
                                                     <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
                                                         class="btn btn-sm btn-light btn-icon mr-1" data-toggle="tooltip"
                                                         data-original-title="Menu Akses">

@@ -24,8 +24,7 @@
                                     <div class="input-group">
                                         <input required name="periode_awal" type="number" id="periode_awal"
                                             placeholder="Awal periode tahun..." min="1900" max="9999"
-                                            value="{{ old('periode_awal', request('periode_awal')) }}"
-                                            class="form-control" />
+                                            value="{{ request('periode_awal') ?? date('Y') }}" class="form-control" />
 
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -35,7 +34,7 @@
 
                                         <input required name="periode_akhir" type="number" id="periode_akhir"
                                             placeholder="Akhir periode tahun..." min="1900" max="9999"
-                                            value="{{ old('periode_akhir', request('periode_akhir')) }}"
+                                            value="{{ request('periode_akhir') ?? date('Y') }}"
                                             class="form-control @error('periode_akhir') is-invalid @enderror" />
                                     </div>
                                 </div>
@@ -129,8 +128,12 @@
                                             <th>Akun Belanja</th>
                                             <th>Nominal</th>
                                             <th>Sisa Nominal</th>
-                                            <th>Dibuat</th>
-                                            <th>Diperbarui</th>
+
+                                            @if ($isAdmin)
+                                                <th>Dibuat</th>
+                                                <th>Diperbarui</th>
+                                            @endif
+
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -146,8 +149,12 @@
                                                     <td>{{ $data->kategori_belanja }}</td>
                                                     <td>Rp. {{ number_format($data->nominal) }}</td>
                                                     <td>Rp. {{ number_format($data->sisa_nominal) }}</td>
-                                                    <td>{{ $data->created_at }}</td>
-                                                    <td>{{ $data->updated_at }}</td>
+
+                                                    @if ($isAdmin)
+                                                        <td>{{ $data->created_at }}</td>
+                                                        <td>{{ $data->updated_at }}</td>
+                                                    @endif
+
                                                     <td class="table-action text-center">
                                                         <button onclick="budget.detail(true, {{ $data->id }})"
                                                             data-toggle="tooltip" data-original-title="Detail"

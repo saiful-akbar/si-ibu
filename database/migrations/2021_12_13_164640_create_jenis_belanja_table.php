@@ -16,13 +16,14 @@ class CreateJenisBelanjaTable extends Migration
         Schema::create('jenis_belanja', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('akun_belanja_id');
-            $table->string('kategori_belanja', 128)->unique();
+            $table->string('kategori_belanja', 128);
             $table->boolean('active')->default(true);
             $table->timestamps();
 
             $table->foreign('akun_belanja_id')
                 ->references('id')
-                ->on('akun_belanja');
+                ->on('akun_belanja')
+                ->cascadeOnUpdate();
         });
     }
 

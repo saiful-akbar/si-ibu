@@ -36,6 +36,12 @@ class BudgetController extends Controller
         $userAccess = $this->getAccess(href: '/budget');
 
         /**
+         * Periode
+         */
+        $periodeAwal = $request->periode_awal ?? date('Y');
+        $periodeAkhir = $request->periode_akhir ?? date('Y');
+
+        /**
          * query join table budget dengan tabel divisi dan select kolom yang diperlukan
          */
         $query = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
@@ -51,7 +57,7 @@ class BudgetController extends Controller
                 'budget.updated_at',
                 'divisi.nama_divisi',
                 'jenis_belanja.kategori_belanja',
-            ])->whereBetween('budget.tahun_anggaran', [$request->periode_awal, $request->periode_akhir]);
+            ])->whereBetween('budget.tahun_anggaran', [$periodeAwal, $periodeAkhir]);
 
         /**
          * cek akun belanja (jenis_belanja) di cari atau tidak

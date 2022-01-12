@@ -66,11 +66,17 @@ class UserController extends Controller
         $userAccess = $this->getAccess(href: '/user');
 
         /**
+         * cek user sebagai admin atau tidak
+         */
+        $isAdmin = $this->isAdmin(href: '/user');
+
+        /**
          * view halaman user.
          */
         return view('pages.user.index', [
             'users' => $users->simplePaginate(25)->withQueryString(),
             'userAccess' => $userAccess,
+            'isAdmin' => $isAdmin,
         ]);
     }
 

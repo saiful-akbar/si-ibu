@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Divisi;
+use App\Models\AkunBelanja;
 use App\Models\JenisBelanja;
-use App\Models\User;
 use App\Traits\UserAccessTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class JenisBelanjaController extends Controller
 {
@@ -21,16 +20,29 @@ class JenisBelanjaController extends Controller
     public function index(Request $request)
     {
         /**
+         * ambid data user akses untuk menu divisi
+         */
+        $userAccess = $this->getAccess(href: '/akun-belanja');
+
+        /**
+         * cek user sebagai admin atau bukan
+         */
+        $isAdmin = $this->isAdmin(href: '/akun-belanja');
+
+        /**
          * ambil semua data jenis_belanja
          */
-        $query = JenisBelanja::select('id', 'kategori_belanja', 'active', 'created_at', 'updated_at');
+        $query = JenisBelanja::with('akunBelanja');
 
         /**
          * cek jika ada request search atau tidak
          */
         if ($request->search) {
             $query->where('kategori_belanja', 'like', "%{$request->search}%")
-                ->orWhere('updated_at', 'like', "%{$request->search}%");
+                ->orWhere('updated_at', 'like', "%{$request->search}%")
+                ->OrwhereHas('akunBelanja', function (Builder $query) use ($request) {
+                    $query->where('nama_akun_belanja', 'like', "%{$request->search}%");
+                });
         }
 
         /**
@@ -41,12 +53,7 @@ class JenisBelanjaController extends Controller
             ->simplePaginate(25)
             ->withQueryString();
 
-        /**
-         * ambid data user akses untuk menu divisi
-         */
-        $userAccess = $this->getAccess(href: '/akun-belanja');
-
-        return view('pages.jenis-belanja.index', compact('jenisBelanja', 'userAccess'));
+        return view('pages.jenis-belanja.index', compact('jenisBelanja', 'userAccess', 'isAdmin'));
     }
 
     /**
@@ -56,7 +63,9 @@ class JenisBelanjaController extends Controller
      */
     public function create()
     {
-        return view('pages.jenis-belanja.create');
+        $akunBelanja = AkunBelanja::where('active', 1)->get();
+
+        return view('pages.jenis-belanja.create', compact('akunBelanja'));
     }
 
     /**
@@ -71,41 +80,66 @@ class JenisBelanjaController extends Controller
          * validasi rule
          */
         $validateRules = [
-            'kategori_belanja' => ['required', 'max:100', 'unique:jenis_belanja,kategori_belanja'],
+            'akun_belanja_id' => ['required', 'exists:akun_belanja,id'],
+            'kategori_belanja' => ['required', 'max:100'],
             'active' => []
         ];
+
+        /**
+         * cek apakah data dengan kategori_belanja & akun_belanja_id yang di request sudah ada atau belum
+         */
+        $duplicate = JenisBelanja::where([
+            ['akun_belanja_id', $request->akun_belanja_id],
+            ['kategori_belanja', $request->kategori_belanja],
+        ])->first();
+
+        if ($duplicate) {
+            array_push($validateRules['kategori_belanja'], 'unique:jenis_belanja,kategori_belanja');
+        }
 
         /**
          * pesan error validasi
          */
         $validateErrorMessage = [
+            'akun_belanja_id.required' => 'Akun belanja harus dipilih.',
+            'akun_belanja_id.exists' => 'Akun belanja tidak terdaftar. Silakan pilih akun belanja yang sudah ditentukan.',
             'kategori_belanja.required' => 'Kategori belanja tidak boleh kosong.',
             'kategori_belanja.max' => 'Kategori belanja tidak boleh lebih dari 100 karakter.',
-            'kategori_belanja.unique' => 'Kategori belanja sudah ada.',
+            'kategori_belanja.unique' => 'Kategori belanja sudah digunakan.',
         ];
 
         /**
          * jalankan validasi
          */
-        $validatedData = $request->validate($validateRules, $validateErrorMessage);
-        $validatedData['kategori_belanja'] = ucwords($request->kategori_belanja);
-        $validatedData['active'] = isset($request->active) ? true : false;
+        $request->validate($validateRules, $validateErrorMessage);
 
-        /**
-         * simpan data ke database
-         */
         try {
-            JenisBelanja::create($validatedData);
+
+            /**
+             * simpan data ke database
+             */
+            JenisBelanja::create([
+                'akun_belanja_id' => $request->akun_belanja_id,
+                'kategori_belanja' => ucfirst($request->kategori_belanja),
+                'active' => isset($request->active) ? true : false,
+            ]);
         } catch (\Exception $e) {
+
+            /**
+             * tampilkan pesan error jika proses tambah gagal
+             */
             return redirect()->route('jenis-belanja.create')->with('alert', [
                 'type' => 'danger',
-                'message' => 'Akun belanja gagal ditambahkan. ' . $e->getMessage(),
+                'message' => 'Gagal menambahkan data jenis belanja. ' . $e->getMessage(),
             ]);
         }
 
+        /**
+         * tambah sukses
+         */
         return redirect()->route('jenis-belanja.create')->with('alert', [
             'type' => 'success',
-            'message' => '1 akun jenis belanja berhasil ditambahkan.',
+            'message' => 'Jenis belanja berhasil ditambahkan.',
         ]);
     }
 
@@ -118,9 +152,9 @@ class JenisBelanjaController extends Controller
      */
     public function edit(JenisBelanja $jenisBelanja)
     {
-        $divisions = Divisi::where('active', 1)->get();
+        $akunBelanja = AkunBelanja::where('active', 1)->get();
 
-        return view('pages.jenis-belanja.edit', compact('jenisBelanja', 'divisions'));
+        return view('pages.jenis-belanja.edit', compact('jenisBelanja', 'akunBelanja'));
     }
 
     /**
@@ -137,15 +171,37 @@ class JenisBelanjaController extends Controller
          * validasi rule
          */
         $validateRules = [
+            'akun_belanja_id' => ['required', 'exists:akun_belanja,id'],
             'kategori_belanja' => ['required', 'max:100'],
             'active' => ['boolean']
         ];
 
+        /**
+         * cek jika kategori_belanja dirubah
+         */
+        if (
+            $request->akun_belanja_id != $jenisBelanja->akun_belanja_id ||
+            $request->kategori_belanja != $jenisBelanja->kategori_belanja
+        ) {
+            /**
+             * cek apakah data dengan kategori_belanja & akun_belanja_id yang di request sudah ada atau belum
+             */
+            $duplicate = JenisBelanja::where([
+                ['akun_belanja_id', $request->akun_belanja_id],
+                ['kategori_belanja', $request->kategori_belanja],
+            ])->first();
+
+            if ($duplicate) {
+                array_push($validateRules['kategori_belanja'], 'unique:jenis_belanja,kategori_belanja');
+            }
+        }
 
         /**
          * pesan error validasi
          */
         $validateErrorMessage = [
+            'akun_belanja_id.required' => 'Akun belanja harus dipilih.',
+            'akun_belanja_id.exists' => 'Akun belanja tidak terdaftar. Silakan pilih akun belanja yang sudah ditentukan.',
             'kategori_belanja.required' => 'Kategori belanja tidak boleh kosong.',
             'kategori_belanja.max' => 'Kategori belanja tidak boleh lebih dari 100 karakter.',
             'kategori_belanja.unique' => 'Kategori belanja sudah ada.',
@@ -153,27 +209,25 @@ class JenisBelanjaController extends Controller
         ];
 
         /**
-         * cek kategori belanja dirubah atau tidak
-         * tambahkan validasi unique
-         */
-        if ($request->kategori_belanja != $jenisBelanja->kategori_belanja) {
-            array_push($validateRules['kategori_belanja'], 'unique:jenis_belanja,kategori_belanja');
-        }
-
-        /**
          * jalankan validasi
          */
-        $validatedData = $request->validate($validateRules, $validateErrorMessage);
+        $request->validate($validateRules, $validateErrorMessage);
 
-        $validatedData['kategori_belanja'] = ucwords($request->kategori_belanja);
-        $validatedData['active'] = isset($request->active) ? true : false;
-
-        /**
-         * simpan data ke database
-         */
         try {
-            $jenisBelanja->update($validatedData);
+
+            /**
+             * update data ke database
+             */
+            $jenisBelanja->update([
+                'akun_belanja_id' => $request->akun_belanja_id,
+                'kategori_belanja' => ucfirst($request->kategori_belanja),
+                'active' => isset($request->active) ? true : false,
+            ]);
         } catch (\Exception $e) {
+
+            /**
+             * tampilkan pesan error jika proses update gagal
+             */
             return redirect()->route('jenis-belanja.edit', ['jenisBelanja' => $jenisBelanja->id])
                 ->with('alert', [
                     'type' => 'danger',
@@ -181,6 +235,9 @@ class JenisBelanjaController extends Controller
                 ]);
         }
 
+        /**
+         * update sukses
+         */
         return redirect()->route('jenis-belanja')
             ->with('alert', [
                 'type' => 'success',
@@ -197,39 +254,45 @@ class JenisBelanjaController extends Controller
      */
     public function delete(JenisBelanja $jenisBelanja)
     {
-        $relasiData = JenisBelanja::with('budget')->find($jenisBelanja->id);
-
         /**
          * cek apakah ada data transaksi & budget yang berelasi dengan jenis_belanja ini
          */
-        if (count($relasiData->budget) > 0) {
+        if (count($jenisBelanja->budget) > 0) {
             return redirect()
                 ->route('jenis-belanja')
                 ->with('alert', [
                     'type' => 'warning',
-                    'message' => "Gagal menghapus data akun belanja {$jenisBelanja->kategori_belanja}. Data akun belanja ini memiliki data relasi dengan budget. ",
+                    'message' => "Gagal menghapus data jenis belanja. <b>{$jenisBelanja->kategori_belanja}</b> memiliki data relasi pada budget. ",
                 ]);
         }
 
-        /**
-         * Proses hapus
-         */
         try {
+
+            /**
+             * Proses hapus
+             */
             JenisBelanja::destroy($jenisBelanja->id);
         } catch (\Exception $e) {
+
+            /**
+             * tampilkan pesan error jika proses delete gagal
+             */
             return redirect()
                 ->route('jenis-belanja')
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Gagal menghapus data akun belanja. ' . $e->getMessage(),
+                    'message' => 'Gagal menghapus data jenis belanja. ' . $e->getMessage(),
                 ]);
         }
 
+        /**
+         * delete sukses
+         */
         return redirect()
             ->route('jenis-belanja')
             ->with('alert', [
                 'type' => 'success',
-                'message' => '1 akun belanja berhasil dihapus.',
+                'message' => '1 data jenis belanja berhasil dihapus.',
             ]);
     }
 }

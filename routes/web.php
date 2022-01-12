@@ -212,6 +212,26 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AkunBelanjaController::class, 'index'])
             ->middleware('menu:/akun-belanja,read')
             ->name('akun-belanja');
+
+        Route::get('/create', [AkunBelanjaController::class, 'create'])
+            ->middleware('menu:/akun-belanja,create')
+            ->name('akun-belanja.create');
+
+        Route::post('/', [AkunBelanjaController::class, 'store'])
+            ->middleware('menu:/akun-belanja,create')
+            ->name('akun-belanja.store');
+
+        Route::get('/{akunBelanja}/edit', [AkunBelanjaController::class, 'edit'])
+            ->middleware('menu:/akun-belanja,update')
+            ->name('akun-belanja.edit');
+
+        Route::patch('/{akunBelanja}', [AkunBelanjaController::class, 'update'])
+            ->middleware('menu:/akun-belanja,update')
+            ->name('akun-belanja.update');
+
+        Route::delete('/{akunBelanja}', [AkunBelanjaController::class, 'delete'])
+            ->middleware('menu:/akun-belanja,delete')
+            ->name('akun-belanja.delete');
     });
 
 

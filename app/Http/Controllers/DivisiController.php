@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Divisi;
 use App\Models\User;
+use App\Traits\UserAccessTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DivisiController extends Controller
 {
+    use UserAccessTrait;
+
     /**
      * View halaman divisi
      *
@@ -16,25 +19,42 @@ class DivisiController extends Controller
      */
     public function index(Request $request)
     {
-        $divisi = Divisi::select('id', 'nama_divisi', 'active', 'created_at', 'updated_at');
-
-        if ($request->search) {
-            $divisi->where('nama_divisi', 'like', '%' . $request->search . '%');
-        }
-
-        $divisi->orderBy('nama_divisi', 'asc');
+        /**
+         * ambil data user menu akses
+         */
+        $userAccess = $this->getAccess(href: '/divisi');
 
         /**
-         * ambid data user akses untuk menu divisi
+         * cek user sebagai admin atau bukan
          */
-        $user_akses = User::with('menuItem')->find(Auth::user()->id)
-            ->menuItem
-            ->where('href', '/divisi')
-            ->first();
+        $isAdmin = $this->isAdmin(href: '/divisi');
+
+        /**
+         * query bagian (divisi)
+         */
+        $query = Divisi::select('id', 'nama_divisi', 'active', 'created_at', 'updated_at');
+
+        /**
+         * cek jika ada request search
+         */
+        if ($request->search) {
+            $query->where('nama_divisi', 'like', '%' . $request->search . '%');
+        }
+
+        /**
+         * query order
+         */
+        $query->orderBy('nama_divisi', 'asc');
+
+        /**
+         * buat pagination
+         */
+        $divisi = $query->simplePaginate(25)->withQueryString();
 
         return view('pages.divisi.index', [
-            'divisi' => $divisi->simplePaginate(25)->withQueryString(),
-            'user_akses' => $user_akses
+            'divisi' => $divisi,
+            'userAccess' => $userAccess,
+            'isAdmin' => $isAdmin,
         ]);
     }
 

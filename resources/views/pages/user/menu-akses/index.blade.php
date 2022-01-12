@@ -64,33 +64,33 @@
                                                 </td>
                                                 <td class="text-center">
                                                     @if (!empty($user->menuItem->find($menuItem->id)) && $user->menuItem->find($menuItem->id)->pivot->create == 1)
-                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                        <i class="mdi mdi-check text-success h4"></i>
                                                     @else
-                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
                                                     @endif
                                                 </td>
 
                                                 <td class="text-center">
                                                     @if (!empty($user->menuItem->find($menuItem->id)) && $user->menuItem->find($menuItem->id)->pivot->read == 1)
-                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                        <i class="mdi mdi-check text-success h4"></i>
                                                     @else
-                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
                                                     @endif
                                                 </td>
 
                                                 <td class="text-center">
                                                     @if (!empty($user->menuItem->find($menuItem->id)) && $user->menuItem->find($menuItem->id)->pivot->update == 1)
-                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                        <i class="mdi mdi-check text-success h4"></i>
                                                     @else
-                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
                                                     @endif
                                                 </td>
 
                                                 <td class="text-center">
                                                     @if (!empty($user->menuItem->find($menuItem->id)) && $user->menuItem->find($menuItem->id)->pivot->delete == 1)
-                                                        <i class="mdi mdi-check text-success h3"></i>
+                                                        <i class="mdi mdi-check text-success h4"></i>
                                                     @else
-                                                        <i class="mdi mdi mdi-close text-danger h3"></i>
+                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
                                                     @endif
                                                 </td>
                                             </tr>

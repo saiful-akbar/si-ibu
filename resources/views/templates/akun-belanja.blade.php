@@ -15,7 +15,7 @@
                 <a href="{{ route('jenis-belanja') }}"
                     class="nav-link mb-2 {{ Request::is('akun-belanja/jenis-belanja') ? 'active show' : null }}">
                     <i class="mdi mdi-shopping mr-2"></i>
-                    <span>Sub Akun Belanja</span>
+                    <span>Jenis Belanja</span>
                 </a>
             </div>
 
