@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LaporanTransaksiExport;
+use App\Models\AkunBelanja;
 use App\Models\Budget;
 use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
 use App\Traits\UserAccessTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -77,25 +79,12 @@ class TransaksiController extends Controller
         /**
          * ambil user menu akses
          */
-        $userAccess = $this->getAccess(Auth::user()->id, '/belanja');
+        $userAccess = $this->getAccess(href: '/belanja');
 
         /**
-         * true jika user full akses
-         * false jika user tidak full akses
+         * ambil data user sebagai admin atau bukan
          */
-        $isAdmin = false;
-
-        /**
-         * cek apakah user memiliki full akses
-         */
-        if (
-            $userAccess->create == 1 &&
-            $userAccess->read == 1 &&
-            $userAccess->update == 1 &&
-            $userAccess->delete == 1
-        ) {
-            $isAdmin = true;
-        }
+        $isAdmin = $this->isAdmin(href: '/belanja');
 
         /**
          * Validasi rule
@@ -162,36 +151,24 @@ class TransaksiController extends Controller
         $request->validate($validateRules, $validateErrorMessage);
 
         /**
+         * periode default
+         */
+        $periodeAwal = $request->periode_awal ?? date('Y-m-d', time() - (60 * 60 * 24 * 14));
+        $periodeAkhir = $request->periode_akhir ?? date('Y-m-d');
+
+        /**
          * Query join table transaksi, divisi, user & profil
          */
-        $query = Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
-            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
-            ->leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
-            ->leftJoin('user', 'user.id', '=', 'transaksi.user_id')
-            ->leftJoin('profil', 'profil.user_id', '=', 'user.id')
-            ->select([
-                'transaksi.id',
-                'transaksi.budget_id',
-                'transaksi.tanggal',
-                'transaksi.kegiatan',
-                'transaksi.jumlah_nominal',
-                'transaksi.approval',
-                'transaksi.no_dokumen',
-                'transaksi.file_dokumen',
-                'transaksi.created_at',
-                'transaksi.updated_at',
-                'budget.divisi_id',
-                'budget.jenis_belanja_id',
-                'jenis_belanja.kategori_belanja',
-                'divisi.nama_divisi',
-                'profil.nama_lengkap',
-            ])->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
+        $query = Transaksi::with('budget.divisi', 'budget.jenisBelanja.akunBelanja', 'user.profil')
+            ->whereBetween('tanggal', [$periodeAwal, $periodeAkhir]);
 
         /**
          * jika jenis belanja dipilih tambahkan query
          */
         if ($request->jenis_belanja != null) {
-            $query->where('jenis_belanja.kategori_belanja',  $request->jenis_belanja);
+            $query->whereHas('budget.jenisBelanja', function (Builder $query) use ($request) {
+                $query->where('kategori_belanja', $request->jenis_belanja);
+            });
         }
 
         /**
@@ -203,7 +180,9 @@ class TransaksiController extends Controller
              * jika divisi dipilih tambahkan query
              */
             if ($request->divisi != null) {
-                $query->where('divisi.nama_divisi',  $request->divisi);
+                $query->whereHas('budget.divisi', function (Builder $query) use ($request) {
+                    $query->where('nama_divisi', $request->divisi);
+                });
             }
 
 
@@ -211,20 +190,25 @@ class TransaksiController extends Controller
              * jika no dokumen dipilih tambahkan validasi
              */
             if ($request->no_dokumen != null) {
-                $query->where('transaksi.no_dokumen',  $request->no_dokumen);
+                $query->where('no_dokumen',  $request->no_dokumen);
             }
         } else {
 
             /**
              * query berdasarkan divisi user yang sedang login
              */
-            $query->where('budget.divisi_id', Auth::user()->divisi->id);
+            $query->whereHas('budget.divisi', function (Builder $query) {
+                $query->where('id', Auth::user()->divisi->id);
+            });
         }
 
         /**
          * buat order
          */
-        $query->orderBy('tanggal', 'desc')->orderBy('budget.divisi_id', 'asc');
+        $transactions = $query->orderBy('tanggal', 'desc')
+            ->orderBy('updated_at', 'desc')
+            ->simplePaginate(25)
+            ->withQueryString();
 
         /**
          * ambil data bagian (divisi)
@@ -236,20 +220,23 @@ class TransaksiController extends Controller
         /**
          * ambil data akun belanja (jenis_belanja)
          */
-        $jenisBelanja = JenisBelanja::where('active', 1)
-            ->orderBy('kategori_belanja', 'asc')
+        $akunBelanja = AkunBelanja::with('jenisBelanja')
+            ->where('active', 1)
+            ->orderBy('nama_akun_belanja', 'asc')
             ->get();
 
         /**
          * return view
          */
-        return view('pages.transaksi.index', [
-            'transactions' => $query->simplePaginate(25)->withQueryString(),
-            'userAccess' => Auth::user()->menuItem->where('href', '/belanja')->first(),
-            'divisi' => $divisi,
-            'jenisBelanja' => $jenisBelanja,
-            'isAdmin' => $isAdmin,
-        ]);
+        return view('pages.transaksi.index', compact(
+            'transactions',
+            'userAccess',
+            'divisi',
+            'akunBelanja',
+            'isAdmin',
+            'periodeAwal',
+            'periodeAkhir',
+        ));
     }
 
     /**
@@ -725,62 +712,36 @@ class TransaksiController extends Controller
         /**
          * ambil user menu akses
          */
-        $userAccess = $this->getAccess(Auth::user()->id, '/belanja');
+        $userAccess = $this->getAccess(href: '/belanja');
 
         /**
-         * true jika user full akses
-         * false jika user tidak full akses
+         * ambil data user sebagai admin atau bukan
          */
-        $isAdmin = false;
+        $isAdmin = $this->isAdmin(href: '/belanja');
 
         /**
-         * cek apakah user memiliki full akses
+         * periode default
          */
-        if (
-            $userAccess->create == 1 &&
-            $userAccess->read == 1 &&
-            $userAccess->update == 1 &&
-            $userAccess->delete == 1
-        ) {
-            $isAdmin = true;
-        }
+        $periodeAwal = $request->periode_awal ?? date('Y-m-d', time() - (60 * 60 * 24 * 14));
+        $periodeAkhir = $request->periode_akhir ?? date('Y-m-d');
 
         /**
-         * Query data belanja (transaksi)
+         * Query join table transaksi, divisi, user & profil
          */
-        $query = Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
-            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
-            ->leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
-            ->leftJoin('user', 'user.id', '=', 'transaksi.user_id')
-            ->leftJoin('profil', 'profil.user_id', '=', 'user.id')
-            ->select([
-                'transaksi.id',
-                'transaksi.budget_id',
-                'transaksi.tanggal',
-                'transaksi.kegiatan',
-                'transaksi.jumlah_nominal',
-                'transaksi.approval',
-                'transaksi.no_dokumen',
-                'transaksi.file_dokumen',
-                'transaksi.uraian',
-                'transaksi.created_at',
-                'transaksi.updated_at',
-                'budget.divisi_id',
-                'budget.jenis_belanja_id',
-                'jenis_belanja.kategori_belanja',
-                'divisi.nama_divisi',
-                'profil.nama_lengkap',
-            ])->whereBetween('transaksi.tanggal', [$request->periode_awal, $request->periode_akhir]);
+        $query = Transaksi::with('budget.divisi', 'budget.jenisBelanja.akunBelanja', 'user.profil')
+            ->whereBetween('tanggal', [$periodeAwal, $periodeAkhir]);
 
         /**
          * jika jenis belanja dipilih tambahkan query
          */
         if ($request->jenis_belanja != null) {
-            $query->where('jenis_belanja.kategori_belanja',  $request->jenis_belanja);
+            $query->whereHas('budget.jenisBelanja', function (Builder $query) use ($request) {
+                $query->where('kategori_belanja', $request->jenis_belanja);
+            });
         }
 
         /**
-         * Cek user sebagai admin atau tidak
+         * Cek user admin atau tidak
          */
         if ($isAdmin) {
 
@@ -788,7 +749,9 @@ class TransaksiController extends Controller
              * jika divisi dipilih tambahkan query
              */
             if ($request->divisi != null) {
-                $query->where('divisi.nama_divisi',  $request->divisi);
+                $query->whereHas('budget.divisi', function (Builder $query) use ($request) {
+                    $query->where('nama_divisi', $request->divisi);
+                });
             }
 
 
@@ -796,28 +759,28 @@ class TransaksiController extends Controller
              * jika no dokumen dipilih tambahkan validasi
              */
             if ($request->no_dokumen != null) {
-                $query->where('transaksi.no_dokumen',  $request->no_dokumen);
+                $query->where('no_dokumen',  $request->no_dokumen);
             }
         } else {
 
             /**
              * query berdasarkan divisi user yang sedang login
              */
-            $query->where('budget.divisi_id', Auth::user()->divisi->id);
+            $query->whereHas('budget.divisi', function (Builder $query) {
+                $query->where('id', Auth::user()->divisi->id);
+            });
         }
 
         /**
          * hitung jumlah nominal;
          */
-        $totalTransaksi = $query->sum('transaksi.jumlah_nominal');
+        $totalTransaksi = $query->sum('jumlah_nominal');
 
         /**
          * buat order
          */
-        $laporanTransaksi = $query
-            ->orderBy('transaksi.tanggal', 'asc')
-            ->orderBy('divisi.nama_divisi', 'asc')
-            ->orderBy('jenis_belanja.kategori_belanja', 'asc')
+        $laporanTransaksi = $query->orderBy('tanggal', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
 
@@ -837,7 +800,10 @@ class TransaksiController extends Controller
     public function exportExcel(Request $request)
     {
         $data = $this->fillter($request);
-        return Excel::download(new LaporanTransaksiExport($data), 'Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.xlsx');
+        return Excel::download(
+            new LaporanTransaksiExport($data),
+            'Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.xlsx'
+        );
     }
 
     /**
@@ -850,8 +816,6 @@ class TransaksiController extends Controller
     public function exportPdf(Request $request)
     {
         $data = $this->fillter($request);
-
-        // return view('export.pdf.pdf-transaksi', $data);
 
         return PDF::loadView('export.pdf.pdf-transaksi', $data)
             ->setPaper('a4', 'landscape')

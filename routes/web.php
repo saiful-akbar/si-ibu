@@ -9,6 +9,7 @@ use App\Http\Controllers\JenisBelanjaController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
+use App\Models\JenisBelanja;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -204,6 +205,9 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{jenisBelanja}', [JenisBelanjaController::class, 'delete'])
                 ->middleware('menu:/akun-belanja,delete')
                 ->name('jenis-belanja.delete');
+
+            Route::get('/datatable', [JenisBelanjaController::class, 'dataTable'])
+                ->name('jenis-belanja.datatable');
         });
 
         /**

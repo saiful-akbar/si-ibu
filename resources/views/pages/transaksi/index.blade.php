@@ -7,7 +7,11 @@
     {{-- form filter --}}
     <div class="row">
         <div class="col-12 mb-3">
-            <form action="{{ route('belanja') }}" method="GET" autocomplete="off">
+            <form
+                action="{{ route('belanja') }}"
+                method="GET"
+                autocomplete="off"
+            >
                 <div class="card">
                     <div class="card-header pt-3">
                         <h4 class="header-title">Filter</h4>
@@ -21,23 +25,35 @@
                                 <div class="form-group">
                                     <label> Periode <small class="text-danger">*</small></label>
 
-                                    <div
-                                        class="input-group @error('periode_awal') is-invalid @else @error('periode_akhir') is-invalid @enderror @enderror">
-                                        <input type="date" name="periode_awal"
+                                    <div class="input-group @error('periode_awal') is-invalid @enderror">
+                                        <input
+                                            type="date"
+                                            name="periode_awal"
                                             class="form-control @error('periode_awal') is-invalid @enderror"
-                                            id="periode_awal" placeholder="Masukan periode awal..."
-                                            value="{{ old('periode_awal', request('periode_awal')) }}" required />
+                                            id="periode_awal"
+                                            placeholder="Masukan periode awal..."
+                                            value="{{ request('periode_awal') ?? $periodeAwal }}"
+                                            required
+                                        />
 
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
+                                            <span
+                                                class="input-group-text"
+                                                id="basic-addon1"
+                                            >
                                                 <i class="mdi mdi-chevron-double-right"></i>
                                             </span>
                                         </div>
 
-                                        <input type="date" name="periode_akhir"
-                                            value="{{ old('periode_akhir', request('periode_akhir')) }}"
+                                        <input
+                                            type="date"
+                                            name="periode_akhir"
+                                            value="{{ request('periode_akhir') ?? $periodeAkhir }}"
                                             class="form-control @error('periode_akhir') is-invalid @enderror"
-                                            id="periode_akhir" placeholder="Masukan periode akhir..." required />
+                                            id="periode_akhir"
+                                            placeholder="Masukan periode akhir..."
+                                            required
+                                        />
                                     </div>
 
                                     @error('periode_awal')
@@ -51,44 +67,25 @@
                             </div>
                             {{-- end input periode tanggal --}}
 
-                            {{-- input jenis belanja --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                                <div class="form-group">
-                                    <label for="jenis_belanja">
-                                        Akun Belanja
-                                    </label>
-
-                                    <select id="jenis_belanja" name="jenis_belanja" data-toggle="select2"
-                                        class="form-control select2 @error('jenis_belanja') is-invalid @enderror">
-                                        <option value="{{ null }}">Semua Akun Belanja</option>
-
-                                        @foreach ($jenisBelanja as $jBelanja)
-                                            <option value="{{ $jBelanja->kategori_belanja }}" @if (old('jenis_belanja', request('jenis_belanja')) == $jBelanja->kategori_belanja) selected @endif>
-                                                {{ $jBelanja->kategori_belanja }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('jenis_belanja')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            {{-- end input jenis belanja --}}
-
+                            {{-- input nama bagian (divisi) --}}
                             @if ($isAdmin)
-
-                                {{-- input nama bagian (divisi) --}}
                                 <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                     <div class="form-group">
                                         <label for="divisi">Bagian</label>
 
-                                        <select id="divisi" name="divisi" data-toggle="select2"
-                                            class="form-control select2 @error('divisi') is-invalid @enderror">
+                                        <select
+                                            id="divisi"
+                                            name="divisi"
+                                            data-toggle="select2"
+                                            class="form-control select2 @error('divisi') is-invalid @enderror"
+                                        >
                                             <option value="{{ null }}">Semua Bagian</option>
 
                                             @foreach ($divisi as $div)
-                                                <option value="{{ $div->nama_divisi }}" @if (old('divisi', request('divisi')) == $div->nama_divisi) selected @endif>
+                                                <option
+                                                    value="{{ $div->nama_divisi }}"
+                                                    @if (old('divisi', request('divisi')) == $div->nama_divisi) selected @endif
+                                                >
                                                     {{ $div->nama_divisi }}
                                                 </option>
                                             @endforeach
@@ -99,34 +96,80 @@
                                         @enderror
                                     </div>
                                 </div>
-                                {{-- end input nama bagian (divisi) --}}
+                            @endif
+                            {{-- end input nama bagian (divisi) --}}
 
-                                {{-- input no dokumen --}}
+                            {{-- input jenis belanja --}}
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                <div class="form-group">
+                                    <label for="jenis_belanja">
+                                        Akun Jenis Belanja
+                                    </label>
+
+                                    <select
+                                        id="jenis_belanja"
+                                        name="jenis_belanja"
+                                        data-toggle="select2"
+                                        class="form-control select2 @error('jenis_belanja') is-invalid @enderror"
+                                    >
+                                        <option value="{{ null }}">Semua Akun Jenis Belanja</option>
+
+                                        @foreach ($akunBelanja as $aBelanja)
+                                            <optgroup label="{{ $aBelanja->nama_akun_belanja }}">
+                                                @foreach ($aBelanja->jenisBelanja as $jenisBelanja)
+                                                    @if ($jenisBelanja->active == 1)
+                                                        <option
+                                                            value="{{ $jenisBelanja->kategori_belanja }}"
+                                                            @if (old('jenis_belanja', request('jenis_belanja')) == $jenisBelanja->kategori_belanja) selected @endif
+                                                        >
+                                                            {{ $jenisBelanja->kategori_belanja }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </optgroup>
+                                        @endforeach
+                                    </select>
+
+                                    @error('jenis_belanja')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            {{-- end input jenis belanja --}}
+
+                            {{-- input no dokumen --}}
+                            @if ($isAdmin)
                                 <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                     <div class="form-group">
                                         <label for="no_dokumen">
                                             No. Dokumen
                                         </label>
 
-                                        <input type="search" name="no_dokumen"
+                                        <input
+                                            type="search"
+                                            name="no_dokumen"
                                             value="{{ old('no_dokumen', request('no_dokumen')) }}"
-                                            class="form-control @error('no_dokumen') is-invalid @enderror" id="no_dokumen"
-                                            placeholder="Masukan no dokumen..." />
+                                            class="form-control @error('no_dokumen') is-invalid @enderror"
+                                            id="no_dokumen"
+                                            placeholder="Masukan no dokumen..."
+                                        />
 
                                         @error('no_dokumen')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
-                                {{-- end input no dokumen --}}
-
                             @endif
+                            {{-- end input no dokumen --}}
 
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
+                        <button
+                            type="submit"
+                            class="btn btn-info btn-rounded btn-sm mr-2"
+                        >
                             <i class="mdi mdi-filter-variant mr-1"></i>
                             <span>Filter</span>
                         </button>
@@ -150,8 +193,11 @@
                     {{-- button tambah & form search --}}
                     <div class="row align-items-center">
                         <div class="col-lg-9 col-md-6 col-sm-12 mb-3">
-                            @if ($userAccess->pivot->create == 1)
-                                <a href="{{ route('belanja.create') }}" class="btn btn-primary btn-sm btn-rounded">
+                            @if ($userAccess->create == 1)
+                                <a
+                                    href="{{ route('belanja.create') }}"
+                                    class="btn btn-primary btn-sm btn-rounded"
+                                >
                                     <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Tambah Belanja</span>
                                 </a>
@@ -160,14 +206,22 @@
 
                         <div class="col-lg-3 col-md-6 col-sm-12 mb-3 d-flex justify-content-md-end">
                             <div class="btn-group btn-block">
-                                <button type="submit" class="btn btn-light btn-sm btn-rounded btn-export"
-                                    data-route="{{ route('belanja.excel') }}" @if (count($transactions) <= 0) disabled @endif>
+                                <button
+                                    type="submit"
+                                    class="btn btn-light btn-sm btn-rounded btn-export"
+                                    data-route="{{ route('belanja.excel') }}"
+                                    @if (count($transactions) <= 0) disabled @endif
+                                >
                                     <i class="mdi mdi-file-excel text-success mr-1"></i>
                                     <span>Excel</span>
                                 </button>
 
-                                <button type="submit" class="btn btn-light btn-sm btn-rounded btn-export"
-                                    data-route="{{ route('belanja.pdf') }}" @if (count($transactions) <= 0) disabled @endif>
+                                <button
+                                    type="submit"
+                                    class="btn btn-light btn-sm btn-rounded btn-export"
+                                    data-route="{{ route('belanja.pdf') }}"
+                                    @if (count($transactions) <= 0) disabled @endif
+                                >
                                     <i class="mdi mdi-file-pdf text-danger mr-1"></i>
                                     <span>PDF</span>
                                 </button>
@@ -184,71 +238,74 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Tanggal</th>
+                                            <th>Submitter</th>
                                             <th>Bagian</th>
                                             <th>Akun Belanja</th>
-                                            <th>Submitter</th>
-                                            <th>Tanggal</th>
+                                            <th>Jenis Belanja</th>
                                             <th>Kegiatan</th>
                                             <th>Jumlah Nominal</th>
-                                            <th>Approval</th>
                                             <th>No. Dokumen</th>
+                                            <th>Approval</th>
                                             <th>Dibuat</th>
                                             <th>Diperbarui</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (count($transactions) > 0)
-                                            @foreach ($transactions as $data)
-                                                <tr>
-                                                    <td>
-                                                        {{ $transactions->count() * ($transactions->currentPage() - 1) + $loop->iteration }}
-                                                    </td>
-                                                    <td>{{ $data->nama_divisi }}</td>
-                                                    <td>{{ $data->kategori_belanja }}</td>
-                                                    <td>{{ $data->nama_lengkap }}</td>
-                                                    <td>{{ $data->tanggal }}</td>
-                                                    <td>{{ $data->kegiatan }}</td>
-                                                    <td>Rp. {{ number_format($data->jumlah_nominal) }}</td>
-                                                    <td>{{ $data->approval }}</td>
-                                                    <td>{{ $data->no_dokumen }}</td>
-                                                    <td>{{ $data->created_at }}</td>
-                                                    <td>{{ $data->updated_at }}</td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-sm btn-light btn-icon mr-1"
-                                                            data-toggle="tooltip" data-original-title="Detail"
-                                                            data-placement="top"
-                                                            onclick="transaksi.showDetail({{ $data->id }})">
-                                                            <i class="mdi mdi-eye-outline"></i>
-                                                        </button>
-
-                                                        @if ($userAccess->pivot->update == 1)
-                                                            <a href="{{ route('belanja.edit', ['transaksi' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon mr-1"
-                                                                data-toggle="tooltip" data-original-title="Edit"
-                                                                data-placement="top">
-                                                                <i class="mdi mdi-square-edit-outline"></i>
-                                                            </a>
-                                                        @endif
-
-                                                        @if ($userAccess->pivot->delete == 1)
-                                                            <button class="btn btn-sm btn-icon btn-light"
-                                                                data-toggle="tooltip" data-original-title="Hapus"
-                                                                data-placement="top"
-                                                                onclick="transaksi.delete({{ $data->id }})">
-                                                                <i class="mdi mdi-delete"></i>
-                                                            </button>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        @else
+                                        @foreach ($transactions as $data)
                                             <tr>
-                                                <td colspan="12" class="text-center align-middle">
-                                                    Tidak ada data belanja
+                                                <td>
+                                                    {{ $transactions->count() * ($transactions->currentPage() - 1) + $loop->iteration }}
+                                                </td>
+                                                <td>{{ $data->tanggal }}</td>
+                                                <td>{{ $data->user->profil->nama_lengkap }}</td>
+                                                <td>{{ $data->budget->divisi->nama_divisi }}</td>
+                                                <td>{{ $data->budget->jenisBelanja->akunBelanja->nama_akun_belanja }}</td>
+                                                <td>{{ $data->budget->jenisBelanja->kategori_belanja }}</td>
+                                                <td>{{ $data->kegiatan }}</td>
+                                                <td>Rp. {{ number_format($data->jumlah_nominal) }}</td>
+                                                <td>{{ $data->no_dokumen }}</td>
+                                                <td>{{ $data->approval }}</td>
+                                                <td>{{ $data->created_at }}</td>
+                                                <td>{{ $data->updated_at }}</td>
+                                                <td class="text-center">
+                                                    <button
+                                                        class="btn btn-sm btn-light btn-icon mr-1"
+                                                        data-toggle="tooltip"
+                                                        data-original-title="Detail"
+                                                        data-placement="top"
+                                                        onclick="transaksi.showDetail({{ $data->id }})"
+                                                    >
+                                                        <i class="mdi mdi-eye-outline"></i>
+                                                    </button>
+
+                                                    @if ($userAccess->update == 1)
+                                                        <a
+                                                            href="{{ route('belanja.edit', ['transaksi' => $data->id]) }}"
+                                                            class="btn btn-sm btn-light btn-icon mr-1"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Edit"
+                                                            data-placement="top"
+                                                        >
+                                                            <i class="mdi mdi-square-edit-outline"></i>
+                                                        </a>
+                                                    @endif
+
+                                                    @if ($userAccess->delete == 1)
+                                                        <button
+                                                            class="btn btn-sm btn-icon btn-light"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Hapus"
+                                                            data-placement="top"
+                                                            onclick="transaksi.delete({{ $data->id }})"
+                                                        >
+                                                            <i class="mdi mdi-delete"></i>
+                                                        </button>
+                                                    @endif
                                                 </td>
                                             </tr>
-                                        @endif
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -267,7 +324,10 @@
     {{-- end table belanja --}}
 
     {{-- form delete transaksi --}}
-    <form method="post" id="form-delete-transaksi">
+    <form
+        method="post"
+        id="form-delete-transaksi"
+    >
         @method('DELETE') @csrf
     </form>
 
@@ -275,13 +335,33 @@
     <form id="form-export">
         @method('GET') @csrf
 
-        <input type="hidden" name="periode_awal" value="{{ old('periode_awal', request('periode_awal')) }}" />
-        <input type="hidden" name="periode_akhir" value="{{ old('periode_akhir', request('periode_akhir')) }}" />
-        <input type="hidden" name="jenis_belanja" value="{{ old('jenis_belanja', request('jenis_belanja')) }}" />
+        <input
+            type="hidden"
+            name="periode_awal"
+            value="{{ old('periode_awal', request('periode_awal')) }}"
+        />
+        <input
+            type="hidden"
+            name="periode_akhir"
+            value="{{ old('periode_akhir', request('periode_akhir')) }}"
+        />
+        <input
+            type="hidden"
+            name="jenis_belanja"
+            value="{{ old('jenis_belanja', request('jenis_belanja')) }}"
+        />
 
         @if ($isAdmin)
-            <input type="hidden" name="divisi" value="{{ old('divisi', request('divisi')) }}" />
-            <input type="hidden" name="no_dokumen" value="{{ old('no_dokumen', request('no_dokumen')) }}" />
+            <input
+                type="hidden"
+                name="divisi"
+                value="{{ old('divisi', request('divisi')) }}"
+            />
+            <input
+                type="hidden"
+                name="no_dokumen"
+                value="{{ old('no_dokumen', request('no_dokumen')) }}"
+            />
         @endif
     </form>
 

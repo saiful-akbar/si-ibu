@@ -1,6 +1,5 @@
-{{-- modal table list jenis belanja --}}
 <div
-    id="modal-table-budget"
+    id="modal-table-akun-belanja"
     class="modal fade"
     tabindex="-1"
     role="dialog"
@@ -10,29 +9,27 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title mt-1">
-                    DAFTAR BUDGET
+                    Daftar Akun Belanja
                 </h5>
 
                 <button
                     type="button"
                     class="close"
-                    onclick="transaksi.showModalTableBudget(false)"
+                    onclick="budget.modalTableAkunBelanja(false)"
                     aria-hidden="true"
                 >×</button>
             </div>
 
             <div class="modal-body">
                 <table
-                    id="datatable-budget"
+                    id="datatable-akun-belanja"
                     class="table table-hover table-centered w-100 nowrap"
                 >
                     <thead>
                         <tr>
                             <th class="text-center">Pilih</th>
-                            <th>Tahun Anggaran</th>
-                            <th>Bagian</th>
                             <th>Akun Belanja</th>
-                            <th>Sisa Budget</th>
+                            <th>Kategori Belanja</th>
                         </tr>
                     </thead>
                 </table>
@@ -41,7 +38,7 @@
             <div class="modal-footer">
                 <button
                     class="btn btn-dark btn-rounded btn-sm"
-                    onclick="transaksi.showModalTableBudget(false)"
+                    onclick="budget.modalTableAkunBelanja(false)"
                 >
                     <i class="mdi mdi-close-circle"></i>
                     <span>Tutup</span>

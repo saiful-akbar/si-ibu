@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AkunBelanja;
 use App\Models\Budget;
 use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
-use App\Models\User;
 use App\Traits\UserAccessTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,26 +45,14 @@ class BudgetController extends Controller
         /**
          * query join table budget dengan tabel divisi dan select kolom yang diperlukan
          */
-        $query = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
-            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
-            ->select([
-                'budget.id',
-                'budget.tahun_anggaran',
-                'budget.nominal',
-                'budget.sisa_nominal',
-                'budget.divisi_id',
-                'budget.jenis_belanja_id',
-                'budget.created_at',
-                'budget.updated_at',
-                'divisi.nama_divisi',
-                'jenis_belanja.kategori_belanja',
-            ])->whereBetween('budget.tahun_anggaran', [$periodeAwal, $periodeAkhir]);
+        $query = Budget::with('divisi', 'jenisBelanja.akunBelanja')
+            ->whereBetween('budget.tahun_anggaran', [$periodeAwal, $periodeAkhir]);
 
         /**
          * cek akun belanja (jenis_belanja) di cari atau tidak
          */
         if (!empty($request->jenis_belanja)) {
-            $query->where('jenis_belanja.kategori_belanja', $request->jenis_belanja);
+            $query->whereHas('jenisBelanja', fn (Builder $query) => $query->where('kategori_belanja', $request->jenis_belanja));
         }
 
         /**
@@ -75,22 +64,20 @@ class BudgetController extends Controller
              * cek divisi di cari atau tidak
              */
             if (!empty($request->divisi)) {
-                $query->where('divisi.nama_divisi', $request->divisi);
+                $query->whereHas('divisi', fn (Builder $query) => $query->where('nama_divisi', $request->divisi));
             }
         } else {
 
             /**
              * query berdasarkan  divisi user yang sedang login
              */
-            $query->where('budget.divisi_id', Auth::user()->divisi_id);
+            $query->where('divisi_id', Auth::user()->divisi_id);
         }
 
         /**
          * Query order
          */
-        $query->orderBy('budget.tahun_anggaran', 'desc')
-            ->orderBy('divisi.nama_divisi', 'asc')
-            ->orderBy('budget.updated_at', 'desc');
+        $query->orderBy('tahun_anggaran', 'desc')->orderBy('budget.updated_at', 'desc');
 
         /**
          * jumlah total nominal dan total sisa_nominal budget
@@ -106,10 +93,11 @@ class BudgetController extends Controller
             ->get();
 
         /**
-         * ambil data akun belanja (jenis_belanja)
+         * ambil data akun_belanja
          */
-        $jenisBelanja = JenisBelanja::where('active', 1)
-            ->orderBy('kategori_belanja', 'asc')
+        $akunBelanja = AkunBelanja::with('jenisBelanja')
+            ->where('active', 1)
+            ->orderBy('nama_akun_belanja', 'asc')
             ->get();
 
         /**
@@ -118,7 +106,7 @@ class BudgetController extends Controller
         return view('pages.budget.index', [
             'budgets' => $query->simplePaginate(25)->withQueryString(),
             'divisi' => $divisi,
-            'jenisBelanja' => $jenisBelanja,
+            'akunBelanja' => $akunBelanja,
             'totalNominal' => $totalNominal,
             'totalSisaNominal' => $totalSisaNominal,
             'userAccess' => $userAccess,
@@ -137,7 +125,7 @@ class BudgetController extends Controller
         /**
          * ambil data budget
          */
-        $data = Budget::with('divisi', 'jenisBelanja', 'transaksi')
+        $data = Budget::with('divisi', 'jenisBelanja.akunBelanja', 'transaksi')
             ->find($budget->id);
 
         /**
@@ -154,6 +142,9 @@ class BudgetController extends Controller
         $totalNominalTransaksi = Transaksi::where('budget_id', $budget->id)
             ->sum('jumlah_nominal');
 
+        /**
+         * response
+         */
         return response()->json([
             'budget' => $data,
             'transaksi' => $transaksi,
@@ -310,9 +301,8 @@ class BudgetController extends Controller
     public function edit(Budget $budget)
     {
         $divisions = Divisi::where('active', 1)->get();
-        $jenisBelanja = JenisBelanja::where('active', 1)->get();
 
-        return view('pages.budget.edit', compact('budget', 'divisions', 'jenisBelanja'));
+        return view('pages.budget.edit', compact('budget', 'divisions'));
     }
 
     /**
@@ -456,7 +446,7 @@ class BudgetController extends Controller
         /**
          * return jika proses update sukses
          */
-        return redirect()->route('budget.edit', ['budget' => $budget->id])->with('alert', [
+        return redirect()->route('budget')->with('alert', [
             'type' => 'success',
             'message' => 'Budget berhasil diperbarui.',
         ]);
@@ -519,9 +509,8 @@ class BudgetController extends Controller
     public function switch(Budget $budget)
     {
         $divisions = Divisi::where('active', 1)->get();
-        $jenisBelanja = JenisBelanja::where('active', 1)->get();
 
-        return view('pages.budget.switch', compact('budget', 'divisions', 'jenisBelanja'));
+        return view('pages.budget.switch', compact('budget', 'divisions'));
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Models\JenisBelanja;
 use App\Traits\UserAccessTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class JenisBelanjaController extends Controller
 {
@@ -294,5 +295,29 @@ class JenisBelanjaController extends Controller
                 'type' => 'success',
                 'message' => '1 data jenis belanja berhasil dihapus.',
             ]);
+    }
+
+    /**
+     * modal datatable
+     */
+    public function dataTable()
+    {
+        $jenisBelanja = JenisBelanja::with('akunBelanja')
+            ->where('active', 1)
+            ->whereHas('akunBelanja', fn (Builder $query) => $query->where('active', 1))
+            ->get();
+
+        return DataTables::of($jenisBelanja)
+            ->addColumn('action', function ($data) {
+                return "
+                    <button
+                        onclick='budget.setValueAkunBelanja({$data->id}, \"{$data->akunBelanja->nama_akun_belanja}\", \"{$data->kategori_belanja}\")'
+                        class='btn btn-sm btn-success btn-rounded btn-sm'
+                    >
+                        <i class='mdi mdi-hand-pointing-up mr-1'></i>
+                        <span>Pilih</span>
+                    </button>
+                ";
+            })->make(true);
     }
 }

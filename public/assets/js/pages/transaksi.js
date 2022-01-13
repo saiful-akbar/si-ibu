@@ -11,13 +11,12 @@ class Transaksi {
     delete(id) {
         bootbox.confirm({
             title: "Anda insin menghapus data belanja?",
-            message: `
+            message: String.raw`
                 <div class="alert alert-danger" role="alert">
                     <h4 class="alert-heading">
                         <i class="dripicons-warning mr-1"></i>
                         Peringatan!
                     </h4>
-
                     <ul>
                         <li>Tindakan ini tidak dapat dibatalkan.</li>
                         <li>Data belanja yang dihapus tidak dapat dikembalikan.</li>
@@ -27,12 +26,12 @@ class Transaksi {
             `,
             buttons: {
                 confirm: {
-                    label: "<i class='mdi mdi-delete mr-1'></i> Hapus",
-                    className: "btn btn-danger btn-sm btn-rounded",
+                    label: String.raw`<i class='mdi mdi-delete mr-1'></i> Hapus`,
+                    className: `btn btn-danger btn-sm btn-rounded`,
                 },
                 cancel: {
-                    label: "<i class='mdi mdi-close-circle mr-1'></i> Batal",
-                    className: "btn btn-sm btn-dark btn-rounded mr-2",
+                    label: String.raw`<i class='mdi mdi-close-circle mr-1'></i> Batal`,
+                    className: `btn btn-sm btn-dark btn-rounded mr-2`,
                 },
             },
             callback: (result) => {
@@ -107,7 +106,7 @@ class Transaksi {
                 );
 
                 if (res.download !== null) {
-                    $("#detail-download-dokumen").html(`
+                    $("#detail-download-dokumen").html(String.raw`
                         <a href="${res.download}" class="btn btn-light btn-sm btn-rounded">
                             <i class="mdi mdi-download mr-1"></i>
                             <span>Unduh</span>
@@ -140,7 +139,7 @@ class Transaksi {
             this.dataTableBudget = $("#datatable-budget").DataTable({
                 processing: true,
                 serverSide: true,
-                pageLength: 25,
+                pageLength: 20,
                 lengthChange: false,
                 scrollX: true,
                 destroy: false,
@@ -148,11 +147,9 @@ class Transaksi {
                 scrollY: "300px",
                 scrollCollapse: true,
                 ajax: `${main.baseUrl}/belanja/budget/datatable`,
+                pagingType: "simple",
                 language: {
-                    paginate: {
-                        previous: "<i class='mdi mdi-chevron-left'>",
-                        next: "<i class='mdi mdi-chevron-right'>",
-                    },
+                    paginate: { previous: "Prev", next: "Next" },
                 },
                 columns: [
                     {

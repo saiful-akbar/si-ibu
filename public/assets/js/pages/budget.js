@@ -1,6 +1,6 @@
 class Budget {
     constructor() {
-        this.dataTable = null;
+        this.dataTableAkunBelanja = null;
     }
 
     /**
@@ -11,30 +11,30 @@ class Budget {
     handleDelete = (id) => {
         bootbox.confirm({
             title: "Anda ingin menghapus budget ?",
-            message: `
+            message: String.raw`
                 <div class="alert alert-danger" role="alert">
                     <h4 class="alert-heading">
                         <i class="dripicons-warning mr-1"></i>
                         Peringatan!
                     </h4>
-
                     <ul>
                         <li>Tindakan ini tidak dapat dibatalkan.</li>
                         <li>Budget yang dihapus tidak dapat dikembalikan.</li>
                         <li>Pastikan anda berhati-hati dalam menghapus.</li>
                     </ul>
-
-                    <p><b>NB:</b> Budget tidak dapat dihapus jika memiliki data relasi pada <b>Transaksi Belanja</b>!</p>
+                    <p>
+                        <b>NB:</b> Budget tidak dapat dihapus jika memiliki data relasi pada <b>Transaksi Belanja</b>!
+                    </p>
                 </div>
             `,
             buttons: {
                 confirm: {
-                    label: "<i class='mdi mdi-delete mr-1'></i> Hapus",
-                    className: "btn btn-danger btn-sm btn-rounded",
+                    label: String.raw`<i class='mdi mdi-delete mr-1'></i> Hapus`,
+                    className: `btn btn-danger btn-sm btn-rounded`,
                 },
                 cancel: {
-                    label: "<i class='mdi mdi-close-circle mr-1'></i> Batal",
-                    className: "btn btn-sm btn-dark btn-rounded mr-2",
+                    label: String.raw`<i class='mdi mdi-close-circle mr-1'></i> Batal`,
+                    className: `btn btn-sm btn-dark btn-rounded mr-2`,
                 },
             },
             callback: (result) => {
@@ -90,6 +90,11 @@ class Budget {
                     $("#detail-tahun-anggaran").text(res.budget.tahun_anggaran);
                     $("#detail-tahun-anggaran").text(res.budget.tahun_anggaran);
                     $("#detail-divisi").text(res.budget.divisi.nama_divisi);
+
+                    $("#detail-akun-belanja").text(
+                        res.budget.jenis_belanja.akun_belanja.nama_akun_belanja
+                    );
+
                     $("#detail-jenis-belanja").text(
                         res.budget.jenis_belanja.kategori_belanja
                     );
@@ -97,9 +102,11 @@ class Budget {
                     $("#detail-nominal").text(
                         "Rp. " + main.formatRupiah(res.budget.nominal)
                     );
+
                     $("#detail-nominal-transaksi").text(
                         "Rp. " + main.formatRupiah(res.totalNominalTransaksi)
                     );
+
                     $("#detail-sisa-nominal").text(
                         "Rp. " + main.formatRupiah(res.budget.sisa_nominal)
                     );
@@ -108,7 +115,7 @@ class Budget {
                      * append table detail transkasi per budget
                      */
                     res.transaksi.map((transaksi) =>
-                        $("#detail-transaksi").append(`
+                        $("#detail-transaksi").append(String.raw`
                             <tr>
                                 <td>${transaksi.tanggal}</td>
                                 <td>${transaksi.user.profil.nama_lengkap}</td>
@@ -118,8 +125,11 @@ class Budget {
                                 <td class="text-center">
                                     ${
                                         transaksi.file_dokumen !== null
-                                            ? `
-                                                <a href="${main.baseUrl}/belanja/${transaksi.id}/download" class="btn btn-light btn-sm btn-rounded">
+                                            ? String.raw`
+                                                <a
+                                                    href="${main.baseUrl}/belanja/${transaksi.id}/download"
+                                                    class="btn btn-light btn-sm btn-rounded"
+                                                >
                                                     <i class="mdi mdi-download"></i>
                                                     <span>Unduh</span>
                                                 </a>
@@ -148,6 +158,65 @@ class Budget {
     handleCloseModalDetail = () => {
         $("#modal-detail").modal("hide");
     };
+
+    /**
+     * Fungsi show hide modal table akun belanja
+     *
+     * @param {boolean} show
+     */
+    modalTableAkunBelanja(show) {
+        $("#modal-table-akun-belanja").modal(show ? "show" : "hide");
+
+        if (this.dataTableAkunBelanja == null) {
+            this.dataTableAkunBelanja = $("#datatable-akun-belanja").DataTable({
+                processing: true,
+                serverSide: true,
+                pageLength: 20,
+                lengthChange: false,
+                scrollX: true,
+                info: false,
+                scrollY: "300px",
+                scrollCollapse: true,
+                ajax: `${main.baseUrl}/akun-belanja/jenis-belanja/datatable`,
+                pagingType: "simple",
+                language: {
+                    paginate: { previous: "Prev", next: "Next" },
+                },
+                columns: [
+                    {
+                        data: "action",
+                        name: "action",
+                        orderable: false,
+                        searchable: false,
+                        className: "text-center",
+                    },
+                    {
+                        data: "akun_belanja.nama_akun_belanja",
+                        name: "akun_belanja.nama_akun_belanja",
+                    },
+                    {
+                        data: "kategori_belanja",
+                        name: "kategori_belanja",
+                    },
+                ],
+            });
+        }
+    }
+
+    /**
+     * Fungsi set value form input akun belanja
+     *
+     * @param {int} id
+     * @param {string} namaAkunBelanja
+     * @param {string} kategoriBelanja
+     */
+    setValueAkunBelanja(id, namaAkunBelanja, kategoriBelanja) {
+        $("#jenis_belanja_id").val(id);
+        $("#nama_akun_belanja").val(namaAkunBelanja);
+        $("#kategori_belanja").val(kategoriBelanja);
+
+        this.modalTableAkunBelanja(false);
+    }
 }
 
 /**
