@@ -22,7 +22,7 @@
                     <span>Detail Akses</span>
                 </a>
 
-                @if ($userAccess->pivot->update == 1)
+                @if ($userAccess->update == 1)
                     <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" class="nav-link mb-2">
                         <i class="mdi mdi-square-edit-outline mr-2"></i>
                         <span>Edit Akses</span>
@@ -46,7 +46,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-centered w-100 nowrap">
-                                    <thead>
+                                    <thead class="thead-light">
                                         <tr>
                                             <th>Menu</th>
                                             <th class="text-center">Create</th>

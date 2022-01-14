@@ -148,15 +148,14 @@ class Transaksi {
                 scrollCollapse: true,
                 ajax: `${main.baseUrl}/belanja/budget/datatable`,
                 pagingType: "simple",
-                language: {
-                    paginate: { previous: "Prev", next: "Next" },
-                },
+                language: { paginate: { previous: "Prev", next: "Next" } },
                 columns: [
                     {
                         data: "action",
                         name: "action",
                         orderable: false,
                         searchable: false,
+                        className: "text-center",
                     },
                     {
                         data: "tahun_anggaran",
@@ -165,6 +164,10 @@ class Transaksi {
                     {
                         data: "nama_divisi",
                         name: "nama_divisi",
+                    },
+                    {
+                        data: "nama_akun_belanja",
+                        name: "nama_akun_belanja",
                     },
                     {
                         data: "kategori_belanja",
@@ -185,10 +188,18 @@ class Transaksi {
      *
      * @param {JSON} data
      */
-    setFormValue(id, tahunAnggaran, namaDivisi, kategoriBelanja, sisaNominal) {
+    setFormValue(
+        id,
+        tahunAnggaran,
+        namaDivisi,
+        namaAkunBelanja,
+        kategoriBelanja,
+        sisaNominal
+    ) {
         this.showModalTableBudget(false);
 
         $("#budget_id").val(id);
+        $("#nama_akun_belanja").val(namaAkunBelanja);
         $("#kategori_belanja").val(kategoriBelanja);
         $("#nama_divisi").val(namaDivisi);
         $("#tahun_anggaran").val(tahunAnggaran);

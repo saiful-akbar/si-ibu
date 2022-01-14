@@ -47,7 +47,7 @@
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
                                 <table class="table nowrap table-centered w-100">
-                                    <thead>
+                                    <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
                                             <th>User</th>
@@ -68,7 +68,7 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td>
-                                                    {{ $users->count() * ($users->currentPage() - 1) + $loop->iteration }}
+                                                    {{ $users->perPage() * ($users->currentPage() - 1) + $loop->iteration }}
                                                 </td>
                                                 <td class="align-middle table-user">
                                                     @if ($user->avatar != null)

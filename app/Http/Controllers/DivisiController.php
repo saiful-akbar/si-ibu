@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Divisi;
-use App\Models\User;
 use App\Traits\UserAccessTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class DivisiController extends Controller
 {
@@ -49,7 +47,7 @@ class DivisiController extends Controller
         /**
          * buat pagination
          */
-        $divisi = $query->simplePaginate(25)->withQueryString();
+        $divisi = $query->simplePaginate(10)->withQueryString();
 
         return view('pages.divisi.index', [
             'divisi' => $divisi,

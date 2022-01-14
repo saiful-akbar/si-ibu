@@ -6,7 +6,10 @@
     <div class="row">
         <div class="col-12">
 
-            <form action="{{ route('profil.pengaturan.tema') }}" method="POST" >
+            <form
+                action="{{ route('profil.pengaturan.tema') }}"
+                method="POST"
+            >
                 @method('PATCH') @csrf
 
                 {{-- tema card --}}
@@ -34,7 +37,10 @@
                                             @if (auth()->user()->pengaturan->tema == 'light') checked @endif
                                         />
 
-                                        <label class="custom-control-label" for="light">
+                                        <label
+                                            class="custom-control-label"
+                                            for="light"
+                                        >
                                             Terang
                                         </label>
                                     </div>
@@ -49,7 +55,10 @@
                                             @if (auth()->user()->pengaturan->tema == 'dark') checked @endif
                                         />
 
-                                        <label class="custom-control-label" for="dark">
+                                        <label
+                                            class="custom-control-label"
+                                            for="dark"
+                                        >
                                             Gelap
                                         </label>
                                     </div>
@@ -64,19 +73,25 @@
                     {{-- end tema card-body --}}
 
                     {{-- tema card-footer --}}
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-sm btn-info btn-rounded mr-2">
-                                <i class="mdi mdi-content-save"></i>
-                                <span>Simpan</span>
-                            </button>
+                    <div class="card-footer">
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-info btn-rounded mr-2"
+                        >
+                            <i class="mdi mdi-content-save"></i>
+                            <span>Simpan</span>
+                        </button>
 
-                            <button type="reset" class="btn btn-sm btn-rounded btn-outline-dark">
-                                <i class="mdi mdi-close"></i>
-                                <span>Reset</span>
-                            </button>
-                        </div>
+                        <button
+                            type="reset"
+                            class="btn btn-sm btn-rounded btn-dark"
+                        >
+                            <i class="mdi mdi-close"></i>
+                            <span>Reset</span>
+                        </button>
+                    </div>
                     {{-- end tema card-footer --}}
-                
+
                 </div>
                 {{-- end tema card --}}
 

@@ -23,6 +23,15 @@
     >
         @method('POST') @csrf
 
+        {{-- input budget_id --}}
+        <input
+            type="hidden"
+            name="budget_id"
+            id="budget_id"
+            value="{{ old('budget_id') }}"
+            required
+        >
+
         {{-- input akun belanja (jenis_belanja) & bagian (divisi) --}}
         <div class="row">
             <div class="col-12 mb-3">
@@ -32,14 +41,6 @@
                     </div>
 
                     <div class="card-body">
-
-                        <input
-                            type="hidden"
-                            name="budget_id"
-                            id="budget_id"
-                            value="{{ old('budget_id') }}"
-                            required
-                        >
 
                         {{-- Input jenis belanja (akun belanja) --}}
                         <div class="form-group row mb-3">
@@ -66,25 +67,39 @@
 
                                 <input
                                     type="text"
+                                    name="nama_akun_belanja"
+                                    id="nama_akun_belanja"
+                                    class="form-control @error('budget_id') is-invalid @else @error('nama_akun_belanja') is-invalid @enderror @enderror"
+                                    placeholder="Akun belanja..."
+                                    value="{{ old('nama_akun_belanja') }}"
+                                    readonly
+                                    required
+                                />
+
+                                <input
+                                    type="text"
                                     name="kategori_belanja"
                                     id="kategori_belanja"
-                                    class="form-control @error('kategori_belanja') is-invalid @enderror @error('budget_id') is-invalid @enderror"
-                                    placeholder="Pilih akun belanja..."
+                                    class="form-control @error('budget_id') is-invalid @else @error('kategori_belanja') is-invalid @enderror @enderror"
+                                    placeholder="Jenis belanja..."
                                     value="{{ old('kategori_belanja') }}"
                                     readonly
                                     required
                                 />
 
-                                @error('kategori_belanja')
+                                @error('budget_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
+
                                 @else
-                                    @error('budget_id')
+                                    @error('nama_akun_belanja')
                                         <div class="invalid-feedback">{{ $message }}</div>
+                                    @else
+                                        @error('kategori_belanja')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     @enderror
                                 @enderror
-
                             </div>
-
                         </div>
 
                         {{-- input bagian (divisi) --}}

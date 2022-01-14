@@ -51,7 +51,7 @@ class JenisBelanjaController extends Controller
          */
         $jenisBelanja = $query
             ->orderBy('kategori_belanja', 'asc')
-            ->simplePaginate(25)
+            ->simplePaginate(10)
             ->withQueryString();
 
         return view('pages.jenis-belanja.index', compact('jenisBelanja', 'userAccess', 'isAdmin'));

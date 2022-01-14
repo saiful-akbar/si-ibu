@@ -74,7 +74,7 @@ class UserController extends Controller
          * view halaman user.
          */
         return view('pages.user.index', [
-            'users' => $users->simplePaginate(25)->withQueryString(),
+            'users' => $users->simplePaginate(10)->withQueryString(),
             'userAccess' => $userAccess,
             'isAdmin' => $isAdmin,
         ]);
@@ -425,10 +425,7 @@ class UserController extends Controller
         /**
          * ambid data user akses untuk menu user
          */
-        $userAccess = User::with('menuItem')->find(Auth::user()->id)
-            ->menuItem
-            ->where('href', '/user')
-            ->first();
+        $userAccess = $this->getAccess(href: '/user');
 
         return view('pages.user.menu-akses.index', compact('user', 'menuItems', 'userAccess'));
     }

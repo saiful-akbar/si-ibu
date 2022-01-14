@@ -7,7 +7,11 @@
         <div class="col-12">
 
             {{-- form edit profil --}}
-            <form action="{{ route('profil.update') }}" method="POST" enctype="multipart/form-data">
+            <form
+                action="{{ route('profil.update') }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
                 @method('PATCH') @csrf
 
                 <div class="card">
@@ -15,7 +19,7 @@
                         <h4 class="header-title">Ubah Profil</h4>
                     </div>
 
-                    <div class="card-body">                    
+                    <div class="card-body">
 
                         {{-- input avatar --}}
                         <div class="row justify-content-end">
@@ -38,8 +42,14 @@
                                     />
                                 @endif
 
-                                <label for="avatar" class="ml-2">
-                                    <span type="button" class="btn btn-rounded btn-primary btn-sm">
+                                <label
+                                    for="avatar"
+                                    class="ml-2"
+                                >
+                                    <span
+                                        type="button"
+                                        class="btn btn-rounded btn-primary btn-sm"
+                                    >
                                         <i class="mdi mdi-upload-outline"></i>
                                         <span>Avatar</span>
                                     </span>
@@ -66,7 +76,10 @@
 
                         {{-- input nama lengkap --}}
                         <div class="form-group row">
-                            <label for="nama_lengkap" class="col-md-4 col-sm-12 col-form-label">
+                            <label
+                                for="nama_lengkap"
+                                class="col-md-4 col-sm-12 col-form-label"
+                            >
                                 Nama Lengkap <small class="text-danger">*</small>
                             </label>
 
@@ -90,12 +103,18 @@
                     </div> {{-- end card-body --}}
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-sm btn-info btn-rounded mr-2">
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-info btn-rounded mr-2"
+                        >
                             <i class="mdi mdi-content-save"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button type="reset" class="btn btn-sm btn-rounded btn-outline-dark">
+                        <button
+                            type="reset"
+                            class="btn btn-sm btn-rounded btn-dark"
+                        >
                             <i class="mdi mdi-close"></i>
                             <span>Reset</span>
                         </button>
@@ -119,7 +138,9 @@
             $("#avatar").change(function(e) {
                 e.preventDefault();
 
-                const { files } = $(this)[0];
+                const {
+                    files
+                } = $(this)[0];
 
                 if (files) {
                     $("#avatar-view").attr("src", URL.createObjectURL(files[0]));

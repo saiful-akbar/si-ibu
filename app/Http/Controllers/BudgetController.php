@@ -77,7 +77,9 @@ class BudgetController extends Controller
         /**
          * Query order
          */
-        $query->orderBy('tahun_anggaran', 'desc')->orderBy('budget.updated_at', 'desc');
+        $budgets = $query->orderBy('tahun_anggaran', 'desc')
+            ->orderBy('budget.updated_at', 'desc')
+            ->simplePaginate(10)->withQueryString();
 
         /**
          * jumlah total nominal dan total sisa_nominal budget
@@ -104,7 +106,7 @@ class BudgetController extends Controller
          * return view
          */
         return view('pages.budget.index', [
-            'budgets' => $query->simplePaginate(25)->withQueryString(),
+            'budgets' => $budgets,
             'divisi' => $divisi,
             'akunBelanja' => $akunBelanja,
             'totalNominal' => $totalNominal,

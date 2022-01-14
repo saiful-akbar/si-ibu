@@ -49,7 +49,7 @@ class AkunBelanjaController extends Controller
         /**
          * buat pagination
          */
-        $akunBelanja = $query->simplePaginate(25)->withQueryString();
+        $akunBelanja = $query->simplePaginate(10)->withQueryString();
 
         /**
          * view

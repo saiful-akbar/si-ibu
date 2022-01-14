@@ -44,7 +44,7 @@
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
                                 <table class="table table table-centered nowrap">
-                                    <thead>
+                                    <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Bagian</th>
@@ -64,7 +64,7 @@
                                         @foreach ($divisi as $data)
                                             <tr>
                                                 <td>
-                                                    {{ $divisi->count() * ($divisi->currentPage() - 1) + $loop->iteration }}
+                                                    {{ $divisi->perPage() * ($divisi->currentPage() - 1) + $loop->iteration }}
                                                 </td>
                                                 <td>{{ ucwords($data->nama_divisi) }}</td>
                                                 <td class="text-center">
@@ -85,9 +85,8 @@
 
                                                         @if ($userAccess->update == 1)
                                                             <a href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon mr-1"
-                                                                data-toggle="tooltip" data-original-title="Edit"
-                                                                data-placement="top">
+                                                                class="btn btn-sm btn-light btn-icon mr-1" data-toggle="tooltip"
+                                                                data-original-title="Edit" data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
                                                         @endif

@@ -6,7 +6,6 @@ use App\Exports\LaporanTransaksiExport;
 use App\Models\AkunBelanja;
 use App\Models\Budget;
 use App\Models\Divisi;
-use App\Models\JenisBelanja;
 use App\Models\Transaksi;
 use App\Traits\UserAccessTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -153,7 +152,7 @@ class TransaksiController extends Controller
         /**
          * periode default
          */
-        $periodeAwal = $request->periode_awal ?? date('Y-m-d', time() - (60 * 60 * 24 * 14));
+        $periodeAwal = $request->periode_awal ?? date('Y-m-d', time() - (60 * 60 * 24 * 13));
         $periodeAkhir = $request->periode_akhir ?? date('Y-m-d');
 
         /**
@@ -207,7 +206,7 @@ class TransaksiController extends Controller
          */
         $transactions = $query->orderBy('tanggal', 'desc')
             ->orderBy('updated_at', 'desc')
-            ->simplePaginate(25)
+            ->simplePaginate(10)
             ->withQueryString();
 
         /**
@@ -230,9 +229,9 @@ class TransaksiController extends Controller
          */
         return view('pages.transaksi.index', compact(
             'transactions',
-            'userAccess',
             'divisi',
             'akunBelanja',
+            'userAccess',
             'isAdmin',
             'periodeAwal',
             'periodeAkhir',
@@ -266,6 +265,7 @@ class TransaksiController extends Controller
             // budget
             'budget_id' => ['required', 'exists:budget,id'],
             'nama_divisi' => ['required', 'exists:divisi,nama_divisi'],
+            'nama_akun_belanja' => ['required', 'exists:akun_belanja,nama_akun_belanja'],
             'kategori_belanja' => ['required', 'exists:jenis_belanja,kategori_belanja'],
             'tahun_anggaran' => ['required', 'numeric', 'exists:budget,tahun_anggaran'],
             'sisa_budget' => ['required', 'numeric'],
@@ -293,8 +293,10 @@ class TransaksiController extends Controller
             'budget_id.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
             'nama_divisi.required' => 'Bagian harus diisi.',
             'nama_divisi.exists' => 'Bagian tidak ada.',
-            'kategori_belanja.required' => 'Akun belanja harus dipilih.',
-            'kategori_belanja.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'nama_akun_belanja.required' => 'Akun belanja harus dipilih.',
+            'nama_akun_belanja.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'kategori_belanja.required' => 'Jenis belanja harus dipilih.',
+            'kategori_belanja.exists' => 'Jenis belanja tidak ada. Pilih akun belanja yang ditentukan.',
             'tahun_anggaran.required' => 'Tahun anggaran harus diisi.',
             'tahun_anggaran.numeric' => 'Tahun anggaran harus tahun yang valid (yyyy).',
             'tahun_anggaran.exists' => 'Tidak ada budget pada tahun anggaran yang masukan.',
@@ -442,6 +444,7 @@ class TransaksiController extends Controller
             'budget_id' => ['required', 'exists:budget,id'],
             'nama_divisi' => ['required', 'exists:divisi,nama_divisi'],
             'kategori_belanja' => ['required', 'exists:jenis_belanja,kategori_belanja'],
+            'nama_akun_belanja' => ['required', 'exists:akun_belanja,nama_akun_belanja'],
             'tahun_anggaran' => ['required', 'numeric', 'exists:budget,tahun_anggaran'],
             'sisa_budget' => ['required', 'numeric'],
             'tanggal' => ['required', 'date'],
@@ -459,8 +462,10 @@ class TransaksiController extends Controller
             'budget_id.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
             'nama_divisi.required' => 'Bagian harus diisi.',
             'nama_divisi.exists' => 'Bagian tidak ada.',
-            'kategori_belanja.required' => 'Akun belanja harus dipilih.',
-            'kategori_belanja.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'nama_akun_belanja.required' => 'Akun belanja harus dipilih.',
+            'nama_akun_belanja.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'kategori_belanja.required' => 'Jenis belanja harus dipilih.',
+            'kategori_belanja.exists' => 'Jenis belanja tidak ada. Pilih akun belanja yang ditentukan.',
             'tahun_anggaran.required' => 'Tahun anggaran harus diisi.',
             'tahun_anggaran.numeric' => 'Tahun anggaran harus tahun yang valid (yyyy).',
             'tahun_anggaran.exists' => 'Tidak ada budget pada tahun anggaran yang masukan.',
@@ -787,6 +792,10 @@ class TransaksiController extends Controller
         return [
             'laporanTransaksi' => $laporanTransaksi,
             'totalTransaksi' => $totalTransaksi,
+            'userAccess' => $userAccess,
+            'isAdmin' => $isAdmin,
+            'periodeAwal' => $periodeAwal,
+            'periodeAkhir' => $periodeAkhir,
         ];
     }
 
@@ -816,10 +825,20 @@ class TransaksiController extends Controller
     public function exportPdf(Request $request)
     {
         $data = $this->fillter($request);
+        $pdf = PDF::loadView(
+            'export.pdf.pdf-transaksi',
+            $data,
+            [],
+            [
+                'orientation' => 'L',
+                'margin_header' => 10,
+                'margin_footer' => 10,
+                'margin_top' => 35,
+                'margin_bottom' => 30,
+            ]
+        );
 
-        return PDF::loadView('export.pdf.pdf-transaksi', $data)
-            ->setPaper('a4', 'landscape')
-            ->download('Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.pdf');
+        return $pdf->stream('Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.pdf');
     }
 
     /**
@@ -830,9 +849,11 @@ class TransaksiController extends Controller
     {
         $budgets = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
             ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
+            ->leftJoin('akun_belanja', 'akun_belanja.id', '=', 'jenis_belanja.akun_belanja_id')
             ->where([
                 ['divisi.id', Auth::user()->divisi_id],
                 ['divisi.active', 1],
+                ['akun_belanja.active', 1],
                 ['jenis_belanja.active', 1],
             ])->select([
                 'budget.id',
@@ -840,8 +861,10 @@ class TransaksiController extends Controller
                 'budget.sisa_nominal',
                 'divisi.nama_divisi',
                 'jenis_belanja.kategori_belanja',
+                'akun_belanja.nama_akun_belanja',
             ])->orderBy('budget.tahun_anggaran', 'desc')
             ->orderBy('divisi.nama_divisi', 'asc')
+            ->orderBy('akun_belanja.nama_akun_belanja', 'asc')
             ->orderBy('jenis_belanja.kategori_belanja', 'asc')
             ->get();
 
@@ -849,7 +872,7 @@ class TransaksiController extends Controller
             ->addColumn('action', function ($budget) {
                 return "
                     <button
-                        onclick='transaksi.setFormValue({$budget->id}, {$budget->tahun_anggaran}, \"{$budget->nama_divisi}\", \"{$budget->kategori_belanja}\", {$budget->sisa_nominal})'
+                        onclick='transaksi.setFormValue({$budget->id}, {$budget->tahun_anggaran}, \"{$budget->nama_divisi}\", \"{$budget->nama_akun_belanja}\", \"{$budget->kategori_belanja}\", {$budget->sisa_nominal})'
                         class='btn btn-sm btn-success btn-rounded btn-sm'
                     >
                         <i class='mdi mdi-hand-pointing-up mr-1'></i>

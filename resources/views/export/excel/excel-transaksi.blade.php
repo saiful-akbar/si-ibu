@@ -16,9 +16,9 @@
                 <th style="font-weight: bold; border: 1px solid #000;">Akun Belanja</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Jenis Belanja</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Kegiatan</th>
-                <th style="font-weight: bold; border: 1px solid #000;">Jumlah Nominal</th>
                 <th style="font-weight: bold; border: 1px solid #000;">No. Dokumen</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Approval</th>
+                <th style="font-weight: bold; border: 1px solid #000;">Jumlah Nominal</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Uraian</th>
             </tr>
         </thead>
@@ -45,13 +45,13 @@
                         {{ $laporan->budget->jenisBelanja->kategori_belanja }}
                     </td>
                     <td style="border: 1px solid #000; width: 15em;">
-                        {{ $laporan->approval }}
-                    </td>
-                    <td style="border: 1px solid #000; width: 15em;">
                         {{ $laporan->kegiatan }}
                     </td>
                     <td style="border: 1px solid #000; width: 15em;">
                         {{ $laporan->no_dokumen }}
+                    </td>
+                    <td style="border: 1px solid #000; width: 15em;">
+                        {{ $laporan->approval }}
                     </td>
                     <td style="border: 1px solid #000; width: 15em;">
                         {{ $laporan->jumlah_nominal }}
