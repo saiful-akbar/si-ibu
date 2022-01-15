@@ -825,16 +825,19 @@ class TransaksiController extends Controller
     public function exportPdf(Request $request)
     {
         $data = $this->fillter($request);
+
+        // return view('export.pdf.pdf-transaksi', $data);
+
         $pdf = PDF::loadView(
             'export.pdf.pdf-transaksi',
             $data,
             [],
             [
                 'orientation' => 'L',
-                'margin_header' => 10,
-                'margin_footer' => 10,
-                'margin_top' => 35,
-                'margin_bottom' => 30,
+                'margin_header' => 5,
+                'margin_footer' => 5,
+                'margin_top' => 31,
+                'margin_bottom' => 20,
             ]
         );
 

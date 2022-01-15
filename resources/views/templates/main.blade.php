@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Aplikasi manajemen anggaran berbasis web" />
+    <meta name="description" content="Sistem informasi manajemen anggaran & arsip" />
     <meta name="author" content="Saiful Akbar" />
 
     <meta name="base-url" content="{{ url('/') }}" />
@@ -15,7 +15,7 @@
     </title>
 
     {{-- App favicon --}}
-    <link href="{{ asset('assets/images/favicon.ico') }}" rel="shortcut icon" />
+    <link href="{{ asset('assets/images/logo/favicon.ico') }}" rel="shortcut icon" />
 
     {{-- google icons --}}
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />

@@ -11,21 +11,9 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 text-center mb-3">
-
-                            {{-- <a href="{{ route('login.view') }}" class="logo-dark">
-                                <span class="h4">
-                                    <img
-                                        src="{{ asset('assets/images/logo/logo-dark.png') }}"
-                                        alt="logo" height="20"
-                                        class="mb-4"
-                                    />
-                                </span>
-                            </a> --}}
-
-                            <h2 class="mt-0 mb-1">
-                                <i class="fas fa-coins mr-2 text-info"></i>
-                                {{ config('app.name') }}
-                            </h2>
+                            <a href="{{ route('login.view') }}" class="logo-dark">
+                                <img src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="logo" width="200" />
+                            </a>
 
                             <h5 class="text-muted">
                                 Sistem informasi manajemen anggaran & arsip

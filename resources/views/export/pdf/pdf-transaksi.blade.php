@@ -57,6 +57,14 @@
             font-size: 12px;
         }
 
+        .logo {
+            background-image: url("/assets/images/logo/logo-dark.webp");
+            background-repeat: no-repeat;
+            background-size: 100%;
+            width: 120px;
+            height: 50px;
+        }
+
 
         @page {
             header: page-header;
@@ -71,12 +79,12 @@
         <header class="header">
             <table class="header__table w-100" border="0">
                 <tr>
-                    <th align="left">
-                        <h3>Laporan Transaksi Belanja</h3>
-                    </th>
-                    <th align="right">
-                        <h3>{{ config('app.name') }}</h3>
-                    </th>
+                    <td align="left">
+                        <h4>Laporan Transaksi Belanja</h4>
+                    </td>
+                    <td align="right">
+                        <img src="assets/images/logo/logo-light.jpg" alt="logo" width="120" />
+                    </td>
                 </tr>
             </table>
         </header>
