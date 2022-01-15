@@ -1,10 +1,19 @@
 class Dashboard {
+    constructor() {
+        this.chartByAkunBelanja = {
+            tahunAnggaran: new Date().getFullYear(),
+            divisiId: "",
+            akunBelanjaId: "",
+            jenisBelanjaId: "",
+        };
+    }
+
     /**
      * Fungsi set chart global divisi
      *
      * @param {int} year
      */
-    setChartPieGlobalDivisi(year) {
+    setGlobalBudgetChart(year) {
         $.ajax({
             type: "get",
             url: `${main.baseUrl}/dashboard/chart/${year}`,
@@ -63,72 +72,12 @@ class Dashboard {
     }
 
     /**
-     * Fungsi set chart bar per akun belanja (jenis_belanja)
-     *
-     * @param {int} year Tahun periode
-     * @param {int} jenisBelanjaId Jenis belanja id
-     */
-    chartPiePerJenisBelanja(jenisBelanjaId, periode) {
-        $.ajax({
-            type: "get",
-            url: `${main.baseUrl}/dashboard/chart/admin/${jenisBelanjaId}/${periode}/jenis-belanja`,
-            dataType: "json",
-            success: function (res) {
-                $("#admin-jbelanja-total-belanja").text(
-                    "Rp. " + main.formatRupiah(res.data.totalBelanja)
-                );
-
-                const options = {
-                    chart: {
-                        height: 350,
-                        type: "pie",
-                    },
-                    fill: {
-                        type: "gradient",
-                    },
-                    legend: {
-                        show: true,
-                        position: "bottom",
-                        itemMargin: {
-                            horizontal: 5,
-                            vertical: 5,
-                        },
-                    },
-                    series: [...res.data.series],
-                    labels: [...res.data.labels],
-                    responsive: [
-                        {
-                            breakpoint: 480,
-                            options: {
-                                chart: {
-                                    height: 290,
-                                },
-                                legend: {
-                                    position: "bottom",
-                                },
-                            },
-                        },
-                    ],
-                };
-
-                const chart = new ApexCharts(
-                    document.querySelector("#chart-admin-jenis-belanja"),
-                    options
-                );
-
-                chart.render();
-                chart.updateSeries(res.data.series);
-            },
-        });
-    }
-
-    /**
      * Fungsi set chart per divisi
      *
      * @param {int} id
      * @param {int} year
      */
-    setChartPiePerDivisi(id, year) {
+    setBudgetChartByDivisi(id, year) {
         $.ajax({
             type: "get",
             url: `${main.baseUrl}/dashboard/chart/admin/${id}/${year}/divisi`,
@@ -181,6 +130,73 @@ class Dashboard {
     }
 
     /**
+     * Fungsi set chart bar per akun belanja (jenis_belanja)
+     *
+     * @param {int} year Tahun periode
+     * @param {int} jenisBelanjaId Jenis belanja id
+     */
+    setBudgetChartByAkunBelanja() {
+        let url = `${main.baseUrl}/dashboard/chart/admin/akun-belanja`;
+        url += `?tahun_anggaran=${this.chartByAkunBelanja.tahunAnggaran}`;
+        url += `&divisi=${this.chartByAkunBelanja.divisiId}`;
+        url += `&akun_belanja=${this.chartByAkunBelanja.akunBelanjaId}`;
+        url += `&jenis_belanja=${this.chartByAkunBelanja.jenisBelanjaId}`;
+
+        $.ajax({
+            type: "get",
+            url,
+            dataType: "json",
+            success: function (res) {
+                $("#admin__chart-by-akun-belanja__total-budget").text(
+                    "Rp. " + main.formatRupiah(res.totalBudget)
+                );
+
+                $("#admin__chart-by-akun-belanja__total-transaksi").text(
+                    "Rp. " + main.formatRupiah(res.totalTransaksi)
+                );
+
+                $("#admin__chart-by-akun-belanja__sisa-budget").text(
+                    "Rp. " + main.formatRupiah(res.sisaBudget)
+                );
+
+                const options = {
+                    chart: {
+                        height: 300,
+                        type: "pie",
+                    },
+                    legend: {
+                        show: false,
+                    },
+                    fill: {
+                        type: "gradient",
+                    },
+                    series: [res.totalTransaksi, res.sisaBudget],
+                    labels: ["Total Belanja", "Sisa Budget"],
+                    colors: ["#39afd1", "#ffbc00"],
+                    responsive: [
+                        {
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    height: 220,
+                                },
+                            },
+                        },
+                    ],
+                };
+
+                const chart = new ApexCharts(
+                    document.querySelector("#admin__chart-by-akun-belanja"),
+                    options
+                );
+
+                chart.render();
+                chart.updateSeries([res.totalTransaksi, res.sisaBudget]);
+            },
+        });
+    }
+
+    /**
      * Fungsi set chart per jenis kategori
      *
      * @param mixed idDivisi
@@ -188,7 +204,7 @@ class Dashboard {
      *
      * @return void
      */
-    setChartLinePerJenisBelanja(periode) {
+    setTransaksiChartLine(periode) {
         $.ajax({
             type: "get",
             url: `${main.baseUrl}/dashboard/chart/divisi/${periode}/jenis-belanja`,
@@ -233,10 +249,12 @@ class Dashboard {
                     },
                     yaxis: {
                         title: {
-                            text: "Nominal Belanja",
+                            text: "Nominal Transaksi Belanja",
                         },
                         labels: {
-                            formatter: (yLabel) => main.formatRupiah(yLabel),
+                            formatter: function (yLabel) {
+                                return "Rp. " + main.formatRupiah(yLabel);
+                            },
                         },
                     },
                     legend: {
@@ -250,7 +268,7 @@ class Dashboard {
                 };
 
                 const chart = new ApexCharts(
-                    document.querySelector("#chart-jenis-belanja"),
+                    document.querySelector("#divisi__transaksi-chart-line"),
                     options
                 );
 
@@ -270,55 +288,75 @@ const dashboard = new Dashboard();
  * Jalankan fungsi ketika document selsai dimuat
  */
 $(document).ready(function () {
-    dashboard.setChartPieGlobalDivisi(new Date().getFullYear());
+    dashboard.setGlobalBudgetChart(new Date().getFullYear());
 
-    const ElChartPerJenisBelanja = $("#chart-jenis-belanja");
-    const ElChartAdminJenisBelanja = $("#chart-admin-jenis-belanja");
+    const ElDivisiTransaksiChartLine = $("#divisi__transaksi-chart-line");
+    const ElChartByAkunBelanja = $("#admin__chart-by-akun-belanja");
 
     /**
-     * Jalankan fungsi chartPiePerJenisBelanja ketika user admin
+     * Jalankan fungsi setBudgetChartByAkunBelanja ketika user admin
      */
-    if (ElChartAdminJenisBelanja.length > 0) {
-        dashboard.chartPiePerJenisBelanja("all", new Date().getFullYear());
+    if (ElChartByAkunBelanja.length > 0) {
+        dashboard.setBudgetChartByAkunBelanja();
 
         /**
-         * handle change select #chart-admin-jbelanja-periode
+         * handle change select tahun anggaran
          */
-        $("#chart-admin-jbelanja-periode").change(function (e) {
+        $("#admin__chart-by-akun-belanja__select-tahun-anggaran").change(
+            function (e) {
+                e.preventDefault();
+                dashboard.chartByAkunBelanja["tahunAnggaran"] = $(this).val();
+                dashboard.setBudgetChartByAkunBelanja();
+            }
+        );
+
+        /**
+         * handle change select divisi
+         */
+        $("#admin__chart-by-akun-belanja__select-divisi").change(function (e) {
             e.preventDefault();
-
-            const periode = $(this).val();
-            const jenisBelanjaId = $("#chart-admin-jbelanja").val();
-
-            dashboard.chartPiePerJenisBelanja(jenisBelanjaId, periode);
+            dashboard.chartByAkunBelanja["divisiId"] = $(this).val();
+            dashboard.setBudgetChartByAkunBelanja();
         });
 
         /**
-         * handle change select #chart-admin-jbelanja
+         * handle change select akun belanja
          */
-        $("#chart-admin-jbelanja").change(function (e) {
-            e.preventDefault();
+        $("#admin__chart-by-akun-belanja__select-akun-belanja").change(
+            function (e) {
+                e.preventDefault();
+                dashboard.chartByAkunBelanja["akunBelanjaId"] = $(this).val();
+                dashboard.setBudgetChartByAkunBelanja();
+            }
+        );
 
-            const periode = $("#chart-admin-jbelanja-periode").val();
-            const jenisBelanjaId = $(this).val();
-
-            dashboard.chartPiePerJenisBelanja(jenisBelanjaId, periode);
-        });
+        /**
+         * handle change select jenis belanja
+         */
+        $("#admin__chart-by-akun-belanja__select-jenis-belanja").change(
+            function (e) {
+                e.preventDefault();
+                dashboard.chartByAkunBelanja["jenisBelanjaId"] = $(this).val();
+                dashboard.setBudgetChartByAkunBelanja();
+            }
+        );
     }
 
     /**
-     * jalankan fungsi setChartLinePerJenisBelanja ketika user bukan admin
+     * jalankan fungsi setTransaksiChartLine ketika user bukan admin
      */
-    if (ElChartPerJenisBelanja.length > 0) {
-        dashboard.setChartLinePerJenisBelanja(new Date().getFullYear());
+    if (ElDivisiTransaksiChartLine.length > 0) {
+        dashboard.setTransaksiChartLine(new Date().getFullYear());
 
         /**
          * handle jika periode divisi per jenis belanja dirubah
          */
-        $("#periode-divisi-jenis-belanja").change(function (e) {
-            e.preventDefault();
-            dashboard.setChartLinePerJenisBelanja($(this).val());
-        });
+        $("#divisi__transaksi-chart-line__select-tahun-anggaran").change(
+            function (e) {
+                e.preventDefault();
+                dashboard.setTransaksiChartLine($(this).val());
+            }
+        );
     }
 
     /**
@@ -326,7 +364,7 @@ $(document).ready(function () {
      */
     $("#periode-global").change(function (e) {
         e.preventDefault();
-        dashboard.setChartPieGlobalDivisi($(this).val());
+        dashboard.setGlobalBudgetChart($(this).val());
     });
 
     /**
@@ -336,7 +374,7 @@ $(document).ready(function () {
         const chartEl = $(el);
         const id = chartEl.data("divisi-id");
 
-        dashboard.setChartPiePerDivisi(id, new Date().getFullYear());
+        dashboard.setBudgetChartByDivisi(id, new Date().getFullYear());
     });
 
     /**
@@ -344,7 +382,7 @@ $(document).ready(function () {
      */
     $(".periode-divisi").change(function (e) {
         e.preventDefault();
-        dashboard.setChartPiePerDivisi(
+        dashboard.setBudgetChartByDivisi(
             $(this).data("divisi-id"),
             $(this).val()
         );

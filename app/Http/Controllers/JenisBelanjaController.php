@@ -49,7 +49,7 @@ class JenisBelanjaController extends Controller
         /**
          * buat paginasi
          */
-        $jenisBelanja = $query
+        $jenisBelanja = $query->orderBy('updated_at', 'desc')
             ->orderBy('kategori_belanja', 'asc')
             ->simplePaginate(10)
             ->withQueryString();

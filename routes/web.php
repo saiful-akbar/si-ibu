@@ -9,8 +9,6 @@ use App\Http\Controllers\JenisBelanjaController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
-use App\Models\JenisBelanja;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
@@ -42,19 +40,19 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/dashboard,read')
             ->name('dashboard');
 
-        Route::get('/chart/{year}', [DashboardController::class, 'chartPieGlobalDivisi'])
+        Route::get('/chart/{year}', [DashboardController::class, 'globalBudgetChart'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.global');
 
-        Route::get('/chart/admin/{divisi}/{year}/divisi', [DashboardController::class, 'chartPiePerDivisi'])
+        Route::get('/chart/admin/{divisi}/{year}/divisi', [DashboardController::class, 'budgetChartByDivisi'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.divisi');
 
-        Route::get('/chart/admin/{jenisBelanjaId}/{periode}/jenis-belanja', [DashboardController::class, 'chartPiePerJenisBelanja'])
+        Route::get('/chart/admin/akun-belanja', [DashboardController::class, 'budgetChartByAkunBelanja'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.admin.jenisBelanja');
 
-        Route::get('/chart/divisi/{year}/jenis-belanja', [DashboardController::class, 'chartLinePerJenisBelanja'])
+        Route::get('/chart/divisi/{year}/jenis-belanja', [DashboardController::class, 'transaksiChartLine'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.divisi.jenisBelanja');
     });

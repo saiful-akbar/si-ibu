@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AkunBelanja;
 use App\Models\Budget;
 use App\Models\Divisi;
 use App\Models\JenisBelanja;
 use App\Models\Transaksi;
 use App\Traits\UserAccessTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,11 +35,12 @@ class DashboardController extends Controller
          */
         $userAccess = $this->getAccess($authUser->id, '/dashboard');
 
-        $isAdmin = false;
 
         /**
          * Cek apakah user mempunyai full akses atau tidak
          */
+        $isAdmin = false;
+
         if (
             $userAccess->create == 1 &&
             $userAccess->read == 1 &&
@@ -65,27 +68,31 @@ class DashboardController extends Controller
         }
 
         /**
-         * ambil data divisi
+         * ambil data bagian (divisi)
          */
-        $divisi = Divisi::all();
+        $divisi = Divisi::where('active', 1)->get();
 
         /**
-         * Ambil data akun belanja (jenis_belanja)
+         * ambil data akun_belanja
          */
-        $jenisBelanja = JenisBelanja::all();
+        $akunBelanja = AkunBelanja::where('active', 1)->get();
 
-        return view('pages.dashboard.index', compact('years', 'divisi', 'isAdmin', 'jenisBelanja'));
+        /**
+         * Ambil data jenis_belanja
+         */
+        $jenisBelanja = JenisBelanja::where('active', 1)->get();
+
+        return view('pages.dashboard.index', compact('years', 'divisi', 'isAdmin', 'jenisBelanja', 'akunBelanja'));
     }
 
-
     /**
-     * Ambil semua data budget dan transaksi berdasarkan tahun
+     * Global budget chart pie
      *
      * @param int $year
      *
-     * @return json
+     * @return object
      */
-    public function chartPieGlobalDivisi(int $year)
+    public function globalBudgetChart(int $year): object
     {
         /**
          * ambil data user auth
@@ -162,14 +169,14 @@ class DashboardController extends Controller
     }
 
     /**
-     * Ambil semua data budget dan transaksi berdasarkan tahun dan divisinya
+     * Budget chart pie per bagian (divisi)
      *
      * @param Divisi $divisi
      * @param int $year
      *
-     * @return json
+     * @return object
      */
-    public function chartPiePerDivisi(Divisi $divisi, int $year)
+    public function budgetChartByDivisi(Divisi $divisi, int $year): object
     {
         /**
          * ambil data user auth
@@ -226,33 +233,28 @@ class DashboardController extends Controller
     }
 
     /**
-     * Jenis belanja chart
+     * Budget chart line per akun belanja
      *
      * @param Divisi $divisi
      * @param int $year
      *
-     * @return Object
+     * @return object
      */
-    public function chartLinePerJenisBelanja(Divisi $divisi, int $year): Object
+    public function transaksiChartLine(int $year): object
     {
-        /**
-         * ambil data user auth
-         */
-        $authUser = Auth::user();
-
         /**
          * ambil akses menu user
          */
-        $userAccess = $this->getAccess($authUser->id, '/dashboard');
+        $userAccess = $this->getAccess(href: '/dashboard');
 
         /**
          * Cek apakah user mempunyai full akses atau tidak
          */
         if (
-            $authUser->create == 1 &&
-            $authUser->read == 1 &&
-            $authUser->update == 1 &&
-            $authUser->delete == 1
+            $userAccess->create == 1 &&
+            $userAccess->read == 1 &&
+            $userAccess->update == 1 &&
+            $userAccess->delete == 1
         ) {
             return response()->json([], 403);
         }
@@ -277,25 +279,28 @@ class DashboardController extends Controller
         ];
 
         /**
-         * ambil data jenis_belanja berdasarkan belanja (transaksi) yang pernah dilakukan bagian (divisi)
+         * ambil data akun_belanja berdasarkan divisi_id user yang yang sedang login
          */
-        $jenisBelanja = JenisBelanja::leftJoin('budget', 'budget.jenis_belanja_id', '=', 'jenis_belanja.id')
-            ->where('budget.divisi_id', Auth::user()->divisi->id)
-            ->select('jenis_belanja.id', 'jenis_belanja.kategori_belanja')
+        $akunBelanja = AkunBelanja::with('jenisBelanja.budget')
+            ->where('active', 1)
+            ->whereHas('jenisBelanja.budget', fn (Builder $query) => $query->where('divisi_id', Auth::user()->divisi_id))
             ->get();
 
         /**
          * looping data akun belanja (jenis_belanja)
          */
-        foreach ($jenisBelanja as $keyJenisBelanja => $valueJenisBelanja) {
-            $data[$keyJenisBelanja]['name'] = $valueJenisBelanja->kategori_belanja;
+        foreach ($akunBelanja as $key => $aBelanja) {
+            $data[$key]['name'] = $aBelanja->nama_akun_belanja;
 
-            foreach ($bulan as $valueBulan) {
-                $data[$keyJenisBelanja]['data'][] = (int) Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
-                    ->where('transaksi.tanggal', 'like', "{$year}-{$valueBulan}%")
-                    ->where('budget.jenis_belanja_id', $valueJenisBelanja->id)
-                    ->where('budget.divisi_id', Auth::user()->divisi->id)
-                    ->sum('transaksi.jumlah_nominal');
+            /**
+             * isi value data untuk jumlah total transakai setiap bulannya berdasarkan divisi user yang sedang login
+             */
+            foreach ($bulan as $bln) {
+                $data[$key]['data'][] = (int) Transaksi::with('budget.jenisBelanja')
+                    ->where('tanggal', 'like', "{$year}-{$bln}%")
+                    ->whereHas('budget.jenisBelanja', fn (Builder $query) => $query->where('akun_belanja_id', $aBelanja->id))
+                    ->whereHas('budget', fn (Builder $query) => $query->where('divisi_id', Auth::user()->divisi_id))
+                    ->sum('jumlah_nominal');
             }
         }
 
@@ -305,66 +310,98 @@ class DashboardController extends Controller
     }
 
     /**
-     * Chat admin per jenis_belanja
+     * Budget chart pie per akun_belanja
      *
-     * @param mixed $jenisBelanjaId
-     * @param int $periode
+     * @param int $periodeTahun
+     * @param Divisi $divisi
+     * @param AkunBelanja $akunBelanja
+     * @param JenisBelanja $jenisBelanja
      *
-     * @return json
+     * @return object
      */
-    public function chartPiePerJenisBelanja($jenisBelanjaId, int $periode)
+    public function budgetChartByAkunBelanja(Request $request): object
     {
         /**
-         * Ambil semua data bagian (divisi)
+         * ambil akses menu user
          */
-        $divisi = Divisi::select('id', 'nama_divisi')
-            ->where('active', 1)
-            ->orderBy('nama_divisi', 'asc')
-            ->get();
+        $userAccess = $this->getAccess(href: '/dashboard');
 
         /**
-         * buat data kosong
+         * Cek apakah user mempunyai full akses (superadmin) atau tidak
          */
-        $data = [];
-
-        /**
-         * cek $jenisBelanjaId = all atau sesuai id jenis_belanja
-         */
-        if ($jenisBelanjaId == 'all') {
-            foreach ($divisi as $div) {
-                $data['labels'][] = $div->nama_divisi;
-                $data['series'][] = (int) Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
-                    ->where('budget.divisi_id', $div->id)
-                    ->where('transaksi.tanggal', 'like', "%{$periode}%")
-                    ->sum('transaksi.jumlah_nominal');
-            }
-
-            /**
-             * buat total nominal (budget) semua akun belanja (jenis_belanja)
-             */
-            $data['totalBelanja'] = (int) Transaksi::where('transaksi.tanggal', 'like', "%{$periode}%")->sum('jumlah_nominal');
-        } else {
-            foreach ($divisi as $div) {
-                $data['labels'][] = $div->nama_divisi;
-                $data['series'][] = (int) Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
-                    ->where('budget.divisi_id', $div->id)
-                    ->where('budget.jenis_belanja_id', $jenisBelanjaId)
-                    ->where('transaksi.tanggal', 'like', "%{$periode}%")
-                    ->sum('transaksi.jumlah_nominal');
-            }
-
-            /**
-             * buat total nominal (budget) berdasarkan akun belanja (jenis_belanja)
-             */
-            $data['totalBelanja'] = (int) Transaksi::leftJoin('budget', 'budget.id', '=', 'transaksi.budget_id')
-                ->where('transaksi.tanggal', 'like', "%{$periode}%")
-                ->where('budget.jenis_belanja_id', $jenisBelanjaId)
-                ->sum('jumlah_nominal');
+        if (
+            $userAccess->create == 0 ||
+            $userAccess->read == 0 ||
+            $userAccess->update == 0 ||
+            $userAccess->delete == 0
+        ) {
+            return response()->json([], 403);
         }
 
+        /**
+         * ambil tahun anggaran
+         */
+        $tahunAnggaran = $request->tahun_anggaran ?? date('Y');
+
+        /**
+         * Query total budget
+         */
+        $budget = Budget::with('jenisBelanja')
+            ->where('tahun_anggaran', $tahunAnggaran);
+
+        /**
+         * query
+         */
+        $transaksi = Transaksi::with('budget.jenisBelanja', 'budget')
+            ->whereHas('budget', function (Builder $query) use ($tahunAnggaran) {
+                $query->where('tahun_anggaran', $tahunAnggaran);
+            });
+
+        /**
+         * cek jika divisi dipilih
+         */
+        if ($request->divisi) {
+            $budget->where('divisi_id', $request->divisi);
+
+            $transaksi->whereHas('budget', function (Builder $query) use ($request) {
+                $query->where('divisi_id', $request->divisi);
+            });
+        }
+
+        /**
+         * cek jika akun_belanja dipilih
+         */
+        if ($request->akun_belanja) {
+            $budget->whereHas('jenisBelanja', function (Builder $query) use ($request) {
+                $query->where('akun_belanja_id', $request->akun_belanja);
+            });
+
+            $transaksi->whereHas('budget.jenisBelanja', function (Builder $query) use ($request) {
+                $query->where('akun_belanja_id', $request->akun_belanja);
+            });
+        }
+
+        /**
+         * cek jika jenis_belanja dipilih
+         */
+        if ($request->jenis_belanja) {
+            $budget->where('jenis_belanja_id', $request->jenis_belanja);
+
+            $transaksi->whereHas('budget', function (Builder $query) use ($request) {
+                $query->where('jenis_belanja_id', $request->jenis_belanja);
+            });
+        }
+
+        /**
+         * jumlah sisa nominal budget
+         */
+        $sisa = $budget->sum('sisa_nominal');
+        $sisaBudget = $sisa >= 0 ? $sisa : 0;
 
         return response()->json([
-            'data' => $data,
+            'totalBudget' => (int) $budget->sum('nominal'),
+            'totalTransaksi' => (int) $transaksi->sum('jumlah_nominal'),
+            'sisaBudget' => (int) $sisaBudget,
         ], 200);
     }
 }

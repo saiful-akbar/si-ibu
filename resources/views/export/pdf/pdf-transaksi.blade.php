@@ -72,7 +72,7 @@
             <table class="header__table w-100" border="0">
                 <tr>
                     <th align="left">
-                        <h3>Laporan Transaksi</h3>
+                        <h3>Laporan Transaksi Belanja</h3>
                     </th>
                     <th align="right">
                         <h3>{{ config('app.name') }}</h3>
@@ -88,10 +88,8 @@
                 <tr>
                     <th class="text-center">No</th>
                     <th class="text-center">Tanggal</th>
+                    <th class="text-center" colspan="3">Akun Belanja</th>
                     <th class="text-center">Submitter</th>
-                    <th class="text-center">Bagian</th>
-                    <th class="text-center">Akun Belanja</th>
-                    <th class="text-center">Jenis Belanja</th>
                     <th class="text-center">Kegiatan</th>
                     <th class="text-center">No. Dokumen</th>
                     <th class="text-center">Approval</th>
@@ -103,10 +101,10 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $laporan->tanggal }}</td>
-                        <td>{{ $laporan->user->profil->nama_lengkap }}</td>
                         <td>{{ $laporan->budget->divisi->nama_divisi }}</td>
                         <td>{{ $laporan->budget->jenisBelanja->akunBelanja->nama_akun_belanja }}</td>
                         <td>{{ $laporan->budget->jenisBelanja->kategori_belanja }}</td>
+                        <td>{{ $laporan->user->profil->nama_lengkap }}</td>
                         <td>{{ $laporan->kegiatan }}</td>
                         <td>{{ $laporan->no_dokumen }}</td>
                         <td>{{ $laporan->approval }}</td>
@@ -116,7 +114,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="9">Grand Total</th>
+                    <th colspan="9">Total</th>
                     <th align="right">Rp. {{ number_format($totalTransaksi) }}</th>
                 </tr>
             </tfoot>

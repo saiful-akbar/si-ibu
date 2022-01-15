@@ -47,8 +47,8 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
-                                            <th>Kategori Belanja</th>
                                             <th>Akun Belanja</th>
+                                            <th>Kategori Belanja</th>
                                             <th class="text-center">Aktif</th>
 
                                             @if ($isAdmin)
@@ -68,8 +68,8 @@
                                                 <td>
                                                     {{ $jenisBelanja->perPage() * ($jenisBelanja->currentPage() - 1) + $loop->iteration }}
                                                 </td>
-                                                <td>{{ $data->kategori_belanja }}</td>
                                                 <td>{{ $data->akunBelanja->nama_akun_belanja }}</td>
+                                                <td>{{ $data->kategori_belanja }}</td>
                                                 <td class="text-center">
                                                     @if ($data->active == 1)
                                                         <i class="mdi mdi-check text-success h4"></i>
