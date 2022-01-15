@@ -826,8 +826,6 @@ class TransaksiController extends Controller
     {
         $data = $this->fillter($request);
 
-        // return view('export.pdf.pdf-transaksi', $data);
-
         $pdf = PDF::loadView(
             'export.pdf.pdf-transaksi',
             $data,
