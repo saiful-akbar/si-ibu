@@ -16,7 +16,8 @@ class CreatePengaturanTable extends Migration
         Schema::create('pengaturan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('tema', 64)->default('light');
+            $table->enum('tema', ['dark', 'light'])->default('light');
+            $table->enum('sidebar', ['default', 'dark', 'light'])->default('dark');
             $table->timestamps();
 
             // relasi dengan tabel user

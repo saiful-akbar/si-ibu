@@ -17,17 +17,9 @@
             padding: 10px;
         }
 
-        .header__table {
-            border-collapse: collapse;
-        }
-
         .footer {
             border: 2px solid #000;
             padding: 10px;
-        }
-
-        .footer__table {
-            border-collapse: collapse;
         }
 
         .w-100 {
@@ -65,6 +57,9 @@
             height: 50px;
         }
 
+        .text-bold {
+            font-weight: bold;
+        }
 
         @page {
             header: page-header;
@@ -77,13 +72,18 @@
 <body>
     <htmlpageheader name="page-header">
         <header class="header">
-            <table class="header__table w-100" border="0">
+            <table class="table w-100" border="0">
+                <tr>
+                    <th align="left" colspan="3">
+                        <h3>Laporan Transaksi Belanja</h3>
+                    </th>
+                    <th align="right" rowspan="2">
+                        <img src="assets/images/logo/logo-light.jpg" alt="logo" width="120" />
+                    </th>
+                </tr>
                 <tr>
                     <td align="left">
-                        <h4>Laporan Transaksi Belanja</h4>
-                    </td>
-                    <td align="right">
-                        <img src="assets/images/logo/logo-light.jpg" alt="logo" width="120" />
+                        <span class="text-bold">Periode</span> : {{ $periodeAwal }} ~ {{ $periodeAkhir }}
                     </td>
                 </tr>
             </table>
@@ -133,19 +133,12 @@
         <footer class="footer">
             <table class="table w-100">
                 <tr>
-                    <th align="left" width="13%">
-                        Periode</th>
-                    <th align="left" width="2%">:</th>
-                    <td align="left" width="75%">{{ $periodeAwal }} ~ {{ $periodeAkhir }}</td>
-
-                    <th align="right" rowspan="2">Hal</th>
-                    <th rowspan="2">:</th>
-                    <td rowspan="2">{PAGENO}/{nbpg}</td>
-                </tr>
-                <tr>
-                    <th align="left" width="13%">Tanggal / Jam</th>
-                    <th align="left" width="2%">:</th>
-                    <td align="left" width="75%">{{ date('Y-m-d / H:i:s') }}</td>
+                    <td align="left">
+                        <span class="text-bold">Tanggal / Jam</span> : {{ date('Y-m-d / H:i:s') }}
+                    </td>
+                    <td align="right">
+                        <span class="text-bold">Hal</span> : {PAGENO}/{nbpg}
+                    </td>
                 </tr>
             </table>
         </footer>

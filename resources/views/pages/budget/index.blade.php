@@ -125,7 +125,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered table-sm table-hover nowrap w-100">
+                                <table class="table table-centered table-hover nowrap w-100">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>

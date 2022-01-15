@@ -11,10 +11,10 @@
             <tr>
                 <th style="font-weight: bold; border: 1px solid #000;">No</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Tanggal</th>
-                <th style="font-weight: bold; border: 1px solid #000;">Submitter</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Bagian</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Akun Belanja</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Jenis Belanja</th>
+                <th style="font-weight: bold; border: 1px solid #000;">Submitter</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Kegiatan</th>
                 <th style="font-weight: bold; border: 1px solid #000;">No. Dokumen</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Approval</th>
@@ -33,9 +33,6 @@
                         {{ $laporan->tanggal }}
                     </td>
                     <td style="border: 1px solid #000; width: 15em;">
-                        {{ $laporan->user->profil->nama_lengkap }}
-                    </td>
-                    <td style="border: 1px solid #000; width: 15em;">
                         {{ $laporan->budget->divisi->nama_divisi }}
                     </td>
                     <td style="border: 1px solid #000; width: 15em;">
@@ -43,6 +40,9 @@
                     </td>
                     <td style="border: 1px solid #000; width: 15em;">
                         {{ $laporan->budget->jenisBelanja->kategori_belanja }}
+                    </td>
+                    <td style="border: 1px solid #000; width: 15em;">
+                        {{ $laporan->user->profil->nama_lengkap }}
                     </td>
                     <td style="border: 1px solid #000; width: 15em;">
                         {{ $laporan->kegiatan }}

@@ -243,7 +243,8 @@ class ProfilController extends Controller
          * validasi rule
          */
         $validateRules = [
-            'tema' => ['required', 'in:light,dark']
+            'tema' => ['required', 'in:light,dark'],
+            'sidebar' => ['required', 'in:default,light,dark']
         ];
 
         /**
@@ -251,22 +252,27 @@ class ProfilController extends Controller
          */
         $validateErrorMessage = [
             'tema.required' => 'Tema harus dipilih',
-            'tema.in' => 'Pilih tema terang atau gelap.'
+            'tema.in' => 'Pilih tema terang atau gelap.',
+            'sidebar.required' => 'Sidebar harus dipilih',
+            'sidebar.in' => 'Pilih sidebar default, terang atau gelap.',
         ];
 
         /**
          * jalankan validasi
          */
-        $request->validate($validateRules, $validateErrorMessage);
+        $validatedData = $request->validate($validateRules, $validateErrorMessage);
 
-        /**
-         * update tema
-         */
         try {
-            Pengaturan::where('user_id', Auth::user()->id)->update([
-                'tema' => $request->tema,
-            ]);
+
+            /**
+             * update tema
+             */
+            Pengaturan::where('user_id', Auth::user()->id)->update($validatedData);
         } catch (\Exception $e) {
+
+            /**
+             * response jika update gagal
+             */
             return redirect()->route('profil.pengaturan')
                 ->with('alert', [
                     'type' => 'danger',
@@ -274,6 +280,9 @@ class ProfilController extends Controller
                 ]);
         }
 
+        /**
+         * response update sukses
+         */
         return redirect()->route('profil.pengaturan')
             ->with('alert', [
                 'type' => 'success',

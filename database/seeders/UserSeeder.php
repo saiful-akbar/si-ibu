@@ -65,12 +65,14 @@ class UserSeeder extends Seeder
             [
                 'user_id' => 1,
                 'tema' => 'dark',
+                'sidebar' => 'dark',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => 2,
                 'tema' => 'light',
+                'sidebar' => 'light',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

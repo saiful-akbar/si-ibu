@@ -10,7 +10,7 @@ class Pengaturan extends Model
     use HasFactory;
 
     protected $table = 'pengaturan';
-    protected $fillable = ['user_id', 'tema'];
+    protected $fillable = ['user_id', 'tema', 'sidebar'];
 
     /**
      * Method relasi one to one dengan table user

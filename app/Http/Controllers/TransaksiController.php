@@ -834,8 +834,8 @@ class TransaksiController extends Controller
                 'orientation' => 'L',
                 'margin_header' => 5,
                 'margin_footer' => 5,
-                'margin_top' => 31,
-                'margin_bottom' => 20,
+                'margin_top' => 37,
+                'margin_bottom' => 18,
             ]
         );
 

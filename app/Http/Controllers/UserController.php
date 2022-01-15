@@ -174,8 +174,6 @@ class UserController extends Controller
 
             /**
              * tambah data user ke database
-             *
-             * @var object
              */
             $user = User::create([
                 'divisi_id' => $request->divisi_id,
@@ -198,6 +196,7 @@ class UserController extends Controller
              */
             $user->pengaturan()->create([
                 'tema' => 'light',
+                'sidebar' => 'dark',
             ]);
         } catch (\Exception $e) {
 

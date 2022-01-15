@@ -13096,12 +13096,12 @@ h6 {
 .bouncing-loader > div:nth-child(2) {
     -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;
-    background: #fa5c7c;
+    background: #0acf97;
 }
 .bouncing-loader > div:nth-child(3) {
     -webkit-animation-delay: 0.4s;
     animation-delay: 0.4s;
-    background: #0acf97;
+    background: #fa5c7c;
 }
 .hero-section {
     position: relative;

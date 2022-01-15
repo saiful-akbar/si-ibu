@@ -8,9 +8,19 @@
     </div>
 
     <ul class="list-unstyled topbar-right-menu float-right mb-0">
+
+        {{-- setting --}}
+        <li class="notification-list">
+            <a class="nav-link right-bar-toggle" href="{{ route('profil.pengaturan') }}" data-toggle="tooltip"
+                data-placement="bottom" data-original-title="Pengaturan">
+                <i class="dripicons-gear noti-icon"></i>
+            </a>
+        </li>
+
+        {{-- user --}}
         <li class="dropdown notification-list">
-            <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown"
-                href="javascript:void(0);" role="button" aria-haspopup="false" aria-expanded="false">
+            <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="javascript:void(0);"
+                role="button" aria-haspopup="false" aria-expanded="false">
                 <span class="account-user-avatar">
                     @if (Auth::user()->profil->avatar != null)
                         <img src="{{ asset('storage/' . Auth::user()->profil->avatar) }}" alt="user-image"
@@ -43,5 +53,6 @@
 
             </div>
         </li>
+
     </ul>
 </div>
