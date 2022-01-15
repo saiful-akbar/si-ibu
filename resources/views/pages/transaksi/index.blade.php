@@ -186,7 +186,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered w-100 nowrap">
+                                <table class="table table-centered w-100 nowrap table-sm table-hover">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
@@ -222,7 +222,7 @@
                                                 <td>{{ $data->created_at }}</td>
                                                 <td>{{ $data->updated_at }}</td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-light btn-icon mr-1" data-toggle="tooltip"
+                                                    <button class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
                                                         data-original-title="Detail" data-placement="top"
                                                         onclick="transaksi.showDetail({{ $data->id }})">
                                                         <i class="mdi mdi-eye-outline"></i>
@@ -230,14 +230,14 @@
 
                                                     @if ($userAccess->update == 1)
                                                         <a href="{{ route('belanja.edit', ['transaksi' => $data->id]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mr-1" data-toggle="tooltip"
+                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
                                                             data-original-title="Edit" data-placement="top">
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
                                                     @endif
 
                                                     @if ($userAccess->delete == 1)
-                                                        <button class="btn btn-sm btn-icon btn-light" data-toggle="tooltip"
+                                                        <button class="btn btn-sm btn-icon btn-light mx-1" data-toggle="tooltip"
                                                             data-original-title="Hapus" data-placement="top"
                                                             onclick="transaksi.delete({{ $data->id }})">
                                                             <i class="mdi mdi-delete"></i>

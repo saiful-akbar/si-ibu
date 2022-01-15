@@ -125,7 +125,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered nowrap w-100">
+                                <table class="table table-centered table-sm table-hover nowrap w-100">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
@@ -165,19 +165,19 @@
                                                 <td class="table-action text-center">
                                                     <button onclick="budget.detail(true, {{ $budget->id }})" data-toggle="tooltip"
                                                         data-original-title="Detail" data-placement="top"
-                                                        class="btn btn-sm btn-light btn-icon mr-1">
+                                                        class="btn btn-sm btn-light btn-icon mx-1">
                                                         <i class="mdi mdi-eye-outline"></i>
                                                     </button>
 
                                                     @if ($userAccess->update == 1)
                                                         <a href="{{ route('budget.switch', ['budget' => $budget->id]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mr-1" data-toggle="tooltip"
+                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
                                                             data-original-title="Switch Budget" data-placement="top">
                                                             <i class="mdi mdi-code-tags"></i>
                                                         </a>
 
                                                         <a href="{{ route('budget.edit', ['budget' => $budget->id]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mr-1" data-toggle="tooltip"
+                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
                                                             data-original-title="Edit" data-placement="top">
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
@@ -186,7 +186,7 @@
                                                     @if ($userAccess->delete == 1)
                                                         <button onclick="budget.handleDelete({{ $budget->id }})"
                                                             data-toggle="tooltip" data-original-title="Hapus" data-placement="top"
-                                                            class="btn btn-sm btn-light btn-icon">
+                                                            class="btn btn-sm btn-light btn-icon mx-1">
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>
                                                     @endif
