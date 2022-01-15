@@ -1,3 +1,16 @@
+<div align="center">
+    <img
+      loading="lazy"
+      alt="logo"
+      src="public/assets/images/logo/logo-dark.png"
+      height="150"
+    />
+</div>
+
+# SIMAA
+
+Sistem informasi manajemen anggaran & arsip.
+
 # Persyaratan
 
 -   php v8.x
