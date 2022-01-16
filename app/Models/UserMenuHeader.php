@@ -9,6 +9,7 @@ class UserMenuHeader extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'user_menu_header';
     protected $fillable = ['user_id', 'menu_header_id', 'read'];
 

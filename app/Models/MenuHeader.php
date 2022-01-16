@@ -10,6 +10,7 @@ class MenuHeader extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'menu_header';
     protected $filabale = ['nama_header'];
 

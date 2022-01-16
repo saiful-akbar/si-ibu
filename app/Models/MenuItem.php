@@ -9,6 +9,7 @@ class MenuItem extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'menu_item';
     protected $fillable = [
         'menu_header_id',

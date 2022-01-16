@@ -7,24 +7,30 @@ use Illuminate\Support\Facades\Schema;
 class CreateJenisBelanjaTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'sqlsrv';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('jenis_belanja', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('akun_belanja_id');
-            $table->string('kategori_belanja', 128);
-            $table->boolean('active')->default(true);
-            $table->timestamps();
+        Schema::connection('sqlsrv')
+            ->create('jenis_belanja', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('akun_belanja_id');
+                $table->string('kategori_belanja', 128);
+                $table->boolean('active')->default(true);
+                $table->timestamps();
 
-            $table->foreign('akun_belanja_id')
-                ->references('id')
-                ->on('akun_belanja')
-                ->cascadeOnUpdate();
-        });
+                $table->foreign('akun_belanja_id')
+                    ->references('id')
+                    ->on('akun_belanja')
+                    ->cascadeOnUpdate();
+            });
     }
 
     /**

@@ -7,18 +7,24 @@ use Illuminate\Support\Facades\Schema;
 class CreateDivisiTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'sqlsrv';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('divisi', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_divisi', 128)->unique();
-            $table->boolean('active')->default(true);
-            $table->timestamps();
-        });
+        Schema::connection('sqlsrv')
+            ->create('divisi', function (Blueprint $table) {
+                $table->id();
+                $table->string('nama_divisi', 128)->unique();
+                $table->boolean('active')->default(true);
+                $table->timestamps();
+            });
     }
 
     /**

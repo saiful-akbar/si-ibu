@@ -7,24 +7,30 @@ use Illuminate\Support\Facades\Schema;
 class CreateMenuItemTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'sqlsrv';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('menu_item', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('menu_header_id');
-            $table->string('nama_menu', 128)->unique();
-            $table->string('icon', 64);
-            $table->string('href', 200)->unique();
-            $table->timestamps();
+        Schema::connection('sqlsrv')
+            ->create('menu_item', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('menu_header_id');
+                $table->string('nama_menu', 128)->unique();
+                $table->string('icon', 64);
+                $table->string('href', 200)->unique();
+                $table->timestamps();
 
-            $table->foreign('menu_header_id')
-                ->references('id')
-                ->on('menu_header');
-        });
+                $table->foreign('menu_header_id')
+                    ->references('id')
+                    ->on('menu_header');
+            });
     }
 
     /**

@@ -10,6 +10,7 @@ class Budget extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'budget';
     protected $fillable = [
         'divisi_id',

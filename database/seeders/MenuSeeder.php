@@ -28,23 +28,32 @@ class MenuSeeder extends Seeder
      */
     public function insertMenuHeader(): void
     {
-        DB::table('menu_header')->insert([
-            [
-                'nama_header' => '01. Utama',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nama_header' => '02. Data Master',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nama_header' => '03. Keuangan',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        /**
+         * gunakan penomoran pada nama_header untuk pengurutan di view (interface)
+         */
+        DB::connection('sqlsrv')
+            ->table('menu_header')->insert([
+                [
+                    'nama_header' => '01. Utama',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'nama_header' => '02. Data Master',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'nama_header' => '03. Keuangan',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'nama_header' => '04. Arsip',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+            ]);
     }
 
     /**
@@ -55,68 +64,81 @@ class MenuSeeder extends Seeder
      */
     public function insertMenuItem(): void
     {
-        DB::table('menu_item')->insert([
+        DB::connection('sqlsrv')
+            ->table('menu_item')->insert([
 
-            /**
-             * Halaman utama
-             */
-            [
-                'menu_header_id' => $this->getMenuHeader('01. Utama'),
-                'nama_menu' => 'Dashboard',
-                'icon' => 'fas fa-home',
-                'href' => '/dashboard',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+                /**
+                 * Halaman utama
+                 */
+                [
+                    'menu_header_id' => $this->getMenuHeader('01. Utama'),
+                    'nama_menu' => 'Dashboard',
+                    'icon' => 'uil-home-alt',
+                    'href' => '/dashboard',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
 
-            /**
-             * Data Master
-             */
-            [
-                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
-                'nama_menu' => 'Akun Belanja',
-                'icon' => 'fas fa-store',
-                'href' => '/akun-belanja',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
-                'nama_menu' => 'Bagian',
-                'icon' => 'fas fa-boxes',
-                'href' => '/divisi',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
-                'nama_menu' => 'User',
-                'icon' => 'fas fa-users',
-                'href' => '/user',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+                /**
+                 * Data Master
+                 */
+                [
+                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'nama_menu' => 'Akun Belanja',
+                    'icon' => 'uil-store-alt',
+                    'href' => '/akun-belanja',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'nama_menu' => 'Bagian',
+                    'icon' => 'uil-th',
+                    'href' => '/divisi',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'nama_menu' => 'User',
+                    'icon' => 'uil-users-alt',
+                    'href' => '/user',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
 
-            /**
-             * Keuangan
-             */
-            [
-                'menu_header_id' => $this->getMenuHeader('03. keuangan'),
-                'nama_menu' => 'Belanja',
-                'icon' => 'fas fa-shopping-cart',
-                'href' => '/belanja',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'menu_header_id' => $this->getMenuHeader('03. keuangan'),
-                'nama_menu' => 'Budget',
-                'icon' => 'fas fa-funnel-dollar',
-                'href' => '/budget',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+                /**
+                 * Keuangan
+                 */
+                [
+                    'menu_header_id' => $this->getMenuHeader('03. keuangan'),
+                    'nama_menu' => 'Belanja',
+                    'icon' => 'uil-shopping-cart-alt',
+                    'href' => '/belanja',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'menu_header_id' => $this->getMenuHeader('03. keuangan'),
+                    'nama_menu' => 'Budget',
+                    'icon' => 'uil-moneybag',
+                    'href' => '/budget',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+
+                /**
+                 * Arsip
+                 */
+                [
+                    'menu_header_id' => $this->getMenuHeader('04. Arsip'),
+                    'nama_menu' => 'Laporan Arsip',
+                    'icon' => 'uil-archive',
+                    'href' => '/arsip/laporan-arsip',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+            ]);
     }
 
     /**
@@ -127,50 +149,66 @@ class MenuSeeder extends Seeder
      */
     public function insetUserMenuHeader(): void
     {
-        DB::table('user_menu_header')->insert([
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('01. Utama'),
-                'read' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
-                'read' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_header_id' => $this->getMenuHeader('03. Keuangan'),
-                'read' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('staff'),
-                'menu_header_id' => $this->getMenuHeader('01. Utama'),
-                'read' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('staff'),
-                'menu_header_id' => $this->getMenuHeader('02. Data Master'),
-                'read' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('staff'),
-                'menu_header_id' => $this->getMenuHeader('03. Keuangan'),
-                'read' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        DB::connection('sqlsrv')
+            ->table('user_menu_header')->insert([
+
+                /**
+                 * admin
+                 */
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_header_id' => $this->getMenuHeader('01. Utama'),
+                    'read' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'read' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_header_id' => $this->getMenuHeader('03. Keuangan'),
+                    'read' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_header_id' => $this->getMenuHeader('04. Arsip'),
+                    'read' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+
+                /**
+                 * staff
+                 */
+                [
+                    'user_id' => $this->getUser('staff'),
+                    'menu_header_id' => $this->getMenuHeader('01. Utama'),
+                    'read' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('staff'),
+                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'read' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('staff'),
+                    'menu_header_id' => $this->getMenuHeader('03. Keuangan'),
+                    'read' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+            ]);
     }
 
     /**
@@ -181,126 +219,137 @@ class MenuSeeder extends Seeder
      */
     public function insertUserMenuItem(): void
     {
-        DB::table('user_menu_item')->insert([
+        DB::connection('sqlsrv')
+            ->table('user_menu_item')->insert([
 
-            /**
-             * Admin
-             */
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('Dashboard'),
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('Bagian'),
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('Akun Belanja'),
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('User'),
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('Budget'),
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('admin'),
-                'menu_item_id' => $this->getMenuItem('Belanja'),
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+                /**
+                 * Admin
+                 */
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_item_id' => $this->getMenuItem('Dashboard'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => true,
+                    'delete' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_item_id' => $this->getMenuItem('Bagian'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => true,
+                    'delete' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_item_id' => $this->getMenuItem('Akun Belanja'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => true,
+                    'delete' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_item_id' => $this->getMenuItem('User'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => true,
+                    'delete' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_item_id' => $this->getMenuItem('Budget'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => true,
+                    'delete' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_item_id' => $this->getMenuItem('Belanja'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => true,
+                    'delete' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_item_id' => $this->getMenuItem('Laporan Arsip'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => true,
+                    'delete' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
 
-            /**
-             * staff
-             */
-            [
-                'user_id' => $this->getUser('staff'),
-                'menu_item_id' => $this->getMenuItem('Dashboard'),
-                'create' => false,
-                'read' => true,
-                'update' => false,
-                'delete' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('staff'),
-                'menu_item_id' => $this->getMenuItem('Bagian'),
-                'create' => false,
-                'read' => true,
-                'update' => false,
-                'delete' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('staff'),
-                'menu_item_id' => $this->getMenuItem('Akun Belanja'),
-                'create' => false,
-                'read' => true,
-                'update' => false,
-                'delete' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('staff'),
-                'menu_item_id' => $this->getMenuItem('Belanja'),
-                'create' => true,
-                'read' => true,
-                'update' => false,
-                'delete' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $this->getUser('staff'),
-                'menu_item_id' => $this->getMenuItem('Budget'),
-                'create' => false,
-                'read' => true,
-                'update' => false,
-                'delete' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        ]);
+                /**
+                 * staff
+                 */
+                [
+                    'user_id' => $this->getUser('staff'),
+                    'menu_item_id' => $this->getMenuItem('Dashboard'),
+                    'create' => false,
+                    'read' => true,
+                    'update' => false,
+                    'delete' => false,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('staff'),
+                    'menu_item_id' => $this->getMenuItem('Bagian'),
+                    'create' => false,
+                    'read' => true,
+                    'update' => false,
+                    'delete' => false,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('staff'),
+                    'menu_item_id' => $this->getMenuItem('Akun Belanja'),
+                    'create' => false,
+                    'read' => true,
+                    'update' => false,
+                    'delete' => false,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('staff'),
+                    'menu_item_id' => $this->getMenuItem('Belanja'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => false,
+                    'delete' => false,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'user_id' => $this->getUser('staff'),
+                    'menu_item_id' => $this->getMenuItem('Budget'),
+                    'create' => false,
+                    'read' => true,
+                    'update' => false,
+                    'delete' => false,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            ]);
     }
 
     /**
@@ -311,7 +360,8 @@ class MenuSeeder extends Seeder
      */
     public function getMenuHeader(string $nama): int
     {
-        $menuHeader = DB::table('menu_header')
+        $menuHeader = DB::connection('sqlsrv')
+            ->table('menu_header')
             ->where('nama_header', $nama)
             ->first();
 
@@ -327,7 +377,8 @@ class MenuSeeder extends Seeder
      */
     public function getMenuItem(string $nama): int
     {
-        $menuItem = DB::table('menu_item')
+        $menuItem = DB::connection('sqlsrv')
+            ->table('menu_item')
             ->where('nama_menu', $nama)
             ->first();
 
@@ -343,7 +394,8 @@ class MenuSeeder extends Seeder
      */
     public function getUser(String $username): int
     {
-        $user = DB::table('user')
+        $user = DB::connection('sqlsrv')
+            ->table('user')
             ->where('username', $username)
             ->first();
 

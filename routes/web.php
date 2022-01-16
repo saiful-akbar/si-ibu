@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AkunBelanjaController;
+use App\Http\Controllers\Arsip\ArsipController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
@@ -312,6 +313,17 @@ Route::middleware('auth')->group(function () {
 
         Route::patch('/pengaturan/tema', [ProfilController::class, 'updateTema'])
             ->name('profil.pengaturan.tema');
+    });
+
+    /**
+     * Route group arsip
+     */
+    Route::prefix('/arsip')->group(function () {
+
+        /**
+         * arsip header
+         */
+        Route::get('/laporan-arsip', [ArsipController::class, 'index']);
     });
 });
 

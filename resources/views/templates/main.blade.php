@@ -17,11 +17,7 @@
     {{-- App favicon --}}
     <link href="{{ asset('assets/images/logo/favicon.ico') }}" rel="shortcut icon" />
 
-    {{-- google icons --}}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
     {{-- icons --}}
-    <link href="{{ asset('assets/css/vendor/fontawesome/css/all.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
     @stack('css')

@@ -7,17 +7,23 @@ use Illuminate\Support\Facades\Schema;
 class CreateMenuHeaderTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'sqlsrv';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('menu_header', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_header', 128)->unique();
-            $table->timestamps();
-        });
+        Schema::connection('sqlsrv')
+            ->create('menu_header', function (Blueprint $table) {
+                $table->id();
+                $table->string('nama_header', 128)->unique();
+                $table->timestamps();
+            });
     }
 
     /**

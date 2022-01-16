@@ -14,15 +14,16 @@ class JenisBelanjaSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('jenis_belanja')->insert([
-            [
-                'akun_belanja_id' => $this->getIdAkunBelanja('Barang'),
-                'kategori_belanja' => "Pengadaan pembelian barang",
-                'active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        DB::connection('sqlsrv')
+            ->table('jenis_belanja')->insert([
+                [
+                    'akun_belanja_id' => $this->getIdAkunBelanja('Barang'),
+                    'kategori_belanja' => "Pengadaan pembelian barang",
+                    'active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+            ]);
     }
 
     /**
@@ -34,7 +35,8 @@ class JenisBelanjaSeeder extends Seeder
      */
     public function getIdAkunBelanja(string $namaAkunBelanja): int
     {
-        $divisi = DB::table('akun_belanja')
+        $divisi = DB::connection('sqlsrv')
+            ->table('akun_belanja')
             ->where('nama_akun_belanja', $namaAkunBelanja)
             ->first();
 

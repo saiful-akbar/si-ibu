@@ -14,25 +14,26 @@ class DivisiSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('divisi')->insert([
-            [
-                'nama_divisi' => 'IT',
-                'active'      => true,
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ],
-            [
-                'nama_divisi' => 'Accounting',
-                'active'      => true,
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ],
-            [
-                'nama_divisi' => 'Warehouse',
-                'active'      => true,
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ],
-        ]);
+        DB::connection('sqlsrv')
+            ->table('divisi')->insert([
+                [
+                    'nama_divisi' => 'IT',
+                    'active'      => true,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ],
+                [
+                    'nama_divisi' => 'Accounting',
+                    'active'      => true,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ],
+                [
+                    'nama_divisi' => 'Warehouse',
+                    'active'      => true,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ],
+            ]);
     }
 }

@@ -10,6 +10,7 @@ class Profil extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'profil';
     protected $fillable = ['user_id', 'avatar', 'nama_lengkap'];
 
