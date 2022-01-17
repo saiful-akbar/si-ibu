@@ -2,8 +2,8 @@
     <img
       loading="lazy"
       alt="logo"
-      src="public/assets/images/logo/logo-readme.png"
-      height="150"
+      src="public/assets/images/logo/logo-dark.png"
+      height="200"
     />
 </div>
 
