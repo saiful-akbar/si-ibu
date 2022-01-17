@@ -24,8 +24,7 @@ table {
 table.nowrap tr th,
 table.nowrap tr td {
     white-space: nowrap;
-    padding-right: 1.2em;
-    padding-left: 1.2em;
+    padding: 0.7em 1.2em !important;
 }
 
 .logo-text {
@@ -49,15 +48,11 @@ table.nowrap tr td {
 }
 
 .btn-icon {
-    padding: 3px 7px 3px 8px;
+    padding: 5px 8px;
     border-radius: 100%;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-}
-
-.btn-icon > i {
-    font-size: 1.1em;
 }
 
 #scroll-to-top {

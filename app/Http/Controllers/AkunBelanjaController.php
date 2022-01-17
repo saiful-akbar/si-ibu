@@ -18,14 +18,14 @@ class AkunBelanjaController extends Controller
     public function index(Request $request)
     {
         /**
-         * ambil data user sebagai admin atau tidak
-         */
-        $isAdmin = $this->isAdmin(href: '/akun-belanja');
-
-        /**
          * ambil data user menu akses
          */
         $userAccess = $this->getAccess(href: '/akun-belanja');
+
+        /**
+         * ambil data user sebagai admin atau tidak
+         */
+        $isAdmin = $this->isAdmin(href: '/akun-belanja');
 
         /**
          * Query akun belanja

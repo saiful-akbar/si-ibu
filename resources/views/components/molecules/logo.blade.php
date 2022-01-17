@@ -4,7 +4,7 @@
         <img src="{{ asset('assets/images/logo/logo-light.png') }}" alt="logo" width="150" />
     </span>
     <span class="logo-sm">
-        <img src="{{ asset('assets/images/logo/logo-sm.png') }}" alt="logo" width="30" />
+        <img src="{{ asset('assets/images/logo/logo-sm.png') }}" alt="logo" width="35" />
     </span>
 </a>
 
@@ -14,6 +14,6 @@
         <img src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="logo" width="150" />
     </span>
     <span class="logo-sm">
-        <img src="{{ asset('assets/images/logo/logo-sm.png') }}" alt="logo" width="30" />
+        <img src="{{ asset('assets/images/logo/logo-sm.png') }}" alt="logo" width="35" />
     </span>
 </a>

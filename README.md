@@ -2,7 +2,7 @@
     <img
       loading="lazy"
       alt="logo"
-      src="public/assets/images/logo/logo-dark.png"
+      src="public/assets/images/logo/logo-readme.png"
       height="150"
     />
 </div>
@@ -17,6 +17,7 @@ Sistem informasi manajemen anggaran & arsip.
 -   composer
 -   git
 -   Aktifkan `extension=gd` pada php.ini untuk fitur export excel dan domPDF
+-   Ter-install driver SQL Server untuk php
 
 # Instalasi Development
 
@@ -107,6 +108,7 @@ DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
 ```
+
 6.  Buat generate:key, storage:link & migrasi table ke database
 
 ```bash
@@ -115,13 +117,21 @@ php artisan storage:link
 php artisan migrate:fresh --seed
 ```
 
-7. Mengoptimalkan route loading
+7. Setting konfigurasi pada file `config/app.php` & `config/database.php`
+
+8. Mengoptimalkan konfigurasi `NB: semua panggilan fungsi env() akan mengembalikan nilai "null". dalam kata lain variabel pada file .env tidak terpakai lagi, semua konfigurasi akan diambil langsung dari semua file pada folder "config"`
+
+```bash
+    php artisan config:cache
+```
+
+9. Mengoptimalkan route loading
 
 ```bash
 php artisan route:cache
 ```
 
-8. Mengoptimalkan View Loading
+10. Mengoptimalkan View Loading
 
 ```bash
 php artisan view:cache

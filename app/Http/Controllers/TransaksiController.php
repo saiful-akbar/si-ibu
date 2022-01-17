@@ -36,7 +36,7 @@ class TransaksiController extends Controller
          * ambil no dokumen tertinggi berdasarkan bulan dan tahun sekarang
          */
         $maxDoc = Transaksi::select('no_dokumen')
-            ->where('no_dokumen', 'like', '%' . date('Y-m') . '%')
+            ->where('no_dokumen', 'like', "{$format}%")
             ->max('no_dokumen');
 
         /**
@@ -277,7 +277,7 @@ class TransaksiController extends Controller
             'jumlah_nominal' => ['required', 'numeric', 'min:0', "max:{$request->sisa_budget}"],
 
             // dokumen
-            'no_dokumen' => ['required', 'unique:transaksi,no_dokumen', 'max:100'],
+            'no_dokumen' => ['required', 'string', 'unique:transaksi,no_dokumen', 'max:100'],
 
             // uraian
             'uraian' => [],
@@ -326,9 +326,9 @@ class TransaksiController extends Controller
          * jika diupload tambah validari rules & pesan error validasi.
          */
         if ($request->file_dokumen) {
-            $validateRules['file_dokumen'] = ['file', 'max:5000'];
+            $validateRules['file_dokumen'] = ['file', 'max:10000'];
             $validateErrorMessage['file_dokumen.file'] = 'File dokumen gagal diupload.';
-            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 5.000 kilobytes.';
+            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 10.000 kilobytes.';
         }
 
         /**
@@ -349,7 +349,7 @@ class TransaksiController extends Controller
         if ($request->hasFile('file_dokumen')) {
             $file = $request->file('file_dokumen');
             $extension = $file->extension();
-            $fileName = strtoupper($request->no_dokumen) . '.' . $extension;
+            $fileName = 'dokumen-' . date('Y-m-d-H-i-s') . '.' . $extension;
             $fileDocument = $file->storeAs('transaksi', $fileName);
         }
 
@@ -499,9 +499,9 @@ class TransaksiController extends Controller
          * jika diupload tambahakan validasi
          */
         if ($request->file_dokumen) {
-            $validateRules['file_dokumen'] = ['file', 'max:5000'];
+            $validateRules['file_dokumen'] = ['file', 'max:10000'];
             $validateErrorMessage['file_dokumen.file'] = 'File dokumen gagal diupload.';
-            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 5.000 kilobytes.';
+            $validateErrorMessage['file_dokumen.max'] = 'Ukuran file dokumen tidak boleh lebih dari 10.000 kilobytes.';
         }
 
         /**
@@ -510,19 +510,9 @@ class TransaksiController extends Controller
         $request->validate($validateRules, $validateErrorMessage);
 
         /**
-         * cek jika no_dokumen dirubah tetapi file_dokumen tidak dirubah
-         * maka rename nama file_dokumen di storage
+         * mambil path file_dokumen sebelumnya
          */
         $fileDokumen = $transaksi->file_dokumen;
-
-        if (
-            $request->no_dokumen != $transaksi->no_dokumen &&
-            !$request->hasFile('file_dokumen')
-        ) {
-            $namaFileDokumen = str_replace($transaksi->no_dokumen, $request->no_dokumen, $transaksi->file_dokumen);
-            Storage::move($transaksi->file_dokumen, $namaFileDokumen);
-            $fileDokumen = $namaFileDokumen;
-        }
 
         /**
          * cek file_dokumen dirubah atau tidak.
@@ -531,16 +521,18 @@ class TransaksiController extends Controller
         if ($request->hasFile('file_dokumen')) {
 
             /**
-             * hapus file_dokumen lama dari storage
+             * hapus file_dokumen lama dari storage jika ada
              */
-            Storage::delete($transaksi->file_dokumen);
+            if (Storage::exists($transaksi->file_dokumen)) {
+                Storage::delete($transaksi->file_dokumen);
+            }
 
             /**
              * simpan file_dokumen baru ke storage
              */
             $file = $request->file('file_dokumen');
             $extension = $file->extension();
-            $fileName = strtoupper($request->no_dokumen) . '.' . $extension;
+            $fileName = 'dokumen-' . date('Y-m-d-H-i-s') . '.' . $extension;
             $fileDokumen = $file->storeAs('transaksi', $fileName);
         }
 
@@ -610,7 +602,7 @@ class TransaksiController extends Controller
                     'jumlah_nominal' => $request->jumlah_nominal,
                     'approval' => $request->approval,
                     'no_dokumen' => $request->no_dokumen,
-                    'file_dokumen' => $fileDokumen,
+                    'file_dokumen' => Storage::exists($fileDokumen) ? $fileDokumen : null,
                     'uraian' => $request->uraian ?? null,
                 ]);
         } catch (\Exception $e) {
@@ -659,7 +651,7 @@ class TransaksiController extends Controller
              * cek file_dokumen ada atau tidak
              * jika ada hapus dari storage
              */
-            if ($transaksi->file_dokumen != null) {
+            if (Storage::exists($transaksi->file_dokumen)) {
                 Storage::delete($transaksi->file_dokumen);
             }
 
@@ -668,6 +660,10 @@ class TransaksiController extends Controller
              */
             Transaksi::destroy($transaksi->id);
         } catch (\Exception $e) {
+
+            /**
+             * response jika proses hapus gagal
+             */
             return redirect()
                 ->route('belanja')
                 ->with('alert', [
@@ -676,6 +672,9 @@ class TransaksiController extends Controller
                 ]);
         }
 
+        /**
+         * response jika proses hapus berhasil.
+         */
         return redirect()
             ->route('belanja')
             ->with('alert', [
@@ -693,7 +692,11 @@ class TransaksiController extends Controller
      */
     public function download(Transaksi $transaksi)
     {
-        if ($transaksi->file_dokumen) {
+        /**
+         * cek file ada atau tidak pada storage
+         * jika ada jalankan proses download
+         */
+        if (Storage::exists($transaksi->file_dokumen)) {
             return Storage::download($transaksi->file_dokumen);
         } else {
             return redirect()

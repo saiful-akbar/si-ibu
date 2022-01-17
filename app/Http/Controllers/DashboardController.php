@@ -26,29 +26,15 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         /**
-         * ambil data user auth
-         */
-        $authUser = Auth::user();
-
-        /**
          * ambil akses menu user
          */
-        $userAccess = $this->getAccess($authUser->id, '/dashboard');
+        $userAccess = $this->getAccess(href: '/dashboard');
 
 
         /**
          * Cek apakah user mempunyai full akses atau tidak
          */
-        $isAdmin = false;
-
-        if (
-            $userAccess->create == 1 &&
-            $userAccess->read == 1 &&
-            $userAccess->update == 1 &&
-            $userAccess->delete == 1
-        ) {
-            $isAdmin = true;
-        }
+        $isAdmin = $this->isAdmin(href: '/budget');
 
         /**
          * Ambil data busget
@@ -82,7 +68,16 @@ class DashboardController extends Controller
          */
         $jenisBelanja = JenisBelanja::where('active', 1)->get();
 
-        return view('pages.dashboard.index', compact('years', 'divisi', 'isAdmin', 'jenisBelanja', 'akunBelanja'));
+        return view(
+            'pages.dashboard.index',
+            compact(
+                'years',
+                'divisi',
+                'isAdmin',
+                'jenisBelanja',
+                'akunBelanja'
+            )
+        );
     }
 
     /**
@@ -100,9 +95,9 @@ class DashboardController extends Controller
         $authUser = Auth::user();
 
         /**
-         * ambil akses menu user
+         * ambil data user sebagai admin atau bukan
          */
-        $userAccess = $this->getAccess($authUser->id, '/dashboard');
+        $isAdmin = $this->isAdmin(href: '/dashboard', userId: $authUser->id);
 
         /**
          * ambil bagian (divisi) user
@@ -135,12 +130,7 @@ class DashboardController extends Controller
          * totalkan budget seluruh bagian (divisi) berdasarkan tahun &
          * total kan seluruh jumlah_nominal transaksi berdasarkan tahun
          */
-        if (
-            $userAccess->create == 1 &&
-            $userAccess->read == 1 &&
-            $userAccess->update == 1 &&
-            $userAccess->delete == 1
-        ) {
+        if ($isAdmin) {
             $totalBudget = Budget::where('tahun_anggaran', $year)->sum('nominal');
             $totalTransaksi = Transaksi::where('tanggal', 'like', "%{$year}%")->sum('jumlah_nominal');
 
@@ -178,25 +168,16 @@ class DashboardController extends Controller
      */
     public function budgetChartByDivisi(Divisi $divisi, int $year): object
     {
-        /**
-         * ambil data user auth
-         */
-        $authUser = Auth::user();
 
         /**
-         * ambil akses menu user
+         * cek user sebagau admin atau bukan
          */
-        $userAccess = $this->getAccess($authUser->id, '/dashboard');
+        $isAdmin = $this->isAdmin(href: '/dashboard');
 
         /**
          * Cek apakah user mempunyai full akses (superadmin) atau tidak
          */
-        if (
-            $userAccess->create == 0 ||
-            $userAccess->read == 0 ||
-            $userAccess->update == 0 ||
-            $userAccess->delete == 0
-        ) {
+        if (!$isAdmin) {
             return response()->json([], 403);
         }
 
@@ -245,17 +226,12 @@ class DashboardController extends Controller
         /**
          * ambil akses menu user
          */
-        $userAccess = $this->getAccess(href: '/dashboard');
+        $isAdmin = $this->isAdmin(href: '/dashboard');
 
         /**
          * Cek apakah user mempunyai full akses atau tidak
          */
-        if (
-            $userAccess->create == 1 &&
-            $userAccess->read == 1 &&
-            $userAccess->update == 1 &&
-            $userAccess->delete == 1
-        ) {
+        if ($isAdmin) {
             return response()->json([], 403);
         }
 
@@ -263,20 +239,7 @@ class DashboardController extends Controller
          * buat data bulan dan data array kosong
          */
         $data = [];
-        $bulan = [
-            '01',
-            '02',
-            '03',
-            '04',
-            '05',
-            '06',
-            '07',
-            '08',
-            '09',
-            '10',
-            '11',
-            '12',
-        ];
+        $bulan = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 
         /**
          * ambil data akun_belanja berdasarkan divisi_id user yang yang sedang login
@@ -324,17 +287,12 @@ class DashboardController extends Controller
         /**
          * ambil akses menu user
          */
-        $userAccess = $this->getAccess(href: '/dashboard');
+        $isAdmin = $this->isAdmin(href: '/dashboard');
 
         /**
          * Cek apakah user mempunyai full akses (superadmin) atau tidak
          */
-        if (
-            $userAccess->create == 0 ||
-            $userAccess->read == 0 ||
-            $userAccess->update == 0 ||
-            $userAccess->delete == 0
-        ) {
+        if (!$isAdmin) {
             return response()->json([], 403);
         }
 
