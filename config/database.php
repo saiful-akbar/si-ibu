@@ -48,8 +48,8 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'db_simaa'),
-            'username' => env('DB_USERNAME', 'root'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
@@ -77,7 +77,10 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
-
+        
+        /**
+         * koneksi database pertama (Anggaran)
+         */
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
@@ -92,7 +95,7 @@ return [
         ],
 
         /**
-         * konekso database kedua
+         * koneksi database kedua (Arsip)
          */
         'sqlsrv2' => [
             'driver' => 'sqlsrv',
