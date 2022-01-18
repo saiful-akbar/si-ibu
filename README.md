@@ -166,7 +166,7 @@ php artisan migrate:refresh --seed
 8. Mengoptimalkan konfigurasi `NB: semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua). dalam kata lain variabel pada file .env tidak terpakai lagi, semua konfigurasi akan diambil langsung dari semua file pada folder config`
 
 ```bash
-    php artisan config:cache
+php artisan config:cache
 ```
 
 9. Mengoptimalkan route loading
