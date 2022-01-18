@@ -18,7 +18,7 @@ class CreateDivisiTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('divisi', function (Blueprint $table) {
                 $table->id();
                 $table->string('nama_divisi', 128)->unique();
@@ -34,6 +34,7 @@ class CreateDivisiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('divisi');
+        Schema::connection($this->connection)
+            ->dropIfExists('divisi');
     }
 }

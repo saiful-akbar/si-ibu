@@ -17,9 +17,11 @@ trait ConnectionTrait
      *
      * @return string
      */
-    public function getConnection(string $conn = 'anggaran'): string
+    public function getConnection(string $connection = 'anggaran'): string
     {
-        if (strtolower($conn) == 'anggaran' || strtolower($conn) == 'first') {
+        $conn = strtolower($connection);
+
+        if ($conn == 'anggaran' || $conn == 'first') {
             return $this->anggaran;
         }
 
@@ -34,9 +36,11 @@ trait ConnectionTrait
      *
      * @return void
      */
-    public function setConnection(string $conn = 'anggaran', string $value): void
+    public function setConnection(string $connection = 'anggaran', string $value): void
     {
-        if (strtolower($conn) == 'anggaran' || strtolower($conn) == 'first') {
+        $conn = strtolower($connection);
+
+        if ($conn == 'anggaran' || $conn == 'first') {
             $this->anggaran = $value;
         } else {
             $this->arsip = $value;

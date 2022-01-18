@@ -18,7 +18,7 @@ class CreateUserMenuItemTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('user_menu_item', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');
@@ -50,6 +50,7 @@ class CreateUserMenuItemTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_menu_item');
+        Schema::connection($this->connection)
+            ->dropIfExists('user_menu_item');
     }
 }

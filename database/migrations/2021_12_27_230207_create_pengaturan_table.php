@@ -18,7 +18,7 @@ class CreatePengaturanTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('pengaturan', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');
@@ -42,6 +42,7 @@ class CreatePengaturanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pengaturan');
+        Schema::connection($this->connection)
+            ->dropIfExists('pengaturan');
     }
 }

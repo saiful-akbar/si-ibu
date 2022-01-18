@@ -18,7 +18,7 @@ class CreateTransaksiTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('transaksi', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');
@@ -51,6 +51,7 @@ class CreateTransaksiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaksi');
+        Schema::connection($this->connection)
+            ->dropIfExists('transaksi');
     }
 }

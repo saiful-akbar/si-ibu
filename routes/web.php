@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AkunBelanjaController;
+use App\Http\Controllers\Arsip\ArsipController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
@@ -13,11 +14,17 @@ use Illuminate\Support\Facades\Route;
 
 
 /**
+ * Redirect
+ */
+Route::redirect('/', '/dashboard', 200);
+
+
+/**
  * Route middleware guest
  */
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'index'])->name('login.view');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 });
 
 
@@ -317,14 +324,16 @@ Route::middleware('auth')->group(function () {
     /**
      * Route group arsip
      */
-    // Route::prefix('/arsip')->group(function () {});
+    Route::prefix('/arsip')->group(function () {
+
+        /**
+         * Arsip dokumen
+         */
+        Route::get('/dokumen', [ArsipController::class, 'index'])
+            ->middleware('menu:/arsip/dokumen,read')
+            ->name('arsip.dokumen');
+    });
 });
-
-
-/**
- * Redirect
- */
-Route::permanentRedirect('/', 'dashboard');
 
 
 /**

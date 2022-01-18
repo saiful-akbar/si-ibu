@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 text-center mb-3">
-                            <a href="{{ route('login.view') }}" class="logo-dark">
+                            <a href="{{ route('login') }}" class="logo-dark">
                                 <img src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="logo" width="200" />
                             </a>
 
@@ -44,7 +44,7 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <form name="form-login" autocomplete="off" method="POST" action="{{ route('login') }}">
+                            <form name="form-login" autocomplete="off" method="POST" action="{{ route('login.post') }}">
                                 @method('POST')
                                 @csrf
 

@@ -18,7 +18,7 @@ class CreateUserMenuHeaderTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('user_menu_header', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');
@@ -47,6 +47,7 @@ class CreateUserMenuHeaderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_menu_header');
+        Schema::connection($this->connection)
+            ->dropIfExists('user_menu_header');
     }
 }

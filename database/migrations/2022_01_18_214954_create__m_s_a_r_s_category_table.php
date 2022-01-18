@@ -4,12 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenuHeaderTable extends Migration
+class CreateMSARSCategoryTable extends Migration
 {
-    /**
-     * koneksi database
-     */
-    protected $connection = 'anggaran';
+    protected $connection = 'arsip';
 
     /**
      * Run the migrations.
@@ -19,10 +16,9 @@ class CreateMenuHeaderTable extends Migration
     public function up()
     {
         Schema::connection($this->connection)
-            ->create('menu_header', function (Blueprint $table) {
-                $table->id();
-                $table->string('nama_header', 128)->unique();
-                $table->timestamps();
+            ->create('MSARSCategory', function (Blueprint $table) {
+                $table->increments('MSARSCategory_PK');
+                $table->string('Nama', 200)->nullable();
             });
     }
 
@@ -33,7 +29,7 @@ class CreateMenuHeaderTable extends Migration
      */
     public function down()
     {
-        Schema::connection($this->connection)
-            ->dropIfExists('menu_header');
+        Schema::connection('arsip')
+            ->dropIfExists('MSARSCategory');
     }
 }

@@ -18,7 +18,7 @@ class CreateUserTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('user', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('divisi_id');
@@ -42,6 +42,7 @@ class CreateUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user');
+        Schema::connection($this->connection)
+            ->dropIfExists('user');
     }
 }

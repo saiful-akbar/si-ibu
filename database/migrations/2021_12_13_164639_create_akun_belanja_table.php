@@ -18,7 +18,7 @@ class CreateAkunBelanjaTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('akun_belanja', function (Blueprint $table) {
                 $table->id();
                 $table->string('nama_akun_belanja', 128)->unique();
@@ -34,6 +34,7 @@ class CreateAkunBelanjaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('akun_belanja');
+        Schema::connection($this->connection)
+            ->dropIfExists('akun_belanja');
     }
 }

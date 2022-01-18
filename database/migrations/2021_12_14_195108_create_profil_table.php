@@ -18,7 +18,7 @@ class CreateProfilTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('profil', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');
@@ -42,6 +42,7 @@ class CreateProfilTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profil');
+        Schema::connection($this->connection)
+            ->dropIfExists('profil');
     }
 }

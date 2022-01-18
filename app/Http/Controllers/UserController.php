@@ -467,7 +467,7 @@ class UserController extends Controller
          */
         try {
             foreach ($request->menuHeader as $menuHeader) {
-                DB::connection($this->getConnection('anggaran'))
+                DB::connection($this->getConnection())
                     ->table('user_menu_header')
                     ->updateOrInsert(
                         [
@@ -498,7 +498,7 @@ class UserController extends Controller
          */
         try {
             foreach ($request->menuItem as $menuItem) {
-                DB::connection($this->getConnection('anggaran'))
+                DB::connection($this->getConnection())
                     ->table('user_menu_item')
                     ->updateOrInsert(
                         [

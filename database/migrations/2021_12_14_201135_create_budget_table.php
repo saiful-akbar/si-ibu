@@ -18,7 +18,7 @@ class CreateBudgetTable extends Migration
      */
     public function up()
     {
-        Schema::connection('anggaran')
+        Schema::connection($this->connection)
             ->create('budget', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('divisi_id');
@@ -48,6 +48,7 @@ class CreateBudgetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('budget');
+        Schema::connection($this->connection)
+            ->dropIfExists('budget');
     }
 }
