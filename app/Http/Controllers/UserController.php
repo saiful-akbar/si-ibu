@@ -8,8 +8,9 @@ use App\Models\MenuItem;
 use App\Models\Profil;
 use App\Models\Transaksi;
 use App\Models\User;
-use App\Traits\UserAccessTrait;
 use App\Traits\ConnectionTrait;
+use App\Traits\UserAccessTrait;
+use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -442,8 +443,19 @@ class UserController extends Controller
      */
     public function editMenuAkses(User $user)
     {
+        /**
+         * ambil data user dengan menu akses nya
+         */
         $user = User::with('menuHeader', 'menuItem', 'profil', 'divisi')->find($user->id);
-        $menuHeaders = MenuHeader::with('menuItem', 'user')->get();
+
+        /**
+         * ambil data menu
+         */
+        $menuHeaders = MenuHeader::with([
+            'user',
+            'menuItem' => fn ($query) => $query->orderBy('nama_menu', 'asc')
+        ])->orderBy('no_urut', 'asc')
+            ->get();
 
         $userAccess = $this->getAccess(href: '/user');
 

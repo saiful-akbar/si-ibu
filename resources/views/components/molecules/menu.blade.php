@@ -6,7 +6,7 @@ $authUser = App\Models\User::find(Auth::user()->id);
 // menu headers
 $menuHeaders = $authUser
     ->menuHeader()
-    ->orderBy('nama_header', 'asc')
+    ->orderBy('no_urut', 'asc')
     ->get();
 
 // menu items
@@ -22,7 +22,7 @@ $menuItems = $authUser
 
         {{-- cek akses read menu_header --}}
         @if (isset($menuHeader->pivot->read) && $menuHeader->pivot->read == 1)
-            <li class="side-nav-title side-nav-item mt-3">{{ substr($menuHeader->nama_header, 4) }}</li>
+            <li class="side-nav-title side-nav-item mt-3">{{ ucwords($menuHeader->nama_header) }}</li>
 
             @foreach ($menuItems as $menuItem)
 

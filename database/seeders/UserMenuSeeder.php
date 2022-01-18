@@ -34,28 +34,28 @@ class UserMenuSeeder extends Seeder
                  */
                 [
                     'user_id' => $this->getUser('admin'),
-                    'menu_header_id' => $this->getMenuHeader('01. Utama'),
+                    'menu_header_id' => $this->getMenuHeader('Utama'),
                     'read' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'user_id' => $this->getUser('admin'),
-                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'menu_header_id' => $this->getMenuHeader('Data Master'),
                     'read' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'user_id' => $this->getUser('admin'),
-                    'menu_header_id' => $this->getMenuHeader('03. Keuangan'),
+                    'menu_header_id' => $this->getMenuHeader('Keuangan'),
                     'read' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'user_id' => $this->getUser('admin'),
-                    'menu_header_id' => $this->getMenuHeader('04. Arsip'),
+                    'menu_header_id' => $this->getMenuHeader('Arsip'),
                     'read' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -66,21 +66,21 @@ class UserMenuSeeder extends Seeder
                  */
                 [
                     'user_id' => $this->getUser('staff'),
-                    'menu_header_id' => $this->getMenuHeader('01. Utama'),
+                    'menu_header_id' => $this->getMenuHeader('Utama'),
                     'read' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'user_id' => $this->getUser('staff'),
-                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'menu_header_id' => $this->getMenuHeader('Data Master'),
                     'read' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'user_id' => $this->getUser('staff'),
-                    'menu_header_id' => $this->getMenuHeader('03. Keuangan'),
+                    'menu_header_id' => $this->getMenuHeader('Keuangan'),
                     'read' => true,
                     'created_at' => now(),
                     'updated_at' => now(),

@@ -21,6 +21,7 @@ class CreateMenuHeaderTable extends Migration
         Schema::connection($this->connection)
             ->create('menu_header', function (Blueprint $table) {
                 $table->id();
+                $table->integer('no_urut')->unique();
                 $table->string('nama_header', 128)->unique();
                 $table->timestamps();
             });

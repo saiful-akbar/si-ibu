@@ -32,22 +32,26 @@ class MenuSeeder extends Seeder
         DB::connection('anggaran')
             ->table('menu_header')->insert([
                 [
-                    'nama_header' => '01. Utama',
+                    'no_urut' => 1,
+                    'nama_header' => 'Utama',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'nama_header' => '02. Data Master',
+                    'no_urut' => 2,
+                    'nama_header' => 'Data Master',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'nama_header' => '03. Keuangan',
+                    'no_urut' => 3,
+                    'nama_header' => 'Keuangan',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'nama_header' => '04. Arsip',
+                    'no_urut' => 4,
+                    'nama_header' => 'Arsip',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
@@ -69,7 +73,7 @@ class MenuSeeder extends Seeder
                  * Halaman utama
                  */
                 [
-                    'menu_header_id' => $this->getMenuHeader('01. Utama'),
+                    'menu_header_id' => $this->getMenuHeader('Utama'),
                     'nama_menu' => 'Dashboard',
                     'icon' => 'uil-home-alt',
                     'href' => '/dashboard',
@@ -81,7 +85,7 @@ class MenuSeeder extends Seeder
                  * Data Master
                  */
                 [
-                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'menu_header_id' => $this->getMenuHeader('Data Master'),
                     'nama_menu' => 'Akun Belanja',
                     'icon' => 'uil-store-alt',
                     'href' => '/akun-belanja',
@@ -89,7 +93,7 @@ class MenuSeeder extends Seeder
                     'updated_at' => now(),
                 ],
                 [
-                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'menu_header_id' => $this->getMenuHeader('Data Master'),
                     'nama_menu' => 'Bagian',
                     'icon' => 'uil-th',
                     'href' => '/divisi',
@@ -97,7 +101,7 @@ class MenuSeeder extends Seeder
                     'updated_at' => now(),
                 ],
                 [
-                    'menu_header_id' => $this->getMenuHeader('02. Data Master'),
+                    'menu_header_id' => $this->getMenuHeader('Data Master'),
                     'nama_menu' => 'User',
                     'icon' => 'uil-users-alt',
                     'href' => '/user',
@@ -109,7 +113,7 @@ class MenuSeeder extends Seeder
                  * Keuangan
                  */
                 [
-                    'menu_header_id' => $this->getMenuHeader('03. keuangan'),
+                    'menu_header_id' => $this->getMenuHeader('keuangan'),
                     'nama_menu' => 'Belanja',
                     'icon' => 'uil-shopping-cart-alt',
                     'href' => '/belanja',
@@ -117,7 +121,7 @@ class MenuSeeder extends Seeder
                     'updated_at' => now(),
                 ],
                 [
-                    'menu_header_id' => $this->getMenuHeader('03. keuangan'),
+                    'menu_header_id' => $this->getMenuHeader('keuangan'),
                     'nama_menu' => 'Budget',
                     'icon' => 'uil-moneybag',
                     'href' => '/budget',
@@ -129,7 +133,7 @@ class MenuSeeder extends Seeder
                  * Arsip
                  */
                 [
-                    'menu_header_id' => $this->getMenuHeader('04. Arsip'),
+                    'menu_header_id' => $this->getMenuHeader('Arsip'),
                     'nama_menu' => 'Dokumen Arsip',
                     'icon' => 'uil-document',
                     'href' => '/arsip/dokumen',

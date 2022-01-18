@@ -12,7 +12,7 @@ class MenuHeader extends Model
 
     protected $connection = 'anggaran';
     protected $table = 'menu_header';
-    protected $filabale = ['nama_header'];
+    protected $filabale = ['no_urut', 'nama_header'];
 
     /**
      * Relasi many to many dengan tabel user
