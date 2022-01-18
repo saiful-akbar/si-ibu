@@ -9,7 +9,7 @@ class CreateJenisBelanjaTable extends Migration
     /**
      * koneksi database
      */
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
 
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateJenisBelanjaTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv')
+        Schema::connection('anggaran')
             ->create('jenis_belanja', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('akun_belanja_id');

@@ -9,7 +9,7 @@ class CreateDivisiTable extends Migration
     /**
      * koneksi database
      */
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
 
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateDivisiTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv')
+        Schema::connection('anggaran')
             ->create('divisi', function (Blueprint $table) {
                 $table->id();
                 $table->string('nama_divisi', 128)->unique();

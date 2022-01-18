@@ -9,7 +9,7 @@ class CreateUserMenuHeaderTable extends Migration
     /**
      * koneksi database
      */
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
 
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateUserMenuHeaderTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv')
+        Schema::connection('anggaran')
             ->create('user_menu_header', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');

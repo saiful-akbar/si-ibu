@@ -14,7 +14,7 @@ class DivisiSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('divisi')->insert([
                 [
                     'nama_divisi' => 'IT',

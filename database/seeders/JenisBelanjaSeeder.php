@@ -14,7 +14,7 @@ class JenisBelanjaSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('jenis_belanja')->insert([
                 [
                     'akun_belanja_id' => $this->getIdAkunBelanja('Barang'),
@@ -35,7 +35,7 @@ class JenisBelanjaSeeder extends Seeder
      */
     public function getIdAkunBelanja(string $namaAkunBelanja): int
     {
-        $divisi = DB::connection('sqlsrv')
+        $divisi = DB::connection('anggaran')
             ->table('akun_belanja')
             ->where('nama_akun_belanja', $namaAkunBelanja)
             ->first();

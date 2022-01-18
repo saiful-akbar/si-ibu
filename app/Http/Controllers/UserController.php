@@ -9,6 +9,7 @@ use App\Models\Profil;
 use App\Models\Transaksi;
 use App\Models\User;
 use App\Traits\UserAccessTrait;
+use App\Traits\ConnectionTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
     use UserAccessTrait;
+    use ConnectionTrait;
 
     /**
      * View halaman user
@@ -465,7 +467,8 @@ class UserController extends Controller
          */
         try {
             foreach ($request->menuHeader as $menuHeader) {
-                DB::table('user_menu_header')
+                DB::connection($this->getConnection('anggaran'))
+                    ->table('user_menu_header')
                     ->updateOrInsert(
                         [
                             'user_id' => $user->id,
@@ -495,7 +498,8 @@ class UserController extends Controller
          */
         try {
             foreach ($request->menuItem as $menuItem) {
-                DB::table('user_menu_item')
+                DB::connection($this->getConnection('anggaran'))
+                    ->table('user_menu_item')
                     ->updateOrInsert(
                         [
                             'user_id' => $user->id,

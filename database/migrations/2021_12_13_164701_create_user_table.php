@@ -9,7 +9,7 @@ class CreateUserTable extends Migration
     /**
      * koneksi database
      */
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
 
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateUserTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv')
+        Schema::connection('anggaran')
             ->create('user', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('divisi_id');

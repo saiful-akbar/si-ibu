@@ -9,7 +9,7 @@ class CreateAkunBelanjaTable extends Migration
     /**
      * koneksi database
      */
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
 
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateAkunBelanjaTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv')
+        Schema::connection('anggaran')
             ->create('akun_belanja', function (Blueprint $table) {
                 $table->id();
                 $table->string('nama_akun_belanja', 128)->unique();

@@ -9,7 +9,7 @@ class CreateProfilTable extends Migration
     /**
      * koneksi database
      */
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
 
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateProfilTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv')
+        Schema::connection('anggaran')
             ->create('profil', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');

@@ -9,7 +9,7 @@ class Divisi extends Model
 {
     use HasFactory;
 
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
     protected $table = 'divisi';
     protected $fillable = [
         'nama_divisi',

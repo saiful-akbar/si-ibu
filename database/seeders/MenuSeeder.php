@@ -31,7 +31,7 @@ class MenuSeeder extends Seeder
         /**
          * gunakan penomoran pada nama_header untuk pengurutan di view (interface)
          */
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('menu_header')->insert([
                 [
                     'nama_header' => '01. Utama',
@@ -64,7 +64,7 @@ class MenuSeeder extends Seeder
      */
     public function insertMenuItem(): void
     {
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('menu_item')->insert([
 
                 /**
@@ -149,7 +149,7 @@ class MenuSeeder extends Seeder
      */
     public function insetUserMenuHeader(): void
     {
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('user_menu_header')->insert([
 
                 /**
@@ -219,7 +219,7 @@ class MenuSeeder extends Seeder
      */
     public function insertUserMenuItem(): void
     {
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('user_menu_item')->insert([
 
                 /**
@@ -360,7 +360,7 @@ class MenuSeeder extends Seeder
      */
     public function getMenuHeader(string $nama): int
     {
-        $menuHeader = DB::connection('sqlsrv')
+        $menuHeader = DB::connection('anggaran')
             ->table('menu_header')
             ->where('nama_header', $nama)
             ->first();
@@ -377,7 +377,7 @@ class MenuSeeder extends Seeder
      */
     public function getMenuItem(string $nama): int
     {
-        $menuItem = DB::connection('sqlsrv')
+        $menuItem = DB::connection('anggaran')
             ->table('menu_item')
             ->where('nama_menu', $nama)
             ->first();
@@ -394,7 +394,7 @@ class MenuSeeder extends Seeder
      */
     public function getUser(String $username): int
     {
-        $user = DB::connection('sqlsrv')
+        $user = DB::connection('anggaran')
             ->table('user')
             ->where('username', $username)
             ->first();

@@ -9,7 +9,7 @@ class AkunBelanja extends Model
 {
     use HasFactory;
 
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
     protected $table = 'akun_belanja';
     protected $fillable = ['id', 'nama_akun_belanja', 'active'];
 

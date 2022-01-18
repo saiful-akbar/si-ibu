@@ -9,7 +9,7 @@ class UserMenuItem extends Model
 {
     use HasFactory;
 
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
     protected $table = 'user_menu_item';
     protected $fillable = [
         'user_id',

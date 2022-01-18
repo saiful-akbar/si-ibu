@@ -9,7 +9,7 @@ class CreateBudgetTable extends Migration
     /**
      * koneksi database
      */
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
 
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateBudgetTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv')
+        Schema::connection('anggaran')
             ->create('budget', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('divisi_id');

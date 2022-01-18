@@ -9,7 +9,7 @@ class CreatePengaturanTable extends Migration
     /**
      * koneksi database
      */
-    protected $connection = 'sqlsrv';
+    protected $connection = 'anggaran';
 
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreatePengaturanTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv')
+        Schema::connection('anggaran')
             ->create('pengaturan', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');

@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         /**
          * insert table user
          */
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('user')
             ->insert([
                 [
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
         /**
          * insert table profil
          */
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('profil')
             ->insert([
                 [
@@ -65,7 +65,7 @@ class UserSeeder extends Seeder
         /**
          * insert table pengaturan
          */
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('pengaturan')
             ->insert([
                 [

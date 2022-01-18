@@ -7,8 +7,8 @@ namespace App\Traits;
  */
 trait ConnectionTrait
 {
-    protected $anggaran = 'sqlsrv';
-    protected $arsip = 'sqlsrv2';
+    private $anggaran = 'anggaran';
+    private $arsip = 'arsip';
 
     /**
      * method untuk mengambil type koneksi
@@ -19,7 +19,7 @@ trait ConnectionTrait
      */
     public function getConnection(string $conn = 'anggaran'): string
     {
-        if (strtolower($conn) == 'anggaran') {
+        if (strtolower($conn) == 'anggaran' || strtolower($conn) == 'first') {
             return $this->anggaran;
         }
 
@@ -36,7 +36,7 @@ trait ConnectionTrait
      */
     public function setConnection(string $conn = 'anggaran', string $value): void
     {
-        if (strtolower($conn) == 'anggaran') {
+        if (strtolower($conn) == 'anggaran' || strtolower($conn) == 'first') {
             $this->anggaran = $value;
         } else {
             $this->arsip = $value;

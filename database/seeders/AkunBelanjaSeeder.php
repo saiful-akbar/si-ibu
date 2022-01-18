@@ -14,7 +14,7 @@ class AkunBelanjaSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('sqlsrv')
+        DB::connection('anggaran')
             ->table('akun_belanja')
             ->insert([[
                 'nama_akun_belanja' => 'Barang',
