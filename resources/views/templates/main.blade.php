@@ -10,9 +10,7 @@
     <meta name="base-url" content="{{ url('/') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>
-        @yield('title') - {{ config('app.name') }}
-    </title>
+    <title>{{ config('app.name') }} : @yield('title')</title>
 
     {{-- App favicon --}}
     <link href="{{ asset('assets/images/logo/favicon.ico') }}" rel="shortcut icon" />

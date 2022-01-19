@@ -44,7 +44,7 @@ cp .env.example .env
 4.  Buat database
 5.  Buka file .env di text editor & ubah value pada variable `DB_` di file .env sesuai dengan pengaturan database anda
 
-```
+```php
 DB_CONNECTION=anggaran
 DB_HOST=localhost
 DB_PORT=1433
@@ -99,9 +99,15 @@ composer install --optimize-autoloader --no-dev
 cp .htaccess.example .htaccess && cp .env.example .env
 ```
 
-4.  Buka file .env pada text editor & ubah value pada variable `DB_` & `APP_` di file .env
+4.  Buat generate:key & storage:link
 
+```bash
+php artisan key:generate && php artisan storage:link
 ```
+
+5.  Buka file .env pada text editor & ubah value pada variable `DB_` & `APP_` di file .env
+
+```php
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://domain.com
@@ -121,7 +127,7 @@ DB_USERNAME_SECOND=sa
 DB_PASSWORD_SECOND=
 ```
 
-5. Ubah konfigurasi connection database pada file `config/database.php`
+6. Ubah konfigurasi connection database pada file `config/database.php`
 
 ```php
 'anggaran' => [
@@ -149,12 +155,6 @@ DB_PASSWORD_SECOND=
     'prefix' => '',
     'prefix_indexes' => true,
 ],
-```
-
-6.  Buat generate:key & storage:link
-
-```bash
-php artisan key:generate && php artisan storage:link
 ```
 
 7. Migrasi tabel ke database

@@ -22,7 +22,7 @@ $menuItems = $authUser
 
         {{-- cek akses read menu_header --}}
         @if (isset($menuHeader->pivot->read) && $menuHeader->pivot->read == 1)
-            <li class="side-nav-title side-nav-item mt-3">{{ ucwords($menuHeader->nama_header) }}</li>
+            <li class="side-nav-title side-nav-item mt-3">{{ strtoupper($menuHeader->nama_header) }}</li>
 
             @foreach ($menuItems as $menuItem)
 

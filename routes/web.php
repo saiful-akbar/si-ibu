@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Redirect
  */
-Route::redirect('/', '/dashboard', 200);
+Route::redirect('/', 'dashboard');
 
 
 /**
@@ -333,12 +333,4 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/arsip/dokumen,read')
             ->name('arsip.dokumen');
     });
-});
-
-
-/**
- * Route fallback 404 jika url tidak tersedia
- */
-Route::fallback(function () {
-    return abort(404);
 });
