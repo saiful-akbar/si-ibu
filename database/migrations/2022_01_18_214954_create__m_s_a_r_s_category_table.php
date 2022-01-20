@@ -18,7 +18,7 @@ class CreateMSARSCategoryTable extends Migration
         Schema::connection($this->connection)
             ->create('MSARSCategory', function (Blueprint $table) {
                 $table->increments('MSARSCategory_PK');
-                $table->string('Nama', 200)->nullable();
+                $table->string('Nama', 200)->unique()->nullable();
             });
     }
 

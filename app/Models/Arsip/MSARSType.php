@@ -25,6 +25,13 @@ class MSARSType extends Model
      */
     protected $table = 'MSARSType';
 
+    /**
+     * Primary key
+     *
+     * @var string
+     */
+    protected $primaryKey = 'MSARSType_PK';
+
 
     /**
      * Kolom yang boleh diisi

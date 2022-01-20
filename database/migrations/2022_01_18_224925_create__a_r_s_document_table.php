@@ -25,7 +25,7 @@ class CreateARSDocumentTable extends Migration
                 $table->binary('Dokumen')->nullable();
                 $table->string('NamaFile', 200)->nullable();
                 $table->timestamp('DateAdds')->nullable()->default(null);
-                $table->year('years')->nullable();
+                $table->year('Years')->nullable();
                 $table->smallInteger('Is_Publish')->nullable();
 
 

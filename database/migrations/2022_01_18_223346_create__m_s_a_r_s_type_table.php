@@ -19,7 +19,7 @@ class CreateMSARSTypeTable extends Migration
             ->create('MSARSType', function (Blueprint $table) {
                 $table->increments('MSARSType_PK');
                 $table->unsignedInteger('MSARSCategory_FK');
-                $table->string('Nama', 200)->nullable();
+                $table->string('Nama', 200)->unique()->nullable();
 
                 $table->foreign('MSARSCategory_FK')
                     ->references('MSARSCategory_PK')

@@ -172,6 +172,16 @@ class UserMenuSeeder extends Seeder
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
+                [
+                    'user_id' => $this->getUser('admin'),
+                    'menu_item_id' => $this->getMenuItem('Master Arsip'),
+                    'create' => true,
+                    'read' => true,
+                    'update' => true,
+                    'delete' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
 
                 /**
                  * staff

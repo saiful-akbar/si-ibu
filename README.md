@@ -169,13 +169,7 @@ php artisan migrate:refresh --seed
 php artisan config:cache
 ```
 
-9. Mengoptimalkan route loading
-
-```bash
-php artisan route:cache
-```
-
-10. Mengoptimalkan View Loading
+9. Mengoptimalkan View Loading
 
 ```bash
 php artisan view:cache

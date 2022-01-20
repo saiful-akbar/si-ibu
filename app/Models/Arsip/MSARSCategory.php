@@ -25,6 +25,13 @@ class MSARSCategory extends Model
     protected $table = 'MSARSCategory';
 
     /**
+     * Primary key
+     *
+     * @var string
+     */
+    protected $primaryKey = 'MSARSCategory_PK';
+
+    /**
      * Kolom yang boleh diisi
      *
      * @var array

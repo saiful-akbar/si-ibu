@@ -140,6 +140,14 @@ class MenuSeeder extends Seeder
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
+                [
+                    'menu_header_id' => $this->getMenuHeader('Arsip'),
+                    'nama_menu' => 'Master Arsip',
+                    'icon' => 'uil-layer-group',
+                    'href' => '/arsip/master',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
             ]);
     }
 

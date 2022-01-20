@@ -23,6 +23,12 @@ class ARSDocument extends Model
      */
     protected $table = 'ARSDocument';
 
+    /**
+     * Primary key
+     *
+     * @var string
+     */
+    protected $primaryKey = 'ARSDocument_PK';
 
     /**
      * Kolom yang boleh diisi

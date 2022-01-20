@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AkunBelanjaController;
-use App\Http\Controllers\Arsip\ArsipController;
+use App\Http\Controllers\Arsip\DocumentController;
+use App\Http\Controllers\Arsip\MasterCategoryController;
+use App\Http\Controllers\Arsip\MasterTypeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
@@ -329,8 +331,28 @@ Route::middleware('auth')->group(function () {
         /**
          * Arsip dokumen
          */
-        Route::get('/dokumen', [ArsipController::class, 'index'])
+        Route::get('/dokumen', [DocumentController::class, 'index'])
             ->middleware('menu:/arsip/dokumen,read')
             ->name('arsip.dokumen');
+
+        /**
+         * Arsip master
+         */
+        Route::prefix('/master')->group(function () {
+
+            /**
+             * Master kategori
+             */
+            Route::get('/', [MasterCategoryController::class, 'index'])
+                ->middleware('menu:/arsip/master,read')
+                ->name('arsip.master.category');
+
+            /**
+             * Master Type
+             */
+            Route::get('/type', [MasterTypeController::class, 'index'])
+                ->middleware('menu:/arsip/master,read')
+                ->name('arsip.master.type');
+        });
     });
 });
