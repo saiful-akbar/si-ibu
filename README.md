@@ -110,7 +110,7 @@ php artisan key:generate && php artisan storage:link
 ```php
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://domain.com
+APP_URL=https://www.domain.com
 
 DB_CONNECTION=anggaran
 DB_HOST=localhost
@@ -127,7 +127,7 @@ DB_USERNAME_SECOND=sa
 DB_PASSWORD_SECOND=
 ```
 
-6. Ubah konfigurasi connection database pada file `config/database.php`
+6. Ubah konfigurasi connections database pada file `config/database.php`
 
 ```php
 'anggaran' => [

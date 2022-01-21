@@ -17,10 +17,6 @@ trait ConnectionTrait
     public function getConnection(string $conn = 'default'): string
     {
         switch (strtolower($conn)) {
-            case 'default':
-                return config('database.default');
-                break;
-
             case 'second':
                 return config('database.second');
                 break;
@@ -41,16 +37,12 @@ trait ConnectionTrait
     public function getDatabase(string $db = 'default'): string
     {
         switch (strtolower($db)) {
-            case 'default':
-                return config('database.db.default');
-                break;
-
             case 'second':
-                return config('database.db.second');
+                return config('database.connections.arsip.database');
                 break;
 
             default:
-                return config('database.db.default');
+                return config('database.connections.anggaran.database');
                 break;
         }
     }

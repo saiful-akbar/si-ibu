@@ -14,21 +14,8 @@ return [
     | you may use many connections at once using the Database library.
     |
     */
-
     'default' => env('DB_CONNECTION', 'anggaran'),
-
-    /**
-     * second connection
-     */
     'second' => env('DB_CONNECTION_SECOND', 'arsip'),
-
-    /**
-     * Database
-     */
-    'db' => [
-        'default' => env('DB_DATABASE', 'simaa_anggaran'),
-        'second' => env('DB_DATABASE_SECOND', 'simaa_arsip'),
-    ],
 
     /*
     |--------------------------------------------------------------------------
