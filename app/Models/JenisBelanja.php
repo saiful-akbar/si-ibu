@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Divisi;
-use App\Models\Transaksi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class JenisBelanja extends Model
 {
     use HasFactory;
 
+    protected $connection = 'anggaran';
     protected $table = 'jenis_belanja';
     protected $fillable = [
         'akun_belanja_id',

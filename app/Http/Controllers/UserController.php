@@ -8,15 +8,25 @@ use App\Models\MenuItem;
 use App\Models\Profil;
 use App\Models\Transaksi;
 use App\Models\User;
+use App\Traits\ConnectionTrait;
 use App\Traits\UserAccessTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     use UserAccessTrait;
+    use ConnectionTrait;
+
+    private $conn;
+    private $db;
+
+    public function __construct()
+    {
+        $this->conn = $this->getConnection();
+        $this->db = $this->getDatabase();
+    }
 
     /**
      * View halaman user
@@ -440,13 +450,21 @@ class UserController extends Controller
      */
     public function editMenuAkses(User $user)
     {
+        /**
+         * ambil data user dengan menu akses nya
+         */
         $user = User::with('menuHeader', 'menuItem', 'profil', 'divisi')->find($user->id);
-        $menuHeaders = MenuHeader::with('menuItem', 'user')->get();
 
-        $userAccess = User::with('menuItem')->find(Auth::user()->id)
-            ->menuItem
-            ->where('href', '/user')
-            ->first();
+        /**
+         * ambil data menu
+         */
+        $menuHeaders = MenuHeader::with([
+            'user',
+            'menuItem' => fn ($query) => $query->orderBy('nama_menu', 'asc')
+        ])->orderBy('no_urut', 'asc')
+            ->get();
+
+        $userAccess = $this->getAccess(href: '/user');
 
         return view('pages.user.menu-akses.edit', compact('user', 'menuHeaders', 'userAccess'));
     }
@@ -468,23 +486,30 @@ class UserController extends Controller
          */
         try {
             foreach ($request->menuHeader as $menuHeader) {
-                DB::table('user_menu_header')->updateOrInsert(
-                    [
-                        'user_id' => $user->id,
-                        'menu_header_id' => $menuHeader['id'],
-                    ],
-                    [
-                        'read' => isset($menuHeader['read']),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]
-                );
+                DB::connection($this->conn)
+                    ->table('user_menu_header')
+                    ->updateOrInsert(
+                        [
+                            'user_id' => $user->id,
+                            'menu_header_id' => $menuHeader['id'],
+                        ],
+                        [
+                            'read' => isset($menuHeader['read']),
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]
+                    );
             }
         } catch (\Exception $e) {
-            return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
-                'type' => 'danger',
-                'message' => 'Akses pada menu header gagal diperbarui. ' . $e->getMessage(),
-            ]);
+
+            /**
+             * gagal simpan data ke user_menu_header
+             */
+            return redirect()->route('user.menu-akses.edit', ['user' => $user->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => 'Akses pada menu header gagal diperbarui. ' . $e->getMessage(),
+                ]);
         }
 
         /**
@@ -492,7 +517,8 @@ class UserController extends Controller
          */
         try {
             foreach ($request->menuItem as $menuItem) {
-                DB::table('user_menu_item')
+                DB::connection($this->conn)
+                    ->table('user_menu_item')
                     ->updateOrInsert(
                         [
                             'user_id' => $user->id,
@@ -509,15 +535,24 @@ class UserController extends Controller
                     );
             }
         } catch (\Exception $e) {
-            return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
-                'type' => 'danger',
-                'message' => 'Akses pada menu item gagal diperbarui. ' . $e->getMessage(),
-            ]);
+
+            /**
+             * gagal simpan data ke tabel user_menu_header
+             */
+            return redirect()->route('user.menu-akses.edit', ['user' => $user->id])
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => 'Akses pada menu item gagal diperbarui. ' . $e->getMessage(),
+                ]);
         }
 
-        return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
-            'type' => 'success',
-            'message' => 'Akses pada menu berhasil diperbarui',
-        ]);
+        /**
+         * return sukses
+         */
+        return redirect()->route('user.menu-akses.edit', ['user' => $user->id])
+            ->with('alert', [
+                'type' => 'success',
+                'message' => 'Akses pada menu berhasil diperbarui',
+            ]);
     }
 }

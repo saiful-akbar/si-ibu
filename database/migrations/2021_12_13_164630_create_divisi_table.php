@@ -7,18 +7,24 @@ use Illuminate\Support\Facades\Schema;
 class CreateDivisiTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'anggaran';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('divisi', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_divisi', 128)->unique();
-            $table->boolean('active')->default(true);
-            $table->timestamps();
-        });
+        Schema::connection($this->connection)
+            ->create('divisi', function (Blueprint $table) {
+                $table->id();
+                $table->string('nama_divisi', 128)->unique();
+                $table->boolean('active')->default(true);
+                $table->timestamps();
+            });
     }
 
     /**
@@ -28,6 +34,7 @@ class CreateDivisiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('divisi');
+        Schema::connection($this->connection)
+            ->dropIfExists('divisi');
     }
 }

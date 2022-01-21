@@ -3,7 +3,7 @@
 @section('title', 'Edit Belanja')
 
 @section('btn-kembali')
-    <a href="{{ route('budget') }}" class="btn btn-rounded btn-light btn-sm">
+    <a href="{{ route('belanja') }}" class="btn btn-rounded btn-light btn-sm">
         <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
@@ -335,7 +335,7 @@
     </form>
     {{-- end form input budget --}}
 
-    @include('components.molecules.transaksi-modal-table-budget')
+    @include('components.molecules.modal-table-budget')
 
 @endsection
 

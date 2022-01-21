@@ -322,7 +322,7 @@
     </form>
     {{-- end form input budget --}}
 
-    @include('components.molecules.transaksi-modal-table-budget')
+    @include('components.molecules.modal-table-budget')
 
 @endsection
 

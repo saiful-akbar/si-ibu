@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Auth;
  */
 trait UserAccessTrait
 {
+    private $href = null;
+    private $userId = null;
+    private $access = null;
+    private $isAdmin = false;
+
     /**
      * Method get user access
      *
@@ -21,19 +26,39 @@ trait UserAccessTrait
      */
     public function getAccess(int $userId = null, string $href = '/dashboard'): object
     {
-        $id = Auth::user()->id;
+        $this->userId = $userId != null ? $userId : Auth::user()->id;
+        $this->href = $href;
 
-        if ($userId != null) {
-            $id = $userId;
-        }
-
-        $access = User::with('menuItem')
-            ->find($id)
+        /**
+         * query menu_item berdasarkan user_id dan href
+         */
+        $query = User::with('menuItem')
+            ->find($this->userId)
             ->menuItem()
-            ->where('href', $href)
+            ->where('href', $this->href)
             ->first();
 
-        return $access->pivot;
+        /**
+         * set properti $access
+         */
+        $this->access = $query->pivot;
+
+        /**
+         * set properti isAdmin jika user memiliki full akses
+         */
+        if (
+            $this->access->create == 1 &&
+            $this->access->read == 1 &&
+            $this->access->update == 1 &&
+            $this->access->delete == 1
+        ) {
+            $this->isAdmin = true;
+        }
+
+        /**
+         * return access menu
+         */
+        return $this->access;
     }
 
     /**
@@ -46,17 +71,26 @@ trait UserAccessTrait
      */
     public function isAdmin(string $href = '/dashboard', int $userId = null): bool
     {
-        $userAccess = $this->getAccess(href: $href, userId: $userId);
+        $id = $userId == null ? Auth::user()->id : $userId;
 
+        /**
+         * cek params $userId & $href sama atau tidak dengan nilai properti yang ada
+         */
         if (
-            $userAccess->create == 1 &&
-            $userAccess->read == 1 &&
-            $userAccess->update == 1 &&
-            $userAccess->delete == 1
+            $this->href == $href &&
+            $this->userId == $id
         ) {
-            return true;
+            return $this->isAdmin;
         }
 
-        return false;
+        /**
+         * panggil method get access untuk mendapatkan akses user menu
+         */
+        $this->getAccess(href: $href, userId: $id);
+
+        /**
+         * return isAdmin
+         */
+        return $this->isAdmin;
     }
 }

@@ -10,6 +10,7 @@ class Transaksi extends Model
 {
     use HasFactory;
 
+    protected $connection = 'anggaran';
     protected $table = 'transaksi';
     protected $fillable = [
         'user_id',

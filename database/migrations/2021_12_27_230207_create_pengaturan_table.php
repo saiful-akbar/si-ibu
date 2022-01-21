@@ -7,26 +7,32 @@ use Illuminate\Support\Facades\Schema;
 class CreatePengaturanTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'anggaran';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('pengaturan', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->enum('tema', ['dark', 'light'])->default('light');
-            $table->enum('sidebar', ['default', 'dark', 'light'])->default('dark');
-            $table->timestamps();
+        Schema::connection($this->connection)
+            ->create('pengaturan', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->enum('tema', ['dark', 'light'])->default('light');
+                $table->enum('sidebar', ['default', 'dark', 'light'])->default('dark');
+                $table->timestamps();
 
-            // relasi dengan tabel user
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('user')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+                // relasi dengan tabel user
+                $table->foreign('user_id')
+                    ->references('id')
+                    ->on('user')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
+            });
     }
 
     /**
@@ -36,6 +42,7 @@ class CreatePengaturanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pengaturan');
+        Schema::connection($this->connection)
+            ->dropIfExists('pengaturan');
     }
 }

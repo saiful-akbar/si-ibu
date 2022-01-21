@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AkunBelanjaController;
+use App\Http\Controllers\Arsip\DocumentController;
+use App\Http\Controllers\Arsip\MasterCategoryController;
+use App\Http\Controllers\Arsip\MasterTypeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
@@ -13,11 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 
 /**
+ * Redirect
+ */
+Route::redirect('/', 'dashboard');
+
+
+/**
  * Route middleware guest
  */
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'index'])->name('login.view');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 });
 
 
@@ -313,18 +322,37 @@ Route::middleware('auth')->group(function () {
         Route::patch('/pengaturan/tema', [ProfilController::class, 'updateTema'])
             ->name('profil.pengaturan.tema');
     });
-});
 
+    /**
+     * Route group arsip
+     */
+    Route::prefix('/arsip')->group(function () {
 
-/**
- * Redirect
- */
-Route::permanentRedirect('/', 'dashboard');
+        /**
+         * Arsip dokumen
+         */
+        Route::get('/dokumen', [DocumentController::class, 'index'])
+            ->middleware('menu:/arsip/dokumen,read')
+            ->name('arsip.dokumen');
 
+        /**
+         * Arsip master
+         */
+        Route::prefix('/master')->group(function () {
 
-/**
- * Route fallback 404 jika url tidak tersedia
- */
-Route::fallback(function () {
-    return abort(404);
+            /**
+             * Master kategori
+             */
+            Route::get('/', [MasterCategoryController::class, 'index'])
+                ->middleware('menu:/arsip/master,read')
+                ->name('arsip.master.category');
+
+            /**
+             * Master Type
+             */
+            Route::get('/type', [MasterTypeController::class, 'index'])
+                ->middleware('menu:/arsip/master,read')
+                ->name('arsip.master.type');
+        });
+    });
 });

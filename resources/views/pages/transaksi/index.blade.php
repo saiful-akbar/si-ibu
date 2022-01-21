@@ -186,7 +186,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered w-100 nowrap table-hover">
+                                <table class="table table-centered w-100 nowrap">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
@@ -198,7 +198,7 @@
                                             <th>Kegiatan</th>
                                             <th>No. Dokumen</th>
                                             <th>Approval</th>
-                                            <th>Jumlah Nominal</th>
+                                            <th>Jml Nominal</th>
                                             <th>Dibuat</th>
                                             <th>Diperbarui</th>
                                             <th class="text-center">Aksi</th>

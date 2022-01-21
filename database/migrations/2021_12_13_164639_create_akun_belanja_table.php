@@ -7,18 +7,24 @@ use Illuminate\Support\Facades\Schema;
 class CreateAkunBelanjaTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'anggaran';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('akun_belanja', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_akun_belanja', 128)->unique();
-            $table->boolean('active')->default(true);
-            $table->timestamps();
-        });
+        Schema::connection($this->connection)
+            ->create('akun_belanja', function (Blueprint $table) {
+                $table->id();
+                $table->string('nama_akun_belanja', 128)->unique();
+                $table->boolean('active')->default(true);
+                $table->timestamps();
+            });
     }
 
     /**
@@ -28,6 +34,7 @@ class CreateAkunBelanjaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('akun_belanja');
+        Schema::connection($this->connection)
+            ->dropIfExists('akun_belanja');
     }
 }

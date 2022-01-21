@@ -26,15 +26,15 @@ class BudgetController extends Controller
     public function index(Request $request)
     {
         /**
+         * ambil data user akses untuk menu user
+         */
+        $userAccess = $this->getAccess(href: '/budget');
+
+        /**
          * ambil akses menu pada user
          * jika full akses (create, read, update, delete) maka user dianggap sebagai admin
          */
         $isAdmin = $this->isAdmin(href: '/budget');
-
-        /**
-         * ambil data user akses untuk menu user
-         */
-        $userAccess = $this->getAccess(href: '/budget');
 
         /**
          * Periode

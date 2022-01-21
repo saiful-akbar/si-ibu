@@ -29,22 +29,30 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // validasi form input
+        /**
+         * validasi form input
+         */
         $request->validate([
             'username' => ['required'],
             'password' => ['required'],
         ]);
 
-        // simpan hasil form input
+        /**
+         * simpan hasil form input
+         */
         $credentials = [
             'username' => $request->username,
             'password' => $request->password,
         ];
 
-        // cek pada database
+        /**
+         * cek pada database
+         */
         if (Auth::attempt($credentials)) {
 
-            // cek apakah akun aktif atau tidak
+            /**
+             * cek apakah akun aktif atau tidak
+             */
             if (Auth::user()->active != 1) {
                 Auth::logout();
 
@@ -56,11 +64,20 @@ class AuthController extends Controller
                 ]);
             }
 
+            /**
+             * buat session jika login sukses dan akun aktif
+             */
             $request->session()->regenerate();
+
+            /**
+             * redirect ke halaman dashboard
+             */
             return redirect()->route('dashboard');
         }
 
-        // return error
+        /**
+         * tampilkan error jika login gagal
+         */
         return back()->withErrors([
             'error' => 'Username atau password salah.',
         ]);
@@ -82,6 +99,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login.view');
+        return redirect()->route('login');
     }
 }

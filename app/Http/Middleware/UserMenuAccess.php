@@ -19,8 +19,18 @@ class UserMenuAccess
      */
     public function handle(Request $request, Closure $next, $path, $access)
     {
-        $menuItem = User::with('menuItem')->find(Auth::user()->id)->menuItem->where('href', $path)->first();
+        /**
+         * query menu item
+         */
+        $menuItem = User::with('menuItem')
+            ->find(Auth::user()->id)
+            ->menuItem()
+            ->where('href', $path)
+            ->first();
 
+        /**
+         * cek akses pada menu sesua request
+         */
         if (!empty($menuItem)) {
             if ($access == 'create' && $menuItem->pivot->create == 1) {
                 return $next($request);

@@ -10,18 +10,12 @@
     <meta name="base-url" content="{{ url('/') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>
-        @yield('title') - {{ config('app.name') }}
-    </title>
+    <title>{{ config('app.name') }} : @yield('title')</title>
 
     {{-- App favicon --}}
     <link href="{{ asset('assets/images/logo/favicon.ico') }}" rel="shortcut icon" />
 
-    {{-- google icons --}}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
     {{-- icons --}}
-    <link href="{{ asset('assets/css/vendor/fontawesome/css/all.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
     @stack('css')

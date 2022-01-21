@@ -7,31 +7,37 @@ use Illuminate\Support\Facades\Schema;
 class CreateUserMenuHeaderTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'anggaran';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('user_menu_header', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('menu_header_id');
-            $table->boolean('read')->default(false);
-            $table->timestamps();
+        Schema::connection($this->connection)
+            ->create('user_menu_header', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('menu_header_id');
+                $table->boolean('read')->default(false);
+                $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('user')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                $table->foreign('user_id')
+                    ->references('id')
+                    ->on('user')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
 
-            $table->foreign('menu_header_id')
-                ->references('id')
-                ->on('menu_header')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+                $table->foreign('menu_header_id')
+                    ->references('id')
+                    ->on('menu_header')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
+            });
     }
 
     /**
@@ -41,6 +47,7 @@ class CreateUserMenuHeaderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_menu_header');
+        Schema::connection($this->connection)
+            ->dropIfExists('user_menu_header');
     }
 }

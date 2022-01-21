@@ -7,17 +7,24 @@ use Illuminate\Support\Facades\Schema;
 class CreateMenuHeaderTable extends Migration
 {
     /**
+     * koneksi database
+     */
+    protected $connection = 'anggaran';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('menu_header', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_header', 128)->unique();
-            $table->timestamps();
-        });
+        Schema::connection($this->connection)
+            ->create('menu_header', function (Blueprint $table) {
+                $table->id();
+                $table->integer('no_urut')->unique();
+                $table->string('nama_header', 128)->unique();
+                $table->timestamps();
+            });
     }
 
     /**
@@ -27,6 +34,7 @@ class CreateMenuHeaderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_header');
+        Schema::connection($this->connection)
+            ->dropIfExists('menu_header');
     }
 }

@@ -9,12 +9,12 @@
             <div class="nav flex-column nav-pills" id="tabs-akun-belanja" role="tablist" aria-orientation="vertical">
                 <a href="{{ route('akun-belanja') }}"
                     class="nav-link mb-2 {{ Request::is('akun-belanja') ? 'active show' : null }}">
-                    <i class="mdi mdi-store mr-2"></i>
+                    <i class="uil-store-alt mr-2"></i>
                     <span>Akun Belanja</span>
                 </a>
                 <a href="{{ route('jenis-belanja') }}"
                     class="nav-link mb-2 {{ Request::is('akun-belanja/jenis-belanja') ? 'active show' : null }}">
-                    <i class="mdi mdi-shopping mr-2"></i>
+                    <i class="uil-cart mr-2"></i>
                     <span>Jenis Belanja</span>
                 </a>
             </div>

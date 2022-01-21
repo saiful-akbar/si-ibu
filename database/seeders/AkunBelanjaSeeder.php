@@ -14,11 +14,13 @@ class AkunBelanjaSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('akun_belanja')->insert([[
-            'nama_akun_belanja' => 'Barang',
-            'active' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]]);
+        DB::connection('anggaran')
+            ->table('akun_belanja')
+            ->insert([[
+                'nama_akun_belanja' => 'Barang',
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]]);
     }
 }

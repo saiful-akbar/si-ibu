@@ -9,6 +9,7 @@ class Pengaturan extends Model
 {
     use HasFactory;
 
+    protected $connection = 'anggaran';
     protected $table = 'pengaturan';
     protected $fillable = ['user_id', 'tema', 'sidebar'];
 

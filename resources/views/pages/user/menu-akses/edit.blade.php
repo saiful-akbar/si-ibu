@@ -22,7 +22,7 @@
                     <span>Detail Akses</span>
                 </a>
 
-                @if ($userAccess->pivot->update == 1)
+                @if ($userAccess->update == 1)
                     <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" class="nav-link mb-2 active show">
                         <i class="mdi mdi-square-edit-outline mr-2"></i>
                         <span>Edit Akses</span>
@@ -83,8 +83,7 @@
                                                                 data-header="header_{{ $menuHeader->id }}"
                                                                 @if (isset($user->menuHeader->find($menuHeader->id)->pivot) && $user->menuHeader->find($menuHeader->id)->pivot->read == 1) checked @endif />
 
-                                                            <label class="custom-control-label"
-                                                                for="header_{{ $menuHeader->id }}">
+                                                            <label class="custom-control-label" for="header_{{ $menuHeader->id }}">
                                                                 {{ ucwords($menuHeader->nama_header) }}
                                                             </label>
                                                         </div>

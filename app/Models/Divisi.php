@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\JenisBelanja;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +9,7 @@ class Divisi extends Model
 {
     use HasFactory;
 
+    protected $connection = 'anggaran';
     protected $table = 'divisi';
     protected $fillable = [
         'nama_divisi',
