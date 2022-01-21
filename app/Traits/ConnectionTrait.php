@@ -7,9 +7,6 @@ namespace App\Traits;
  */
 trait ConnectionTrait
 {
-    private $anggaran = 'anggaran';
-    private $arsip = 'arsip';
-
     /**
      * method untuk mengambil type koneksi
      *
@@ -17,33 +14,44 @@ trait ConnectionTrait
      *
      * @return string
      */
-    public function getConnection(string $connection = 'anggaran'): string
+    public function getConnection(string $conn = 'default'): string
     {
-        $conn = strtolower($connection);
+        switch (strtolower($conn)) {
+            case 'default':
+                return config('database.default');
+                break;
 
-        if ($conn == 'anggaran' || $conn == 'first') {
-            return $this->anggaran;
+            case 'second':
+                return config('database.second');
+                break;
+
+            default:
+                return config('database.default');
+                break;
         }
-
-        return $this->arsip;
     }
 
     /**
-     * Method untuk merubah nama koneksi
+     * Method untuk mengambil nama database
      *
-     * @param string $conn
-     * @param string $value
+     * @param string $db
      *
-     * @return void
+     * @return string
      */
-    public function setConnection(string $connection = 'anggaran', string $value): void
+    public function getDatabase(string $db = 'default'): string
     {
-        $conn = strtolower($connection);
+        switch (strtolower($db)) {
+            case 'default':
+                return config('database.db.default');
+                break;
 
-        if ($conn == 'anggaran' || $conn == 'first') {
-            $this->anggaran = $value;
-        } else {
-            $this->arsip = $value;
+            case 'second':
+                return config('database.db.second');
+                break;
+
+            default:
+                return config('database.db.default');
+                break;
         }
     }
 }

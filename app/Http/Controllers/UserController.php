@@ -10,9 +10,7 @@ use App\Models\Transaksi;
 use App\Models\User;
 use App\Traits\ConnectionTrait;
 use App\Traits\UserAccessTrait;
-use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,6 +18,15 @@ class UserController extends Controller
 {
     use UserAccessTrait;
     use ConnectionTrait;
+
+    private $conn;
+    private $db;
+
+    public function __construct()
+    {
+        $this->conn = $this->getConnection();
+        $this->db = $this->getDatabase();
+    }
 
     /**
      * View halaman user
@@ -479,7 +486,7 @@ class UserController extends Controller
          */
         try {
             foreach ($request->menuHeader as $menuHeader) {
-                DB::connection($this->getConnection())
+                DB::connection($this->conn)
                     ->table('user_menu_header')
                     ->updateOrInsert(
                         [
@@ -510,7 +517,7 @@ class UserController extends Controller
          */
         try {
             foreach ($request->menuItem as $menuItem) {
-                DB::connection($this->getConnection())
+                DB::connection($this->conn)
                     ->table('user_menu_item')
                     ->updateOrInsert(
                         [

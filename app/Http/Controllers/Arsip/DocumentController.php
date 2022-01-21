@@ -5,10 +5,22 @@ namespace App\Http\Controllers\Arsip;
 use App\Http\Controllers\Controller;
 use App\Models\Arsip\ARSDocument;
 use App\Models\Arsip\MSARSCategory;
+use App\Traits\ConnectionTrait;
 use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
+    use ConnectionTrait;
+
+    private $conn;
+    private $db;
+
+    public function __construct()
+    {
+        $this->conn = $this->getConnection('second');
+        $this->db = $this->getDatabase('second');
+    }
+
     /**
      * Method view arsip dokumen
      *
@@ -19,60 +31,60 @@ class DocumentController extends Controller
         /**
          * Validate rules
          */
-        // $validateRules = [
-        //     'first_period' => [],
-        //     'last_period' => [],
-        //     'ars_category' => [],
-        //     'ars_type' => [],
-        //     'number' => [],
-        // ];
+        $validateRules = [
+            'first_period' => [],
+            'last_period' => [],
+            'ars_category' => [],
+            'ars_type' => [],
+            'number' => [],
+        ];
 
         /**
          * Pesan error validasi
          */
-        // $validateErrorMessage = [
-        //     'first_period.required' => 'Periode harus diisi.',
-        //     'first_period.date' => 'Periode harus tanggal yang valid.',
-        //     'last_period.required' => 'Periode harus diisi.',
-        //     'last_period.date' => 'Periode harus tanggal yang valid.',
-        //     'ars_category.exists' => 'Kategori arsip tidak ada. Pilih kategori arsip yang ditentukan.',
-        //     'ars_type.exists' => 'Type arsip tidak ada. Pilih type arsip yang ditentukan.',
-        //     'number.exists' => 'Nomor tidak ditemukan.',
-        // ];
+        $validateErrorMessage = [
+            'first_period.required' => 'Periode harus diisi.',
+            'first_period.date' => 'Periode harus tanggal yang valid.',
+            'last_period.required' => 'Periode harus diisi.',
+            'last_period.date' => 'Periode harus tanggal yang valid.',
+            'ars_category.exists' => 'Kategori arsip tidak ada. Pilih kategori arsip yang ditentukan.',
+            'ars_type.exists' => 'Type arsip tidak ada. Pilih type arsip yang ditentukan.',
+            'number.exists' => 'Nomor tidak ditemukan.',
+        ];
 
         /**
          * jika periode_awal & periode_akhir dikirim tambahkan validasi
          */
-        // if ($request->periode_awal || $request->periode_akhir) {
-        //     array_push($validateRules['first_period'], 'required', 'date');
-        //     array_push($validateRules['last_period'], 'required', 'date');
-        // }
+        if ($request->periode_awal || $request->periode_akhir) {
+            array_push($validateRules['first_period'], 'required', 'date');
+            array_push($validateRules['last_period'], 'required', 'date');
+        }
 
         /**
          * cek jika ada request ars_category
          */
-        // if (!empty($request->ars_category)) {
-        //     array_push($validateRules['ars_category'], 'exists:MSARSCategory,Nama');
-        // }
+        if (!empty($request->ars_category)) {
+            array_push($validateRules['ars_category'], "exists:{$this->conn}.{$this->db}.MSARSCategory,Nama");
+        }
 
         /**
          * cek jika ada request ars_type
          */
-        // if (!empty($request->ars_type)) {
-        //     array_push($validateRules['ars_type'], 'exists:MSARSType,Nama');
-        // }
+        if (!empty($request->ars_type)) {
+            array_push($validateRules['ars_type'], "exists:{$this->conn}.{$this->db}.MSARSType,Nama");
+        }
 
         /**
          * cek jika ada request nomer
          */
-        // if (!empty($request->number)) {
-        //     array_push($validateRules['number'], 'exists:ARSDocument,Number');
-        // }
+        if (!empty($request->number)) {
+            array_push($validateRules['number'], "exists:{$this->conn}.{$this->db}.ARSDocument,Number");
+        }
 
         /**
          * Jalankan validasi
          */
-        // $request->validate($validateRules, $validateErrorMessage);
+        $request->validate($validateRules, $validateErrorMessage);
 
         /**
          * default periode
