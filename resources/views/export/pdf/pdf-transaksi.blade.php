@@ -2,7 +2,10 @@
 <html lang="id">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+        http-equiv="Content-Type"
+        content="text/html; charset=utf-8"
+    />
 
     <title>Laporan Transaksi Belanja</title>
 
@@ -72,13 +75,26 @@
 <body>
     <htmlpageheader name="page-header">
         <header class="header">
-            <table class="table w-100" border="0">
+            <table
+                class="table w-100"
+                border="0"
+            >
                 <tr>
-                    <th align="left" colspan="3">
+                    <th
+                        align="left"
+                        colspan="3"
+                    >
                         <h3>Laporan Transaksi Belanja</h3>
                     </th>
-                    <th align="right" rowspan="2">
-                        <img src="assets/images/logo/logo-light.jpg" alt="logo" width="120" />
+                    <th
+                        align="right"
+                        rowspan="2"
+                    >
+                        <img
+                            src="assets/images/logo/logo-light.jpg"
+                            alt="logo"
+                            width="120"
+                        />
                     </th>
                 </tr>
                 <tr>
@@ -91,12 +107,20 @@
     </htmlpageheader>
 
     <div class="container">
-        <table class="table table-bordered w-100" width="100%">
+        <table
+            class="table table-bordered w-100"
+            width="100%"
+        >
             <thead>
                 <tr>
                     <th class="text-center">No</th>
                     <th class="text-center">Tanggal</th>
-                    <th class="text-center" colspan="3">Akun Belanja</th>
+                    <th
+                        class="text-center"
+                        colspan="3"
+                    >
+                        Akun Belanja
+                    </th>
                     <th class="text-center">Submitter</th>
                     <th class="text-center">Kegiatan</th>
                     <th class="text-center">No. Dokumen</th>

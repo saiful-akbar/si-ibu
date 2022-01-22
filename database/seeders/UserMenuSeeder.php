@@ -164,7 +164,7 @@ class UserMenuSeeder extends Seeder
                 ],
                 [
                     'user_id' => $this->getUser('admin'),
-                    'menu_item_id' => $this->getMenuItem('Dokumen Arsip'),
+                    'menu_item_id' => $this->getMenuItem('Dokumen'),
                     'create' => true,
                     'read' => true,
                     'update' => true,
@@ -174,7 +174,7 @@ class UserMenuSeeder extends Seeder
                 ],
                 [
                     'user_id' => $this->getUser('admin'),
-                    'menu_item_id' => $this->getMenuItem('Master Arsip'),
+                    'menu_item_id' => $this->getMenuItem('Master'),
                     'create' => true,
                     'read' => true,
                     'update' => true,

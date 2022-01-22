@@ -1,8 +1,14 @@
 <footer class="footer">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 text-center">
-                2021 - {{ date('Y') }} <strong>© {{ config('app.name') }}</strong>
+        <div class="row px-3">
+            <div class="col-md-6">
+                2022 - {{ date('Y') }} © {{ config('app.name') }}
+            </div>
+
+            <div class="col-md-6">
+                <div class="text-md-right d-none d-md-block">
+                    v{{ config('app.version') }}
+                </div>
             </div>
         </div>
     </div>

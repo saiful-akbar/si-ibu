@@ -17,13 +17,25 @@
                     {{-- form search --}}
                     <div class="row justify-content-end">
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form action="{{ route('arsip.master.type') }}" method="GET" autocomplete="off">
+                            <form
+                                action="{{ route('arsip.master.type') }}"
+                                method="GET"
+                                autocomplete="off"
+                            >
                                 <div class="input-group">
-                                    <input type="search" name="search" placeholder="Cari type..." class="form-control"
-                                        value="{{ request('search') }}" />
+                                    <input
+                                        type="search"
+                                        name="search"
+                                        placeholder="Cari type..."
+                                        class="form-control"
+                                        value="{{ request('search') }}"
+                                    />
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="submit">
+                                        <button
+                                            class="btn btn-secondary"
+                                            type="submit"
+                                        >
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>

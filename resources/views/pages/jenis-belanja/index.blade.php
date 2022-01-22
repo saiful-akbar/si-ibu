@@ -16,7 +16,10 @@
                     <div class="row align-items-center">
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->create == 1)
-                                <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary btn-sm">
+                                <a
+                                    href="{{ route('jenis-belanja.create') }}"
+                                    class="btn btn-rounded btn-primary btn-sm"
+                                >
                                     <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Tambah Jenis Belanja</span>
                                 </a>
@@ -24,12 +27,25 @@
                         </div>
 
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form action="{{ route('jenis-belanja') }}" method="GET" autocomplete="off">
+                            <form
+                                action="{{ route('jenis-belanja') }}"
+                                method="GET"
+                                autocomplete="off"
+                            >
                                 <div class="input-group">
-                                    <input type="search" name="search" placeholder="Cari jenis belanja..." class="form-control"
-                                        value="{{ request('search') }}" />
+                                    <input
+                                        type="search"
+                                        name="search"
+                                        placeholder="Cari jenis belanja..."
+                                        class="form-control"
+                                        value="{{ request('search') }}"
+                                    />
+
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="submit">
+                                        <button
+                                            class="btn btn-secondary"
+                                            type="submit"
+                                        >
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>
@@ -68,8 +84,10 @@
                                                 <td>
                                                     {{ $jenisBelanja->perPage() * ($jenisBelanja->currentPage() - 1) + $loop->iteration }}
                                                 </td>
+
                                                 <td>{{ $data->akunBelanja->nama_akun_belanja }}</td>
                                                 <td>{{ $data->kategori_belanja }}</td>
+
                                                 <td class="text-center">
                                                     @if ($data->active == 1)
                                                         <i class="mdi mdi-check text-success h4"></i>
@@ -86,17 +104,25 @@
                                                 @if ($userAccess->update == 1 || $userAccess->delete == 1)
                                                     <td class="text-cente">
                                                         @if ($userAccess->update == 1)
-                                                            <a href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
-                                                                data-original-title="Edit" data-placement="top">
+                                                            <a
+                                                                href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
+                                                                class="btn btn-sm btn-light btn-icon mx-1"
+                                                                data-toggle="tooltip"
+                                                                data-original-title="Edit"
+                                                                data-placement="top"
+                                                            >
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
                                                         @endif
 
                                                         @if ($userAccess->delete == 1)
-                                                            <button class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
-                                                                data-original-title="Hapus" data-placement="top"
-                                                                onclick="akunBelanja.deleteJenisBelanja({{ $data->id }})">
+                                                            <button
+                                                                class="btn btn-sm btn-light btn-icon mx-1"
+                                                                data-toggle="tooltip"
+                                                                data-original-title="Hapus"
+                                                                data-placement="top"
+                                                                onclick="akunBelanja.deleteJenisBelanja({{ $data->id }})"
+                                                            >
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>
                                                         @endif
@@ -122,7 +148,10 @@
     </div>
 
     {{-- form delete --}}
-    <form method="POST" id="form-delete-jenis-belanja">
+    <form
+        method="POST"
+        id="form-delete-jenis-belanja"
+    >
         @method('DELETE') @csrf
     </form>
 @endsection

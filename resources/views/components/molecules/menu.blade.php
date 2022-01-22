@@ -29,8 +29,11 @@ $menuItems = $authUser
                 {{-- Cek akses read menu_items --}}
                 @if ($menuItem->menu_header_id == $menuHeader->id && $menuItem->pivot->read == 1)
                     <li class="side-nav-item {{ Request::is(trim($menuItem->href, '/') . '*') ? 'mm-active' : null }}">
-                        <a href="{{ url($menuItem->href) }}" class="side-nav-link">
-                            <i class="{{ $menuItem->icon }}" style="font-size: 1em;"></i>
+                        <a
+                            href="{{ url($menuItem->href) }}"
+                            class="side-nav-link"
+                        >
+                            <i class="{{ $menuItem->icon }}"></i>
                             <span>{{ ucwords($menuItem->nama_menu) }}</span>
                         </a>
                     </li>

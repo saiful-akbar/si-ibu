@@ -6,7 +6,10 @@
     <div class="row">
         <div class="col-12">
 
-            <form action="{{ route('profil.pengaturan.tema') }}" method="POST">
+            <form
+                action="{{ route('profil.pengaturan.tema') }}"
+                method="POST"
+            >
                 @method('PATCH') @csrf
 
                 {{-- tema card --}}
@@ -27,19 +30,37 @@
                             <div class="col-lg-9 col-md-8 col-sm-12">
                                 <div class="mt-2 @error('tema') is-invalid @enderror">
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input @error('tema') is-invalid @enderror"
-                                            id="light" value="light" name="tema" @if (auth()->user()->pengaturan->tema == 'light') checked @endif />
+                                        <input
+                                            type="radio"
+                                            class="custom-control-input @error('tema') is-invalid @enderror"
+                                            id="light"
+                                            value="light"
+                                            name="tema"
+                                            @if (auth()->user()->pengaturan->tema == 'light') checked @endif
+                                        />
 
-                                        <label class="custom-control-label" for="light">
+                                        <label
+                                            class="custom-control-label"
+                                            for="light"
+                                        >
                                             Terang
                                         </label>
                                     </div>
 
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input @error('tema') is-invalid @enderror" id="dark"
-                                            value="dark" name="tema" @if (auth()->user()->pengaturan->tema == 'dark') checked @endif />
+                                        <input
+                                            type="radio"
+                                            class="custom-control-input @error('tema') is-invalid @enderror"
+                                            id="dark"
+                                            value="dark"
+                                            name="tema"
+                                            @if (auth()->user()->pengaturan->tema == 'dark') checked @endif
+                                        />
 
-                                        <label class="custom-control-label" for="dark">
+                                        <label
+                                            class="custom-control-label"
+                                            for="dark"
+                                        >
                                             Gelap
                                         </label>
                                     </div>
@@ -62,30 +83,57 @@
 
                                     {{-- default --}}
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input @error('sidebar') is-invalid @enderror"
-                                            id="sidebar-default" value="default" name="sidebar" @if (auth()->user()->pengaturan->sidebar == 'default') checked @endif />
+                                        <input
+                                            type="radio"
+                                            class="custom-control-input @error('sidebar') is-invalid @enderror"
+                                            id="sidebar-default"
+                                            value="default"
+                                            name="sidebar"
+                                            @if (auth()->user()->pengaturan->sidebar == 'default') checked @endif
+                                        />
 
-                                        <label class="custom-control-label" for="sidebar-default">
+                                        <label
+                                            class="custom-control-label"
+                                            for="sidebar-default"
+                                        >
                                             Default
                                         </label>
                                     </div>
 
                                     {{-- terang --}}
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input @error('sidebar') is-invalid @enderror"
-                                            id="sidebar-light" value="light" name="sidebar" @if (auth()->user()->pengaturan->sidebar == 'light') checked @endif />
+                                        <input
+                                            type="radio"
+                                            class="custom-control-input @error('sidebar') is-invalid @enderror"
+                                            id="sidebar-light"
+                                            value="light"
+                                            name="sidebar"
+                                            @if (auth()->user()->pengaturan->sidebar == 'light') checked @endif
+                                        />
 
-                                        <label class="custom-control-label" for="sidebar-light">
+                                        <label
+                                            class="custom-control-label"
+                                            for="sidebar-light"
+                                        >
                                             Terang
                                         </label>
                                     </div>
 
                                     {{-- gelap --}}
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input @error('sidebar') is-invalid @enderror"
-                                            id="sidebar-dark" value="dark" name="sidebar" @if (auth()->user()->pengaturan->sidebar == 'dark') checked @endif />
+                                        <input
+                                            type="radio"
+                                            class="custom-control-input @error('sidebar') is-invalid @enderror"
+                                            id="sidebar-dark"
+                                            value="dark"
+                                            name="sidebar"
+                                            @if (auth()->user()->pengaturan->sidebar == 'dark') checked @endif
+                                        />
 
-                                        <label class="custom-control-label" for="sidebar-dark">
+                                        <label
+                                            class="custom-control-label"
+                                            for="sidebar-dark"
+                                        >
                                             Gelap
                                         </label>
                                     </div>
@@ -103,12 +151,18 @@
 
                     {{-- tema card-footer --}}
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-sm btn-info btn-rounded mr-2">
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-info btn-rounded mr-2"
+                        >
                             <i class="mdi mdi-content-save"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button type="reset" class="btn btn-sm btn-rounded btn-dark">
+                        <button
+                            type="reset"
+                            class="btn btn-sm btn-rounded btn-dark"
+                        >
                             <i class="mdi mdi-close-circle"></i>
                             <span>Reset</span>
                         </button>

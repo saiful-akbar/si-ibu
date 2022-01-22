@@ -134,7 +134,7 @@ class MenuSeeder extends Seeder
                  */
                 [
                     'menu_header_id' => $this->getMenuHeader('Arsip'),
-                    'nama_menu' => 'Dokumen Arsip',
+                    'nama_menu' => 'Dokumen',
                     'icon' => 'uil-document',
                     'href' => '/arsip/dokumen',
                     'created_at' => now(),
@@ -142,7 +142,7 @@ class MenuSeeder extends Seeder
                 ],
                 [
                     'menu_header_id' => $this->getMenuHeader('Arsip'),
-                    'nama_menu' => 'Master Arsip',
+                    'nama_menu' => 'Master',
                     'icon' => 'uil-layer-group',
                     'href' => '/arsip/master',
                     'created_at' => now(),

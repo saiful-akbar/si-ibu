@@ -6,16 +6,26 @@
 
         {{-- tabs setting --}}
         <div class="col-lg-3 col-md-4 col-sm-12 mb-3">
-            <div class="nav flex-column nav-pills" id="tabs-arsip-master" role="tablist" aria-orientation="vertical">
-                <a href="{{ route('arsip.master.category') }}"
-                    class="nav-link mb-2 {{ Request::is('arsip/master') ? 'active show' : null }}">
+            <div
+                class="nav flex-column nav-pills"
+                id="tabs-arsip-master"
+                role="tablist"
+                aria-orientation="vertical"
+            >
+                <a
+                    href="{{ route('arsip.master.category') }}"
+                    class="nav-link mb-2 {{ Request::is('arsip/master') ? 'active show' : null }}"
+                >
                     <i class="uil-layer-group mr-2"></i>
                     <span>Master Kategori</span>
                 </a>
-                <a href="{{ route('arsip.master.type') }}"
-                    class="nav-link mb-2 {{ Request::is('arsip/master/type') ? 'active show' : null }}">
+
+                <a
+                    href="{{ route('arsip.master.type') }}"
+                    class="nav-link mb-2 {{ Request::is('arsip/master/type') ? 'active show' : null }}"
+                >
                     <i class="uil-layers-alt mr-2"></i>
-                    <span>Master type</span>
+                    <span>Master Type</span>
                 </a>
             </div>
 

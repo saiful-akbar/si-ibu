@@ -11,8 +11,15 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 text-center mb-3">
-                            <a href="{{ route('login') }}" class="logo-dark">
-                                <img src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="logo" width="200" />
+                            <a
+                                href="{{ route('login') }}"
+                                class="logo-dark"
+                            >
+                                <img
+                                    src="{{ asset('assets/images/logo/logo-dark.png') }}"
+                                    alt="logo"
+                                    width="200"
+                                />
                             </a>
 
                             <h5 class="text-muted">
@@ -31,11 +38,23 @@
                     @error('error')
                         <div class="row">
                             <div class="col-12">
-                                <div role="alert" class="alert alert-danger alert-dismissible fade show">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <div
+                                    role="alert"
+                                    class="alert alert-danger alert-dismissible fade show"
+                                >
+                                    <button
+                                        type="button"
+                                        class="close"
+                                        data-dismiss="alert"
+                                        aria-label="Close"
+                                    >
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <strong><i class="dripicons-wrong mr-2"></i></strong>
+
+                                    <strong>
+                                        <i class="dripicons-wrong mr-2"></i>
+                                    </strong>
+
                                     {{ $message }}
                                 </div>
                             </div>
@@ -44,29 +63,55 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <form name="form-login" autocomplete="off" method="POST" action="{{ route('login.post') }}">
+                            <form
+                                name="form-login"
+                                autocomplete="off"
+                                method="POST"
+                                action="{{ route('login.post') }}"
+                            >
                                 @method('POST')
                                 @csrf
 
                                 {{-- username --}}
                                 <div class="form-group mb-3">
                                     <label for="username">Username</label>
-                                    <input required autofocus class="form-control" type="text" id="username" name="username"
-                                        placeholder="Masukan username..." value="{{ old('username') }}" />
+                                    <input
+                                        required
+                                        autofocus
+                                        class="form-control"
+                                        type="text"
+                                        id="username"
+                                        name="username"
+                                        placeholder="Masukan username..."
+                                        value="{{ old('username') }}"
+                                    />
                                 </div>
 
                                 {{-- password --}}
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input required class="form-control" type="password" id="password" name="password"
-                                        placeholder="Masukan password...">
+                                    <input
+                                        required
+                                        class="form-control"
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Masukan password..."
+                                    >
                                 </div>
 
                                 {{-- show hide password --}}
                                 <div class="form-group mb-4">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="show-password">
-                                        <label class="custom-control-label" for="show-password">
+                                        <input
+                                            type="checkbox"
+                                            class="custom-control-input"
+                                            id="show-password"
+                                        >
+                                        <label
+                                            class="custom-control-label"
+                                            for="show-password"
+                                        >
                                             Tampilkan password
                                         </label>
                                     </div>
@@ -74,7 +119,10 @@
 
                                 {{-- button submit --}}
                                 <div class="form-group mb-3 text-center">
-                                    <button class="btn btn-primary btn-block" type="submit">
+                                    <button
+                                        class="btn btn-primary btn-block"
+                                        type="submit"
+                                    >
                                         <i class="mdi mdi-login"></i> Log In
                                     </button>
                                 </div>
