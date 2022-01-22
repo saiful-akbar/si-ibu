@@ -24,7 +24,7 @@ Sistem informasi manajemen anggaran & arsip.
 1.  Clone repository
 
 ```bash
-git clone https://github.com/saiful-akbar/SIMAA.git
+git clone https://github.com/saiful-akbar/simaa.git
 cd simaa
 git checkout develop
 ```
@@ -83,7 +83,7 @@ php artisan serve
 1.  Clone repository
 
 ```bash
-git clone https://github.com/saiful-akbar/SIMAA.git
+git clone https://github.com/saiful-akbar/simaa.git
 cd simaa
 ```
 
