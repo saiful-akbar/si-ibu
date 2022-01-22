@@ -10,6 +10,10 @@
     <meta name="base-url" content="{{ url('/') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
+    {{-- PWA --}}
+    @laravelPWA
+
+    {{-- Title --}}
     <title>{{ config('app.name') }} : @yield('title')</title>
 
     {{-- App favicon --}}
@@ -18,9 +22,10 @@
     {{-- icons --}}
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
+    {{-- costom vendor css --}}
     @stack('css')
 
-    {{-- App css --}}
+    {{-- App css auth --}}
     @auth
         @if (auth()->user()->pengaturan->tema == 'dark')
             <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style" />
@@ -29,6 +34,7 @@
         @endif
     @endauth
 
+    {{-- App css guest --}}
     @guest
         <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
     @endguest

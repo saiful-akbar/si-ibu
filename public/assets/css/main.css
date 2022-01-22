@@ -48,11 +48,8 @@ table.nowrap tr td {
 }
 
 .btn-icon {
-    padding: 5px 8px;
+    padding: 5px 8px 4px 8px;
     border-radius: 100%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
 }
 
 #scroll-to-top {
