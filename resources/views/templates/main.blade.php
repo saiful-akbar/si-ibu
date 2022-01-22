@@ -46,8 +46,7 @@
     @yield('css')
 </head>
 
-<body @auth data-leftbar-theme="{{ auth()->user()->pengaturan->sidebar }}" @endauth
-    class="loading @guest authentication-bg pb-0 @endguest">
+<body class="loading @guest authentication-bg pb-0 @endguest" @auth data-leftbar-theme="{{ auth()->user()->pengaturan->sidebar }}" @endauth>
 
     {{-- Pre-loader --}}
     <div id="preloader">
