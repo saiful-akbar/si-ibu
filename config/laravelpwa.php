@@ -4,7 +4,7 @@ return [
     'name' => 'LaravelPWA',
     'manifest' => [
         'name' => env('APP_NAME', 'SIMAA'),
-        'short_name' => 'SIMAA',
+        'short_name' => env('APP_NAME', 'SIMAA'),
         'start_url' => '/',
         'background_color' => '#ffffff',
         'theme_color' => '#343a40',
@@ -112,7 +112,7 @@ return [
         ],
         'custom' => [
             'lang' => 'id,in',
-            'description' => 'Sistem informasi manajemen anggaran & arsip',
+            'description' => env('APP_DESCRIPTION', 'Sistem informasi manajemen anggaran & arsip'),
         ]
     ]
 ];
