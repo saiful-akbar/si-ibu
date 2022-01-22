@@ -7,7 +7,7 @@
     {{-- form filter --}}
     <div class="row">
         <div class="col-12 mb-3">
-            <form action="{{ route('arsip.dokumen') }}" method="GET" autocomplete="off">
+            <form action="{{ route('arsip.document') }}" method="GET" autocomplete="off">
                 <div class="card">
                     <div class="card-header pt-3">
                         <h4 class="header-title">Filter</h4>
@@ -175,7 +175,8 @@
 
                                                 <td class="text-center">
                                                     @if (!empty($arsDocument->Dokumen))
-                                                        <a href="#" class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                        <a href="{{ route('arsip.document.download', ['arsDocument' => $arsDocument->ARSDocument_PK]) }}"
+                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
                                                             data-original-title="Unduh" data-placement="top">
                                                             <i class="mdi mdi-download"></i>
                                                         </a>

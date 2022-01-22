@@ -7,6 +7,7 @@ use App\Models\Arsip\ARSDocument;
 use App\Models\Arsip\MSARSCategory;
 use App\Traits\ConnectionTrait;
 use Illuminate\Http\Request;
+use Mimey\MimeTypes;
 
 class DocumentController extends Controller
 {
@@ -141,5 +142,37 @@ class DocumentController extends Controller
          * return view
          */
         return view('pages.arsip.document.index', compact('arsDocuments', 'arsCategories', 'firstPeriod', 'lastPeriod'));
+    }
+
+    /**
+     * Method download file dokumen
+     *
+     * @param ARSDocument $arsDocument
+     */
+    public function download(ARSDocument $arsDocument)
+    {
+        /**
+         * get mime type
+         */
+        $finfo = new \finfo(FILEINFO_MIME);
+        $mimeType = strpos($finfo->buffer($arsDocument->Dokumen), ';');
+        $mimeType = substr($finfo->buffer($arsDocument->Dokumen), 0, $mimeType);
+
+        /**
+         * get extesion
+         */
+        $mimes = new MimeTypes;
+        $ext = $mimes->getExtension($mimeType);
+
+        /**
+         * download file dokumen
+         */
+        return response($arsDocument->Dokumen)
+            ->header('Cache-Control', 'no-cache private')
+            ->header('Content-Description', 'Arsip Dokumen')
+            ->header('Content-Type', $mimeType)
+            ->header('Content-length', strlen($arsDocument->Dokumen))
+            ->header('Content-Disposition', "attachment; filename={$arsDocument->NamaFile}.{$ext}")
+            ->header('Content-Transfer-Encoding', 'binary');
     }
 }
