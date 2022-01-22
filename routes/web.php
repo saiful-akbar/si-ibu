@@ -329,13 +329,6 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/arsip')->group(function () {
 
         /**
-         * Arsip dokumen
-         */
-        Route::get('/dokumen', [DocumentController::class, 'index'])
-            ->middleware('menu:/arsip/dokumen,read')
-            ->name('arsip.dokumen');
-
-        /**
          * Arsip master
          */
         Route::prefix('/master')->group(function () {
@@ -354,5 +347,16 @@ Route::middleware('auth')->group(function () {
                 ->middleware('menu:/arsip/master,read')
                 ->name('arsip.master.type');
         });
+
+        /**
+         * Arsip dokumen
+         */
+        Route::get('/dokumen', [DocumentController::class, 'index'])
+            ->middleware('menu:/arsip/dokumen,read')
+            ->name('arsip.document');
+
+        Route::get('/dokumen/{arsDocument}/download', [DocumentController::class, 'download'])
+            ->middleware('menu:/arsip/dokumen,read')
+            ->name('arsip.document.download');
     });
 });
