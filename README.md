@@ -13,7 +13,7 @@ Sistem informasi manajemen anggaran & arsip.
 
 # Persyaratan
 
--   php v8.x
+-   php v8.0 | v8.1
 -   composer
 -   git
 -   Aktifkan `extension=gd` pada php.ini untuk fitur export excel dan domPDF
