@@ -1,12 +1,27 @@
-<div id="modal-detail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detail" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-full-width" role="document">
+<div
+    id="modal-detail"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="detail"
+    aria-hidden="true"
+>
+    <div
+        class="modal-dialog modal-dialog-scrollable modal-full-width"
+        role="document"
+    >
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title mt-1">
                     DETAIL TRANSAKSI BELANJA
                 </h5>
 
-                <button onclick="transaksi.closeDetail()" type="button" class="close" aria-label="Close">
+                <button
+                    onclick="transaksi.closeDetail()"
+                    type="button"
+                    class="close"
+                    aria-label="Close"
+                >
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -14,7 +29,10 @@
             <div class="modal-body">
 
                 {{-- preloader --}}
-                <div id="modal-detail-loading" class="my-5">
+                <div
+                    id="modal-detail-loading"
+                    class="my-5"
+                >
                     <div class="d-flex justify-content-center align-items-center">
                         <div id="status">
                             <div class="bouncing-loader">
@@ -28,12 +46,18 @@
                 {{-- end preloader --}}
 
                 {{-- modal detail conten --}}
-                <div id="modal-detail-content" class="px-3">
+                <div
+                    id="modal-detail-content"
+                    class="px-3"
+                >
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="float-left mt-3">
                                 <p><b>Uraian</b></p>
-                                <p class="text-muted font-13" id="detail-uraian"></p>
+                                <p
+                                    class="text-muted font-13"
+                                    id="detail-uraian"
+                                ></p>
                             </div>
                         </div>
 
@@ -41,22 +65,34 @@
                             <div class="mt-3 float-sm-right">
                                 <p class="font-13">
                                     <strong>Bagian :</strong>
-                                    <span id="detail-nama-divisi" class="float-right ml-3"></span>
+                                    <span
+                                        id="detail-nama-divisi"
+                                        class="float-right ml-3"
+                                    ></span>
                                 </p>
 
                                 <p class="font-13">
                                     <strong>Akun Belanja :</strong>
-                                    <span id="detail-kategori-belanja" class="float-right ml-3"></span>
+                                    <span
+                                        id="detail-kategori-belanja"
+                                        class="float-right ml-3"
+                                    ></span>
                                 </p>
 
                                 <p class="font-13">
                                     <strong>Submitter :</strong>
-                                    <span id="detail-submitter" class="float-right ml-3"></span>
+                                    <span
+                                        id="detail-submitter"
+                                        class="float-right ml-3"
+                                    ></span>
                                 </p>
 
                                 <p class="font-13">
                                     <strong>Approval :</strong>
-                                    <span id="detail-approval" class="float-right ml-3"></span>
+                                    <span
+                                        id="detail-approval"
+                                        class="float-right ml-3"
+                                    ></span>
                                 </p>
                             </div>
                         </div>
@@ -118,7 +154,10 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-sm btn-rounded btn-dark" onclick="transaksi.closeDetail()">
+                <button
+                    class="btn btn-sm btn-rounded btn-dark"
+                    onclick="transaksi.closeDetail()"
+                >
                     <i class=" mdi mdi-close-circle mr-1"></i>
                     <span>Tutup</span>
                 </button>

@@ -7,7 +7,11 @@
     {{-- form filter --}}
     <div class="row">
         <div class="col-12 mb-3">
-            <form action="{{ route('arsip.document') }}" method="GET" autocomplete="off">
+            <form
+                action="{{ route('arsip.document') }}"
+                method="GET"
+                autocomplete="off"
+            >
                 <div class="card">
                     <div class="card-header pt-3">
                         <h4 class="header-title">Filter</h4>
@@ -22,21 +26,34 @@
                                     <label> Periode <small class="text-danger">*</small></label>
 
                                     <div class="input-group @error('first_period') is-invalid @enderror">
-                                        <input type="date" name="first_period"
-                                            class="form-control @error('first_period') is-invalid @enderror" id="first_period"
-                                            placeholder="Masukan periode awal..." value="{{ old('first_period', $firstPeriod) }}"
-                                            required />
+                                        <input
+                                            type="date"
+                                            name="first_period"
+                                            class="form-control @error('first_period') is-invalid @enderror"
+                                            id="first_period"
+                                            placeholder="Masukan periode awal..."
+                                            value="{{ old('first_period', $firstPeriod) }}"
+                                            required
+                                        />
 
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
+                                            <span
+                                                class="input-group-text"
+                                                id="basic-addon1"
+                                            >
                                                 <i class="mdi mdi-chevron-double-right"></i>
                                             </span>
                                         </div>
 
-                                        <input type="date" name="last_period"
-                                            class="form-control @error('last_period') is-invalid @enderror" id="last_period"
-                                            value="{{ old('last_period', $lastPeriod) }}" placeholder="Masukan periode akhir..."
-                                            required />
+                                        <input
+                                            type="date"
+                                            name="last_period"
+                                            class="form-control @error('last_period') is-invalid @enderror"
+                                            id="last_period"
+                                            value="{{ old('last_period', $lastPeriod) }}"
+                                            placeholder="Masukan periode akhir..."
+                                            required
+                                        />
                                     </div>
 
                                     @error('first_period')
@@ -55,12 +72,19 @@
                                 <div class="form-group">
                                     <label for="ars_category">Kategori Arsip</label>
 
-                                    <select id="ars_category" name="ars_category" data-toggle="select2"
-                                        class="form-control select2 @error('ars_category') is-invalid @enderror">
+                                    <select
+                                        id="ars_category"
+                                        name="ars_category"
+                                        data-toggle="select2"
+                                        class="form-control select2 @error('ars_category') is-invalid @enderror"
+                                    >
                                         <option value="{{ null }}">Semua Kategori</option>
 
                                         @foreach ($arsCategories as $arsCategory)
-                                            <option value="{{ $arsCategory->Nama }}" @if (old('ars_category', request('ars_category')) == $arsCategory->Nama) selected @endif>
+                                            <option
+                                                value="{{ $arsCategory->Nama }}"
+                                                @if (old('ars_category', request('ars_category')) == $arsCategory->Nama) selected @endif
+                                            >
                                                 {{ $arsCategory->Nama }}
                                             </option>
                                         @endforeach
@@ -80,15 +104,22 @@
                                         Type Arsip
                                     </label>
 
-                                    <select id="ars_type" name="ars_type" data-toggle="select2"
-                                        class="form-control select2 @error('ars_type') is-invalid @enderror">
+                                    <select
+                                        id="ars_type"
+                                        name="ars_type"
+                                        data-toggle="select2"
+                                        class="form-control select2 @error('ars_type') is-invalid @enderror"
+                                    >
                                         <option value="{{ null }}">Semua Type</option>
 
                                         @foreach ($arsCategories as $arsCategory)
                                             <optgroup label="{{ $arsCategory->Nama }}">
 
                                                 @foreach ($arsCategory->MSARSType as $arsType)
-                                                    <option value="{{ $arsType->Nama }}" @if (old('ars_type', request('ars_type')) == $arsType->Nama) selected @endif>
+                                                    <option
+                                                        value="{{ $arsType->Nama }}"
+                                                        @if (old('ars_type', request('ars_type')) == $arsType->Nama) selected @endif
+                                                    >
                                                         {{ $arsType->Nama }}
                                                     </option>
                                                 @endforeach
@@ -111,9 +142,14 @@
                                         Nomor
                                     </label>
 
-                                    <input type="search" name="number" value="{{ old('number', request('number')) }}"
-                                        class="form-control @error('number') is-invalid @enderror" id="number"
-                                        placeholder="Masukan nomor..." />
+                                    <input
+                                        type="search"
+                                        name="number"
+                                        value="{{ old('number', request('number')) }}"
+                                        class="form-control @error('number') is-invalid @enderror"
+                                        id="number"
+                                        placeholder="Masukan nomor..."
+                                    />
 
                                     @error('number')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -126,7 +162,10 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
+                        <button
+                            type="submit"
+                            class="btn btn-info btn-rounded btn-sm mr-2"
+                        >
                             <i class="mdi mdi-filter-variant mr-1"></i>
                             <span>Filter</span>
                         </button>
@@ -175,9 +214,13 @@
 
                                                 <td class="text-center">
                                                     @if (!empty($arsDocument->Dokumen))
-                                                        <a href="{{ route('arsip.document.download', ['arsDocument' => $arsDocument->ARSDocument_PK]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
-                                                            data-original-title="Unduh" data-placement="top">
+                                                        <a
+                                                            href="{{ route('arsip.document.download', ['arsDocument' => $arsDocument->ARSDocument_PK]) }}"
+                                                            class="btn btn-sm btn-light btn-icon mx-1"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Unduh"
+                                                            data-placement="top"
+                                                        >
                                                             <i class="mdi mdi-download"></i>
                                                         </a>
                                                     @else

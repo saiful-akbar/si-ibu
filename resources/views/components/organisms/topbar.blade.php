@@ -11,26 +11,43 @@
 
         {{-- setting --}}
         <li class="notification-list">
-            <a class="nav-link right-bar-toggle" href="{{ route('profil.pengaturan') }}" data-toggle="tooltip"
-                data-placement="bottom" data-original-title="Pengaturan">
+            <a
+                class="nav-link right-bar-toggle"
+                href="{{ route('profil.pengaturan') }}"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                data-original-title="Pengaturan"
+            >
                 <i class="dripicons-gear noti-icon"></i>
             </a>
         </li>
 
         {{-- user --}}
         <li class="dropdown notification-list">
-            <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="javascript:void(0);"
-                role="button" aria-haspopup="false" aria-expanded="false">
+            <a
+                class="nav-link dropdown-toggle nav-user arrow-none mr-0"
+                data-toggle="dropdown"
+                href="javascript:void(0);"
+                role="button"
+                aria-haspopup="false"
+                aria-expanded="false"
+            >
                 <span class="account-user-avatar">
                     @if (Auth::user()->profil->avatar != null)
-                        <img src="{{ asset('storage/' . Auth::user()->profil->avatar) }}" alt="user-image"
-                            class="rounded-circle" />
+                        <img
+                            src="{{ asset('storage/' . Auth::user()->profil->avatar) }}"
+                            alt="user-image"
+                            class="rounded-circle"
+                        />
                     @else
-
-                        <img src="{{ asset('assets/images/avatars/avatar_default.webp') }}" alt="user-image"
-                            class="rounded-circle" />
+                        <img
+                            src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
+                            alt="user-image"
+                            class="rounded-circle"
+                        />
                     @endif
                 </span>
+
                 <span>
                     <span class="account-user-name">
                         {{ Auth::user()->profil->nama_lengkap }}
@@ -42,11 +59,18 @@
             </a>
 
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                <a href="{{ route('profil') }}" class="dropdown-item notify-item">
+                <a
+                    href="{{ route('profil') }}"
+                    class="dropdown-item notify-item"
+                >
                     <i class="mdi mdi-account-circle mr-1"></i>
                     <span>Profil</span>
                 </a>
-                <a href="{{ route('logout') }}" class="dropdown-item notify-item">
+
+                <a
+                    href="{{ route('logout') }}"
+                    class="dropdown-item notify-item"
+                >
                     <i class="mdi mdi-logout text-danger mr-1"></i>
                     <span>Logout</span>
                 </a>

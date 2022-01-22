@@ -10,11 +10,19 @@
                     <div class="media">
                         <span class="float-left m-2 mr-4">
                             @if (Auth::user()->profil->avatar != null)
-                                <img src="{{ asset('storage/' . Auth::user()->profil->avatar) }}" style="height: 100px;"
-                                    alt="Avatar" class="rounded-circle avatar-lg img-thumbnail" />
+                                <img
+                                    src="{{ asset('storage/' . Auth::user()->profil->avatar) }}"
+                                    style="height: 100px;"
+                                    alt="Avatar"
+                                    class="rounded-circle avatar-lg img-thumbnail"
+                                />
                             @else
-                                <img src="{{ asset('assets/images/avatars/avatar_default.webp') }}" style="height: 100px;"
-                                    alt="Avatar" class="rounded-circle avatar-lg img-thumbnail" />
+                                <img
+                                    src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
+                                    style="height: 100px;"
+                                    alt="Avatar"
+                                    class="rounded-circle avatar-lg img-thumbnail"
+                                />
                             @endif
                         </span>
 
@@ -28,6 +36,7 @@
                                     </h5>
                                     <p class="mb-0 font-13 text-white-50">Status</p>
                                 </li>
+
                                 <li class="list-inline-item">
                                     <h5 class="mb-1 text-white">{{ Auth::user()->divisi->nama_divisi }}</h5>
                                     <p class="mb-0 font-13 text-white-50">{{ Auth::user()->seksi }}</p>
@@ -45,19 +54,30 @@
 
         {{-- tabs setting --}}
         <div class="col-lg-3 col-md-4 col-sm-12 mb-3">
-            <div class="nav flex-column nav-pills" id="tabs-profil" role="tablist" aria-orientation="vertical">
-                <a href="{{ route('profil') }}"
-                    class="nav-link mb-2 {{ Request::is('profil') ? 'active show' : null }}">
+            <div
+                class="nav flex-column nav-pills"
+                id="tabs-profil"
+                role="tablist"
+                aria-orientation="vertical"
+            >
+                <a
+                    href="{{ route('profil') }}"
+                    class="nav-link mb-2 {{ Request::is('profil') ? 'active show' : null }}"
+                >
                     <i class="mdi mdi-account-circle mr-2"></i>
                     <span>Profil</span>
                 </a>
-                <a href="{{ route('profil.akun') }}"
-                    class="nav-link mb-2 {{ Request::is('profil/akun') ? 'active show' : null }}">
+                <a
+                    href="{{ route('profil.akun') }}"
+                    class="nav-link mb-2 {{ Request::is('profil/akun') ? 'active show' : null }}"
+                >
                     <i class="mdi mdi-account-box-multiple-outline mr-2"></i>
                     <span>Akun</span>
                 </a>
-                <a href="{{ route('profil.pengaturan') }}"
-                    class="nav-link mb-2 {{ Request::is('profil/pengaturan') ? 'active show' : null }}">
+                <a
+                    href="{{ route('profil.pengaturan') }}"
+                    class="nav-link mb-2 {{ Request::is('profil/pengaturan') ? 'active show' : null }}"
+                >
                     <i class="mdi mdi-settings mr-2"></i>
                     <span>Pengaturan</span>
                 </a>

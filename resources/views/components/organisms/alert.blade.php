@@ -1,8 +1,16 @@
 @if (session('alert'))
     <div class="row">
         <div class="col-12 mb-3">
-            <div class="alert alert-{{ session('alert')['type'] }} alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <div
+                class="alert alert-{{ session('alert')['type'] }} alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close"
+                >
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -31,8 +39,16 @@
 @if ($errors->any())
     <div class="row">
         <div class="col-12 mb-3">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <div
+                class="alert alert-danger alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close"
+                >
                     <span aria-hidden="true">&times;</span>
                 </button>
 

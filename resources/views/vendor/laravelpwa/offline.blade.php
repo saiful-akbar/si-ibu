@@ -16,7 +16,12 @@
 
                 <div class="col-md-5 offset-md-2">
                     <div class="text-md-right mt-3 mt-md-0">
-                        <img src="{{ asset('/assets/images/bg/offline.svg') }}" alt="offline" class="img-fluid" width="70%" />
+                        <img
+                            src="{{ asset('/assets/images/bg/offline.svg') }}"
+                            alt="offline"
+                            class="img-fluid"
+                            width="70%"
+                        />
                     </div>
                 </div>
             </div>
