@@ -25,7 +25,7 @@ Sistem informasi manajemen anggaran & arsip.
 
 ```bash
 git clone https://github.com/saiful-akbar/SIMAA.git
-cd SIMAA
+cd simaa
 git checkout develop
 ```
 
@@ -84,7 +84,7 @@ php artisan serve
 
 ```bash
 git clone https://github.com/saiful-akbar/SIMAA.git
-cd SIMAA
+cd simaa
 ```
 
 2. Instal dependencies composer & optimalisasi Autoloader
