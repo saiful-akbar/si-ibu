@@ -34,7 +34,7 @@ class DashboardController extends Controller
         /**
          * Cek apakah user mempunyai full akses atau tidak
          */
-        $isAdmin = $this->isAdmin(href: '/budget');
+        $isAdmin = $this->isAdmin(href: '/dashboard');
 
         /**
          * Ambil data busget
