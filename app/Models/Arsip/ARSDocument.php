@@ -43,7 +43,7 @@ class ARSDocument extends Model
         'Dokumen',
         'NamaFile',
         'DateAdds',
-        'years',
+        'Years',
         'Is_Publish',
     ];
 
