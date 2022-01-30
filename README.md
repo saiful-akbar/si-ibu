@@ -127,7 +127,12 @@ DB_USERNAME_SECOND=sa
 DB_PASSWORD_SECOND=
 ```
 
-6. Ubah konfigurasi connections database pada file `config/database.php`
+6. Ubah konfigurasi url pada file `config/app.php`
+```php
+'url' => env('APP_URL', 'https://www.domain.com'),
+```
+
+7. Ubah konfigurasi connections database pada file `config/database.php`
 
 ```php
 'anggaran' => [
@@ -157,19 +162,19 @@ DB_PASSWORD_SECOND=
 ],
 ```
 
-7. Migrasi tabel ke database
+8. Migrasi tabel ke database
 
 ```bash
 php artisan migrate:refresh --seed
 ```
 
-8. Mengoptimalkan konfigurasi `NB: semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua). dalam kata lain variabel pada file .env tidak terpakai lagi, semua konfigurasi akan diambil langsung dari semua file pada folder config`
+9. Mengoptimalkan konfigurasi `NB: semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua). dalam kata lain variabel pada file .env tidak terpakai lagi, semua konfigurasi akan diambil langsung dari semua file pada folder config`
 
 ```bash
 php artisan config:cache
 ```
 
-9. Mengoptimalkan View Loading
+10. Mengoptimalkan View Loading
 
 ```bash
 php artisan view:cache
