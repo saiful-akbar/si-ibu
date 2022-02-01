@@ -19,12 +19,13 @@ class CreateMSARSTypeTable extends Migration
             ->create('MSARSType', function (Blueprint $table) {
                 $table->increments('MSARSType_PK');
                 $table->unsignedInteger('MSARSCategory_FK');
-                $table->string('Nama', 200)->unique()->nullable();
+                $table->string('Name', 50)->nullable();
+                $table->string('Description', 50)->nullable();
 
-                $table->foreign('MSARSCategory_FK')
-                    ->references('MSARSCategory_PK')
-                    ->on('MSARSCategory')
-                    ->cascadeOnUpdate();
+                // $table->foreign('MSARSCategory_FK')
+                //     ->references('MSARSCategory_PK')
+                //     ->on('MSARSCategory')
+                //     ->cascadeOnUpdate();
             });
     }
 

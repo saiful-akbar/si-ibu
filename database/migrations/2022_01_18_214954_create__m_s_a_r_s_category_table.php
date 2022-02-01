@@ -18,7 +18,8 @@ class CreateMSARSCategoryTable extends Migration
         Schema::connection($this->connection)
             ->create('MSARSCategory', function (Blueprint $table) {
                 $table->increments('MSARSCategory_PK');
-                $table->string('Nama', 200)->unique()->nullable();
+                $table->string('Name', 50)->nullable();
+                $table->string('Description', 50)->nullable();
             });
     }
 
@@ -29,7 +30,6 @@ class CreateMSARSCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::connection('arsip')
-            ->dropIfExists('MSARSCategory');
+        Schema::connection('arsip')->dropIfExists('MSARSCategory');
     }
 }

@@ -36,7 +36,7 @@ class MSARSCategory extends Model
      *
      * @var array
      */
-    protected $fillable = ['Nama'];
+    protected $fillable = ['Nama', 'Description'];
 
     /**
      * Relasi one to many dengan model MSARSType

@@ -1,6 +1,6 @@
 @extends('templates.arsip-master')
 
-@section('title', 'Master Tipe Arsip')
+@section('title', 'Master Type Arsip')
 
 @section('content-arsip-master')
     <div class="row">
@@ -17,25 +17,13 @@
                     {{-- form search --}}
                     <div class="row justify-content-end">
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form
-                                action="{{ route('arsip.master.type') }}"
-                                method="GET"
-                                autocomplete="off"
-                            >
+                            <form action="{{ route('arsip.master.type') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
-                                    <input
-                                        type="search"
-                                        name="search"
-                                        placeholder="Cari type..."
-                                        class="form-control"
-                                        value="{{ request('search') }}"
-                                    />
+                                    <input type="search" name="search" placeholder="Cari type..." class="form-control"
+                                        value="{{ request('search') }}" />
 
                                     <div class="input-group-append">
-                                        <button
-                                            class="btn btn-secondary"
-                                            type="submit"
-                                        >
+                                        <button class="btn btn-secondary" type="submit">
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>
@@ -54,6 +42,7 @@
                                             <th>No</th>
                                             <th>Nama Kategori</th>
                                             <th>Nama Type</th>
+                                            <th>Deskripsi</th>
                                         </tr>
                                     </thead>
 
@@ -63,9 +52,9 @@
                                                 <td>
                                                     {{ $arsTypes->perPage() * ($arsTypes->currentPage() - 1) + $loop->iteration }}
                                                 </td>
-
-                                                <td>{{ $arsType->MSARSCategory->Nama }}</td>
-                                                <td>{{ $arsType->Nama }}</td>
+                                                <td>{{ $arsType->MSARSCategory->Name }}</td>
+                                                <td>{{ $arsType->Name }}</td>
+                                                <td>{{ $arsType->Description }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -74,9 +63,17 @@
                         </div>
                     </div>
 
+
                     {{-- table pagination --}}
-                    <div class="col-12 d-flex justify-content-end">
-                        {{ $arsTypes->links() }}
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 d-flex justify-content-md-start justify-content-center">
+                            <span class="h5">
+                                Hal {{ $arsTypes->currentPage() }} / {{ $arsTypes->lastPage() }}
+                            </span>
+                        </div>
+                        <div class="col-md-6 col-sm-12 d-flex justify-content-md-end justify-content-center align-items-center">
+                            {{ $arsTypes->links() }}
+                        </div>
                     </div>
 
                 </div>

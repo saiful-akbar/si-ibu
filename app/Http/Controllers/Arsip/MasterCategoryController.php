@@ -18,19 +18,20 @@ class MasterCategoryController extends Controller
         /**
          * Query master kategori
          */
-        $query = MSARSCategory::select('MSARSCategory_PK', 'Nama');
+        $query = MSARSCategory::select('MSARSCategory_PK', 'Name', 'Description');
 
         /**
          * cek jika ada request search
          */
         if ($request->search) {
-            $query->where('Nama', 'like', "%{$request->search}%");
+            $query->where('Name', 'like', "%{$request->search}%")
+                ->orWhere('Description', 'like', "%{$request->search}%");
         }
 
         /**
          * Query order
          */
-        $query->orderBy('Nama', 'asc');
+        $query->orderBy('Name', 'asc');
 
         /**
          * Pagination

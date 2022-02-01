@@ -17,25 +17,13 @@
                     {{-- form search --}}
                     <div class="row justify-content-end">
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form
-                                action="{{ route('arsip.master.category') }}"
-                                method="GET"
-                                autocomplete="off"
-                            >
+                            <form action="{{ route('arsip.master.category') }}" method="GET" autocomplete="off">
                                 <div class="input-group">
-                                    <input
-                                        type="search"
-                                        name="search"
-                                        placeholder="Cari kategori..."
-                                        class="form-control"
-                                        value="{{ request('search') }}"
-                                    />
+                                    <input type="search" name="search" placeholder="Cari kategori..." class="form-control"
+                                        value="{{ request('search') }}" />
 
                                     <div class="input-group-append">
-                                        <button
-                                            class="btn btn-secondary"
-                                            type="submit"
-                                        >
+                                        <button class="btn btn-secondary" type="submit">
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>
@@ -53,6 +41,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Kategori</th>
+                                            <th>Deskripsi</th>
                                         </tr>
                                     </thead>
 
@@ -62,10 +51,8 @@
                                                 <td>
                                                     {{ $arsCategories->perPage() * ($arsCategories->currentPage() - 1) + $loop->iteration }}
                                                 </td>
-
-                                                <td>
-                                                    {{ $arsCategory->Nama }}
-                                                </td>
+                                                <td>{{ $arsCategory->Name }}</td>
+                                                <td>{{ $arsCategory->Description }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     {{-- PWA --}}
-    @laravelPWA
+    {{-- @laravelPWA --}}
 
     {{-- Title --}}
     <title>{{ config('app.name') }} : @yield('title')</title>
@@ -84,7 +84,10 @@
                         <div class="row">
                             <div class="col-12 py-2">
                                 <div class="page-title-box d-flex justify-content-between align-items-center">
-                                    <h4 class="page-title">@yield('title')</h4>
+                                    <h4 class="page-title">
+                                        @yield('title')
+                                    </h4>
+
                                     @yield('btn-kembali')
                                 </div>
                             </div>

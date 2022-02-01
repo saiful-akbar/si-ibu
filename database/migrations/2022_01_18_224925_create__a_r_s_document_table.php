@@ -20,7 +20,7 @@ class CreateARSDocumentTable extends Migration
                 $table->increments('ARSDocument_PK');
                 $table->unsignedInteger('MSARSCategory_FK');
                 $table->unsignedInteger('MSARSType_FK');
-                $table->date('Date_Doc')->nullable();
+                $table->date('DateDoc')->nullable();
                 $table->string('Number', 50)->nullable();
                 $table->binary('Dokumen')->nullable();
                 $table->string('NamaFile', 200)->nullable();
@@ -34,10 +34,10 @@ class CreateARSDocumentTable extends Migration
                 //     ->on('MSARSCategory')
                 //     ->cascadeOnUpdate();
 
-                $table->foreign('MSARSType_FK')
-                    ->references('MSARSType_PK')
-                    ->on('MSARSType')
-                    ->cascadeOnUpdate();
+                // $table->foreign('MSARSType_FK')
+                //     ->references('MSARSType_PK')
+                //     ->on('MSARSType')
+                //     ->cascadeOnUpdate();
             });
     }
 

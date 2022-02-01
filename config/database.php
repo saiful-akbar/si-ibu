@@ -15,7 +15,7 @@ return [
     |
     */
     'default' => env('DB_CONNECTION', 'anggaran'),
-    
+
     /*
     |--------------------------------------------------------------------------
     | Second Database Connection Name
