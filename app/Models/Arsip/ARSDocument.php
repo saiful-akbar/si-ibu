@@ -38,7 +38,7 @@ class ARSDocument extends Model
     protected $fillable = [
         'MSARSCategory_FK',
         'MSARSType_FK',
-        'Date_Doc',
+        'DateDoc',
         'Number',
         'Dokumen',
         'NamaFile',

@@ -65,14 +65,14 @@ class DocumentController extends Controller
          * cek jika ada request ars_category
          */
         if (!empty($request->ars_category)) {
-            array_push($validateRules['ars_category'], "exists:{$this->conn}.{$this->db}.MSARSCategory,Nama");
+            array_push($validateRules['ars_category'], "exists:{$this->conn}.{$this->db}.MSARSCategory,Name");
         }
 
         /**
          * cek jika ada request ars_type
          */
         if (!empty($request->ars_type)) {
-            array_push($validateRules['ars_type'], "exists:{$this->conn}.{$this->db}.MSARSType,Nama");
+            array_push($validateRules['ars_type'], "exists:{$this->conn}.{$this->db}.MSARSType,Name");
         }
 
         /**
@@ -97,23 +97,23 @@ class DocumentController extends Controller
          * Query dokumen arsip
          */
         $query = ARSDocument::with([
-            'MSARSType' => fn ($q) => $q->orderBy('Nama', 'asc'),
-            'MSARSType.MSARSCategory' => fn ($q) => $q->orderBy('Nama', 'asc'),
+            'MSARSType' => fn ($q) => $q->orderBy('Name', 'asc'),
+            'MSARSType.MSARSCategory' => fn ($q) => $q->orderBy('Name', 'asc'),
         ])->where('Is_Publish', 1)
-            ->whereBetween('Date_Doc', [$firstPeriod, $lastPeriod]);
+            ->whereBetween('DateDoc', [$firstPeriod, $lastPeriod]);
 
         /**
          * query jika request ars_category dipilih
          */
         if (!empty($request->ars_category)) {
-            $query->whereHas('MSARSType.MSARSCategory', fn ($q) => $q->where('Nama', $request->ars_category));
+            $query->whereHas('MSARSType.MSARSCategory', fn ($q) => $q->where('Name', $request->ars_category));
         }
 
         /**
          * query jika request ars_type dipilih
          */
         if (!empty($request->ars_type)) {
-            $query->whereHas('MSARSType', fn ($q) => $q->where('Nama', $request->ars_type));
+            $query->whereHas('MSARSType', fn ($q) => $q->where('Name', $request->ars_type));
         }
 
         /**
@@ -127,15 +127,15 @@ class DocumentController extends Controller
          * Query order & paginate
          */
         $arsDocuments = $query->orderBy('years', 'desc')
-            ->orderBy('Date_Doc', 'desc')
+            ->orderBy('DateDoc', 'desc')
             ->simplePaginate(10)
             ->withQueryString();
 
         /**
          * ambil data kategori & type arsip
          */
-        $arsCategories = MSARSCategory::with(['MSARSType' => fn ($q) => $q->orderBy('Nama', 'asc')])
-            ->orderBy('Nama', 'asc')
+        $arsCategories = MSARSCategory::with(['MSARSType' => fn ($q) => $q->orderBy('Name', 'asc')])
+            ->orderBy('Name', 'asc')
             ->get();
 
         /**

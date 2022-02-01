@@ -13,21 +13,22 @@ class MasterTypeController extends Controller
         /**
          * query master type
          */
-        $query = MSARSType::with(['MSARSCategory' => fn ($q) => $q->orderBy('Nama', 'asc')]);
+        $query = MSARSType::with(['MSARSCategory' => fn ($q) => $q->orderBy('Name', 'asc')]);
 
         /**
          * cek jika ada request search
          */
         if ($request->search) {
-            $query->orWhere('Nama', 'like', "%{$request->search}%")
-                ->orWhereHas('MSARSCategory', fn ($q) => $q->where('Nama', 'like', "%{$request->search}%"));
+            $query->where('Name', 'like', "%{$request->search}%")
+                ->orWhere('Description', 'like', "%{$request->search}%")
+                ->orWhereHas('MSARSCategory', fn ($q) => $q->where('Name', 'like', "%{$request->search}%"));
         }
 
         /**
          * pagination
          */
-        $arsTypes = $query->orderBy('Nama', 'asc')
-            ->simplePaginate(10)
+        $arsTypes = $query->orderBy('Name', 'asc')
+            ->paginate(10)
             ->withQueryString();
 
         return view('pages.arsip.master.type.index', compact('arsTypes'));

@@ -82,10 +82,10 @@
 
                                         @foreach ($arsCategories as $arsCategory)
                                             <option
-                                                value="{{ $arsCategory->Nama }}"
-                                                @if (old('ars_category', request('ars_category')) == $arsCategory->Nama) selected @endif
+                                                value="{{ $arsCategory->Name }}"
+                                                @if (old('ars_category', request('ars_category')) == $arsCategory->Name) selected @endif
                                             >
-                                                {{ $arsCategory->Nama }}
+                                                {{ $arsCategory->Name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -113,17 +113,16 @@
                                         <option value="{{ null }}">Semua Type</option>
 
                                         @foreach ($arsCategories as $arsCategory)
-                                            <optgroup label="{{ $arsCategory->Nama }}">
-
+                                            <optgroup label="{{ $arsCategory->Name }}">
                                                 @foreach ($arsCategory->MSARSType as $arsType)
                                                     <option
-                                                        value="{{ $arsType->Nama }}"
-                                                        @if (old('ars_type', request('ars_type')) == $arsType->Nama) selected @endif
+                                                        value="{{ $arsType->Name }}"
+                                                        class="pl-3"
+                                                        @if (old('ars_type', request('ars_type')) == $arsType->Name) selected @endif
                                                     >
-                                                        {{ $arsType->Nama }}
+                                                        {{ $arsType->Name }}
                                                     </option>
                                                 @endforeach
-
                                             </optgroup>
                                         @endforeach
                                     </select>
@@ -229,9 +228,9 @@
                                                 </td>
 
                                                 <td>{{ $arsDocument->Years }}</td>
-                                                <td>{{ $arsDocument->Date_Doc }}</td>
-                                                <td>{{ $arsDocument->MSARSType->MSARSCategory->Nama }}</td>
-                                                <td>{{ $arsDocument->MSARSType->Nama }}</td>
+                                                <td>{{ $arsDocument->DateDoc }}</td>
+                                                <td>{{ $arsDocument->MSARSType->MSARSCategory->Name }}</td>
+                                                <td>{{ $arsDocument->MSARSType->Name }}</td>
                                                 <td>{{ $arsDocument->Number }}</td>
                                                 <td>{{ $arsDocument->NamaFile }}</td>
                                                 <td>{{ date('d M Y H:i', strtotime($arsDocument->DateAdds)) }}</td>
@@ -241,7 +240,13 @@
                                 </table>
                             </div>
                         </div>
+
+                        {{-- table pagination --}}
+                        <div class="col-12 d-flex justify-content-end">
+                            {{ $arsDocuments->links() }}
+                        </div>
                     </div>
+                    {{-- end table --}}
 
                 </div>
             </div>

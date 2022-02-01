@@ -17,9 +17,18 @@ class CategorySeeder extends Seeder
         DB::connection('arsip')
             ->table('MSARSCategory')
             ->insert([
-                ['Nama' => 'Category 1'],
-                ['Nama' => 'Category 2'],
-                ['Nama' => 'Category 3'],
+                [
+                    'Name' => 'Category 1',
+                    'Description' => 'Description 1'
+                ],
+                [
+                    'Name' => 'Category 2',
+                    'Description' => 'Description 2'
+                ],
+                [
+                    'Name' => 'Category 3',
+                    'Description' => 'Description 3'
+                ],
             ]);
     }
 }

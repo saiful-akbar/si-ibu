@@ -19,27 +19,33 @@ class TypeSeeder extends Seeder
             ->insert([
                 [
                     'MSARSCategory_FK' => 1,
-                    'Nama' => 'Type 1',
+                    'Name' => 'Type 1',
+                    'Description' => 'Description 1',
                 ],
                 [
                     'MSARSCategory_FK' => 1,
-                    'Nama' => 'Type 2',
+                    'Name' => 'Type 2',
+                    'Description' => 'Description 2',
                 ],
                 [
                     'MSARSCategory_FK' => 2,
-                    'Nama' => 'Type 3',
+                    'Name' => 'Type 3',
+                    'Description' => 'Description 3',
                 ],
                 [
                     'MSARSCategory_FK' => 2,
-                    'Nama' => 'Type 4',
+                    'Name' => 'Type 4',
+                    'Description' => 'Description 4',
                 ],
                 [
                     'MSARSCategory_FK' => 3,
-                    'Nama' => 'Type 5',
+                    'Name' => 'Type 5',
+                    'Description' => 'Description 5',
                 ],
                 [
                     'MSARSCategory_FK' => 3,
-                    'Nama' => 'Type 6',
+                    'Name' => 'Type 6',
+                    'Description' => 'Description 6',
                 ],
             ]);
     }
