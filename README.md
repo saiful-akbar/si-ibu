@@ -127,54 +127,19 @@ DB_USERNAME_SECOND=sa
 DB_PASSWORD_SECOND=
 ```
 
-6. Ubah konfigurasi url pada file `config/app.php`
-```php
-'url' => env('APP_URL', 'https://www.domain.com'),
-```
-
-7. Ubah konfigurasi connections database pada file `config/database.php`
-
-```php
-'anggaran' => [
-    'driver' => 'sqlsrv',
-    'url' => env('DATABASE_URL'),
-    'host' => env('DB_HOST', 'localhost'),
-    'port' => env('DB_PORT', '1433'),
-    'database' => env('DB_DATABASE', 'simaa_anggaran'),
-    'username' => env('DB_USERNAME', 'sa'),
-    'password' => env('DB_PASSWORD', ''),
-    'charset' => 'utf8',
-    'prefix' => '',
-    'prefix_indexes' => true,
-],
-
-'arsip' => [
-    'driver' => 'sqlsrv',
-    'url' => env('DATABASE_URL_SECOND'),
-    'host' => env('DB_HOST_SECOND', 'localhost'),
-    'port' => env('DB_PORT_SECOND', '1433'),
-    'database' => env('DB_DATABASE_SECOND', 'simaa_arsip'),
-    'username' => env('DB_USERNAME_SECOND', 'sa'),
-    'password' => env('DB_PASSWORD_SECOND', ''),
-    'charset' => 'utf8',
-    'prefix' => '',
-    'prefix_indexes' => true,
-],
-```
-
-8. Migrasi tabel ke database
+6. Migrasi tabel ke database
 
 ```bash
 php artisan migrate:refresh --seed
 ```
 
-9. Mengoptimalkan konfigurasi `NB: semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua). dalam kata lain variabel pada file .env tidak terpakai lagi, semua konfigurasi akan diambil langsung dari semua file pada folder config`
+7. Mengoptimalkan konfigurasi `NB: semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua). dalam kata lain variabel pada file .env tidak terpakai lagi, semua konfigurasi akan diambil langsung dari semua file pada folder config`
 
 ```bash
 php artisan config:cache
 ```
 
-10. Mengoptimalkan View Loading
+8. Mengoptimalkan View Loading
 
 ```bash
 php artisan view:cache
