@@ -99,13 +99,7 @@ composer install --optimize-autoloader --no-dev
 cp .htaccess.example .htaccess && cp .env.example .env
 ```
 
-4.  Buat generate:key & storage:link
-
-```bash
-php artisan key:generate && php artisan storage:link
-```
-
-5.  Buka file .env pada text editor & ubah value pada variable `DB_` & `APP_` di file .env
+4.  Buka file .env pada text editor & ubah value pada variable `DB_` & `APP_` di file .env
 
 ```php
 APP_ENV=production
@@ -125,6 +119,12 @@ DB_PORT_SECOND=1433
 DB_DATABASE_SECOND=simaa_arsip
 DB_USERNAME_SECOND=sa
 DB_PASSWORD_SECOND=
+```
+
+5.  Buat generate:key & storage:link
+
+```bash
+php artisan key:generate && php artisan storage:link
 ```
 
 6. Migrasi tabel ke database
