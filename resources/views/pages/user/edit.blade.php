@@ -3,23 +3,15 @@
 @section('title', 'Edit User')
 
 @section('btn-kembali')
-    <a
-        href="{{ route('user') }}"
-        class="btn btn-rounded btn-light btn-sm"
-    >
+    <a href="{{ route('user') }}" class="btn btn-rounded btn-dark btn-sm">
         <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
 @endsection
 
 @section('content')
-    <form
-        name="user_form"
-        enctype="multipart/form-data"
-        action="{{ route('user.update', ['user' => $user->id]) }}"
-        method="POST"
-        autocomplete="off"
-    >
+    <form name="user_form" enctype="multipart/form-data" action="{{ route('user.update', ['user' => $user->id]) }}" method="POST"
+        autocomplete="off">
         @method('PATCH') @csrf
 
         {{-- form akun --}}
@@ -36,23 +28,14 @@
 
                         {{-- input username --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="username"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="username" class="col-md-3 col-sm-12 col-form-label">
                                 Username <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    required
-                                    type="text"
-                                    id="username"
-                                    name="username"
-                                    placeholder="Masukan username..."
+                                <input required type="text" id="username" name="username" placeholder="Masukan username..."
                                     value="{{ old('username', $user->username) }}"
-                                    class="form-control @error('username') is-invalid @enderror"
-                                />
+                                    class="form-control @error('username') is-invalid @enderror" />
 
                                 @error('username')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -62,24 +45,14 @@
 
                         {{-- input password --}}
                         <div class="form-group row">
-                            <label
-                                for="password"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="password" class="col-md-3 col-sm-12 col-form-label">
                                 password
                             </label>
 
                             <div class="col-md-3 col-sm-12 mt-2 mb-1">
                                 <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="is-disable-password"
-                                    />
-                                    <label
-                                        class="custom-control-label"
-                                        for="is-disable-password"
-                                    >
+                                    <input type="checkbox" class="custom-control-input" id="is-disable-password" />
+                                    <label class="custom-control-label" for="is-disable-password">
                                         Ubah Password
                                     </label>
                                 </div>
@@ -87,21 +60,11 @@
 
                             <div class="col-md-6 col-sm-12">
                                 <div class="input-group input-group-merge @error('password') is-invalid @enderror">
-                                    <input
-                                        disabled
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        placeholder="Masukan password..."
+                                    <input disabled type="password" id="password" name="password" placeholder="Masukan password..."
                                         value="{{ old('password') }}"
-                                        class="form-control @error('password') is-invalid @enderror"
-                                    />
+                                        class="form-control @error('password') is-invalid @enderror" />
 
-                                    <div
-                                        class="input-group-append"
-                                        data-password="false"
-                                        style="cursor: pointer"
-                                    >
+                                    <div class="input-group-append" data-password="false" style="cursor: pointer">
                                         <div class="input-group-text">
                                             <span class="password-eye"></span>
                                         </div>
@@ -122,18 +85,10 @@
                         <div class="form-group row justify-content-end">
                             <div class="col-md-9 col-sm-12">
                                 <div class="custom-control custom-switch">
-                                    <input
-                                        type="checkbox"
-                                        name="active"
-                                        class="custom-control-input form-control-lg"
-                                        id="active"
-                                        @if (old('active', $user->active)) checked @endif
-                                    />
+                                    <input type="checkbox" name="active" class="custom-control-input form-control-lg" id="active"
+                                        @if (old('active', $user->active)) checked @endif />
 
-                                    <label
-                                        class="custom-control-label"
-                                        for="active"
-                                    >
+                                    <label class="custom-control-label" for="active">
                                         Aktif
                                     </label>
                                 </div>
@@ -162,47 +117,26 @@
                         <div class="form-group row mb-3 justify-content-end">
                             <div class="col-md-9 col-sm-12">
                                 @if ($user->profil->avatar != null)
-                                    <img
-                                        id="avatar-view"
-                                        alt="avatar"
-                                        class="img-fluid avatar-lg rounded-circle img-thumbnail"
+                                    <img id="avatar-view" alt="avatar" class="img-fluid avatar-lg rounded-circle img-thumbnail"
                                         src="{{ asset('storage/' . $user->profil->avatar) }}"
-                                        data-src="{{ asset('storage/' . $user->profil->avatar) }}"
-                                    />
+                                        data-src="{{ asset('storage/' . $user->profil->avatar) }}" />
                                 @else
-                                    <img
-                                        id="avatar-view"
-                                        alt="avatar"
-                                        class="img-fluid avatar-lg rounded-circle img-thumbnail"
+                                    <img id="avatar-view" alt="avatar" class="img-fluid avatar-lg rounded-circle img-thumbnail"
                                         src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                        data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                    />
+                                        data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}" />
                                 @endif
 
-                                <label
-                                    for="avatar"
-                                    class="ml-2"
-                                >
-                                    <span
-                                        type="button"
-                                        class="btn btn-rounded btn-success btn-sm"
-                                    >
+                                <label for="avatar" class="ml-2">
+                                    <span type="button" class="btn btn-rounded btn-success btn-sm">
                                         <i class="mdi mdi-upload mr-1"></i>
                                         <span>Avatar</span>
                                     </span>
                                 </label>
 
                                 <div>
-                                    <input
-                                        type="file"
-                                        id="avatar"
-                                        name="avatar"
-                                        accept="image/*"
-                                        placeholder="Upload avatar..."
-                                        value="{{ old('avatar') }}"
-                                        class="@error('avatar') is-invalid @enderror"
-                                        style="display: none;"
-                                    />
+                                    <input type="file" id="avatar" name="avatar" accept="image/*" placeholder="Upload avatar..."
+                                        value="{{ old('avatar') }}" class="@error('avatar') is-invalid @enderror"
+                                        style="display: none;" />
 
                                     @error('avatar')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -213,23 +147,15 @@
 
                         {{-- input nama lengkap --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="nama_lengkap"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="nama_lengkap" class="col-md-3 col-sm-12 col-form-label">
                                 Nama Lengkap <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    required
-                                    type="text"
-                                    id="nama_lengkap"
-                                    name="nama_lengkap"
+                                <input required type="text" id="nama_lengkap" name="nama_lengkap"
                                     placeholder="Masukan nama lengkap..."
                                     value="{{ old('nama_lengkap', $user->profil->nama_lengkap) }}"
-                                    class="form-control @error('nama_lengkap') is-invalid @enderror"
-                                />
+                                    class="form-control @error('nama_lengkap') is-invalid @enderror" />
 
                                 @error('nama_lengkap')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -239,34 +165,19 @@
 
                         {{-- input bagian (divisi) --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="divisi_id"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
                                 Bagian <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <select
-                                    required
-                                    name="divisi_id"
-                                    id="divisi_id"
-                                    class="form-control select2 @error('divisi_id') is-invalid @enderror"
-                                    data-toggle="select2"
-                                >
-                                    <option
-                                        disabled
-                                        value="{{ null }}"
-                                        @if (!old('divisi_id', $user->divisi->id)) selected @endif
-                                    >
+                                <select required name="divisi_id" id="divisi_id"
+                                    class="form-control select2 @error('divisi_id') is-invalid @enderror" data-toggle="select2">
+                                    <option disabled value="{{ null }}" @if (!old('divisi_id', $user->divisi->id)) selected @endif>
                                         Pilih Bagian
                                     </option>
 
                                     @foreach ($divisions as $divisi)
-                                        <option
-                                            value="{{ $divisi->id }}"
-                                            @if (old('divisi_id', $user->divisi->id) == $divisi->id) selected @endif
-                                        >
+                                        <option value="{{ $divisi->id }}" @if (old('divisi_id', $user->divisi->id) == $divisi->id) selected @endif>
                                             {{ $divisi->nama_divisi }}
                                         </option>
                                     @endforeach
@@ -280,23 +191,14 @@
 
                         {{-- input seksi --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="seksi"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="seksi" class="col-md-3 col-sm-12 col-form-label">
                                 Seksi <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    required
-                                    type="text"
-                                    id="seksi"
-                                    name="seksi"
-                                    placeholder="Masukan seksi..."
+                                <input required type="text" id="seksi" name="seksi" placeholder="Masukan seksi..."
                                     value="{{ old('seksi', $user->seksi) }}"
-                                    class="form-control @error('seksi') is-invalid @enderror"
-                                />
+                                    class="form-control @error('seksi') is-invalid @enderror" />
 
                                 @error('seksi')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -307,18 +209,12 @@
                     </div>
 
                     <div class="card-footer">
-                        <button
-                            type="submit"
-                            class="btn btn-info btn-rounded btn-sm mr-2"
-                        >
+                        <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
                             <i class="mdi mdi-content-save mr-1"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button
-                            type="reset"
-                            class="btn btn-rounded btn-dark btn-sm"
-                        >
+                        <button type="reset" class="btn btn-rounded btn-dark btn-sm">
                             <i class="mdi mdi-close-circle mr-1"></i>
                             <span>Reset</span>
                         </button>

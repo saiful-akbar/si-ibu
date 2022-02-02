@@ -3,10 +3,7 @@
 @section('title', 'Menu Akses')
 
 @section('btn-kembali')
-    <a
-        href="{{ route('user') }}"
-        class="btn btn-rounded btn-light btn-sm"
-    >
+    <a href="{{ route('user') }}" class="btn btn-rounded btn-dark btn-sm">
         <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
@@ -19,25 +16,14 @@
 
         {{-- tabs --}}
         <div class="col-lg-4 col-md-6-col-sm-12 mb-3">
-            <div
-                class="nav flex-column nav-pills"
-                id="tabs-menu-access"
-                role="tablist"
-                aria-orientation="vertical"
-            >
-                <a
-                    href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
-                    class="nav-link active show mb-2"
-                >
+            <div class="nav flex-column nav-pills" id="tabs-menu-access" role="tablist" aria-orientation="vertical">
+                <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}" class="nav-link active show mb-2">
                     <i class="mdi mdi-eye-outline mr-2"></i>
                     <span>Detail Akses</span>
                 </a>
 
                 @if ($userAccess->update == 1)
-                    <a
-                        href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}"
-                        class="nav-link mb-2"
-                    >
+                    <a href="{{ route('user.menu-akses.edit', ['user' => $user->id]) }}" class="nav-link mb-2">
                         <i class="mdi mdi-square-edit-outline mr-2"></i>
                         <span>Edit Akses</span>
                     </a>

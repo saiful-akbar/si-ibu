@@ -66,12 +66,7 @@
 
                     {{-- table pagination --}}
                     <div class="row">
-                        <div class="col-md-6 col-sm-12 d-flex justify-content-md-start justify-content-center">
-                            <span class="h5">
-                                Hal {{ $arsTypes->currentPage() }} / {{ $arsTypes->lastPage() }}
-                            </span>
-                        </div>
-                        <div class="col-md-6 col-sm-12 d-flex justify-content-md-end justify-content-center align-items-center">
+                        <div class="col-sm-12">
                             {{ $arsTypes->links() }}
                         </div>
                     </div>

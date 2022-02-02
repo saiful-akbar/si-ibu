@@ -62,8 +62,10 @@
                     </div>
 
                     {{-- table pagination --}}
-                    <div class="col-12 d-flex justify-content-end">
-                        {{ $arsCategories->links() }}
+                    <div class="row">
+                        <div class="col-12">
+                            {{ $arsCategories->links() }}
+                        </div>
                     </div>
 
                 </div>

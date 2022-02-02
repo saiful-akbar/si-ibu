@@ -3,10 +3,7 @@
 @section('title', 'Tambah Belanja')
 
 @section('btn-kembali')
-    <a
-        href="{{ route('belanja') }}"
-        class="btn btn-rounded btn-light btn-sm"
-    >
+    <a href="{{ route('belanja') }}" class="btn btn-rounded btn-dark btn-sm">
         <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
@@ -15,22 +12,11 @@
 @section('content')
 
     {{-- Form input budget --}}
-    <form
-        action="{{ route('belanja.store') }}"
-        method="POST"
-        enctype="multipart/form-data"
-        autocomplete="off"
-    >
+    <form action="{{ route('belanja.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
         @method('POST') @csrf
 
         {{-- input budget_id --}}
-        <input
-            type="hidden"
-            name="budget_id"
-            id="budget_id"
-            value="{{ old('budget_id') }}"
-            required
-        >
+        <input type="hidden" name="budget_id" id="budget_id" value="{{ old('budget_id') }}" required>
 
         {{-- input akun belanja (jenis_belanja) & bagian (divisi) --}}
         <div class="row">
@@ -44,48 +30,26 @@
 
                         {{-- Input jenis belanja (akun belanja) --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="jenis_belanja"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="jenis_belanja" class="col-md-3 col-sm-12 col-form-label">
                                 Akun Belanja <small class="text-danger">*</small>
                             </label>
 
                             <div class="input-group col-md-9 col-sm-12">
                                 <div class="input-group-prepend">
-                                    <button
-                                        type="button"
-                                        class="btn btn-sm btn-info"
-                                        data-toggle="tooltip"
-                                        data-original-title="Pilih akun belanja"
-                                        data-placement="top"
-                                        onclick="transaksi.showModalTableBudget(true)"
-                                    >
+                                    <button type="button" class="btn btn-sm btn-info" data-toggle="tooltip"
+                                        data-original-title="Pilih akun belanja" data-placement="top"
+                                        onclick="transaksi.showModalTableBudget(true)">
                                         <i class="mdi mdi-table-large"></i>
                                     </button>
                                 </div>
 
-                                <input
-                                    type="text"
-                                    name="nama_akun_belanja"
-                                    id="nama_akun_belanja"
+                                <input type="text" name="nama_akun_belanja" id="nama_akun_belanja"
                                     class="form-control @error('budget_id') is-invalid @else @error('nama_akun_belanja') is-invalid @enderror @enderror"
-                                    placeholder="Akun belanja..."
-                                    value="{{ old('nama_akun_belanja') }}"
-                                    readonly
-                                    required
-                                />
+                                    placeholder="Akun belanja..." value="{{ old('nama_akun_belanja') }}" readonly required />
 
-                                <input
-                                    type="text"
-                                    name="kategori_belanja"
-                                    id="kategori_belanja"
+                                <input type="text" name="kategori_belanja" id="kategori_belanja"
                                     class="form-control @error('budget_id') is-invalid @else @error('kategori_belanja') is-invalid @enderror @enderror"
-                                    placeholder="Jenis belanja..."
-                                    value="{{ old('kategori_belanja') }}"
-                                    readonly
-                                    required
-                                />
+                                    placeholder="Jenis belanja..." value="{{ old('kategori_belanja') }}" readonly required />
 
                                 @error('budget_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -104,24 +68,14 @@
 
                         {{-- input bagian (divisi) --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="nama_divisi"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="nama_divisi" class="col-md-3 col-sm-12 col-form-label">
                                 Bagian <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    readonly
-                                    required
-                                    type="text"
-                                    id="nama_divisi"
-                                    name="nama_divisi"
-                                    value="{{ old('nama_divisi') }}"
-                                    class="form-control @error('nama_divisi') is-invalid @enderror"
-                                    placeholder="Bagian..."
-                                />
+                                <input readonly required type="text" id="nama_divisi" name="nama_divisi"
+                                    value="{{ old('nama_divisi') }}" class="form-control @error('nama_divisi') is-invalid @enderror"
+                                    placeholder="Bagian..." />
 
                                 @error('nama_divisi')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -131,23 +85,15 @@
 
                         {{-- input tahun anggaran --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="tahun_anggaran"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
                                 Tahun Anggaran <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    readonly
-                                    type="number"
-                                    id="tahun_anggaran"
-                                    name="tahun_anggaran"
+                                <input readonly type="number" id="tahun_anggaran" name="tahun_anggaran"
                                     value="{{ old('tahun_anggaran') }}"
                                     class="form-control @error('tahun_anggaran') is-invalid @enderror"
-                                    placeholder="Tahun Anggaran..."
-                                />
+                                    placeholder="Tahun Anggaran..." />
 
                                 @error('tahun_anggaran')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -157,32 +103,19 @@
 
                         {{-- input sisa budget --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="sisa_budget"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="sisa_budget" class="col-md-3 col-sm-12 col-form-label">
                                 Sisa Budget <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12 input-group">
                                 <div class="input-group-prepend">
-                                    <span
-                                        class="input-group-text"
-                                        id="basic-addon1"
-                                    >
+                                    <span class="input-group-text" id="basic-addon1">
                                         Rp.
                                     </span>
                                 </div>
 
-                                <input
-                                    readonly
-                                    type="text"
-                                    id="sisa_budget"
-                                    name="sisa_budget"
-                                    value="{{ old('sisa_budget') }}"
-                                    class="form-control @error('sisa_budget') is-invalid @enderror"
-                                    placeholder="Sisa budget..."
-                                />
+                                <input readonly type="text" id="sisa_budget" name="sisa_budget" value="{{ old('sisa_budget') }}"
+                                    class="form-control @error('sisa_budget') is-invalid @enderror" placeholder="Sisa budget..." />
 
                                 @error('sisa_budget')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -208,23 +141,14 @@
 
                         {{-- input tanggal --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="tanggal"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="tanggal" class="col-md-3 col-sm-12 col-form-label">
                                 Tanggal <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    type="date"
-                                    id="tanggal"
-                                    name="tanggal"
-                                    placeholder="Masukan tanggal transaksi belanja..."
-                                    value="{{ old('tanggal') }}"
-                                    class="form-control @error('tanggal') is-invalid @enderror"
-                                    required
-                                />
+                                <input type="date" id="tanggal" name="tanggal" placeholder="Masukan tanggal transaksi belanja..."
+                                    value="{{ old('tanggal') }}" class="form-control @error('tanggal') is-invalid @enderror"
+                                    required />
 
                                 @error('tanggal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -234,23 +158,14 @@
 
                         {{-- input kegiatan --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="kegiatan"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="kegiatan" class="col-md-3 col-sm-12 col-form-label">
                                 Kegiatan <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    type="text"
-                                    id="kegiatan"
-                                    name="kegiatan"
-                                    placeholder="Masukan kegiatan..."
-                                    value="{{ old('kegiatan') }}"
-                                    class="form-control @error('kegiatan') is-invalid @enderror"
-                                    required
-                                />
+                                <input type="text" id="kegiatan" name="kegiatan" placeholder="Masukan kegiatan..."
+                                    value="{{ old('kegiatan') }}" class="form-control @error('kegiatan') is-invalid @enderror"
+                                    required />
 
                                 @error('kegiatan')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -260,33 +175,20 @@
 
                         {{-- input jumlah_nominal --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="jumlah_nominal"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="jumlah_nominal" class="col-md-3 col-sm-12 col-form-label">
                                 Jumlah Nominal <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12 input-group">
                                 <div class="input-group-prepend">
-                                    <span
-                                        class="input-group-text"
-                                        id="basic-addon1"
-                                    >
+                                    <span class="input-group-text" id="basic-addon1">
                                         Rp.
                                     </span>
                                 </div>
 
-                                <input
-                                    type="number"
-                                    id="jumlah_nominal"
-                                    name="jumlah_nominal"
-                                    min="0"
-                                    placeholder="Masukan jumlah nominal..."
-                                    value="{{ old('jumlah_nominal') }}"
-                                    class="form-control @error('jumlah_nominal') is-invalid @enderror"
-                                    required
-                                />
+                                <input type="number" id="jumlah_nominal" name="jumlah_nominal" min="0"
+                                    placeholder="Masukan jumlah nominal..." value="{{ old('jumlah_nominal') }}"
+                                    class="form-control @error('jumlah_nominal') is-invalid @enderror" required />
 
                                 @error('jumlah_nominal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -296,23 +198,14 @@
 
                         {{-- input nama approval --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="approval"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="approval" class="col-md-3 col-sm-12 col-form-label">
                                 Nama Approval <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    type="text"
-                                    id="approval"
-                                    name="approval"
-                                    placeholder="Masukan nama approval..."
-                                    value="{{ old('approval') }}"
-                                    class="form-control @error('approval') is-invalid @enderror"
-                                    required
-                                />
+                                <input type="text" id="approval" name="approval" placeholder="Masukan nama approval..."
+                                    value="{{ old('approval') }}" class="form-control @error('approval') is-invalid @enderror"
+                                    required />
 
                                 @error('approval')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -338,23 +231,14 @@
 
                         {{-- input no dokumen --}}
                         <div class="form-group row mb-3">
-                            <label
-                                for="no_dokumen"
-                                class="col-md-3 col-sm-12 col-form-label"
-                            >
+                            <label for="no_dokumen" class="col-md-3 col-sm-12 col-form-label">
                                 No Dokumen <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input
-                                    type="text"
-                                    id="no_dokumen"
-                                    name="no_dokumen"
-                                    placeholder="Masukan no dokumen..."
+                                <input type="text" id="no_dokumen" name="no_dokumen" placeholder="Masukan no dokumen..."
                                     value="{{ old('no_dokumen', $noDocument) }}"
-                                    class="form-control @error('no_dokumen') is-invalid @enderror"
-                                    required
-                                />
+                                    class="form-control @error('no_dokumen') is-invalid @enderror" required />
 
                                 @error('no_dokumen')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -372,10 +256,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="file_dokumen">
-                                            <span
-                                                type="button"
-                                                class="btn btn-success btn-sm btn-rounded"
-                                            >
+                                            <span type="button" class="btn btn-success btn-sm btn-rounded">
                                                 <i class="mdi mdi-upload mr-1"></i>
                                                 <span>Unggah File</span>
                                             </span>
@@ -383,21 +264,13 @@
                                     </div>
 
                                     <div class="col-6">
-                                        <span
-                                            id="file-name"
-                                            class="d-none badge badge-light py-1 px-1 mt-1"
-                                            data-action="create"
-                                        ></span>
+                                        <span id="file-name" class="d-none badge badge-light py-1 px-1 mt-1"
+                                            data-action="create"></span>
                                     </div>
                                 </div>
 
-                                <input
-                                    type="file"
-                                    id="file_dokumen"
-                                    name="file_dokumen"
-                                    value="{{ old('file_dokumen') }}"
-                                    class="d-none is-invalid @error('file_dokumen') is-invalid @enderror"
-                                />
+                                <input type="file" id="file_dokumen" name="file_dokumen" value="{{ old('file_dokumen') }}"
+                                    class="d-none is-invalid @error('file_dokumen') is-invalid @enderror" />
 
                                 @error('file_dokumen')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -422,11 +295,8 @@
                     </div>
 
                     <div class="card-body">
-                        <textarea
-                            name="uraian"
-                            id="uraian"
-                            class="form-control @error('uraian') is-invalid @enderror"
-                        >{{ old('uraian') }}</textarea>
+                        <textarea name="uraian" id="uraian"
+                            class="form-control @error('uraian') is-invalid @enderror">{{ old('uraian') }}</textarea>
 
                         @error('uraian')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -434,18 +304,12 @@
                     </div>
 
                     <div class="card-footer">
-                        <button
-                            type="submit"
-                            class="btn btn-info btn-sm btn-rounded mr-2"
-                        >
+                        <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
                             <i class="mdi mdi-content-save mr-1"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button
-                            type="reset"
-                            class="btn btn-dark btn-sm btn-rounded"
-                        >
+                        <button type="reset" class="btn btn-dark btn-sm btn-rounded">
                             <i class="mdi mdi-close-circle mr-1"></i>
                             <span>Reset</span>
                         </button>
@@ -464,33 +328,13 @@
 
 @push('css')
     {{-- custom editor --}}
-    <link
-        href="{{ asset('assets/css/vendor/summernote-bs4.css') }}"
-        rel="stylesheet"
-        type="text/css"
-    />
+    <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
 
     {{-- datatables --}}
-    <link
-        href="{{ asset('assets/css/vendor/dataTables.bootstrap4.css') }}"
-        rel="stylesheet"
-        type="text/css"
-    />
-    <link
-        href="{{ asset('assets/css/vendor/responsive.bootstrap4.css') }}"
-        rel="stylesheet"
-        type="text/css"
-    />
-    <link
-        href="{{ asset('assets/css/vendor/buttons.bootstrap4.css') }}"
-        rel="stylesheet"
-        type="text/css"
-    />
-    <link
-        href="{{ asset('assets/css/vendor/select.bootstrap4.css') }}"
-        rel="stylesheet"
-        type="text/css"
-    />
+    <link href="{{ asset('assets/css/vendor/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/vendor/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/vendor/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/vendor/select.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('js')

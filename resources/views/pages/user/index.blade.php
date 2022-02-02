@@ -126,12 +126,15 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    {{-- end table --}}
 
-                        <div class="col-12 d-flex justify-content-end">
+                    {{-- table pagination --}}
+                    <div class="row">
+                        <div class="col-12">
                             {{ $users->links() }}
                         </div>
                     </div>
-                    {{-- end table --}}
 
                 </div>
             </div>
