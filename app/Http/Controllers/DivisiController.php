@@ -47,7 +47,7 @@ class DivisiController extends Controller
         /**
          * buat pagination
          */
-        $divisi = $query->simplePaginate(10)->withQueryString();
+        $divisi = $query->paginate(10)->withQueryString();
 
         return view('pages.divisi.index', [
             'divisi' => $divisi,

@@ -7,10 +7,7 @@
     {{-- form filter --}}
     <div class="row">
         <div class="col-12 mb-3">
-            <form
-                action="{{ route('budget') }}"
-                method="GET"
-            >
+            <form action="{{ route('budget') }}" method="GET">
                 <div class="card">
                     <div class="card-header pt-3">
                         <h4 class="header-title">Filter</h4>
@@ -25,17 +22,9 @@
                                     <label>Periode Tahun <small class="text-danger">*</small></label>
 
                                     <div class="input-group">
-                                        <input
-                                            required
-                                            name="periode_awal"
-                                            type="number"
-                                            id="periode_awal"
-                                            placeholder="Awal periode tahun..."
-                                            min="1900"
-                                            max="9999"
-                                            value="{{ request('periode_awal') ?? date('Y') }}"
-                                            class="form-control"
-                                        />
+                                        <input required name="periode_awal" type="number" id="periode_awal"
+                                            placeholder="Awal periode tahun..." min="1900" max="9999"
+                                            value="{{ request('periode_awal') ?? date('Y') }}" class="form-control" />
 
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -43,17 +32,10 @@
                                             </span>
                                         </div>
 
-                                        <input
-                                            required
-                                            name="periode_akhir"
-                                            type="number"
-                                            id="periode_akhir"
-                                            placeholder="Akhir periode tahun..."
-                                            min="1900"
-                                            max="9999"
+                                        <input required name="periode_akhir" type="number" id="periode_akhir"
+                                            placeholder="Akhir periode tahun..." min="1900" max="9999"
                                             value="{{ request('periode_akhir') ?? date('Y') }}"
-                                            class="form-control @error('periode_akhir') is-invalid @enderror"
-                                        />
+                                            class="form-control @error('periode_akhir') is-invalid @enderror" />
                                     </div>
                                 </div>
                             </div>
@@ -64,19 +46,11 @@
                                     <div class="form-group">
                                         <label for="divisi">Bagian</label>
 
-                                        <select
-                                            id="divisi"
-                                            name="divisi"
-                                            data-toggle="select2"
-                                            class="form-control select2"
-                                        >
+                                        <select id="divisi" name="divisi" data-toggle="select2" class="form-control select2">
                                             <option value="{{ null }}">Semua Bagian</option>
 
                                             @foreach ($divisi as $div)
-                                                <option
-                                                    value="{{ $div->nama_divisi }}"
-                                                    @if (request('divisi') == $div->nama_divisi) selected @endif
-                                                >
+                                                <option value="{{ $div->nama_divisi }}" @if (request('divisi') == $div->nama_divisi) selected @endif>
                                                     {{ $div->nama_divisi }}
                                                 </option>
                                             @endforeach
@@ -90,22 +64,16 @@
                                 <div class="form-group">
                                     <label for="jenis_belanja">Akun Belanja</label>
 
-                                    <select
-                                        id="jenis_belanja"
-                                        name="jenis_belanja"
-                                        data-toggle="select2"
-                                        class="form-control select2"
-                                    >
+                                    <select id="jenis_belanja" name="jenis_belanja" data-toggle="select2"
+                                        class="form-control select2">
                                         <option value="{{ null }}">Semua Akun Belanja</option>
 
                                         @foreach ($akunBelanja as $aBelanja)
                                             <optgroup label="{{ $aBelanja->nama_akun_belanja }}">
                                                 @foreach ($aBelanja->jenisBelanja as $jenisBelanja)
                                                     @if ($jenisBelanja->active == 1)
-                                                        <option
-                                                            value="{{ $jenisBelanja->kategori_belanja }}"
-                                                            @if (request('jenis_belanja') == $jenisBelanja->kategori_belanja) selected @endif
-                                                        >
+                                                        <option value="{{ $jenisBelanja->kategori_belanja }}"
+                                                            @if (request('jenis_belanja') == $jenisBelanja->kategori_belanja) selected @endif>
                                                             {{ $jenisBelanja->kategori_belanja }}
                                                         </option>
                                                     @endif
@@ -120,10 +88,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button
-                            type="submit"
-                            class="btn btn-info btn-rounded btn-sm"
-                        >
+                        <button type="submit" class="btn btn-info btn-rounded btn-sm">
                             <i class="mdi mdi-filter-variant mr-1"></i>
                             <span>Filter</span>
                         </button>
@@ -148,10 +113,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             @if ($userAccess->create == 1)
-                                <a
-                                    href="{{ route('budget.create') }}"
-                                    class="btn btn-sm btn-rounded btn-primary"
-                                >
+                                <a href="{{ route('budget.create') }}" class="btn btn-sm btn-rounded btn-primary">
                                     <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Input Budget</span>
                                 </a>
@@ -201,46 +163,30 @@
                                                 @endif
 
                                                 <td class="table-action text-center">
-                                                    <button
-                                                        onclick="budget.detail(true, {{ $budget->id }})"
-                                                        data-toggle="tooltip"
-                                                        data-original-title="Detail"
-                                                        data-placement="top"
-                                                        class="btn btn-sm btn-light btn-icon mx-1"
-                                                    >
+                                                    <button onclick="budget.detail(true, {{ $budget->id }})" data-toggle="tooltip"
+                                                        data-original-title="Detail" data-placement="top"
+                                                        class="btn btn-sm btn-light btn-icon mx-1">
                                                         <i class="mdi mdi-eye-outline"></i>
                                                     </button>
 
                                                     @if ($userAccess->update == 1)
-                                                        <a
-                                                            href="{{ route('budget.switch', ['budget' => $budget->id]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mx-1"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Switch Budget"
-                                                            data-placement="top"
-                                                        >
+                                                        <a href="{{ route('budget.switch', ['budget' => $budget->id]) }}"
+                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                            data-original-title="Switch Budget" data-placement="top">
                                                             <i class="mdi mdi-code-tags"></i>
                                                         </a>
 
-                                                        <a
-                                                            href="{{ route('budget.edit', ['budget' => $budget->id]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mx-1"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Edit"
-                                                            data-placement="top"
-                                                        >
+                                                        <a href="{{ route('budget.edit', ['budget' => $budget->id]) }}"
+                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                            data-original-title="Edit" data-placement="top">
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
                                                     @endif
 
                                                     @if ($userAccess->delete == 1)
-                                                        <button
-                                                            onclick="budget.handleDelete({{ $budget->id }})"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Hapus"
-                                                            data-placement="top"
-                                                            class="btn btn-sm btn-light btn-icon mx-1"
-                                                        >
+                                                        <button onclick="budget.handleDelete({{ $budget->id }})"
+                                                            data-toggle="tooltip" data-original-title="Hapus" data-placement="top"
+                                                            class="btn btn-sm btn-light btn-icon mx-1">
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>
                                                     @endif
@@ -256,7 +202,7 @@
 
                     {{-- table pagination --}}
                     <div class="row">
-                        <div class="col-12 d-flex justify-content-end mb-3">
+                        <div class="col-12">
                             {{ $budgets->links() }}
                         </div>
                     </div>
@@ -288,10 +234,7 @@
     {{-- end table budget --}}
 
     {{-- form delete data budget --}}
-    <form
-        method="POST"
-        id="form-delete-budget"
-    >
+    <form method="POST" id="form-delete-budget">
         @method('DELETE') @csrf
     </form>
     {{-- end form delete budget --}}

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Arsip\ARSDocument;
 use App\Models\Arsip\MSARSCategory;
 use App\Traits\ConnectionTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Mimey\MimeTypes;
 
@@ -65,14 +66,14 @@ class DocumentController extends Controller
          * cek jika ada request ars_category
          */
         if (!empty($request->ars_category)) {
-            array_push($validateRules['ars_category'], "exists:{$this->conn}.{$this->db}.MSARSCategory,Name");
+            array_push($validateRules['ars_category'], "exists:{$this->conn}.MSARSCategory,Name");
         }
 
         /**
          * cek jika ada request ars_type
          */
         if (!empty($request->ars_type)) {
-            array_push($validateRules['ars_type'], "exists:{$this->conn}.{$this->db}.MSARSType,Name");
+            array_push($validateRules['ars_type'], "exists:{$this->conn}.MSARSType,Name");
         }
 
         /**
@@ -96,24 +97,21 @@ class DocumentController extends Controller
         /**
          * Query dokumen arsip
          */
-        $query = ARSDocument::with([
-            'MSARSType' => fn ($q) => $q->orderBy('Name', 'asc'),
-            'MSARSType.MSARSCategory' => fn ($q) => $q->orderBy('Name', 'asc'),
-        ])->where('Is_Publish', 1)
+        $query = ARSDocument::with('MSARSType.MSARSCategory')
             ->whereBetween('DateDoc', [$firstPeriod, $lastPeriod]);
 
         /**
          * query jika request ars_category dipilih
          */
         if (!empty($request->ars_category)) {
-            $query->whereHas('MSARSType.MSARSCategory', fn ($q) => $q->where('Name', $request->ars_category));
+            $query->whereHas('MSARSType.MSARSCategory', fn (Builder $q) => $q->where('Name', $request->ars_category));
         }
 
         /**
          * query jika request ars_type dipilih
          */
         if (!empty($request->ars_type)) {
-            $query->whereHas('MSARSType', fn ($q) => $q->where('Name', $request->ars_type));
+            $query->whereHas("MSARSType", fn (Builder $q) => $q->where('Name', $request->ars_type));
         }
 
         /**
@@ -126,9 +124,9 @@ class DocumentController extends Controller
         /**
          * Query order & paginate
          */
-        $arsDocuments = $query->orderBy('years', 'desc')
+        $arsDocuments = $query->orderBy('Years', 'desc')
             ->orderBy('DateDoc', 'desc')
-            ->simplePaginate(10)
+            ->paginate(10)
             ->withQueryString();
 
         /**

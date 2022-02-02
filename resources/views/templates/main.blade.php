@@ -10,9 +10,6 @@
     <meta name="base-url" content="{{ url('/') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    {{-- PWA --}}
-    {{-- @laravelPWA --}}
-
     {{-- Title --}}
     <title>{{ config('app.name') }} : @yield('title')</title>
 

@@ -36,7 +36,7 @@ class MasterCategoryController extends Controller
         /**
          * Pagination
          */
-        $arsCategories = $query->simplePaginate(10)->withQueryString();
+        $arsCategories = $query->paginate(10)->withQueryString();
 
         /**
          * return view

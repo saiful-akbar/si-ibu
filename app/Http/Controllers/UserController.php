@@ -84,7 +84,7 @@ class UserController extends Controller
          * view halaman user.
          */
         return view('pages.user.index', [
-            'users' => $users->simplePaginate(10)->withQueryString(),
+            'users' => $users->paginate(10)->withQueryString(),
             'userAccess' => $userAccess,
             'isAdmin' => $isAdmin,
         ]);

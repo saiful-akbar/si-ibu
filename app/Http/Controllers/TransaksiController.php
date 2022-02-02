@@ -206,7 +206,7 @@ class TransaksiController extends Controller
          */
         $transactions = $query->orderBy('tanggal', 'desc')
             ->orderBy('updated_at', 'desc')
-            ->simplePaginate(10)
+            ->paginate(10)
             ->withQueryString();
 
         /**

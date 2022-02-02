@@ -51,7 +51,7 @@ class JenisBelanjaController extends Controller
          */
         $jenisBelanja = $query->orderBy('updated_at', 'desc')
             ->orderBy('kategori_belanja', 'asc')
-            ->simplePaginate(10)
+            ->paginate(10)
             ->withQueryString();
 
         return view('pages.jenis-belanja.index', compact('jenisBelanja', 'userAccess', 'isAdmin'));

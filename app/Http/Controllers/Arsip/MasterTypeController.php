@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Arsip;
 
 use App\Http\Controllers\Controller;
 use App\Models\Arsip\MSARSType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class MasterTypeController extends Controller
@@ -21,7 +22,7 @@ class MasterTypeController extends Controller
         if ($request->search) {
             $query->where('Name', 'like', "%{$request->search}%")
                 ->orWhere('Description', 'like', "%{$request->search}%")
-                ->orWhereHas('MSARSCategory', fn ($q) => $q->where('Name', 'like', "%{$request->search}%"));
+                ->orWhereHas('MSARSCategory', fn (Builder $q) => $q->where('Name', 'like', "%{$request->search}%"));
         }
 
         /**
