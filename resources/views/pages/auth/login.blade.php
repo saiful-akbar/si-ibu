@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-12 text-center mb-4">
                             <a href="{{ route('login') }}" class="logo-dark">
-                                <img src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="logo" width="250"/>
+                                <img src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="logo" width="250" />
                             </a>
                         </div>
                     </div>
@@ -53,29 +53,15 @@
                                 {{-- input username --}}
                                 <div class="form-group mb-3">
                                     <label for="username">Username</label>
-                                    <input
-                                        required
-                                        autofocus
-                                        class="form-control"
-                                        type="text"
-                                        id="username"
-                                        name="username"
-                                        placeholder="Masukan username..."
-                                        value="{{ old('username') }}"
-                                    />
+                                    <input required autofocus class="form-control" type="text" id="username" name="username"
+                                        placeholder="Masukan username..." value="{{ old('username') }}" />
                                 </div>
 
                                 {{-- input password --}}
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input
-                                        required
-                                        class="form-control"
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        placeholder="Masukan password..."
-                                    />
+                                    <input required class="form-control" type="password" id="password" name="password"
+                                        placeholder="Masukan password..." />
                                 </div>
 
                                 {{-- show hide password --}}
@@ -109,13 +95,11 @@
         {{-- Auth fluid right content --}}
         <div class="auth-fluid-right text-center">
             <div class="auth-user-testimonial">
-                <p class="lead">
-                    <i class="mdi mdi-format-quote-open mr-1"></i>
-                    {{ config('app.description') }}
-                    <i class="mdi mdi-format-quote-close ml-1"></i>
-                </p>
+                <h2 class="mb-3">{{ config('app.description') }}</h2>
 
-                <p>- {{ config('app.name') }}</p>
+                <p class="lead">
+                    <i class="mdi mdi-format-quote-open"></i>{{ config('app.name') }}<i class="mdi mdi-format-quote-close"></i>
+                </p>
             </div>
         </div>
     </div>
