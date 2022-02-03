@@ -3,7 +3,7 @@
       loading="lazy"
       alt="logo"
       src="public/assets/images/logo/logo-dark.png"
-      height="130"
+      height="150"
     />
 </div>
 
@@ -24,9 +24,7 @@ Sistem informasi manajemen anggaran & arsip.
 1.  Clone repository
 
 ```bash
-git clone https://github.com/saiful-akbar/simaa.git
-cd simaa
-git checkout develop
+git clone https://github.com/saiful-akbar/si-ibu.git && cd si-ibu && git checkout develop
 ```
 
 2.  Instal dependencies composer
@@ -83,8 +81,7 @@ php artisan serve
 1.  Clone repository
 
 ```bash
-git clone https://github.com/saiful-akbar/simaa.git
-cd simaa
+git clone https://github.com/saiful-akbar/si-ibu.git && cd si-ibu
 ```
 
 2. Instal dependencies composer & optimalisasi Autoloader
