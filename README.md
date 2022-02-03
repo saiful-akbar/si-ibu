@@ -3,7 +3,7 @@
       loading="lazy"
       alt="logo"
       src="public/assets/images/logo/logo-dark.png"
-      height="130"
+      height="150"
     />
 </div>
 
