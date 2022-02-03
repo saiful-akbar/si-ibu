@@ -43,8 +43,7 @@
     @yield('css')
 </head>
 
-<body class="loading @guest authentication-bg pb-0 @endguest" @auth
-    data-leftbar-theme="{{ auth()->user()->pengaturan->sidebar }}" @endauth>
+<body class="loading @guest authentication-bg pb-0 @endguest" @auth data-leftbar-theme="{{ auth()->user()->pengaturan->sidebar }}" @endauth>
 
     {{-- Pre-loader --}}
     <div id="preloader">
@@ -77,7 +76,6 @@
                     @include('components.organisms.topbar')
 
                     <div class="container-fluid">
-
                         <div class="row">
                             <div class="col-12 py-2">
                                 <div class="page-title-box d-flex justify-content-between align-items-center">
@@ -100,7 +98,6 @@
 
                 {{-- Footer --}}
                 @include('components.organisms.footer')
-
             </div>
             {{-- End Page content --}}
 
