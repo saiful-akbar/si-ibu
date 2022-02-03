@@ -80,7 +80,7 @@ class DocumentController extends Controller
          * cek jika ada request nomer
          */
         if (!empty($request->number)) {
-            array_push($validateRules['number'], "exists:{$this->conn}.{$this->db}.ARSDocument,Number");
+            array_push($validateRules['number'], "exists:{$this->conn}.ARSDocument,Number");
         }
 
         /**
