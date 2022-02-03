@@ -13,14 +13,14 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'SIMAA'),
+    'name' => env('APP_NAME', 'SiIBU'),
 
     /*
     |--------------------------------------------------------------------------
     | Application Description
     |--------------------------------------------------------------------------
     */
-    'description' => env('APP_DESCRIPTION', 'Sistem informasi manajemen anggaran & arsip'),
+    'description' => env('APP_DESCRIPTION', 'Sistem Informasi Bagian Umum'),
 
     /*
     |--------------------------------------------------------------------------
