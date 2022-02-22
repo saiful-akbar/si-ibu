@@ -7,9 +7,9 @@
     />
 </div>
 
-# SIMAA
+# SiIBU
 
-Sistem informasi manajemen anggaran & arsip.
+Sistem Informasi Bagian Umum.
 
 # Persyaratan
 
