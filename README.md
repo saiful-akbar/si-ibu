@@ -8,8 +8,7 @@
 </div>
 
 # SiIBU
-
-Sistem Informasi Bagian Umum
+Sistem Informasi Bagian Umum.
 
 # Persyaratan
 
