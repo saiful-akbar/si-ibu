@@ -152,8 +152,8 @@ php artisan view:cache
 
 # Update list
 
-1. [] Filter level akhir dibenahi
-2. [] Bagian Umum dapat input semua bidang yg skrg sesuai user perbagian sj
-3. [] ada flag outstanding di pengeluaran bhw itu tanda kwitansi/invoicenya blm datang
-4. [] Penambahan kolom biaya penggunaan pada list budget
-5. [] ganti penamaan budget jd pagu, belanja jd realisasi
+- [ ] Filter level akhir dibenahi
+- [ ] Bagian Umum dapat input semua bidang yg skrg sesuai user perbagian sj
+- [ ] ada flag outstanding di pengeluaran bhw itu tanda kwitansi/invoicenya blm datang
+- [ ] Penambahan kolom biaya penggunaan pada list budget
+- [ ] ganti penamaan budget jd pagu, belanja jd realisasi
