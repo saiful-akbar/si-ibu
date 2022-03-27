@@ -8,6 +8,7 @@
 </div>
 
 # SiIBU
+
 Sistem Informasi Bagian Umum.
 
 # Persyaratan
@@ -42,6 +43,7 @@ cp .env.example .env
 5.  Buka file .env di text editor & ubah value pada variable `DB_` di file .env sesuai dengan pengaturan database anda
 
 ```php
+# Koneksi database pertama (Anggaran)
 DB_CONNECTION=anggaran
 DB_HOST=localhost
 DB_PORT=1433
@@ -49,6 +51,7 @@ DB_DATABASE=simaa_anggaran
 DB_USERNAME=sa
 DB_PASSWORD=
 
+# Koneksi database kedua (Arsip)
 DB_CONNECTION_SECOND=arsip
 DB_HOST_SECOND=localhost
 DB_PORT_SECOND=1433
@@ -102,6 +105,7 @@ APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://www.domain.com
 
+# Koneksi database pertama (Anggaran)
 DB_CONNECTION=anggaran
 DB_HOST=localhost
 DB_PORT=1433
@@ -109,6 +113,7 @@ DB_DATABASE=simaa_anggaran
 DB_USERNAME=sa
 DB_PASSWORD=
 
+# Koneksi database kedua (Arsip)
 DB_CONNECTION_SECOND=arsip
 DB_HOST_SECOND=localhost
 DB_PORT_SECOND=1433
@@ -129,9 +134,13 @@ php artisan key:generate && php artisan storage:link
 php artisan migrate:refresh --seed
 ```
 
-7. Mengoptimalkan konfigurasi `NB: semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua). dalam kata lain variabel pada file .env tidak terpakai lagi, semua konfigurasi akan diambil langsung dari semua file pada folder config`
+7. Mengoptimalkan konfigurasi
 
 ```bash
+# NB
+# Semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua)....
+# ...dalam kata lain variabel pada file .env tidak terpakai lagi...
+# ...semua konfigurasi akan diambil langsung dari semua file pada folder config
 php artisan config:cache
 ```
 
@@ -140,3 +149,11 @@ php artisan config:cache
 ```bash
 php artisan view:cache
 ```
+
+# Update list
+
+1. [] Filter level akhir dibenahi
+2. [] Bagian Umum dapat input semua bidang yg skrg sesuai user perbagian sj
+3. [] ada flag outstanding di pengeluaran bhw itu tanda kwitansi/invoicenya blm datang
+4. [] Penambahan kolom biaya penggunaan pada list budget
+5. [] ganti penamaan budget jd pagu, belanja jd realisasi
