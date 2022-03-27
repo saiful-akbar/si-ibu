@@ -19,7 +19,17 @@ Sistem Informasi Bagian Umum.
 -   Aktifkan `extension=gd` pada php.ini untuk fitur export excel dan domPDF
 -   Ter-install driver SQL Server untuk php
 
-# Instalasi Development
+# Update List
+
+- [ ] Filter level akhir dibenahi
+- [ ] Bagian Umum dapat input semua bidang yg skrg sesuai user perbagian sj
+- [ ] Ada flag outstanding di pengeluaran bhw itu tanda kwitansi/invoicenya blm datang
+- [ ] Penambahan kolom biaya penggunaan pada list budget
+- [ ] Ganti penamaan budget menjadi `pagu`, belanja menjadi `realisasi`
+
+# Instalasi
+
+## Instalasi Development
 
 1.  Clone repository
 
@@ -78,7 +88,7 @@ php artisan migrate:refresh --seed
 php artisan serve
 ```
 
-# Instalasi Production / Deployment
+## Instalasi Production
 
 1.  Clone repository
 
@@ -137,10 +147,8 @@ php artisan migrate:refresh --seed
 7. Mengoptimalkan konfigurasi
 
 ```bash
-# NB
-# Semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua)....
-# ...dalam kata lain variabel pada file .env tidak terpakai lagi...
-# ...semua konfigurasi akan diambil langsung dari semua file pada folder config
+# Semua panggilan fungsi env() akan mengembalikan nilai default (parameter kedua), dalam kata lain variabel pada...
+# ...file .env tidak terpakai lagi semua konfigurasi akan diambil langsung dari semua file pada folder config
 php artisan config:cache
 ```
 
@@ -149,11 +157,3 @@ php artisan config:cache
 ```bash
 php artisan view:cache
 ```
-
-# Update list
-
-- [ ] Filter level akhir dibenahi
-- [ ] Bagian Umum dapat input semua bidang yg skrg sesuai user perbagian sj
-- [ ] ada flag outstanding di pengeluaran bhw itu tanda kwitansi/invoicenya blm datang
-- [ ] Penambahan kolom biaya penggunaan pada list budget
-- [ ] ganti penamaan budget jd pagu, belanja jd realisasi
