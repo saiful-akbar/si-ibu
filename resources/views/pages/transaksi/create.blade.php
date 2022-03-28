@@ -1,6 +1,6 @@
 @extends('templates.main')
 
-@section('title', 'Tambah Belanja')
+@section('title', 'Tambah Realisasi')
 
 @section('btn-kembali')
     <a href="{{ route('belanja') }}" class="btn btn-rounded btn-dark btn-sm">
@@ -23,7 +23,7 @@
             <div class="col-12 mb-3">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="header-title">Budget</h4>
+                        <h4 class="header-title">Pagu</h4>
                     </div>
 
                     <div class="card-body">
@@ -53,7 +53,6 @@
 
                                 @error('budget_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
-
                                 @else
                                     @error('nama_akun_belanja')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -295,8 +294,7 @@
                     </div>
 
                     <div class="card-body">
-                        <textarea name="uraian" id="uraian"
-                            class="form-control @error('uraian') is-invalid @enderror">{{ old('uraian') }}</textarea>
+                        <textarea name="uraian" id="uraian" class="form-control @error('uraian') is-invalid @enderror">{{ old('uraian') }}</textarea>
 
                         @error('uraian')
                             <div class="invalid-feedback">{{ $message }}</div>

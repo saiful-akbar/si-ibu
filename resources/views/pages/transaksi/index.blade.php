@@ -1,6 +1,6 @@
 @extends('templates.main')
 
-@section('title', 'Belanja')
+@section('title', 'Realisasi')
 
 @section('content')
 
@@ -61,7 +61,8 @@
                                             <option value="{{ null }}">Semua Bagian</option>
 
                                             @foreach ($divisi as $div)
-                                                <option value="{{ $div->nama_divisi }}" @if (old('divisi', request('divisi')) == $div->nama_divisi) selected @endif>
+                                                <option value="{{ $div->nama_divisi }}"
+                                                    @if (old('divisi', request('divisi')) == $div->nama_divisi) selected @endif>
                                                     {{ $div->nama_divisi }}
                                                 </option>
                                             @endforeach
@@ -148,7 +149,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="header-title mt-2">Tabel Belanja</h4>
+                    <h4 class="header-title mt-2">Tabel Realisasi</h4>
                 </div>
 
                 <div class="card-body">
@@ -159,7 +160,7 @@
                             @if ($userAccess->create == 1)
                                 <a href="{{ route('belanja.create') }}" class="btn btn-primary btn-sm btn-rounded">
                                     <i class="mdi mdi-plus-circle mr-1"></i>
-                                    <span>Tambah Belanja</span>
+                                    <span>Tambah Realisasi</span>
                                 </a>
                             @endif
                         </div>
@@ -186,10 +187,11 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered w-100 nowrap">
+                                <table class="table table-centered table-hover w-100 nowrap">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
+                                            <th>Status</th>
                                             <th>Tanggal</th>
                                             <th>Submitter</th>
                                             <th>Bagian</th>
@@ -209,6 +211,13 @@
                                             <tr>
                                                 <td>
                                                     {{ $transactions->perPage() * ($transactions->currentPage() - 1) + $loop->iteration }}
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($data->outstanding == 1)
+                                                        <i class="mdi mdi-check text-success h4"></i>
+                                                    @else
+                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
+                                                    @endif
                                                 </td>
                                                 <td>{{ $data->tanggal }}</td>
                                                 <td>{{ $data->user->profil->nama_lengkap }}</td>

@@ -34,6 +34,18 @@ class DivisiSeeder extends Seeder
                     'created_at'  => now(),
                     'updated_at'  => now(),
                 ],
+                [
+                    'nama_divisi' => 'Kepala Kantor',
+                    'active'      => true,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ],
+                [
+                    'nama_divisi' => 'Bagian Umum',
+                    'active'      => true,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ],
             ]);
     }
 }

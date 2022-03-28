@@ -1,6 +1,6 @@
 @extends('templates.main')
 
-@section('title', 'Budget')
+@section('title', 'Pagu')
 
 @section('content')
 
@@ -50,7 +50,8 @@
                                             <option value="{{ null }}">Semua Bagian</option>
 
                                             @foreach ($divisi as $div)
-                                                <option value="{{ $div->nama_divisi }}" @if (request('divisi') == $div->nama_divisi) selected @endif>
+                                                <option value="{{ $div->nama_divisi }}"
+                                                    @if (request('divisi') == $div->nama_divisi) selected @endif>
                                                     {{ $div->nama_divisi }}
                                                 </option>
                                             @endforeach
@@ -104,7 +105,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="header-title mt-2">Tabel Budget</h4>
+                    <h4 class="header-title mt-2">Tabel Pagu</h4>
                 </div>
 
                 <div class="card-body">
@@ -115,7 +116,7 @@
                             @if ($userAccess->create == 1)
                                 <a href="{{ route('budget.create') }}" class="btn btn-sm btn-rounded btn-primary">
                                     <i class="mdi mdi-plus-circle mr-1"></i>
-                                    <span>Input Budget</span>
+                                    <span>Input Pagu</span>
                                 </a>
                             @endif
                         </div>
@@ -125,7 +126,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered nowrap w-100">
+                                <table class="table table-centered table-hover nowrap w-100">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
@@ -134,6 +135,7 @@
                                             <th>Akun Belanja</th>
                                             <th>Jenis Belanja</th>
                                             <th>Nominal</th>
+                                            <th>Nominal Realisasi</th>
                                             <th>Sisa Nominal</th>
 
                                             @if ($isAdmin)
@@ -155,6 +157,7 @@
                                                 <td>{{ $budget->jenisBelanja->akunBelanja->nama_akun_belanja }}</td>
                                                 <td>{{ $budget->jenisBelanja->kategori_belanja }}</td>
                                                 <td>Rp. {{ number_format($budget->nominal) }}</td>
+                                                <td>Rp. {{ number_format($budget->nominal - $budget->sisa_nominal) }}</td>
                                                 <td>Rp. {{ number_format($budget->sisa_nominal) }}</td>
 
                                                 @if ($isAdmin)
@@ -172,7 +175,7 @@
                                                     @if ($userAccess->update == 1)
                                                         <a href="{{ route('budget.switch', ['budget' => $budget->id]) }}"
                                                             class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
-                                                            data-original-title="Switch Budget" data-placement="top">
+                                                            data-original-title="Switch Pagu" data-placement="top">
                                                             <i class="mdi mdi-code-tags"></i>
                                                         </a>
 
@@ -216,6 +219,10 @@
                                     <tr>
                                         <th>Total Nominal : </th>
                                         <td class="text-right">Rp. {{ number_format($totalNominal) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Nominal Realisasi : </th>
+                                        <td class="text-right">Rp. {{ number_format($totalNominal - $totalSisaNominal) }}</td>
                                     </tr>
                                     <tr>
                                         <th>Total Sisa Nominal : </th>

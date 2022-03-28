@@ -144,7 +144,7 @@ class UserMenuSeeder extends Seeder
                 ],
                 [
                     'user_id' => $this->getUser('admin'),
-                    'menu_item_id' => $this->getMenuItem('Budget'),
+                    'menu_item_id' => $this->getMenuItem('Pagu'),
                     'create' => true,
                     'read' => true,
                     'update' => true,
@@ -154,7 +154,7 @@ class UserMenuSeeder extends Seeder
                 ],
                 [
                     'user_id' => $this->getUser('admin'),
-                    'menu_item_id' => $this->getMenuItem('Belanja'),
+                    'menu_item_id' => $this->getMenuItem('Realisasi'),
                     'create' => true,
                     'read' => true,
                     'update' => true,
@@ -218,7 +218,7 @@ class UserMenuSeeder extends Seeder
                 ],
                 [
                     'user_id' => $this->getUser('staff'),
-                    'menu_item_id' => $this->getMenuItem('Belanja'),
+                    'menu_item_id' => $this->getMenuItem('Realisasi'),
                     'create' => true,
                     'read' => true,
                     'update' => false,
@@ -228,7 +228,7 @@ class UserMenuSeeder extends Seeder
                 ],
                 [
                     'user_id' => $this->getUser('staff'),
-                    'menu_item_id' => $this->getMenuItem('Budget'),
+                    'menu_item_id' => $this->getMenuItem('Pagu'),
                     'create' => false,
                     'read' => true,
                     'update' => false,

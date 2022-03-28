@@ -2,7 +2,7 @@
 <html lang="id">
 
 <head>
-    <title>Laporan Transaksi</title>
+    <title>Laporan Realisasi</title>
 </head>
 
 <body>
