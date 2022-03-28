@@ -21,6 +21,8 @@ Sistem Informasi Bagian Umum.
 
 # Daftar Pembaruan
 
+<<<<<<< HEAD
+
 -   [ ] Chat Pie Dashboard.
 
     > Filter pada chart pie paling bawah di halaman dashboard dibenahi.
