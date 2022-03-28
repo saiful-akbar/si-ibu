@@ -1,13 +1,13 @@
 <div align="center">
-    <img
+  <img
       loading="lazy"
       alt="logo"
       src="public/assets/images/logo/logo-dark.png"
       height="150"
-    />
+   />
 </div>
 
-# SiIBU
+# Si-IBU
 
 Sistem Informasi Bagian Umum.
 
@@ -15,17 +15,35 @@ Sistem Informasi Bagian Umum.
 
 -   php v8.0 | v8.1
 -   composer
--   git
+-   git & git bash
 -   Aktifkan `extension=gd` pada php.ini untuk fitur export excel dan domPDF
 -   Ter-install driver SQL Server untuk php
 
-# Update List
+# Daftar Pembaruan
 
-- [ ] Filter level akhir dibenahi
-- [ ] Bagian Umum dapat input semua bidang yg skrg sesuai user perbagian sj
-- [ ] Ada flag outstanding di pengeluaran bhw itu tanda kwitansi/invoicenya blm datang
-- [ ] Penambahan kolom biaya penggunaan pada list budget
-- [ ] Ganti penamaan budget menjadi `pagu`, belanja menjadi `realisasi`
+- [ ] Chat Pie Dashboard.
+    > Filter pada chart pie paling bawah di halaman dashboard dibenahi.
+    > Jangan tampilkan seluruh data pada form select-nya, tampilkan hanya sesui data yang dipilih pada form select parant-nya.
+
+- [ ] Transaksi/Belanja.
+    > Bagian umum & kepala kantor dapat input belanja untuk semua akun belanja,
+    > dimana yang sekarang hanya sesuai bagian-nya masing-masing.
+
+- [ ] Transaksi/Belanja.
+    > Tambah 1 kolom `outstanding` pada tambel transaksi/belanja, untuk mengetahui biaya masih outstanding atau tidak.
+    > Gunakan tipe data boolean saja untuk kolom-nya
+
+- [ ] Budget
+    > Tambahn 1 kolom pada tabel **hanyan pada view saja** bukan di database.
+    > Untuk menampilkan biaya atau total nominal belanja yang sudah digunakan & buat chart pie-nya pada dashboard.
+
+- [ ] Budget & Transaksi/Belanja
+    > Ganti penamaan budget menjadi `pagu` & belanja menjadi `readlisasi` hanya pada view saja.
+
+- [ ] Transaksi/Belanja.
+    > Periksa datatable pada modal untuk memilih akun belanja di halaman `Input Belanja` & `Edit Belanja`
+    
+
 
 # Instalasi
 
