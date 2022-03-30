@@ -21,7 +21,7 @@ Sistem Informasi Bagian Umum.
 
 # Daftar Pembaruan
 
--   [ ] Chat Pie Dashboard.
+-   [x] Chat Pie Dashboard.
 
     > Filter pada chart pie paling bawah di halaman dashboard dibenahi.
     > Jangan tampilkan seluruh data pada form select-nya, tampilkan hanya sesui data yang dipilih pada form select parant-nya.
@@ -31,7 +31,7 @@ Sistem Informasi Bagian Umum.
     > Bagian umum & kepala kantor dapat input belanja untuk semua akun belanja,
     > dimana yang sekarang hanya sesuai bagian-nya masing-masing.
 
--   [ ] Transaksi/Belanja.
+-   [x] Transaksi/Belanja.
 
     > Tambah 1 kolom `outstanding` pada tambel transaksi/belanja, untuk mengetahui biaya masih outstanding atau tidak.
     > Gunakan tipe data boolean saja untuk kolom-nya

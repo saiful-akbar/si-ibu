@@ -345,18 +345,19 @@ class TransaksiController extends Controller
          * cek file_dokumen di upload atau tidak
          * jika di upload simpan pada storage
          */
-        $fileDocument = null;
         if ($request->hasFile('file_dokumen')) {
             $file = $request->file('file_dokumen');
             $extension = $file->extension();
             $fileName = 'dokumen-' . date('Y-m-d-H-i-s') . '.' . $extension;
             $fileDocument = $file->storeAs('transaksi', $fileName);
+        } else {
+            $fileDocument = null;
         }
 
         try {
 
             /**
-             * tambah transaksi
+             * Proses tambah transaksi
              */
             Transaksi::create([
                 'user_id' => Auth::user()->id,
@@ -368,6 +369,7 @@ class TransaksiController extends Controller
                 'no_dokumen' => $request->no_dokumen,
                 'file_dokumen' => $fileDocument,
                 'uraian' => $request->uraian ?? null,
+                'outstanding' => (boolean) $request->outstanding,
             ]);
 
             /**
@@ -603,6 +605,7 @@ class TransaksiController extends Controller
                     'no_dokumen' => $request->no_dokumen,
                     'file_dokumen' => Storage::exists($fileDokumen) ? $fileDokumen : null,
                     'uraian' => $request->uraian ?? null,
+                    'outstanding' => (boolean) $request->outstanding,
                 ]);
         } catch (\Exception $e) {
 
@@ -813,7 +816,7 @@ class TransaksiController extends Controller
         $data = $this->fillter($request);
         return Excel::download(
             new LaporanTransaksiExport($data),
-            'Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.xlsx'
+            'Realisasi (' . date('Y-m-d h.i.s') . ').xlsx'
         );
     }
 
@@ -841,7 +844,7 @@ class TransaksiController extends Controller
             ]
         );
 
-        return $pdf->stream('Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.pdf');
+        return $pdf->stream('Realisasi (' . date('Y-m-d h.i.s') . ').pdf');
     }
 
     /**

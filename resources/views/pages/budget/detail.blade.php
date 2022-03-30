@@ -1,5 +1,4 @@
-<div
-    id="detail-budget"
+<div id="detail-budget"
     class="modal fade"
     tabindex="-1"
     role="dialog"
@@ -9,26 +8,12 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4
-                    class="modal-title"
-                    id="detailBudget"
-                >
-                    Detail Pagu
-                </h4>
-
-                <button
-                    class="close"
-                    onclick="budget.detail(false)"
-                >×</button>
+                <h4 class="modal-title" id="detailBudget">Detail Pagu</h4>
+                <button class="close" onclick="budget.detail(false)">×</button>
             </div>
 
             <div class="modal-body">
-
-                {{-- preloader --}}
-                <div
-                    id="detail-loading"
-                    class="my-5"
-                >
+                <div id="detail-loading" class="my-5">
                     <div class="d-flex justify-content-center align-items-center">
                         <div id="status">
                             <div class="bouncing-loader">
@@ -40,11 +25,7 @@
                     </div>
                 </div>
 
-                {{-- detail content --}}
-                <div
-                    id="detail-content"
-                    class="px-md-3 px-1"
-                >
+                <div id="detail-content" class="px-md-3 px-1">
                     <div class="row mt-3">
                         <div class="col">
                             <strong>Tahun Anggaran :</strong>
@@ -87,10 +68,7 @@
                         <div class="col-12">
                             <div class="float-left">
                                 <strong>Keterangan</strong>
-                                <p
-                                    class="text-muted font-13 mt-2"
-                                    id="detail-keterangan"
-                                ></p>
+                                <p class="text-muted font-13 mt-2" id="detail-keterangan"></p>
                             </div>
                         </div>
                     </div>
@@ -127,43 +105,26 @@
                         <div class="col-sm-12">
                             <div class="float-right">
                                 <p>
-                                    <b>Budget :</b>
-                                    <span
-                                        class="float-right ml-3"
-                                        id="detail-nominal"
-                                    ></span>
+                                    <b>Pagu :</b>
+                                    <span class="float-right ml-3" id="detail-nominal"></span>
                                 </p>
-
                                 <p>
-                                    <b>Total Belanja :</b>
-                                    <span
-                                        class="float-right ml-3"
-                                        id="detail-nominal-transaksi"
-                                    ></span>
+                                    <b>Total Realisasi :</b>
+                                    <span class="float-right ml-3" id="detail-nominal-transaksi"></span>
                                 </p>
-
                                 <hr>
-
-                                <h3
-                                    id="detail-sisa-nominal"
-                                    class="float-right"
-                                ></h3>
+                                <h3 id="detail-sisa-nominal"class="float-right"></h3>
                             </div>
 
                             <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="modal-footer">
-                <button
-                    class="btn btn-dark btn-sm btn-rounded"
-                    onclick="budget.detail(false)"
-                >
-                    <i class=" mdi mdi-close-circle"></i>
-                    Tutup
+                <button class="btn btn-dark btn-sm btn-rounded" onclick="budget.detail(false)">
+                    <i class=" mdi mdi-close-circle"></i> Tutup
                 </button>
             </div>
         </div>

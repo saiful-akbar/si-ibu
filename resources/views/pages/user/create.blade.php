@@ -18,9 +18,7 @@
             <div class="col-12 mb-3">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="header-title mt-2">
-                            User Akun
-                        </h4>
+                        <h4 class="header-title mt-2">User Akun</h4>
                     </div>
 
                     <div class="card-body">

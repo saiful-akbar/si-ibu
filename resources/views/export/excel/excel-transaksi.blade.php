@@ -10,6 +10,7 @@
         <thead>
             <tr>
                 <th style="font-weight: bold; border: 1px solid #000;">No</th>
+                <th style="font-weight: bold; border: 1px solid #000;">Status</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Tanggal</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Bagian</th>
                 <th style="font-weight: bold; border: 1px solid #000;">Akun Belanja</th>
@@ -28,6 +29,9 @@
                 <tr>
                     <td style="border: 1px solid #000; width: 15em;">
                         {{ $loop->iteration }}
+                    </td>
+                    <td style="border: 1px solid #000; width: 15em;">
+                        {{ $laporan->outstanding ? 'Outstanding' : 'Onstanding' }}
                     </td>
                     <td style="border: 1px solid #000; width: 15em;">
                         {{ $laporan->tanggal }}

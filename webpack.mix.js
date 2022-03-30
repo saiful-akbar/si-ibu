@@ -16,7 +16,7 @@ mix.js("resources/js/app.js", "public/js")
     /**
      * Browser syncron
      */
-    .browserSync("http://si-ibu.test")
+    .browserSync("http://localhost/si-ibu")
 
     /**
      * Post | tailwind css

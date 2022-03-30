@@ -16,7 +16,7 @@
         @method('POST') @csrf
 
         {{-- input budget_id --}}
-        <input type="hidden" name="budget_id" id="budget_id" value="{{ old('budget_id') }}" required>
+        <input type="hidden" name="budget_id" id="budget_id" value="{{ old('budget_id') }}" required />
 
         {{-- input akun belanja (jenis_belanja) & bagian (divisi) --}}
         <div class="row">
@@ -36,20 +36,36 @@
 
                             <div class="input-group col-md-9 col-sm-12">
                                 <div class="input-group-prepend">
-                                    <button type="button" class="btn btn-sm btn-info" data-toggle="tooltip"
-                                        data-original-title="Pilih akun belanja" data-placement="top"
-                                        onclick="transaksi.showModalTableBudget(true)">
+                                    <button type="button"
+                                        class="btn btn-sm btn-info"
+                                        data-toggle="tooltip"
+                                        data-original-title="Pilih akun belanja"
+                                        data-placement="top"
+                                        onclick="transaksi.showModalTableBudget(true)"
+                                    >
                                         <i class="mdi mdi-table-large"></i>
                                     </button>
                                 </div>
 
-                                <input type="text" name="nama_akun_belanja" id="nama_akun_belanja"
+                                <input type="text"
+                                    name="nama_akun_belanja"
+                                    id="nama_akun_belanja"
                                     class="form-control @error('budget_id') is-invalid @else @error('nama_akun_belanja') is-invalid @enderror @enderror"
-                                    placeholder="Akun belanja..." value="{{ old('nama_akun_belanja') }}" readonly required />
+                                    placeholder="Akun belanja..."
+                                    value="{{ old('nama_akun_belanja') }}"
+                                    readonly
+                                    required
+                                />
 
-                                <input type="text" name="kategori_belanja" id="kategori_belanja"
+                                <input type="text"
+                                    name="kategori_belanja"
+                                    id="kategori_belanja"
                                     class="form-control @error('budget_id') is-invalid @else @error('kategori_belanja') is-invalid @enderror @enderror"
-                                    placeholder="Jenis belanja..." value="{{ old('kategori_belanja') }}" readonly required />
+                                    placeholder="Jenis belanja..."
+                                    value="{{ old('kategori_belanja') }}"
+                                    readonly
+                                    required
+                                />
 
                                 @error('budget_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -72,9 +88,14 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input readonly required type="text" id="nama_divisi" name="nama_divisi"
+                                <input type="text"
+                                    id="nama_divisi"
+                                    name="nama_divisi"
                                     value="{{ old('nama_divisi') }}" class="form-control @error('nama_divisi') is-invalid @enderror"
-                                    placeholder="Bagian..." />
+                                    placeholder="Bagian..."
+                                    readonly
+                                    required
+                                />
 
                                 @error('nama_divisi')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -89,10 +110,14 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input readonly type="number" id="tahun_anggaran" name="tahun_anggaran"
+                                <input type="number"
+                                    id="tahun_anggaran"
+                                    name="tahun_anggaran"
                                     value="{{ old('tahun_anggaran') }}"
                                     class="form-control @error('tahun_anggaran') is-invalid @enderror"
-                                    placeholder="Tahun Anggaran..." />
+                                    placeholder="Tahun Anggaran..."
+                                    readonly
+                                />
 
                                 @error('tahun_anggaran')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -108,13 +133,17 @@
 
                             <div class="col-md-9 col-sm-12 input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        Rp.
-                                    </span>
+                                    <span class="input-group-text" id="basic-addon1">Rp.</span>
                                 </div>
 
-                                <input readonly type="text" id="sisa_budget" name="sisa_budget" value="{{ old('sisa_budget') }}"
-                                    class="form-control @error('sisa_budget') is-invalid @enderror" placeholder="Sisa budget..." />
+                                <input type="text"
+                                    id="sisa_budget"
+                                    name="sisa_budget"
+                                    value="{{ old('sisa_budget') }}"
+                                    class="form-control @error('sisa_budget') is-invalid @enderror"
+                                    placeholder="Sisa budget..."
+                                    readonly
+                                />
 
                                 @error('sisa_budget')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -145,9 +174,14 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="date" id="tanggal" name="tanggal" placeholder="Masukan tanggal transaksi belanja..."
-                                    value="{{ old('tanggal') }}" class="form-control @error('tanggal') is-invalid @enderror"
-                                    required />
+                                <input type="date"
+                                    id="tanggal"
+                                    name="tanggal"
+                                    placeholder="Masukan tanggal transaksi belanja..."
+                                    value="{{ old('tanggal') }}"
+                                    class="form-control @error('tanggal') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('tanggal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -162,9 +196,14 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="text" id="kegiatan" name="kegiatan" placeholder="Masukan kegiatan..."
-                                    value="{{ old('kegiatan') }}" class="form-control @error('kegiatan') is-invalid @enderror"
-                                    required />
+                                <input type="text"
+                                    id="kegiatan"
+                                    name="kegiatan"
+                                    placeholder="Masukan kegiatan..."
+                                    value="{{ old('kegiatan') }}"
+                                    class="form-control @error('kegiatan') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('kegiatan')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -180,14 +219,18 @@
 
                             <div class="col-md-9 col-sm-12 input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        Rp.
-                                    </span>
+                                    <span class="input-group-text" id="basic-addon1"> Rp.</span>
                                 </div>
 
-                                <input type="number" id="jumlah_nominal" name="jumlah_nominal" min="0"
-                                    placeholder="Masukan jumlah nominal..." value="{{ old('jumlah_nominal') }}"
-                                    class="form-control @error('jumlah_nominal') is-invalid @enderror" required />
+                                <input type="number"
+                                    id="jumlah_nominal"
+                                    name="jumlah_nominal"
+                                    min="0"
+                                    placeholder="Masukan jumlah nominal..."
+                                    value="{{ old('jumlah_nominal') }}"
+                                    class="form-control @error('jumlah_nominal') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('jumlah_nominal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -202,13 +245,36 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="text" id="approval" name="approval" placeholder="Masukan nama approval..."
-                                    value="{{ old('approval') }}" class="form-control @error('approval') is-invalid @enderror"
-                                    required />
+                                <input type="text"
+                                    id="approval"
+                                    name="approval"
+                                    placeholder="Masukan nama approval..."
+                                    value="{{ old('approval') }}"
+                                    class="form-control @error('approval') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('approval')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div>
+                        </div>
+
+                        {{-- input Outstanding --}}
+                        <div class="form-group row justify-content-end">
+                            <div class="col-md-9 col-sm-12">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox"
+                                        name="outstanding"
+                                        class="custom-control-input form-control-lg"
+                                        id="outstanding"
+                                        @if (old('outstanding')) checked @endif
+                                    />
+
+                                    <label class="custom-control-label" for="outstanding">
+                                        Outstanding
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
@@ -235,9 +301,14 @@
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input type="text" id="no_dokumen" name="no_dokumen" placeholder="Masukan no dokumen..."
+                                <input type="text"
+                                    id="no_dokumen"
+                                    name="no_dokumen"
+                                    placeholder="Masukan no dokumen..."
                                     value="{{ old('no_dokumen', $noDocument) }}"
-                                    class="form-control @error('no_dokumen') is-invalid @enderror" required />
+                                    class="form-control @error('no_dokumen') is-invalid @enderror"
+                                    required
+                                />
 
                                 @error('no_dokumen')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -263,13 +334,16 @@
                                     </div>
 
                                     <div class="col-6">
-                                        <span id="file-name" class="d-none badge badge-light py-1 px-1 mt-1"
-                                            data-action="create"></span>
+                                        <span id="file-name" class="d-none badge badge-light py-1 px-1 mt-1" data-action="create"></span>
                                     </div>
                                 </div>
 
-                                <input type="file" id="file_dokumen" name="file_dokumen" value="{{ old('file_dokumen') }}"
-                                    class="d-none is-invalid @error('file_dokumen') is-invalid @enderror" />
+                                <input type="file"
+                                    id="file_dokumen"
+                                    name="file_dokumen"
+                                    value="{{ old('file_dokumen') }}"
+                                    class="d-none is-invalid @error('file_dokumen') is-invalid @enderror"
+                                />
 
                                 @error('file_dokumen')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -288,9 +362,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h3 class="header-title">
-                            Uraian
-                        </h3>
+                        <h3 class="header-title">Uraian</h3>
                     </div>
 
                     <div class="card-body">
@@ -325,10 +397,7 @@
 @endsection
 
 @push('css')
-    {{-- custom editor --}}
     <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
-
-    {{-- datatables --}}
     <link href="{{ asset('assets/css/vendor/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/vendor/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/vendor/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
@@ -336,10 +405,7 @@
 @endpush
 
 @section('js')
-    {{-- custom edito --}}
     <script src="{{ asset('assets/js/vendor/summernote-bs4.min.js') }}"></script>
-
-    {{-- datatables --}}
     <script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/dataTables.bootstrap4.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
@@ -351,7 +417,5 @@
     <script src="{{ asset('assets/js/vendor/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/dataTables.keyTable.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/dataTables.select.min.js') }}"></script>
-
-    {{-- budget page js --}}
     <script src="{{ asset('assets/js/pages/transaksi.js') }}"></script>
 @endsection

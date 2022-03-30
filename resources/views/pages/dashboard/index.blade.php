@@ -28,8 +28,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="periode-divisi">Tahun Anggaran</label>
-                                        <select id="periode-global" class="form-control form-control-sm select2"
-                                            data-toggle="select2">
+                                        <select id="periode-global" class="form-control form-control-sm select2" data-toggle="select2">
                                             @foreach ($years as $year)
                                                 <option value="{{ $year }}" @if ($year == date('Y')) selected @endif>
                                                     {{ $year }}
@@ -59,7 +58,7 @@
                                         <span class="float-right" id="global-total-belanja"></span>
                                     </p>
                                     <p>
-                                        <i class="mdi mdi-square text-primary"></i> Sisa Budget
+                                        <i class="mdi mdi-square text-primary"></i> Sisa Pagu
                                         <span class="float-right" id="global-sisa-budget"></span>
                                     </p>
                                 </div>
@@ -167,16 +166,17 @@
                             </div>
 
                             <div class="col-md-6 col-sm-12">
-
-                                {{-- input filter --}}
                                 <div class="row">
 
                                     {{-- select tahun anggaran --}}
                                     <div class="form-group col-lg-6 col-sm-12">
                                         <label for="admin__chart-by-akun-belanja__select-tahun-anggaran">Tahun Anggaran</label>
 
-                                        <select id="admin__chart-by-akun-belanja__select-tahun-anggaran"
-                                            class="form-control form-control-sm select2" data-toggle="select2">
+                                        <select
+                                            id="admin__chart-by-akun-belanja__select-tahun-anggaran"
+                                            class="form-control form-control-sm select2"
+                                            data-toggle="select2"
+                                        >
                                             @foreach ($years as $year)
                                                 <option value="{{ $year }}"
                                                     @if ($year == date('Y')) selected @endif>
@@ -190,9 +190,11 @@
                                     <div class="form-group col-lg-6 col-sm-12">
                                         <label for="admin__chart-by-akun-belanja__select-divisi">Bagian</label>
 
-                                        <select id="admin__chart-by-akun-belanja__select-divisi"
-                                            class="form-control form-control-sm select2" data-toggle="select2">
-
+                                        <select
+                                            id="admin__chart-by-akun-belanja__select-divisi"
+                                            class="form-control form-control-sm select2"
+                                            data-toggle="select2"
+                                        >
                                             <option value="{{ null }}">Semua Bagian</option>
 
                                             @foreach ($divisi as $divChartByAkunBelanja)
@@ -211,9 +213,11 @@
                                     <div class="form-group col-lg-6 col-sm-12">
                                         <label for="admin__chart-by-akun-belanja__select-akun-belanja">Akun Belanja</label>
 
-                                        <select id="admin__chart-by-akun-belanja__select-akun-belanja"
-                                            class="form-control form-control-sm select2" data-toggle="select2">
-
+                                        <select
+                                            id="admin__chart-by-akun-belanja__select-akun-belanja"
+                                            class="form-control form-control-sm select2"
+                                            data-toggle="select2"
+                                        >
                                             <option value="{{ null }}">Semua Akun Belanja</option>
 
                                             @foreach ($akunBelanja as $aBelanja)
@@ -228,21 +232,17 @@
                                     <div class="form-group col-lg-6 col-sm-12">
                                         <label for="admin__chart-by-akun-belanja__select-jenis-belanja">Jenis Belanja</label>
 
-                                        <select id="admin__chart-by-akun-belanja__select-jenis-belanja"
-                                            class="form-control form-control-sm select2" data-toggle="select2">
-
+                                        <select
+                                            id="admin__chart-by-akun-belanja__select-jenis-belanja"
+                                            class="form-control form-control-sm select2"
+                                            data-toggle="select2"
+                                            disabled
+                                        >
                                             <option value="{{ null }}">Semua Jenis Belanja</option>
-
-                                            @foreach ($jenisBelanja as $jBelanja)
-                                                <option value="{{ $jBelanja->id }}">
-                                                    {{ $jBelanja->kategori_belanja }}
-                                                </option>
-                                            @endforeach
                                         </select>
                                     </div>
 
                                 </div>
-                                {{-- end input filter --}}
 
                                 {{-- deskripsi --}}
                                 <div class="row">
@@ -252,8 +252,12 @@
                                             <span class="float-right" id="admin__chart-by-akun-belanja__total-budget"></span>
                                         </p>
                                         <p>
-                                            <i class="mdi mdi-square text-info"></i> Total Realisasi
-                                            <span class="float-right" id="admin__chart-by-akun-belanja__total-transaksi"></span>
+                                            <i class="mdi mdi-square text-danger"></i> Realisasi Outstanding
+                                            <span class="float-right" id="admin__chart-by-akun-belanja__total-outstanding"></span>
+                                        </p>
+                                        <p>
+                                            <i class="mdi mdi-square text-success"></i> Realisasi Ontstanding
+                                            <span class="float-right" id="admin__chart-by-akun-belanja__total-onstanding"></span>
                                         </p>
                                         <p>
                                             <i class="mdi mdi-square text-warning"></i> Sisa Pagu
@@ -261,8 +265,6 @@
                                         </p>
                                     </div>
                                 </div>
-                                {{-- end deskripsi chart global --}}
-
                             </div>
                         </div>
                     </div>
@@ -270,7 +272,9 @@
             </div>
         </div>
         {{-- end Budget chart per akun_belanja --}}
+
     @else
+
         {{-- chart line per bagian (divisi) --}}
         <div class="row">
             <div class="col-12">

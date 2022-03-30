@@ -137,21 +137,17 @@
                                             <th>Nominal</th>
                                             <th>Nominal Realisasi</th>
                                             <th>Sisa Nominal</th>
-
                                             @if ($isAdmin)
                                                 <th>Dibuat</th>
                                                 <th>Diperbarui</th>
                                             @endif
-
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($budgets as $budget)
                                             <tr>
-                                                <td>
-                                                    {{ $budgets->perPage() * ($budgets->currentPage() - 1) + $loop->iteration }}
-                                                </td>
+                                                <td>{{ $budgets->perPage() * ($budgets->currentPage() - 1) + $loop->iteration }}</td>
                                                 <td>{{ $budget->tahun_anggaran }}</td>
                                                 <td>{{ ucwords($budget->divisi->nama_divisi) }}</td>
                                                 <td>{{ $budget->jenisBelanja->akunBelanja->nama_akun_belanja }}</td>
@@ -159,28 +155,26 @@
                                                 <td>Rp. {{ number_format($budget->nominal) }}</td>
                                                 <td>Rp. {{ number_format($budget->nominal - $budget->sisa_nominal) }}</td>
                                                 <td>Rp. {{ number_format($budget->sisa_nominal) }}</td>
-
                                                 @if ($isAdmin)
                                                     <td>{{ $budget->created_at }}</td>
                                                     <td>{{ $budget->updated_at }}</td>
                                                 @endif
-
                                                 <td class="table-action text-center">
                                                     <button onclick="budget.detail(true, {{ $budget->id }})" data-toggle="tooltip"
                                                         data-original-title="Detail" data-placement="top"
-                                                        class="btn btn-sm btn-light btn-icon mx-1">
+                                                        class="btn btn-sm btn-secondary btn-icon mx-1">
                                                         <i class="mdi mdi-eye-outline"></i>
                                                     </button>
 
                                                     @if ($userAccess->update == 1)
                                                         <a href="{{ route('budget.switch', ['budget' => $budget->id]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                            class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                             data-original-title="Switch Pagu" data-placement="top">
                                                             <i class="mdi mdi-code-tags"></i>
                                                         </a>
 
                                                         <a href="{{ route('budget.edit', ['budget' => $budget->id]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                            class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                             data-original-title="Edit" data-placement="top">
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
@@ -189,7 +183,7 @@
                                                     @if ($userAccess->delete == 1)
                                                         <button onclick="budget.handleDelete({{ $budget->id }})"
                                                             data-toggle="tooltip" data-original-title="Hapus" data-placement="top"
-                                                            class="btn btn-sm btn-light btn-icon mx-1">
+                                                            class="btn btn-sm btn-secondary btn-icon mx-1">
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>
                                                     @endif
@@ -213,7 +207,7 @@
 
                     {{-- total --}}
                     <div class="row justify-content-end">
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-6 col-md-8 col-sm-12">
                             <table class="table table-sm">
                                 <tbody>
                                     <tr>

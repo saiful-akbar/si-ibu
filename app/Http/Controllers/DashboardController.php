@@ -63,20 +63,9 @@ class DashboardController extends Controller
          */
         $akunBelanja = AkunBelanja::where('active', 1)->get();
 
-        /**
-         * Ambil data jenis_belanja
-         */
-        $jenisBelanja = JenisBelanja::where('active', 1)->get();
-
         return view(
             'pages.dashboard.index',
-            compact(
-                'years',
-                'divisi',
-                'isAdmin',
-                'jenisBelanja',
-                'akunBelanja'
-            )
+            compact('years','divisi','isAdmin','akunBelanja')
         );
     }
 
@@ -308,9 +297,16 @@ class DashboardController extends Controller
             ->where('tahun_anggaran', $tahunAnggaran);
 
         /**
-         * query
+         * Query total transaksi
          */
-        $transaksi = Transaksi::with('budget.jenisBelanja', 'budget')
+        $outstanding = Transaksi::with('budget.jenisBelanja', 'budget')
+            ->where('outstanding', '=', 1)
+            ->whereHas('budget', function (Builder $query) use ($tahunAnggaran) {
+                $query->where('tahun_anggaran', $tahunAnggaran);
+            });
+
+        $onstanding = Transaksi::with('budget.jenisBelanja', 'budget')
+            ->where('outstanding', '=', 0)
             ->whereHas('budget', function (Builder $query) use ($tahunAnggaran) {
                 $query->where('tahun_anggaran', $tahunAnggaran);
             });
@@ -321,7 +317,11 @@ class DashboardController extends Controller
         if ($request->divisi) {
             $budget->where('divisi_id', $request->divisi);
 
-            $transaksi->whereHas('budget', function (Builder $query) use ($request) {
+            $outstanding->whereHas('budget', function (Builder $query) use ($request) {
+                $query->where('divisi_id', $request->divisi);
+            });
+
+            $onstanding->whereHas('budget', function (Builder $query) use ($request) {
                 $query->where('divisi_id', $request->divisi);
             });
         }
@@ -334,7 +334,11 @@ class DashboardController extends Controller
                 $query->where('akun_belanja_id', $request->akun_belanja);
             });
 
-            $transaksi->whereHas('budget.jenisBelanja', function (Builder $query) use ($request) {
+            $outstanding->whereHas('budget.jenisBelanja', function (Builder $query) use ($request) {
+                $query->where('akun_belanja_id', $request->akun_belanja);
+            });
+
+            $onstanding->whereHas('budget.jenisBelanja', function (Builder $query) use ($request) {
                 $query->where('akun_belanja_id', $request->akun_belanja);
             });
         }
@@ -345,7 +349,11 @@ class DashboardController extends Controller
         if ($request->jenis_belanja) {
             $budget->where('jenis_belanja_id', $request->jenis_belanja);
 
-            $transaksi->whereHas('budget', function (Builder $query) use ($request) {
+            $outstanding->whereHas('budget', function (Builder $query) use ($request) {
+                $query->where('jenis_belanja_id', $request->jenis_belanja);
+            });
+
+            $onstanding->whereHas('budget', function (Builder $query) use ($request) {
                 $query->where('jenis_belanja_id', $request->jenis_belanja);
             });
         }
@@ -358,8 +366,32 @@ class DashboardController extends Controller
 
         return response()->json([
             'totalBudget' => (int) $budget->sum('nominal'),
-            'totalTransaksi' => (int) $transaksi->sum('jumlah_nominal'),
+            'totalOnstanding' => (int) $onstanding->sum('jumlah_nominal'),
+            'totalOutstanding' => (int) $outstanding->sum('jumlah_nominal'),
             'sisaBudget' => (int) $sisaBudget,
         ], 200);
+    }
+
+    /**
+     * Mengambil data jenis belanja berdasarkan id akun belanja...
+     * ... untuk isi select option.
+     * 
+     * @param  int $akunBelanjaId [description]
+     * @return void
+     */
+    public function getJenisBelanjaByAkunBelanjaId($akunBelanjaId)
+    {
+        $jenisBelanja = JenisBelanja::select(['id', 'akun_belanja_id', 'kategori_belanja', 'active'])
+        ->where('akun_belanja_id', $akunBelanjaId)
+            ->where('active', 1)
+            ->get();
+
+        $option = "<option value>Semua Jenis Belanja</option>";
+
+        foreach ($jenisBelanja as $jBelanja) {
+            $option .= "<option value='{$jBelanja->id}'>{$jBelanja->kategori_belanja}</option>";
+        }
+
+        echo $option;
     }
 }

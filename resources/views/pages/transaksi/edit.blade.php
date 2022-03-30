@@ -222,6 +222,24 @@
                             </div>
                         </div>
 
+                        {{-- input Outstanding --}}
+                        <div class="form-group row justify-content-end">
+                            <div class="col-md-9 col-sm-12">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox"
+                                        name="outstanding"
+                                        class="custom-control-input form-control-lg"
+                                        id="outstanding"
+                                        @if (old('outstanding', $transaksi->outstanding)) checked @endif
+                                    />
+
+                                    <label class="custom-control-label" for="outstanding">
+                                        Outstanding
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

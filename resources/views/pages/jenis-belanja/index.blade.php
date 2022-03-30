@@ -90,14 +90,14 @@
                                                     <td class="text-cente">
                                                         @if ($userAccess->update == 1)
                                                             <a href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                                class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                                 data-original-title="Edit" data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
                                                         @endif
 
                                                         @if ($userAccess->delete == 1)
-                                                            <button class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                            <button class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                                 data-original-title="Hapus" data-placement="top"
                                                                 onclick="akunBelanja.deleteJenisBelanja({{ $data->id }})">
                                                                 <i class="mdi mdi-delete"></i>

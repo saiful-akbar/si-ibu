@@ -95,10 +95,9 @@
             <thead>
                 <tr>
                     <th class="text-center">No</th>
+                    <th class="text-center">Status</th>
                     <th class="text-center">Tanggal</th>
-                    <th class="text-center" colspan="3">
-                        Akun Belanja
-                    </th>
+                    <th class="text-center" colspan="3">Akun Belanja</th>
                     <th class="text-center">Submitter</th>
                     <th class="text-center">Kegiatan</th>
                     <th class="text-center">No. Dokumen</th>
@@ -110,6 +109,7 @@
                 @foreach ($laporanTransaksi as $laporan)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>{{ $laporan->outstanding ? 'Outstanding' : 'Onstanding' }}</td>
                         <td>{{ $laporan->tanggal }}</td>
                         <td>{{ $laporan->budget->divisi->nama_divisi }}</td>
                         <td>{{ $laporan->budget->jenisBelanja->akunBelanja->nama_akun_belanja }}</td>
@@ -124,7 +124,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="9">Total</th>
+                    <th colspan="10">Total</th>
                     <th align="right">Rp. {{ number_format($totalTransaksi) }}</th>
                 </tr>
             </tfoot>

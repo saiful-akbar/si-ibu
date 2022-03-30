@@ -2,10 +2,16 @@ class Budget {
     constructor() {
         this.dataTableAkunBelanja = null;
     }
-    handleDelete(a) {
+
+    /**
+     * Fungsi handle hapus data budget
+     *
+     * @param {int} id
+     */
+    handleDelete = (id) => {
         bootbox.confirm({
             title: "Anda ingin menghapus budget ?",
-            message: String.raw`
+            message: String.raw `
                 <div class="alert alert-danger" role="alert">
                     <h4 class="alert-heading">
                         <i class="dripicons-warning mr-1"></i>
@@ -23,145 +29,209 @@ class Budget {
             `,
             buttons: {
                 confirm: {
-                    label: String.raw`<i class='mdi mdi-delete mr-1'></i> Hapus`,
-                    className: "btn btn-danger btn-sm btn-rounded",
+                    label: String.raw `<i class='mdi mdi-delete mr-1'></i> Hapus`,
+                    className: `btn btn-danger btn-sm btn-rounded`,
                 },
                 cancel: {
-                    label: String.raw`<i class='mdi mdi-close-circle mr-1'></i> Batal`,
-                    className: "btn btn-sm btn-dark btn-rounded mr-2",
+                    label: String.raw `<i class='mdi mdi-close-circle mr-1'></i> Batal`,
+                    className: `btn btn-sm btn-dark btn-rounded mr-2`,
                 },
             },
-            callback: (e) => {
-                if (e) {
-                    const e = $("#form-delete-budget");
-                    e.attr("action", `${main.baseUrl}/budget/${a}`), e.submit();
+            callback: (result) => {
+                if (result) {
+                    const form = $("#form-delete-budget");
+
+                    form.attr("action", `${main.baseUrl}/budget/${id}`);
+                    form.submit();
                 }
             },
         });
-    }
-    showLoading(a) {
-        const e = $("#detail-loading"),
-            n = $("#detail-content");
-        a ? (e.show(), n.hide()) : (e.hide(), n.show());
-    }
-    detail(a, e = null) {
-        $("#detail-budget").modal(a ? "show" : "hide"),
-            a &&
-                (this.showLoading(!0),
-                $("#detail-transaksi").html(""),
-                $.ajax({
-                    type: "get",
-                    url: `${main.baseUrl}/budget/${e}/show`,
-                    dataType: "json",
-                    success: (a) => {
-                        this.showLoading(!1),
-                            $("#detail-keterangan").html(a.budget.keterangan),
-                            $("#detail-tahun-anggaran").text(
-                                a.budget.tahun_anggaran
-                            ),
-                            $("#detail-tahun-anggaran").text(
-                                a.budget.tahun_anggaran
-                            ),
-                            $("#detail-divisi").text(
-                                a.budget.divisi.nama_divisi
-                            ),
-                            $("#detail-akun-belanja").text(
-                                a.budget.jenis_belanja.akun_belanja
-                                    .nama_akun_belanja
-                            ),
-                            $("#detail-jenis-belanja").text(
-                                a.budget.jenis_belanja.kategori_belanja
-                            ),
-                            $("#detail-nominal").text(
-                                "Rp. " + main.formatRupiah(a.budget.nominal)
-                            ),
-                            $("#detail-nominal-transaksi").text(
-                                "Rp. " +
-                                    main.formatRupiah(a.totalNominalTransaksi)
-                            ),
-                            $("#detail-sisa-nominal").text(
-                                "Rp. " +
-                                    main.formatRupiah(a.budget.sisa_nominal)
-                            ),
-                            a.transaksi.map((a) =>
-                                $("#detail-transaksi").append(String.raw`
+    };
+
+    /**
+     * fungsi show hide loading modal
+     *
+     * @param {boolean} show
+     */
+    showLoading = (show) => {
+        const loading = $("#detail-loading");
+        const content = $("#detail-content");
+
+        if (show) {
+            loading.show();
+            content.hide();
+        } else {
+            loading.hide();
+            content.show();
+        }
+    };
+
+    /**
+     * Fungsi handle show modal detail
+     *
+     * @param {int} id
+     */
+    detail = (show, budgetId = null) => {
+        $("#detail-budget").modal(show ? "show" : "hide");
+
+        if (show) {
+            this.showLoading(true);
+
+            $("#detail-transaksi").html("");
+
+            $.ajax({
+                type: "get",
+                url: `${main.baseUrl}/budget/${budgetId}/show`,
+                dataType: "json",
+                success: (res) => {
+                    this.showLoading(false);
+
+                    $("#detail-keterangan").html(res.budget.keterangan);
+                    $("#detail-tahun-anggaran").text(res.budget.tahun_anggaran);
+                    $("#detail-tahun-anggaran").text(res.budget.tahun_anggaran);
+                    $("#detail-divisi").text(res.budget.divisi.nama_divisi);
+
+                    $("#detail-akun-belanja").text(
+                        res.budget.jenis_belanja.akun_belanja.nama_akun_belanja
+                    );
+
+                    $("#detail-jenis-belanja").text(
+                        res.budget.jenis_belanja.kategori_belanja
+                    );
+
+                    $("#detail-nominal").text(
+                        "Rp. " + main.formatRupiah(res.budget.nominal)
+                    );
+
+                    $("#detail-nominal-transaksi").text(
+                        "Rp. " + main.formatRupiah(res.totalNominalTransaksi)
+                    );
+
+                    $("#detail-sisa-nominal").text(
+                        "Rp. " + main.formatRupiah(res.budget.sisa_nominal)
+                    );
+
+                    /**
+                     * append table detail transkasi per budget
+                     */
+                    res.transaksi.map((transaksi) =>
+                        $("#detail-transaksi").append(String.raw `
                             <tr>
-                                <td>${a.tanggal}</td>
-                                <td>${a.user.profil.nama_lengkap}</td>
-                                <td>${a.kegiatan}</td>
-                                <td>${a.approval}</td>
-                                <td>${a.no_dokumen}</td>
+                                <td>${transaksi.tanggal}</td>
+                                <td>${transaksi.user.profil.nama_lengkap}</td>
+                                <td>${transaksi.kegiatan}</td>
+                                <td>${transaksi.approval}</td>
+                                <td>${transaksi.no_dokumen}</td>
                                 <td class="text-center">
-                                    ${
-                                        null !== a.file_dokumen
-                                            ? String.raw`
-                                                <a
-                                                    href="${main.baseUrl}/belanja/${a.id}/download"
-                                                    class="btn btn-light btn-sm btn-rounded"
-                                                >
-                                                    <i class="mdi mdi-download"></i>
-                                                    <span>Unduh</span>
-                                                </a>
-                                            `
-                                            : "File tidak tersedia"
+                                    ${transaksi.file_dokumen !== null
+                                        ? String.raw`
+                                            <a href="${main.baseUrl}/belanja/${transaksi.id}/download" class="btn btn-light btn-sm btn-rounded">
+                                                <i class="mdi mdi-download"></i>
+                                                <span>Unduh</span>
+                                            </a>
+                                        `
+                                        : "File tidak tersedia"
                                     }
                                 </td>
                                 <td class="text-right">
-                                    Rp. ${main.formatRupiah(a.jumlah_nominal)}
+                                    Rp. ${main.formatRupiah(
+                                        transaksi.jumlah_nominal
+                                    )}
                                 </td>
                             </tr>
                          `)
-                            );
-                    },
-                }));
-    }
-    handleCloseModalDetail() {
+                    );
+                },
+            });
+        }
+    };
+
+    /**
+     * Fungsi handle close modal detail
+     *
+     * @param {int} id
+     */
+    handleCloseModalDetail = () => {
         $("#modal-detail").modal("hide");
+    };
+
+    /**
+     * Fungsi show hide modal table akun belanja
+     *
+     * @param {boolean} show
+     */
+    modalTableAkunBelanja(show) {
+        $("#modal-table-akun-belanja").modal(show ? "show" : "hide");
+
+        if (this.dataTableAkunBelanja == null) {
+            this.dataTableAkunBelanja = $("#datatable-akun-belanja").DataTable({
+                processing: true,
+                serverSide: true,
+                pageLength: 20,
+                lengthChange: false,
+                scrollX: true,
+                info: false,
+                scrollY: "300px",
+                scrollCollapse: true,
+                ajax: `${main.baseUrl}/akun-belanja/jenis-belanja/datatable`,
+                pagingType: "simple",
+                language: {
+                    paginate: {
+                        previous: "Prev",
+                        next: "Next",
+                    },
+                },
+                columns: [
+                    {
+                        data: "action",
+                        name: "action",
+                        orderable: false,
+                        searchable: false,
+                        className: "text-center",
+                    },
+                    {
+                        data: "akun_belanja.nama_akun_belanja",
+                        name: "akun_belanja.nama_akun_belanja",
+                    },
+                    {
+                        data: "kategori_belanja",
+                        name: "kategori_belanja",
+                    },
+                ],
+            });
+        }
     }
-    modalTableAkunBelanja(a) {
-        $("#modal-table-akun-belanja").modal(a ? "show" : "hide"),
-            null == this.dataTableAkunBelanja &&
-                (this.dataTableAkunBelanja = $(
-                    "#datatable-akun-belanja"
-                ).DataTable({
-                    processing: !0,
-                    serverSide: !0,
-                    pageLength: 20,
-                    lengthChange: !1,
-                    scrollX: !0,
-                    info: !1,
-                    scrollY: "300px",
-                    scrollCollapse: !0,
-                    ajax: `${main.baseUrl}/akun-belanja/jenis-belanja/datatable`,
-                    pagingType: "simple",
-                    language: { paginate: { previous: "Prev", next: "Next" } },
-                    columns: [
-                        {
-                            data: "action",
-                            name: "action",
-                            orderable: !1,
-                            searchable: !1,
-                            className: "text-center",
-                        },
-                        {
-                            data: "akun_belanja.nama_akun_belanja",
-                            name: "akun_belanja.nama_akun_belanja",
-                        },
-                        { data: "kategori_belanja", name: "kategori_belanja" },
-                    ],
-                }));
-    }
-    setValueAkunBelanja(a, e, n) {
-        $("#jenis_belanja_id").val(a),
-            $("#nama_akun_belanja").val(e),
-            $("#kategori_belanja").val(n),
-            this.modalTableAkunBelanja(!1);
+
+    /**
+     * Fungsi set value form input akun belanja
+     *
+     * @param {int} id
+     * @param {string} namaAkunBelanja
+     * @param {string} kategoriBelanja
+     */
+    setValueAkunBelanja(id, namaAkunBelanja, kategoriBelanja) {
+        $("#jenis_belanja_id").val(id);
+        $("#nama_akun_belanja").val(namaAkunBelanja);
+        $("#kategori_belanja").val(kategoriBelanja);
+
+        this.modalTableAkunBelanja(false);
     }
 }
+
+/**
+ * instalsiasi class budget
+ */
 const budget = new Budget();
-$(document).ready(function () {
+
+/**
+ * Jalankan fungsi seletal document dimuat
+ */
+$(document).ready(function() {
+    /**
+     * summernote keterangan
+     */
     $("#keterangan").summernote({
-        required: !0,
+        required: true,
         height: 230,
         lang: "id-ID",
         toolbar: [

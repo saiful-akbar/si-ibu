@@ -14,14 +14,14 @@ return [
     | you may use many connections at once using the Database library.
     |
     */
-    'default' => env('DB_CONNECTION', 'anggaran'),
+    'default' => env('DB_CONNECTION_ANGGARAN', 'anggaran'),
 
     /*
     |--------------------------------------------------------------------------
     | Second Database Connection Name
     |--------------------------------------------------------------------------
     */
-    'second' => env('DB_CONNECTION_SECOND', 'arsip'),
+    'second' => env('DB_CONNECTION_ARSIP', 'arsip'),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,32 +45,46 @@ return [
          * Koneksi database anggaran (default)
          */
         'anggaran' => [
-            'driver' => 'sqlsrv',
+            'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'siibu_anggaran'),
-            'username' => env('DB_USERNAME', 'sa'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
+            'host' => env('DB_HOST_ANGGARAN', '127.0.0.1'),
+            'port' => env('DB_PORT_ANGGARAN', '3306'),
+            'database' => env('DB_DATABASE_ANGGARAN', 'forge'),
+            'username' => env('DB_USERNAME_ANGGARAN', 'forge'),
+            'password' => env('DB_PASSWORD_ANGGARAN', ''),
+            'unix_socket' => env('DB_SOCKET_ANGGARAN', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
 
         /**
          * Koneksi database arsip (second)
          */
         'arsip' => [
-            'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL_SECOND'),
-            'host' => env('DB_HOST_SECOND', 'localhost'),
-            'port' => env('DB_PORT_SECOND', '1433'),
-            'database' => env('DB_DATABASE_SECOND', 'siibu_arsip'),
-            'username' => env('DB_USERNAME_SECOND', 'sa'),
-            'password' => env('DB_PASSWORD_SECOND', ''),
-            'charset' => 'utf8',
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_ARSIP', '127.0.0.1'),
+            'port' => env('DB_PORT_ARSIP', '3306'),
+            'database' => env('DB_DATABASE_ARSIP', 'forge'),
+            'username' => env('DB_USERNAME_ARSIP', 'forge'),
+            'password' => env('DB_PASSWORD_ARSIP', ''),
+            'unix_socket' => env('DB_SOCKET_ARSIP', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
 
         'sqlite' => [
