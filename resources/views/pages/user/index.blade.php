@@ -18,7 +18,10 @@
                     <div class="row align-items-center">
                         <div class="col-md-6 col-sm-12 mb-3">
                             @if ($userAccess->create == 1)
-                                <a href="{{ route('user.create') }}" class="btn btn-rounded btn-primary btn-sm">
+                                <a
+                                    href="{{ route('user.create') }}"
+                                    class="btn btn-rounded btn-primary btn-sm"
+                                >
                                     <i class="mdi mdi-plus-circle mr-1"></i>
                                     <span>Tambah User</span>
                                 </a>
@@ -26,13 +29,25 @@
                         </div>
 
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <form action="{{ route('user') }}" method="GET" autocomplete="off">
+                            <form
+                                action="{{ route('user') }}"
+                                method="GET"
+                                autocomplete="off"
+                            >
                                 <div class="input-group">
-                                    <input type="search" name="search" placeholder="Cari user..." class="form-control"
-                                        value="{{ request('search') }}" />
+                                    <input
+                                        type="search"
+                                        name="search"
+                                        placeholder="Cari user..."
+                                        class="form-control"
+                                        value="{{ request('search') }}"
+                                    />
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="submit">
+                                        <button
+                                            class="btn btn-secondary"
+                                            type="submit"
+                                        >
                                             <i class="uil-search"></i>
                                         </button>
                                     </div>
@@ -72,11 +87,17 @@
                                                 </td>
                                                 <td class="align-middle table-user">
                                                     @if ($user->avatar != null)
-                                                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="avatar"
-                                                            class="mr-2 rounded-circle" />
+                                                        <img
+                                                            src="{{ asset('storage/' . $user->avatar) }}"
+                                                            alt="avatar"
+                                                            class="mr-2 rounded-circle"
+                                                        />
                                                     @else
-                                                        <img src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
-                                                            alt="avatar" class="mr-2 rounded-circle" />
+                                                        <img
+                                                            src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
+                                                            alt="avatar"
+                                                            class="mr-2 rounded-circle"
+                                                        />
                                                     @endif
 
                                                     {{ ucwords($user->nama_lengkap) }}
@@ -98,24 +119,33 @@
                                                 @endif
 
                                                 <td class="text-center">
-                                                    <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
-                                                        class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
-                                                        data-original-title="Menu Akses">
+                                                    <a
+                                                        href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
+                                                        class="btn btn-sm btn-secondary btn-icon mx-1"
+                                                        data-toggle="tooltip"
+                                                        data-original-title="Menu Akses"
+                                                    >
                                                         <i class="mdi mdi-key"></i>
                                                     </a>
 
                                                     @if ($userAccess->update == 1)
-                                                        <a href="{{ route('user.edit', ['user' => $user->id]) }}"
-                                                            class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
-                                                            data-original-title="Edit">
+                                                        <a
+                                                            href="{{ route('user.edit', ['user' => $user->id]) }}"
+                                                            class="btn btn-sm btn-secondary btn-icon mx-1"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Edit"
+                                                        >
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
                                                     @endif
 
                                                     @if ($userAccess->delete == 1)
-                                                        <button onclick="handleDelete({{ $user->id }})"
-                                                            class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
-                                                            data-original-title="Hapus">
+                                                        <button
+                                                            onclick="handleDelete({{ $user->id }})"
+                                                            class="btn btn-sm btn-secondary btn-icon mx-1"
+                                                            data-toggle="tooltip"
+                                                            data-original-title="Hapus"
+                                                        >
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>
                                                     @endif
@@ -141,7 +171,10 @@
         </div>
     </div>
 
-    <form method="POST" id="form-delete-user">
+    <form
+        method="POST"
+        id="form-delete-user"
+    >
         @method('DELETE') @csrf
     </form>
 @endsection

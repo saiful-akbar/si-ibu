@@ -228,7 +228,7 @@ class Dashboard {
                         },
                     },
                     title: {
-                        text: "Grafik Transaksi Belanja per Akun Belanja",
+                        text: "Grafik Realisasi per Akun Belanja",
                         align: "left",
                     },
                     stroke: { curve: "smooth", with: 4 },
@@ -254,7 +254,7 @@ class Dashboard {
                     },
                     yaxis: {
                         title: {
-                            text: "Nominal Transaksi Belanja",
+                            text: "Nominal Realisasi",
                         },
                         labels: {
                             formatter: function (yLabel) {

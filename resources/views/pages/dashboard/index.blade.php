@@ -334,7 +334,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="header-title">Grafik Transaksi Belanja per Akun Belanja</h4>
+                        <h4 class="header-title">Grafik Realisasi per Akun Belanja</h4>
                     </div>
 
                     <div class="card-body">
