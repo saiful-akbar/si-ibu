@@ -1,16 +1,88 @@
-function handleDelete(a){bootbox.confirm({title:"Anda ingin menghapus user ?",message:String.raw`
+/**
+ * Fungsi handle hapus data user
+ *
+ * @param {int} id
+ * @param {string} username
+ */
+function handleDelete(id) {
+    bootbox.confirm({
+        title: "Anda ingin menghapus user ?",
+        message: String.raw `
             <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading">
                     <i class="dripicons-warning mr-1"></i>
                     Peringatan!
                 </h4>
-
                 <ul>
                     <li>Tindakan ini tidak dapat dibatalkan.</li>
                     <li>User yang dihapus tidak dapat dikembalikan.</li>
                     <li>Pastikan anda berhati-hati dalam menghapus data.</li>
                 </ul>
-
-                <p><b>NB:</b> User tidak dapat dihapus jika memiliki data relasi pada <b>Transaksi Belanja</b>!</p>
+                <p>
+                    <b>NB:</b> User tidak dapat dihapus jika memiliki data relasi pada <b>Transaksi Belanja</b>!
+                </p>
             </div>
-        `,buttons:{confirm:{label:String.raw`<i class='mdi mdi-delete mr-1'></i> Hapus`,className:"btn btn-danger btn-sm btn-rounded"},cancel:{label:String.raw`<i class='mdi mdi-close-circle mr-1'></i> Batal`,className:"btn btn-sm btn-dark btn-rounded mr-2"}},callback:t=>{if(t){const t=$("#form-delete-user");t.attr("action",`${main.baseUrl}/user/${a}`),t.submit()}}})}$(document).ready(function(){$("#avatar").change(function(a){a.preventDefault();const{files:t}=$(this)[0];t&&$("#avatar-view").attr("src",URL.createObjectURL(t[0]))}),$("button[type=reset]").click(function(){const a=$("#avatar-view");a.attr("src",a.data("src"))}),$(".menu-headers").change(function(a){const t=$(this).is(":checked"),i=$(this).data("header");$(`.${i}`).attr("disabled",!t)}),$("#is-disable-password").change(function(a){const t=$(this).is(":checked");$("#password").attr("disabled",!t)})});
+        `,
+        buttons: {
+            confirm: {
+                label: String.raw `<i class='mdi mdi-delete mr-1'></i> Hapus`,
+                className: "btn btn-danger btn-sm btn-rounded",
+            },
+            cancel: {
+                label: String.raw `<i class='mdi mdi-close-circle mr-1'></i> Batal`,
+                className: "btn btn-sm btn-dark btn-rounded mr-2",
+            },
+        },
+        callback: (result) => {
+            if (result) {
+                const form = $("#form-delete-user");
+
+                form.attr("action", `${main.baseUrl}/user/${id}`);
+                form.submit();
+            }
+        },
+    });
+}
+
+$(document).ready(function() {
+    /**
+     * View avatar
+     */
+    $("#avatar").change(function(e) {
+        e.preventDefault();
+
+        const { files } = $(this)[0];
+
+        if (files) {
+            $("#avatar-view").attr("src", URL.createObjectURL(files[0]));
+        }
+    });
+
+    /**
+     * Kembalikan avatar ketika form direset
+     */
+    $("button[type=reset]").click(function() {
+        const avatarView = $("#avatar-view");
+
+        avatarView.attr("src", avatarView.data("src"));
+    });
+
+    /**
+     * Disable atau aktifkan form edit user menu akses
+     */
+    $(".menu-headers").change(function(e) {
+        const isChecked = $(this).is(":checked");
+        const headerName = $(this).data("header");
+
+        $(`.${headerName}`).attr("disabled", !isChecked);
+    });
+
+    /**
+     * Dissable atau aktifkan password di halaman edit user
+     */
+    $("#is-disable-password").change(function(e) {
+        const isChecked = $(this).is(":checked");
+
+        $("#password").attr("disabled", !isChecked);
+    });
+});

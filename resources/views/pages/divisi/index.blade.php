@@ -45,7 +45,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table table-centered nowrap w-100">
+                                <table class="table table table-centered table-hover nowrap w-100">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
@@ -87,7 +87,7 @@
 
                                                         @if ($userAccess->update == 1)
                                                             <a href="{{ route('divisi.edit', ['divisi' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                                class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                                 data-original-title="Edit" data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
@@ -96,7 +96,7 @@
                                                         @if ($userAccess->delete == 1)
                                                             <button
                                                                 onclick="handleDelete({{ $data->id }}, '{{ $data->nama_divisi }}')"
-                                                                class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                                class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                                 data-original-title="Hapus" data-placement="top">
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>

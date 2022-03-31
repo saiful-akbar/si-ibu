@@ -52,7 +52,13 @@ class BudgetController extends Controller
          * cek akun belanja (jenis_belanja) di cari atau tidak
          */
         if (!empty($request->jenis_belanja)) {
-            $query->whereHas('jenisBelanja', fn (Builder $query) => $query->where('kategori_belanja', $request->jenis_belanja));
+            $query->whereHas(
+                'jenisBelanja',
+                fn (Builder $query) => $query->where(
+                    'kategori_belanja',
+                    $request->jenis_belanja
+                )
+            );
         }
 
         /**
@@ -64,7 +70,13 @@ class BudgetController extends Controller
              * cek divisi di cari atau tidak
              */
             if (!empty($request->divisi)) {
-                $query->whereHas('divisi', fn (Builder $query) => $query->where('nama_divisi', $request->divisi));
+                $query->whereHas(
+                    'divisi',
+                    fn (Builder $query) => $query->where(
+                        'nama_divisi',
+                        $request->divisi
+                    )
+                );
             }
         } else {
 
@@ -218,8 +230,8 @@ class BudgetController extends Controller
         $validatedData['keterangan'] = $request->keterangan;
 
         /**
-         * cek apakah divisi_id yang dipilih aktif atau tidak
-         * jika tidak aktif tampilkan pesan error
+         * cek apakah divisi_id yang dipilih aktif atau tidak...
+         * ...jika tidak aktif tampilkan pesan error
          */
         if (Divisi::find($request->divisi_id)->active != 1) {
             return redirect()->route('budget.create')->with('alert', [
@@ -227,15 +239,15 @@ class BudgetController extends Controller
                 'message' => "
                     <ul class='mt-0'>
                         <li>Bagian tidak aktif</li>
-                        <li>Anda tidak bisa membuat budget pada bagian yang tidak aktif.</li>
+                        <li>Anda tidak bisa membuat pagu pada bagian yang tidak aktif.</li>
                     </ul>
                 ",
             ]);
         }
 
         /**
-         * cek apakah jenis_belanja_id yang dipilih aktif atau tidak
-         * jika tidak aktif tampilkan pesan error
+         * cek apakah jenis_belanja_id yang dipilih aktif atau tidak...
+         * ...jika tidak aktif tampilkan pesan error
          */
         if (JenisBelanja::find($request->jenis_belanja_id)->active != 1) {
             return redirect()->route('budget.create')->with('alert', [
@@ -243,7 +255,7 @@ class BudgetController extends Controller
                 'message' => "
                     <ul class='mt-0'>
                         <li>Akun belanja tidak aktif</li>
-                        <li>Anda tidak bisa membuat budget pada akun belanja yang tidak aktif.</li>
+                        <li>Anda tidak bisa membuat pagu pada akun belanja yang tidak aktif.</li>
                     </ul>
                 ",
             ]);
@@ -259,18 +271,24 @@ class BudgetController extends Controller
         ])->first();
 
         /**
-         * cek apakah budget sudah pernah dibuat berdasarakan jenis_belanja dan di tahun yang sama
+         * cek apakah budget sudah pernah dibuat berdasarakan...
+         * ...jenis_belanja dan di tahun yang sama
          */
         if ($cekBudget !== null) {
-            return redirect()->route('budget.create')->with('alert', [
-                'type' => 'warning',
-                'message' => "
-                    <ul class='mt-0'>
-                        <li>Budget sudah dibuat.</li>
-                        <li>Jika anda ingin menambahkan nominal budget pada akun belanja, bagian & tahun yang sama, anda bisa melakukan edit data pada tabel budget.</li>
-                    </ul>
-                ",
-            ]);
+            return redirect()
+                ->route('budget.create')
+                ->with('alert', [
+                    'type' => 'warning',
+                    'message' => "
+                        <ul class='mt-0'>
+                            <li>Budget sudah dibuat.</li>
+                            <li>
+                                Jika anda ingin menambahkan nominal pagu pada akun belanja, bagian & tahun yang sama.
+                                anda bisa melakukan edit data pada tabel budget.
+                            </li>
+                        </ul>
+                    ",
+                ]);
         }
 
         /**
@@ -279,19 +297,23 @@ class BudgetController extends Controller
         try {
             Budget::create($validatedData);
         } catch (\Exception $e) {
-            return redirect()->route('budget.create')->with('alert', [
-                'type' => 'danger',
-                'message' => 'Budget gagal ditambahkan. <strong>' . $e->getMessage() . '</strong>',
-            ]);
+            return redirect()
+                ->route('budget.create')
+                ->with('alert', [
+                    'type' => 'danger',
+                    'message' => 'Pagu gagal ditambahkan. <strong>' . $e->getMessage() . '</strong>',
+                ]);
         }
 
         /**
          * retur jika proses create sukses
          */
-        return redirect()->route('budget.create')->with('alert', [
-            'type' => 'success',
-            'message' => 'Budget berhasil ditambahkan.',
-        ]);
+        return redirect()
+            ->route('budget.create')
+            ->with('alert', [
+                'type' => 'success',
+                'message' => 'Pagu berhasil ditambahkan.',
+            ]);
     }
 
     /**
@@ -361,13 +383,14 @@ class BudgetController extends Controller
          * jika tidak aktif tampilkan pesan error
          */
         if (Divisi::find($request->divisi_id)->active != 1) {
-            return redirect()->route('budget.edit', ['budget' => $budget->id])
+            return redirect()
+                ->route('budget.edit', ['budget' => $budget->id])
                 ->with('alert', [
                     'type' => 'danger',
                     'message' => "
                         <ul class='mt-0'>
                             <li>Bagian tidak aktif</li>
-                            <li>Anda tidak bisa membuat budget pada bagian yang tidak aktif.</li>
+                            <li>Anda tidak bisa membuat pagu pada bagian yang tidak aktif.</li>
                         </ul>
                     ",
                 ]);
@@ -378,13 +401,14 @@ class BudgetController extends Controller
          * jika tidak aktif tampilkan pesan error
          */
         if (JenisBelanja::find($request->jenis_belanja_id)->active != 1) {
-            return redirect()->route('budget.edit', ['budget' => $budget->id])
+            return redirect()
+                ->route('budget.edit', ['budget' => $budget->id])
                 ->with('alert', [
                     'type' => 'danger',
                     'message' => "
                         <ul class='mt-0'>
                             <li>Akun belanja tidak aktif</li>
-                            <li>Anda tidak bisa membuat budget pada akun belanja yang tidak aktif.</li>
+                            <li>Anda tidak bisa membuat pagu pada akun belanja yang tidak aktif.</li>
                         </ul>
                     ",
                 ]);
@@ -415,7 +439,11 @@ class BudgetController extends Controller
                         'message' => "
                             <ul class='mt-0'>
                                 <li>Budget sudah dibuat.</li>
-                                <li>Jika anda ingin menambahkan nominal budget pada bagian, akun belanja & ditahun yang sama dengan data budget yang ada sebelumnya, anda bisa melakukan edit nominal.</li>
+                                <li>
+                                    Jika anda ingin menambahkan nominal budget pada bagian,
+                                    akun belanja & ditahun yang sama dengan data pagu yang ada sebelumnya,
+                                    anda bisa melakukan edit nominal.
+                                </li>
                             </ul>
                     ",
                     ]);
@@ -441,7 +469,7 @@ class BudgetController extends Controller
             return redirect()->route('budget.edit', ['budget' => $budget->id])
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Budget gagal ditambahkan. ' . $e->getMessage(),
+                    'message' => 'Pagu gagal diperbarui. ' . $e->getMessage(),
                 ]);
         }
 
@@ -450,7 +478,7 @@ class BudgetController extends Controller
          */
         return redirect()->route('budget')->with('alert', [
             'type' => 'success',
-            'message' => 'Budget berhasil diperbarui.',
+            'message' => 'Pagu berhasil diperbarui.',
         ]);
     }
 
@@ -475,7 +503,7 @@ class BudgetController extends Controller
             return redirect()->route('budget')
                 ->with('alert', [
                     'type' => 'warning',
-                    'message' => "Penghapusan dibatalkan. Budget yang ingin anda hapus memiliki relasi pada data <b>Transaksi belanja</b>.",
+                    'message' => "Penghapusan dibatalkan. Pagu yang ingin anda hapus memiliki relasi pada data <b>Realisasi</b>.",
                 ]);
         }
 
@@ -488,7 +516,7 @@ class BudgetController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('budget')->with('alert', [
                 'type' => 'danger',
-                'message' => 'Budget gagal dihapus. ' . $e->getMessage(),
+                'message' => 'Pagu gagal dihapus. ' . $e->getMessage(),
             ]);
         }
 
@@ -497,7 +525,7 @@ class BudgetController extends Controller
          */
         return redirect()->route('budget')->with('alert', [
             'type' => 'success',
-            'message' => '1 baris data budget berhasil dihapus.',
+            'message' => '1 baris data pagu berhasil dihapus.',
         ]);
     }
 
@@ -570,7 +598,7 @@ class BudgetController extends Controller
                     'message' => "
                         <ul class='mt-0'>
                             <li>Bagian tidak aktif</li>
-                            <li>Anda tidak bisa membuat budget pada bagian yang tidak aktif.</li>
+                            <li>Anda tidak bisa membuat pagu pada bagian yang tidak aktif.</li>
                         </ul>
                     ",
                 ]);
@@ -587,7 +615,7 @@ class BudgetController extends Controller
                     'message' => "
                         <ul class='mt-0'>
                             <li>Akun belanja tidak aktif</li>
-                            <li>Anda tidak bisa membuat budget pada akun belanja yang tidak aktif.</li>
+                            <li>Anda tidak bisa membuat pagu pada akun belanja yang tidak aktif.</li>
                         </ul>
                     ",
                 ]);
@@ -641,7 +669,7 @@ class BudgetController extends Controller
              */
             return redirect()->route('budget.switch', ['budget' => $budget->id])->with('alert', [
                 'type' => 'danger',
-                'message' => 'Gagal melakikan switch budget. <strong>' . $e->getMessage() . '</strong>',
+                'message' => 'Gagal melakukan switch pagu. <strong>' . $e->getMessage() . '</strong>',
             ]);
         }
 
@@ -650,7 +678,7 @@ class BudgetController extends Controller
          */
         return redirect()->route('budget.switch', ['budget' => $budget->id])->with('alert', [
             'type' => 'success',
-            'message' => 'Switch budget berhasil dilakukan.',
+            'message' => 'Switch pagu berhasil dilakukan.',
         ]);
     }
 }

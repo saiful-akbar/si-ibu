@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Sistem informasi manajemen anggaran & arsip" />
     <meta name="author" content="Saiful Akbar" />
-
     <meta name="base-url" content="{{ url('/') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     {{-- Title --}}
-    <title>{{ config('app.name') }} : @yield('title')</title>
+    <title>
+        @yield('title') : {{ config('app.name') }}
+    </title>
 
     {{-- App favicon --}}
     <link href="{{ asset('assets/images/logo/favicon.ico') }}" rel="shortcut icon" />
@@ -106,7 +107,6 @@
         {{-- scroll to top --}}
         @include('components.molecules.scroll-to-top');
     @endauth
-    {{-- End auth content --}}
 
     {{-- Javascript --}}
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
@@ -120,7 +120,6 @@
 
     {{-- Javascript page --}}
     @yield('js')
-
 </body>
 
 </html>

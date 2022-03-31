@@ -1,16 +1,22 @@
 @extends('templates.main')
 
-@section('title', 'Switch Budget')
+@section('title', 'Switch Pagu')
 
 @section('btn-kembali')
-    <a href="{{ route('budget') }}" class="btn btn-rounded btn-dark btn-sm">
+    <a
+        href="{{ route('budget') }}"
+        class="btn btn-rounded btn-dark btn-sm"
+    >
         <i class="mdi mdi-chevron-double-left mr-1"></i>
         <span>Kembali</span>
     </a>
 @endsection
 
 @section('content')
-    <form action="{{ route('budget.switch.update', ['budget' => $budget->id]) }}" method="POST">
+    <form
+        action="{{ route('budget.switch.update', ['budget' => $budget->id]) }}"
+        method="POST"
+    >
         @method('PATCH') @csrf
 
         {{-- input dari akun belanja --}}
@@ -25,13 +31,22 @@
 
                         {{-- input dari divisi --}}
                         <div class="form-group row mb-3">
-                            <label for="dari_divisi" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="dari_divisi"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Dari Bagian
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input disabled type="text" id="dari_divisi" name="dari_divisi" class="form-control"
-                                    value="{{ $budget->divisi->nama_divisi }}" />
+                                <input
+                                    disabled
+                                    type="text"
+                                    id="dari_divisi"
+                                    name="dari_divisi"
+                                    class="form-control"
+                                    value="{{ $budget->divisi->nama_divisi }}"
+                                />
                             </div>
                         </div>
 
@@ -42,45 +57,78 @@
                             </label>
 
                             <div class="input-group col-md-9 col-sm-12">
-                                <input type="text" id="dari_nama_akun_belanja" name="dari_nama_akun_belanja" class="form-control"
+                                <input
+                                    type="text"
+                                    id="dari_nama_akun_belanja"
+                                    name="dari_nama_akun_belanja"
+                                    class="form-control"
                                     value="{{ $budget->jenisBelanja->akunBelanja->nama_akun_belanja }}"
-                                    placeholder="Akun belanja..." readonly />
+                                    placeholder="Akun belanja..."
+                                    readonly
+                                />
 
 
-                                <input type="text" id="dari_kategori_belanja" name="dari_kategori_belanja" class="form-control"
-                                    value="{{ $budget->jenisBelanja->kategori_belanja }}" placeholder="Kategori belanja..."
-                                    readonly />
+                                <input
+                                    type="text"
+                                    id="dari_kategori_belanja"
+                                    name="dari_kategori_belanja"
+                                    class="form-control"
+                                    value="{{ $budget->jenisBelanja->kategori_belanja }}"
+                                    placeholder="Kategori belanja..."
+                                    readonly
+                                />
                             </div>
 
                         </div>
 
                         {{-- input dari tahun anggaran --}}
                         <div class="form-group row mb-3">
-                            <label for="dariTahunAnggaran" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="dariTahunAnggaran"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Tahun Anggaran
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input disabled type="number" id="dariTahunAnggaran" name="dariTahunAnggaran"
-                                    value="{{ $budget->tahun_anggaran }}" class="form-control" />
+                                <input
+                                    disabled
+                                    type="number"
+                                    id="dariTahunAnggaran"
+                                    name="dariTahunAnggaran"
+                                    value="{{ $budget->tahun_anggaran }}"
+                                    class="form-control"
+                                />
                             </div>
                         </div>
 
                         {{-- input dari jumlah nominal --}}
                         <div class="form-group row mb-3">
-                            <label for="dari_sisa_nominal" class="col-md-3 col-sm-12 col-form-label">
-                                Sisa Nominal Budget
+                            <label
+                                for="dari_sisa_nominal"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
+                                Sisa Nominal Pagu
                             </label>
 
                             <div class="col-md-9 col-sm-12 input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">
+                                    <span
+                                        class="input-group-text"
+                                        id="basic-addon1"
+                                    >
                                         Rp
                                     </span>
                                 </div>
 
-                                <input disabled type="text" id="dariNominal" name="dariNominal"
-                                    value="{{ number_format($budget->sisa_nominal) }}" class="form-control" />
+                                <input
+                                    disabled
+                                    type="text"
+                                    id="dariNominal"
+                                    name="dariNominal"
+                                    value="{{ number_format($budget->sisa_nominal) }}"
+                                    class="form-control"
+                                />
                             </div>
                         </div>
 
@@ -102,19 +150,34 @@
 
                         {{-- input bagian (divisi_id) --}}
                         <div class="form-group row mb-3">
-                            <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="divisi_id"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Bagian <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <select name="divisi_id" id="divisi_id" data-toggle="select2"
-                                    class="form-control select2 @error('divisi_id') is-invalid @enderror" required>
-                                    <option value="{{ null }}" disabled @if (!old('divisi_id')) selected @endif>
+                                <select
+                                    name="divisi_id"
+                                    id="divisi_id"
+                                    data-toggle="select2"
+                                    class="form-control select2 @error('divisi_id') is-invalid @enderror"
+                                    required
+                                >
+                                    <option
+                                        value="{{ null }}"
+                                        disabled
+                                        @if (!old('divisi_id')) selected @endif
+                                    >
                                         Pilih Bagian
                                     </option>
 
                                     @foreach ($divisions as $divisi)
-                                        <option value="{{ $divisi->id }}" @if (old('divisi_id') == $divisi->id) selected @endif>
+                                        <option
+                                            value="{{ $divisi->id }}"
+                                            @if (old('divisi_id') == $divisi->id) selected @endif
+                                        >
                                             {{ $divisi->nama_divisi }}
                                         </option>
                                     @endforeach
@@ -134,23 +197,46 @@
 
                             <div class="input-group col-md-9 col-sm-12">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-info" type="button" data-toggle="tooltip"
-                                        data-original-title="Pilih akun belanja" data-placement="top"
-                                        onclick="budget.modalTableAkunBelanja(true)">
+                                    <button
+                                        class="btn btn-info"
+                                        type="button"
+                                        data-toggle="tooltip"
+                                        data-original-title="Pilih akun belanja"
+                                        data-placement="top"
+                                        onclick="budget.modalTableAkunBelanja(true)"
+                                    >
                                         <i class="mdi mdi-table-large"></i>
                                     </button>
                                 </div>
 
-                                <input type="hidden" id="jenis_belanja_id" name="jenis_belanja_id" class="d-none"
-                                    value="{{ old('jenis_belanja_id') }}" required>
+                                <input
+                                    type="hidden"
+                                    id="jenis_belanja_id"
+                                    name="jenis_belanja_id"
+                                    class="d-none"
+                                    value="{{ old('jenis_belanja_id') }}"
+                                    required
+                                >
 
-                                <input type="text" id="nama_akun_belanja" name="nama_akun_belanja"
+                                <input
+                                    type="text"
+                                    id="nama_akun_belanja"
+                                    name="nama_akun_belanja"
                                     class="form-control @error('jenis_belanja_id') is-invalid @enderror"
-                                    value="{{ old('nama_akun_belanja') }}" placeholder="Akun belanja..." readonly />
+                                    value="{{ old('nama_akun_belanja') }}"
+                                    placeholder="Akun belanja..."
+                                    readonly
+                                />
 
-                                <input type="text" id="kategori_belanja" name="kategori_belanja"
+                                <input
+                                    type="text"
+                                    id="kategori_belanja"
+                                    name="kategori_belanja"
                                     class="form-control @error('jenis_belanja_id') is-invalid @enderror"
-                                    value="{{ old('kategori_belanja') }}" placeholder="Kategori belanja..." readonly />
+                                    value="{{ old('kategori_belanja') }}"
+                                    placeholder="Kategori belanja..."
+                                    readonly
+                                />
 
                                 @error('jenis_belanja_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -161,14 +247,25 @@
 
                         {{-- input tahun anggaran --}}
                         <div class="form-group row mb-3">
-                            <label for="tahun_anggaran" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="tahun_anggaran"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Tahun Anggaran <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12">
-                                <input required type="number" id="tahun_anggaran" name="tahun_anggaran"
-                                    placeholder="Tahun anggaran..." max="9999" min="0" value="{{ old('tahun_anggaran') }}"
-                                    class="form-control @error('tahun_anggaran') is-invalid @enderror" />
+                                <input
+                                    required
+                                    type="number"
+                                    id="tahun_anggaran"
+                                    name="tahun_anggaran"
+                                    placeholder="Tahun anggaran..."
+                                    max="9999"
+                                    min="0"
+                                    value="{{ old('tahun_anggaran') }}"
+                                    class="form-control @error('tahun_anggaran') is-invalid @enderror"
+                                />
 
                                 @error('tahun_anggaran')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -178,20 +275,33 @@
 
                         {{-- input nominal --}}
                         <div class="form-group row mb-3">
-                            <label for="nominal" class="col-md-3 col-sm-12 col-form-label">
+                            <label
+                                for="nominal"
+                                class="col-md-3 col-sm-12 col-form-label"
+                            >
                                 Nominal <small class="text-danger">*</small>
                             </label>
 
                             <div class="col-md-9 col-sm-12 input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">
+                                    <span
+                                        class="input-group-text"
+                                        id="basic-addon1"
+                                    >
                                         Rp
                                     </span>
                                 </div>
 
-                                <input required type="number" id="nominal" name="nominal"
-                                    placeholder="Masukan nominal yang akan dialihkan..." value="{{ old('nominal') }}" min="0"
-                                    class="form-control @error('nominal') is-invalid @enderror" />
+                                <input
+                                    required
+                                    type="number"
+                                    id="nominal"
+                                    name="nominal"
+                                    placeholder="Masukan nominal yang akan dialihkan..."
+                                    value="{{ old('nominal') }}"
+                                    min="0"
+                                    class="form-control @error('nominal') is-invalid @enderror"
+                                />
 
                                 @error('nominal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -217,8 +327,13 @@
 
                     <div class="card-body">
                         <div class="form-group">
-                            <textarea name="keterangan" id="keterangan" rows="10" placeholder="Masukan keterangan..."
-                                class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan') }}</textarea>
+                            <textarea
+                                name="keterangan"
+                                id="keterangan"
+                                rows="10"
+                                placeholder="Masukan keterangan..."
+                                class="form-control @error('keterangan') is-invalid @enderror"
+>{{ old('keterangan') }}</textarea>
 
                             @error('keterangan')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -227,12 +342,18 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
+                        <button
+                            type="submit"
+                            class="btn btn-info btn-rounded btn-sm mr-2"
+                        >
                             <i class="mdi mdi-content-save mr-1"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button type="reset" class="btn btn-rounded btn-dark btn-sm">
+                        <button
+                            type="reset"
+                            class="btn btn-rounded btn-dark btn-sm"
+                        >
                             <i class="mdi mdi-close-circle mr-1"></i>
                             <span>Reset</span>
                         </button>
@@ -250,13 +371,33 @@
 
 @push('css')
     {{-- custom editor --}}
-    <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('assets/css/vendor/summernote-bs4.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
 
     {{-- datatables --}}
-    <link href="{{ asset('assets/css/vendor/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/vendor/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/vendor/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/vendor/select.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('assets/css/vendor/dataTables.bootstrap4.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
+    <link
+        href="{{ asset('assets/css/vendor/responsive.bootstrap4.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
+    <link
+        href="{{ asset('assets/css/vendor/buttons.bootstrap4.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
+    <link
+        href="{{ asset('assets/css/vendor/select.bootstrap4.css') }}"
+        rel="stylesheet"
+        type="text/css"
+    />
 @endpush
 
 @section('js')

@@ -30,6 +30,7 @@ class CreateTransaksiTable extends Migration
                 $table->string('file_dokumen', 128)->nullable()->default(null);
                 $table->text('uraian')->nullable()->default(null);
                 $table->string('approval', 128);
+                $table->boolean('outstanding')->default(true);
                 $table->timestamps();
 
                 // relasi dengan tabel user

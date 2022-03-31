@@ -114,7 +114,7 @@ class MenuSeeder extends Seeder
                  */
                 [
                     'menu_header_id' => $this->getMenuHeader('keuangan'),
-                    'nama_menu' => 'Belanja',
+                    'nama_menu' => 'Realisasi',
                     'icon' => 'uil-shopping-cart-alt',
                     'href' => '/belanja',
                     'created_at' => now(),
@@ -122,7 +122,7 @@ class MenuSeeder extends Seeder
                 ],
                 [
                     'menu_header_id' => $this->getMenuHeader('keuangan'),
-                    'nama_menu' => 'Budget',
+                    'nama_menu' => 'Pagu',
                     'icon' => 'uil-moneybag',
                     'href' => '/budget',
                     'created_at' => now(),

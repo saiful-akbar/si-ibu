@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered w-100 nowrap">
+                                <table class="table table-centered table-hover w-100 nowrap">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
@@ -99,14 +99,14 @@
 
                                                 <td class="text-center">
                                                     <a href="{{ route('user.menu-akses.detail', ['user' => $user->id]) }}"
-                                                        class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                        class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                         data-original-title="Menu Akses">
                                                         <i class="mdi mdi-key"></i>
                                                     </a>
 
                                                     @if ($userAccess->update == 1)
                                                         <a href="{{ route('user.edit', ['user' => $user->id]) }}"
-                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                            class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                             data-original-title="Edit">
                                                             <i class="mdi mdi-square-edit-outline"></i>
                                                         </a>
@@ -114,7 +114,7 @@
 
                                                     @if ($userAccess->delete == 1)
                                                         <button onclick="handleDelete({{ $user->id }})"
-                                                            class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                            class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                             data-original-title="Hapus">
                                                             <i class="mdi mdi-delete"></i>
                                                         </button>

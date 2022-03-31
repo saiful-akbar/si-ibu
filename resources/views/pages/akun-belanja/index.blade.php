@@ -47,7 +47,7 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered w-100 nowrap">
+                                <table class="table table-centered table-hover w-100 nowrap">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
@@ -89,14 +89,14 @@
                                                     <td class="text-center">
                                                         @if ($userAccess->update == 1)
                                                             <a href="{{ route('akun-belanja.edit', ['akunBelanja' => $data->id]) }}"
-                                                                class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                                class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                                 data-original-title="Edit" data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
                                                         @endif
 
                                                         @if ($userAccess->delete == 1)
-                                                            <button class="btn btn-sm btn-light btn-icon mx-1" data-toggle="tooltip"
+                                                            <button class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
                                                                 data-original-title="Hapus" data-placement="top"
                                                                 onclick="akunBelanja.deleteAkunBelanja({{ $data->id }})">
                                                                 <i class="mdi mdi-delete"></i>

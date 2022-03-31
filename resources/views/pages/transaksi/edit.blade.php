@@ -1,6 +1,6 @@
 @extends('templates.main')
 
-@section('title', 'Edit Belanja')
+@section('title', 'Edit Realisasi')
 
 @section('btn-kembali')
     <a href="{{ route('belanja') }}" class="btn btn-rounded btn-dark btn-sm">
@@ -25,7 +25,7 @@
             <div class="col-12 mb-3">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="header-title">Budget</h4>
+                        <h4 class="header-title">Pagu</h4>
                     </div>
 
                     <div class="card-body">
@@ -59,7 +59,6 @@
 
                                 @error('budget_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
-
                                 @else
                                     @error('nama_akun_belanja')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -223,6 +222,24 @@
                             </div>
                         </div>
 
+                        {{-- input Outstanding --}}
+                        <div class="form-group row justify-content-end">
+                            <div class="col-md-9 col-sm-12">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox"
+                                        name="outstanding"
+                                        class="custom-control-input form-control-lg"
+                                        id="outstanding"
+                                        @if (old('outstanding', $transaksi->outstanding)) checked @endif
+                                    />
+
+                                    <label class="custom-control-label" for="outstanding">
+                                        Outstanding
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -274,7 +291,8 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <span id="file-name" class="badge badge-light py-1 px-1 mt-1 @if (!$transaksi->file_dokumen) d-none @endif"
+                                        <span id="file-name"
+                                            class="badge badge-light py-1 px-1 mt-1 @if (!$transaksi->file_dokumen) d-none @endif"
                                             data-file="{{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}"
                                             data-action="edit">
                                             {{ str_replace('transaksi/', '', $transaksi->file_dokumen) }}

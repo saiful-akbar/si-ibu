@@ -22,6 +22,7 @@ class Transaksi extends Model
         'file_dokumen',
         'uraian',
         'approval',
+        'outstanding',
     ];
 
     /**

@@ -345,18 +345,19 @@ class TransaksiController extends Controller
          * cek file_dokumen di upload atau tidak
          * jika di upload simpan pada storage
          */
-        $fileDocument = null;
         if ($request->hasFile('file_dokumen')) {
             $file = $request->file('file_dokumen');
             $extension = $file->extension();
             $fileName = 'dokumen-' . date('Y-m-d-H-i-s') . '.' . $extension;
             $fileDocument = $file->storeAs('transaksi', $fileName);
+        } else {
+            $fileDocument = null;
         }
 
         try {
 
             /**
-             * tambah transaksi
+             * Proses tambah transaksi
              */
             Transaksi::create([
                 'user_id' => Auth::user()->id,
@@ -368,6 +369,7 @@ class TransaksiController extends Controller
                 'no_dokumen' => $request->no_dokumen,
                 'file_dokumen' => $fileDocument,
                 'uraian' => $request->uraian ?? null,
+                'outstanding' => (boolean) $request->outstanding,
             ]);
 
             /**
@@ -384,7 +386,7 @@ class TransaksiController extends Controller
                 ->route('belanja.create')
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Gagal menambahkan data belanja ditambahkan. ' . $e->getMessage(),
+                    'message' => 'Gagal menambahkan data realisasi. ' . $e->getMessage(),
                 ]);
         }
 
@@ -395,7 +397,7 @@ class TransaksiController extends Controller
             ->route('belanja.create')
             ->with('alert', [
                 'type' => 'success',
-                'message' => 'Data belanja berhasil ditambahkan.',
+                'message' => 'Data realisasi berhasil ditambahkan.',
             ]);
     }
 
@@ -407,8 +409,7 @@ class TransaksiController extends Controller
      */
     public function show(Transaksi $transaksi)
     {
-        $result = Transaksi::with('budget.divisi', 'budget.jenisBelanja', 'user.profil')
-            ->find($transaksi->id);
+        $result = Transaksi::with('budget.divisi', 'budget.jenisBelanja', 'user.profil')->find($transaksi->id);
         $linkDownload = $result->file_dokumen != null ? route('belanja.download', ['transaksi' => $result->id]) : null;
 
         return response()->json([
@@ -604,6 +605,7 @@ class TransaksiController extends Controller
                     'no_dokumen' => $request->no_dokumen,
                     'file_dokumen' => Storage::exists($fileDokumen) ? $fileDokumen : null,
                     'uraian' => $request->uraian ?? null,
+                    'outstanding' => (boolean) $request->outstanding,
                 ]);
         } catch (\Exception $e) {
 
@@ -614,7 +616,7 @@ class TransaksiController extends Controller
                 ->route('belanja.edit', ['transaksi' => $transaksi->id])
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Data belanja gagal dirubah. ' . $e->getMessage(),
+                    'message' => 'Data realisasi gagal dirubah. ' . $e->getMessage(),
                 ]);
         }
 
@@ -625,7 +627,7 @@ class TransaksiController extends Controller
             ->route('belanja.edit', ['transaksi' => $transaksi->id])
             ->with('alert', [
                 'type' => 'success',
-                'message' => 'Data belanja berhasil dirubah.',
+                'message' => 'Data realisasi berhasil dirubah.',
             ]);
     }
 
@@ -668,7 +670,7 @@ class TransaksiController extends Controller
                 ->route('belanja')
                 ->with('alert', [
                     'type' => 'danger',
-                    'message' => 'Gagal menghapus dihapus. ' . $e->getMessage(),
+                    'message' => 'Gagal menghapus realisasi. ' . $e->getMessage(),
                 ]);
         }
 
@@ -679,7 +681,7 @@ class TransaksiController extends Controller
             ->route('belanja')
             ->with('alert', [
                 'type' => 'success',
-                'message' => '1 data belanja berhasil dihapus.',
+                'message' => '1 data realisasi berhasil dihapus.',
             ]);
     }
 
@@ -814,7 +816,7 @@ class TransaksiController extends Controller
         $data = $this->fillter($request);
         return Excel::download(
             new LaporanTransaksiExport($data),
-            'Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.xlsx'
+            'Realisasi (' . date('Y-m-d h.i.s') . ').xlsx'
         );
     }
 
@@ -842,7 +844,7 @@ class TransaksiController extends Controller
             ]
         );
 
-        return $pdf->stream('Laporan Transaksi Belanja ' . date('Y-m-d h.i.s') . '.pdf');
+        return $pdf->stream('Realisasi (' . date('Y-m-d h.i.s') . ').pdf');
     }
 
     /**
@@ -851,22 +853,39 @@ class TransaksiController extends Controller
      */
     public function dataTable()
     {
-        $budgets = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
-            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
-            ->leftJoin('akun_belanja', 'akun_belanja.id', '=', 'jenis_belanja.akun_belanja_id')
-            ->where([
-                ['divisi.id', Auth::user()->divisi_id],
+
+        $whereQuery = [
+            ['divisi.id', Auth::user()->divisi_id],
+            ['divisi.active', 1],
+            ['akun_belanja.active', 1],
+            ['jenis_belanja.active', 1],
+        ];
+
+        $selectQuery = [
+            'budget.id',
+            'budget.tahun_anggaran',
+            'budget.sisa_nominal',
+            'divisi.nama_divisi',
+            'jenis_belanja.kategori_belanja',
+            'akun_belanja.nama_akun_belanja',
+        ];
+
+        $userDivisi = strtolower(Auth::user()->divisi->nama_divisi);
+
+        if ($userDivisi == "kepala kantor" || $userDivisi == "bagian umum") {
+            $whereQuery = [
                 ['divisi.active', 1],
                 ['akun_belanja.active', 1],
                 ['jenis_belanja.active', 1],
-            ])->select([
-                'budget.id',
-                'budget.tahun_anggaran',
-                'budget.sisa_nominal',
-                'divisi.nama_divisi',
-                'jenis_belanja.kategori_belanja',
-                'akun_belanja.nama_akun_belanja',
-            ])->orderBy('budget.tahun_anggaran', 'desc')
+            ];
+        }
+
+        $budgets = Budget::leftJoin('divisi', 'divisi.id', '=', 'budget.divisi_id')
+            ->leftJoin('jenis_belanja', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
+            ->leftJoin('akun_belanja', 'akun_belanja.id', '=', 'jenis_belanja.akun_belanja_id')
+            ->where($whereQuery)
+            ->select($selectQuery)
+            ->orderBy('budget.tahun_anggaran', 'desc')
             ->orderBy('divisi.nama_divisi', 'asc')
             ->orderBy('akun_belanja.nama_akun_belanja', 'asc')
             ->orderBy('jenis_belanja.kategori_belanja', 'asc')
