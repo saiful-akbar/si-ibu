@@ -45,46 +45,32 @@ return [
          * Koneksi database anggaran (default)
          */
         'anggaran' => [
-            'driver' => 'mysql',
+            'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST_ANGGARAN', '127.0.0.1'),
-            'port' => env('DB_PORT_ANGGARAN', '3306'),
+            'host' => env('DB_HOST_ANGGARAN', 'localhost'),
+            'port' => env('DB_PORT_ANGGARAN', '1433'),
             'database' => env('DB_DATABASE_ANGGARAN', 'forge'),
             'username' => env('DB_USERNAME_ANGGARAN', 'forge'),
             'password' => env('DB_PASSWORD_ANGGARAN', ''),
-            'unix_socket' => env('DB_SOCKET_ANGGARAN', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
         ],
 
         /**
          * Koneksi database arsip (second)
          */
         'arsip' => [
-            'driver' => 'mysql',
+            'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST_ARSIP', '127.0.0.1'),
-            'port' => env('DB_PORT_ARSIP', '3306'),
+            'host' => env('DB_HOST_ARSIP', 'localhost'),
+            'port' => env('DB_PORT_ARSIP', '1433'),
             'database' => env('DB_DATABASE_ARSIP', 'forge'),
             'username' => env('DB_USERNAME_ARSIP', 'forge'),
             'password' => env('DB_PASSWORD_ARSIP', ''),
-            'unix_socket' => env('DB_SOCKET_ARSIP', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
         ],
 
         'sqlite' => [
