@@ -18,7 +18,7 @@ class Dashboard {
             type: "get",
             url: `${main.baseUrl}/dashboard/chart/${year}`,
             dataType: "json",
-            success: function(res) {
+            success: function (res) {
                 $("#global-divisi").text(res.namaDivisi);
 
                 $("#global-total-budget").text(
@@ -146,7 +146,7 @@ class Dashboard {
             type: "get",
             url,
             dataType: "json",
-            success: function(res) {
+            success: function (res) {
                 $("#admin__chart-by-akun-belanja__total-budget").text(
                     "Rp. " + main.formatRupiah(res.totalBudget)
                 );
@@ -167,8 +167,16 @@ class Dashboard {
                     chart: { height: 300, type: "pie" },
                     legend: { show: false },
                     fill: { type: "gradient" },
-                    series: [res.totalOutstanding, res.totalOnstanding, res.sisaBudget],
-                    labels: ["Realisasi Outstanding", "Realisasi Onstanding", "Sisa Budget"],
+                    series: [
+                        res.totalOutstanding,
+                        res.totalOnstanding,
+                        res.sisaBudget,
+                    ],
+                    labels: [
+                        "Realisasi Outstanding",
+                        "Realisasi Onstanding",
+                        "Sisa Budget",
+                    ],
                     colors: ["#FA5C7C", "#0ACF97", "#ffbc00"],
                     responsive: [
                         {
@@ -184,7 +192,11 @@ class Dashboard {
                 );
 
                 chart.render();
-                chart.updateSeries([res.totalOutstanding, res.totalOnstanding, res.sisaBudget]);
+                chart.updateSeries([
+                    res.totalOutstanding,
+                    res.totalOnstanding,
+                    res.sisaBudget,
+                ]);
             },
         });
     }
@@ -245,7 +257,7 @@ class Dashboard {
                             text: "Nominal Transaksi Belanja",
                         },
                         labels: {
-                            formatter: function(yLabel) {
+                            formatter: function (yLabel) {
                                 return "Rp. " + main.formatRupiah(yLabel);
                             },
                         },
@@ -280,7 +292,7 @@ const dashboard = new Dashboard();
 /**
  * Jalankan fungsi ketika document selsai dimuat
  */
-$(document).ready(function() {
+$(document).ready(function () {
     dashboard.setGlobalBudgetChart(new Date().getFullYear());
 
     const ElDivisiTransaksiChartLine = $("#divisi__transaksi-chart-line");
@@ -296,7 +308,7 @@ $(document).ready(function() {
          * handle change select tahun anggaran
          */
         $("#admin__chart-by-akun-belanja__select-tahun-anggaran").change(
-            function(e) {
+            function (e) {
                 e.preventDefault();
                 dashboard.chartByAkunBelanja["tahunAnggaran"] = $(this).val();
                 dashboard.setBudgetChartByAkunBelanja();
@@ -306,7 +318,7 @@ $(document).ready(function() {
         /**
          * handle change select divisi
          */
-        $("#admin__chart-by-akun-belanja__select-divisi").change(function(e) {
+        $("#admin__chart-by-akun-belanja__select-divisi").change(function (e) {
             e.preventDefault();
             dashboard.chartByAkunBelanja["divisiId"] = $(this).val();
             dashboard.setBudgetChartByAkunBelanja();
@@ -316,15 +328,20 @@ $(document).ready(function() {
          * handle change select akun belanja
          */
         $("#admin__chart-by-akun-belanja__select-akun-belanja").change(
-            function(e) {
+            function (e) {
                 e.preventDefault();
-                dashboard.chartByAkunBelanja["akunBelanjaId"] = $(this).val();
+
+                const value = $(this).val();
+
+                dashboard.chartByAkunBelanja["akunBelanjaId"] = value;
                 dashboard.setBudgetChartByAkunBelanja();
 
-                const selectJenisBelanja = $('#admin__chart-by-akun-belanja__select-jenis-belanja');
+                const url = `${main.baseUrl}/dashboard/chart/admin/akun-belanja/${value}`;
+                const selectJenisBelanja = $(
+                    "#admin__chart-by-akun-belanja__select-jenis-belanja"
+                );
 
-                selectJenisBelanja.load(`${main.baseUrl}/dashboard/chart/admin/akun-belanja/${$(this).val()}`);
-                selectJenisBelanja.removeAttr('disabled');
+                selectJenisBelanja.load(url);
             }
         );
 
@@ -332,7 +349,7 @@ $(document).ready(function() {
          * handle change select jenis belanja
          */
         $("#admin__chart-by-akun-belanja__select-jenis-belanja").change(
-            function(e) {
+            function (e) {
                 e.preventDefault();
                 dashboard.chartByAkunBelanja["jenisBelanjaId"] = $(this).val();
                 dashboard.setBudgetChartByAkunBelanja();
@@ -350,7 +367,7 @@ $(document).ready(function() {
          * handle jika periode divisi per jenis belanja dirubah
          */
         $("#divisi__transaksi-chart-line__select-tahun-anggaran").change(
-            function(e) {
+            function (e) {
                 e.preventDefault();
                 dashboard.setTransaksiChartLine($(this).val());
             }
@@ -360,7 +377,7 @@ $(document).ready(function() {
     /**
      * handle change form select global period
      */
-    $("#periode-global").change(function(e) {
+    $("#periode-global").change(function (e) {
         e.preventDefault();
         dashboard.setGlobalBudgetChart($(this).val());
     });
@@ -368,7 +385,7 @@ $(document).ready(function() {
     /**
      * set chart divisi
      */
-    $.each($(".divisi-chart"), function(index, el) {
+    $.each($(".divisi-chart"), function (index, el) {
         const chartEl = $(el);
         const id = chartEl.data("divisi-id");
 
@@ -378,7 +395,7 @@ $(document).ready(function() {
     /**
      * handle jika periode per divisi dirubah
      */
-    $(".periode-divisi").change(function(e) {
+    $(".periode-divisi").change(function (e) {
         e.preventDefault();
         dashboard.setBudgetChartByDivisi(
             $(this).data("divisi-id"),
