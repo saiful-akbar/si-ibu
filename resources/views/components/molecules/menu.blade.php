@@ -9,13 +9,11 @@ $user = App\Models\User::with([
 
 <ul class="metismenu side-nav">
     @foreach ($user->menuHeader as $menuHeader)
-
         {{-- cek akses read menu_header --}}
         @if ($menuHeader->pivot->read == 1)
-            <li class="side-nav-title side-nav-item mt-3">{{ strtoupper($menuHeader->nama_header) }}</li>
+            <li class="side-nav-title side-nav-item">{{ strtoupper($menuHeader->nama_header) }}</li>
 
             @foreach ($user->menuItem as $menuItem)
-
                 {{-- cek akses read menu items --}}
                 @if ($menuItem->menu_header_id == $menuHeader->id && $menuItem->pivot->read == 1)
                     <li class="side-nav-item {{ Request::is(trim($menuItem->href, '/') . '*') ? 'mm-active' : null }}">
@@ -27,6 +25,5 @@ $user = App\Models\User::with([
                 @endif
             @endforeach
         @endif
-
     @endforeach
 </ul>
