@@ -19,6 +19,16 @@ Sistem Informasi Bagian Umum.
 -   Aktifkan `extension=gd` pada php.ini untuk fitur export excel dan domPDF
 -   Ter-install driver SQL Server untuk php
 
+# Update v2
+
+-   [x] Halaman login
+-   [x] Halaman dashboard
+    -   [ ] Chart line staff
+-   [x] Halaman akun belanja
+    -   [x] Halaman tambah akun belanja
+    -   [x] Halaman edit akun belanja
+    -   [x] Modal delete akun belanja
+
 # Instalasi
 
 1.  Clone repository

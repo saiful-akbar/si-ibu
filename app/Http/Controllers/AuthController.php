@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,39 +47,35 @@ class AuthController extends Controller
         /**
          * cek pada database
          */
-        if (Auth::attempt($credentials)) {
-
-            /**
-             * cek apakah akun aktif atau tidak
-             */
-            if (Auth::user()->active != 1) {
-                Auth::logout();
-
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-
-                return back()->withErrors([
-                    'error' => 'Akun anda tidak aktif.',
-                ]);
-            }
-
-            /**
-             * buat session jika login sukses dan akun aktif
-             */
-            $request->session()->regenerate();
-
-            /**
-             * redirect ke halaman dashboard
-             */
-            return redirect()->route('dashboard');
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors([
+                'error' => 'Periksa kembali username atau password anda.',
+            ]);
         }
 
         /**
-         * tampilkan error jika login gagal
+         * cek apakah akun aktif atau tidak
          */
-        return back()->withErrors([
-            'error' => 'Username atau password salah.',
-        ]);
+        if (Auth::user()->active != 1) {
+            Auth::logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()->withErrors([
+                'error' => 'Akun anda tidak aktif.',
+            ]);
+        }
+
+        /**
+         * buat session jika login sukses dan akun aktif
+         */
+        $request->session()->regenerate();
+
+        /**
+         * redirect ke halaman dashboard
+         */
+        return redirect()->route('dashboard');
     }
 
 

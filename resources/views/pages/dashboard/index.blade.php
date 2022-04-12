@@ -1,8 +1,4 @@
-@extends('templates.main')
-
-@section('title', 'Dashboard')
-
-@section('content')
+<x-layouts.auth title="Dashboard">
 
     {{-- global budget chart --}}
     <div class="row">
@@ -17,10 +13,7 @@
 
                         {{-- Pie chart --}}
                         <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
-                            <div
-                                id="global-chart"
-                                class="apex-charts"
-                            ></div>
+                            <div id="global-chart" class="apex-charts"></div>
                         </div>
                         {{-- end Pie chart --}}
 
@@ -31,16 +24,11 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="periode-divisi">Tahun Anggaran</label>
-                                        <select
-                                            id="periode-global"
-                                            class="form-control form-control-sm select2"
-                                            data-toggle="select2"
-                                        >
+                                        <select id="periode-global" class="form-control form-control-sm select2"
+                                            data-toggle="select2">
                                             @foreach ($years as $year)
-                                                <option
-                                                    value="{{ $year }}"
-                                                    @if ($year == date('Y')) selected @endif
-                                                >
+                                                <option value="{{ $year }}"
+                                                    @if ($year == date('Y')) selected @endif>
                                                     {{ $year }}
                                                 </option>
                                             @endforeach
@@ -57,31 +45,19 @@
                                 <div class="col-12 chart-widget-list">
                                     <p>
                                         Bagian
-                                        <span
-                                            class="float-right"
-                                            id="global-divisi"
-                                        ></span>
+                                        <span class="float-right" id="global-divisi"></span>
                                     </p>
                                     <p>
                                         Total Pagu
-                                        <span
-                                            class="float-right"
-                                            id="global-total-budget"
-                                        ></span>
+                                        <span class="float-right" id="global-total-budget"></span>
                                     </p>
                                     <p>
                                         <i class="mdi mdi-square text-success"></i> Total Realisasi
-                                        <span
-                                            class="float-right"
-                                            id="global-total-belanja"
-                                        ></span>
+                                        <span class="float-right" id="global-total-belanja"></span>
                                     </p>
                                     <p>
                                         <i class="mdi mdi-square text-primary"></i> Sisa Pagu
-                                        <span
-                                            class="float-right"
-                                            id="global-sisa-budget"
-                                        ></span>
+                                        <span class="float-right" id="global-sisa-budget"></span>
                                     </p>
                                 </div>
                             </div>
@@ -96,10 +72,9 @@
     {{-- global budget chart --}}
 
     @if ($isAdmin)
-
         {{-- chart budget per bagian (divisi) --}}
         <div class="row">
-            <div class="col-sm-12 mb-3 border-bottom">
+            <div class="col-sm-12 border-bottom mb-3">
                 <h4 class="header-title">
                     Pagu chart per bagian
                 </h4>
@@ -117,11 +92,8 @@
                             {{-- donut chart --}}
                             <div class="row">
                                 <div class="col-12 mb-3">
-                                    <div
-                                        class="apex-charts divisi-chart"
-                                        data-divisi-id="{{ $data->id }}"
-                                        id="divisi-{{ $data->id }}"
-                                    ></div>
+                                    <div class="apex-charts divisi-chart" data-divisi-id="{{ $data->id }}"
+                                        id="divisi-{{ $data->id }}"></div>
                                 </div>
                             </div>
                             {{-- end donut chart --}}
@@ -130,17 +102,12 @@
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <div class="form-group">
-                                        <select
-                                            id="periode-divisi-{{ $data->id }}"
-                                            class="form-control form-control-sm select2 periode-divisi"
-                                            data-toggle="select2"
-                                            data-divisi-id="{{ $data->id }}"
-                                        >
+                                        <select id="periode-divisi-{{ $data->id }}"
+                                            class="form-control form-control-sm select2 periode-divisi" data-toggle="select2"
+                                            data-divisi-id="{{ $data->id }}">
                                             @foreach ($years as $year)
-                                                <option
-                                                    value="{{ $year }}"
-                                                    @if ($year == date('Y')) selected @endif
-                                                >
+                                                <option value="{{ $year }}"
+                                                    @if ($year == date('Y')) selected @endif>
                                                     {{ $year }}
                                                 </option>
                                             @endforeach
@@ -156,26 +123,17 @@
                                     <div class="chart-widget-list">
                                         <p>
                                             Total Pagu
-                                            <span
-                                                class="float-right"
-                                                id="total-budget-divisi-{{ $data->id }}"
-                                            ></span>
+                                            <span class="float-right" id="total-budget-divisi-{{ $data->id }}"></span>
                                         </p>
                                         <p class="mb-0">
                                             <i class="mdi mdi-square text-success"></i>
                                             Total Realisasi
-                                            <span
-                                                class="float-right"
-                                                id="total-belanja-divisi-{{ $data->id }}"
-                                            ></span>
+                                            <span class="float-right" id="total-belanja-divisi-{{ $data->id }}"></span>
                                         </p>
                                         <p>
                                             <i class="mdi mdi-square text-danger"></i>
                                             Sisa Pagu
-                                            <span
-                                                class="float-right"
-                                                id="sisa-budget-divisi-{{ $data->id }}"
-                                            ></span>
+                                            <span class="float-right" id="sisa-budget-divisi-{{ $data->id }}"></span>
                                         </p>
                                     </div>
                                 </div>
@@ -202,10 +160,7 @@
 
                             {{-- chart per akun belanja (jenis_belanja) --}}
                             <div class="col-md-6 col-sm-12 mb-3">
-                                <div
-                                    id="admin__chart-by-akun-belanja"
-                                    class="apex-charts"
-                                ></div>
+                                <div id="admin__chart-by-akun-belanja" class="apex-charts"></div>
                             </div>
 
                             <div class="col-md-6 col-sm-12">
@@ -215,16 +170,11 @@
                                     <div class="form-group col-lg-6 col-sm-12">
                                         <label for="admin__chart-by-akun-belanja__select-tahun-anggaran">Tahun Anggaran</label>
 
-                                        <select
-                                            id="admin__chart-by-akun-belanja__select-tahun-anggaran"
-                                            class="form-control form-control-sm select2"
-                                            data-toggle="select2"
-                                        >
+                                        <select id="admin__chart-by-akun-belanja__select-tahun-anggaran"
+                                            class="form-control form-control-sm select2" data-toggle="select2">
                                             @foreach ($years as $year)
-                                                <option
-                                                    value="{{ $year }}"
-                                                    @if ($year == date('Y')) selected @endif
-                                                >
+                                                <option value="{{ $year }}"
+                                                    @if ($year == date('Y')) selected @endif>
                                                     {{ $year }}
                                                 </option>
                                             @endforeach
@@ -235,11 +185,8 @@
                                     <div class="form-group col-lg-6 col-sm-12">
                                         <label for="admin__chart-by-akun-belanja__select-divisi">Bagian</label>
 
-                                        <select
-                                            id="admin__chart-by-akun-belanja__select-divisi"
-                                            class="form-control form-control-sm select2"
-                                            data-toggle="select2"
-                                        >
+                                        <select id="admin__chart-by-akun-belanja__select-divisi"
+                                            class="form-control form-control-sm select2" data-toggle="select2">
                                             <option value="{{ null }}">Semua Bagian</option>
 
                                             @foreach ($divisi as $divChartByAkunBelanja)
@@ -258,11 +205,8 @@
                                     <div class="form-group col-lg-6 col-sm-12">
                                         <label for="admin__chart-by-akun-belanja__select-akun-belanja">Akun Belanja</label>
 
-                                        <select
-                                            id="admin__chart-by-akun-belanja__select-akun-belanja"
-                                            class="form-control form-control-sm select2"
-                                            data-toggle="select2"
-                                        >
+                                        <select id="admin__chart-by-akun-belanja__select-akun-belanja"
+                                            class="form-control form-control-sm select2" data-toggle="select2">
                                             <option value="{{ null }}">Semua Akun Belanja</option>
 
                                             @foreach ($akunBelanja as $aBelanja)
@@ -277,11 +221,8 @@
                                     <div class="form-group col-lg-6 col-sm-12">
                                         <label for="admin__chart-by-akun-belanja__select-jenis-belanja">Jenis Belanja</label>
 
-                                        <select
-                                            id="admin__chart-by-akun-belanja__select-jenis-belanja"
-                                            class="form-control form-control-sm select2"
-                                            data-toggle="select2"
-                                        >
+                                        <select id="admin__chart-by-akun-belanja__select-jenis-belanja"
+                                            class="form-control form-control-sm select2" data-toggle="select2">
                                             <option value="{{ null }}">Semua Jenis Belanja</option>
                                         </select>
                                     </div>
@@ -293,31 +234,21 @@
                                     <div class="col-12 chart-widget-list">
                                         <p>
                                             Total Pagu
-                                            <span
-                                                class="float-right"
-                                                id="admin__chart-by-akun-belanja__total-budget"
-                                            ></span>
+                                            <span class="float-right" id="admin__chart-by-akun-belanja__total-budget"></span>
                                         </p>
                                         <p>
                                             <i class="mdi mdi-square text-danger"></i> Realisasi Outstanding
-                                            <span
-                                                class="float-right"
-                                                id="admin__chart-by-akun-belanja__total-outstanding"
-                                            ></span>
+                                            <span class="float-right"
+                                                id="admin__chart-by-akun-belanja__total-outstanding"></span>
                                         </p>
                                         <p>
                                             <i class="mdi mdi-square text-success"></i> Realisasi Ontstanding
-                                            <span
-                                                class="float-right"
-                                                id="admin__chart-by-akun-belanja__total-onstanding"
-                                            ></span>
+                                            <span class="float-right"
+                                                id="admin__chart-by-akun-belanja__total-onstanding"></span>
                                         </p>
                                         <p>
                                             <i class="mdi mdi-square text-warning"></i> Sisa Pagu
-                                            <span
-                                                class="float-right"
-                                                id="admin__chart-by-akun-belanja__sisa-budget"
-                                            ></span>
+                                            <span class="float-right" id="admin__chart-by-akun-belanja__sisa-budget"></span>
                                         </p>
                                     </div>
                                 </div>
@@ -343,16 +274,11 @@
                                 <div class="form-group">
                                     <label for="divisi__transaksi-chart-line__select-tahun-anggaran">Periode Tahun</label>
 
-                                    <select
-                                        id="divisi__transaksi-chart-line__select-tahun-anggaran"
-                                        class="form-control select2"
-                                        data-toggle="select2"
-                                    >
+                                    <select id="divisi__transaksi-chart-line__select-tahun-anggaran" class="form-control select2"
+                                        data-toggle="select2">
                                         @foreach ($years as $year)
-                                            <option
-                                                value="{{ $year }}"
-                                                @if ($year == date('Y')) selected @endif
-                                            >
+                                            <option value="{{ $year }}"
+                                                @if ($year == date('Y')) selected @endif>
                                                 {{ $year }}
                                             </option>
                                         @endforeach
@@ -363,11 +289,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div
-                                    id="divisi__transaksi-chart-line"
-                                    class="apex-charts"
-                                    data-colors="#727cf5,#0acf97"
-                                ></div>
+                                <div id="divisi__transaksi-chart-line" class="apex-charts" data-colors="#727cf5,#0acf97"></div>
                             </div>
                         </div>
                     </div>
@@ -375,12 +297,10 @@
             </div>
         </div>
         {{-- chart line per bagian (divisi) --}}
-
     @endif
 
-@endsection
-
-@section('js')
-    <script src="{{ asset('assets/js/vendor/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
-@endsection
+    <x-slot name="script">
+        <script src="{{ asset('assets/js/vendor/apexcharts.min.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
+    </x-slot>
+</x-layouts.auth>

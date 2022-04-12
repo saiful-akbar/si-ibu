@@ -7,7 +7,7 @@
 
             <div class="col-md-6">
                 <div class="text-md-right d-none d-md-block">
-                    Version {{ config('app.version') }}
+                    Versi {{ config('app.version') }}
                 </div>
             </div>
         </div>

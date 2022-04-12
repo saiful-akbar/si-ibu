@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/chart/admin/akun-belanja/{akunBelanjaId}', [DashboardController::class, 'getJenisBelanjaByAkunBelanjaId'])
             ->middleware('menu:/dashboard,read');
-            
+
         Route::get('/chart/divisi/{year}/jenis-belanja', [DashboardController::class, 'transaksiChartLine'])
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.divisi.jenisBelanja');

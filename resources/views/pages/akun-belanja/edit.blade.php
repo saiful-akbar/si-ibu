@@ -1,19 +1,5 @@
-@extends('templates.main')
-
-@section('title', 'Edit Akun Belanja')
-
-@section('btn-kembali')
-    <a href="{{ route('akun-belanja') }}" class="btn btn-rounded btn-dark btn-sm">
-        <i class="mdi mdi-chevron-double-left mr-1"></i>
-        <span>Kembali</span>
-    </a>
-@endsection
-
-@section('content')
-    <form action="{{ route('akun-belanja.update', ['akunBelanja' => $akunBelanja->id]) }}" method="POST" autocomplete="off">
-        @csrf
-        @method('PATCH')
-
+<x-layouts.auth title="Edit Akun Belanja" back-button="{{ route('akun-belanja') }}">
+    <x-form method="PATCH" action="{{ route('akun-belanja.update', ['akunBelanja' => $akunBelanja->id]) }}">
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -22,8 +8,6 @@
                     </div>
 
                     <div class="card-body">
-
-                        {{-- input nama_akun_belanja --}}
                         <div class="form-group row mb-3">
                             <label for="nama_akun_belanja" class="col-md-3 col-sm-12 col-form-label">
                                 Nama Akun Belanja <small class="text-danger">*</small>
@@ -41,7 +25,6 @@
                             </div>
                         </div>
 
-                        {{-- input active --}}
                         <div class="form-group row justify-content-end">
                             <div class="col-md-9 col-sm-12">
                                 <div class="custom-control custom-switch">
@@ -58,22 +41,18 @@
                     </div>
 
                     <div class="card-footer">
-
-                        {{-- button submit --}}
-                        <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
-                            <i class="mdi mdi-content-save mr-1"></i>
+                        <button type="submit" class="btn btn-info btn-sm mr-2">
+                            <i class="mdi mdi-content-save"></i>
                             <span>Simpan</span>
                         </button>
 
-                        {{-- button reset --}}
-                        <button type="reset" class="btn btn-rounded btn-dark btn-sm">
-                            <i class="mdi mdi-close-circle mr-1"></i>
+                        <button type="reset" class="btn btn-dark btn-sm">
+                            <i class="mdi mdi-close"></i>
                             <span>Reset</span>
                         </button>
-
                     </div>
                 </div>
             </div>
         </div>
-    </form>
-@endsection
+    </x-form>
+</x-layouts.auth>

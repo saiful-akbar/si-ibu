@@ -75,6 +75,36 @@ class Main {
             $("thead").addClass("thead-dark");
         }
     }
+
+    handleDelete(title, callback) {
+        bootbox.confirm({
+            title: title,
+            message: String.raw`
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Peringatan!</h4>
+                    <hr>
+                    <div class="mb-0 ml-3">
+                        <ul>
+                            <li>Tindakan ini tidak dapat dibatalkan.</li>
+                            <li>Data yang dihapus tidak dapat dikembalikan.</li>
+                            <li>Berhati-hatilah dalam menghapus data.</li>
+                        </ul>
+                    </div>
+                </div>
+            `,
+            buttons: {
+                cancel: {
+                    label: String.raw`<i class='mdi mdi-close'></i> Batal`,
+                    className: "btn btn-sm btn-dark mr-2",
+                },
+                confirm: {
+                    label: String.raw`<i class='mdi mdi-delete'></i> Hapus`,
+                    className: "btn btn-danger btn-sm",
+                },
+            },
+            callback: (response) => callback(response),
+        });
+    }
 }
 
 /**

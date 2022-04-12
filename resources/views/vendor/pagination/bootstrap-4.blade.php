@@ -1,10 +1,10 @@
 @if ($paginator->hasPages())
     <div class="row">
-        <div class="col-md-6 col-sm-12 d-flex justify-content-md-start justify-content-center align-items-center mb-3">
-            Hal {{ $paginator->currentPage() }} / {{ $paginator->lastPage() }}
+        <div class="col-md-6 col-sm-12 d-flex justify-content-md-start justify-content-center align-items-center mt-2">
+            Halaman {{ number_format($paginator->currentPage()) }} dari {{ number_format($paginator->lastPage()) }}
         </div>
 
-        <div class="col-md-6 col-sm-12 d-flex justify-content-md-end justify-content-center align-items-center mb-3">
+        <div class="col-md-6 col-sm-12 d-flex justify-content-md-end justify-content-center align-items-center mt-2">
             <nav>
                 <ul class="pagination mb-0">
 
@@ -26,8 +26,6 @@
 
                     {{-- Pagination Elements --}}
                     @foreach ($elements as $element)
-
-                        {{-- Array Of Links --}}
                         @if (is_array($element))
                             @foreach ($element as $page => $url)
                                 @if ($page == $paginator->currentPage())
