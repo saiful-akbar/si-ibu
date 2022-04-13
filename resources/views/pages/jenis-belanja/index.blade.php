@@ -23,13 +23,8 @@
                             <div class="col-md-6 col-sm-12 mb-3">
                                 <x-form action="{{ route('jenis-belanja') }}" method="GET">
                                     <div class="input-group">
-                                        <input
-                                            type="search"
-                                            name="search"
-                                            placeholder="Cari jenis belanja..."
-                                            class="form-control"
-                                            value="{{ request('search') }}"
-                                        />
+                                        <input type="search" name="search" placeholder="Cari jenis belanja..."
+                                            class="form-control" value="{{ request('search') }}" />
 
                                         <div class="input-group-append">
                                             <button class="btn btn-secondary" type="submit">
@@ -44,7 +39,7 @@
 
                         {{-- Table jenis belanja --}}
                         <div class="row">
-                            <div class="col-12 mb-3">
+                            <div class="col-12">
                                 <x-table :paginator="$jenisBelanja">
                                     <x-slot name="thead">
                                         <tr>
@@ -76,21 +71,17 @@
                                                         @if ($userAccess->update)
                                                             <a href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
                                                                 class="btn btn-sm btn-secondary btn-icon mx-1"
-                                                                data-toggle="tooltip"
-                                                                data-original-title="Edit"
-                                                                data-placement="top"
-                                                            >
+                                                                data-toggle="tooltip" data-original-title="Edit"
+                                                                data-placement="top">
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
                                                         @endif
 
                                                         @if ($userAccess->delete)
                                                             <button class="btn btn-sm btn-secondary btn-icon mx-1"
-                                                                data-toggle="tooltip"
-                                                                data-original-title="Hapus"
+                                                                data-toggle="tooltip" data-original-title="Hapus"
                                                                 data-placement="top"
-                                                                onclick="akunBelanja.deleteJenisBelanja({{ $data->id }})"
-                                                            >
+                                                                onclick="akunBelanja.deleteJenisBelanja({{ $data->id }})">
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>
                                                         @endif

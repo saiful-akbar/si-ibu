@@ -9,42 +9,13 @@ class Budget {
      * @param {int} id
      */
     handleDelete = (id) => {
-        bootbox.confirm({
-            title: "Anda ingin menghapus budget ?",
-            message: String.raw `
-                <div class="alert alert-danger" role="alert">
-                    <h4 class="alert-heading">
-                        <i class="dripicons-warning mr-1"></i>
-                        Peringatan!
-                    </h4>
-                    <ul>
-                        <li>Tindakan ini tidak dapat dibatalkan.</li>
-                        <li>Budget yang dihapus tidak dapat dikembalikan.</li>
-                        <li>Pastikan anda berhati-hati dalam menghapus.</li>
-                    </ul>
-                    <p>
-                        <b>NB:</b> Budget tidak dapat dihapus jika memiliki data relasi pada <b>Transaksi Belanja</b>!
-                    </p>
-                </div>
-            `,
-            buttons: {
-                confirm: {
-                    label: String.raw `<i class='mdi mdi-delete mr-1'></i> Hapus`,
-                    className: `btn btn-danger btn-sm btn-rounded`,
-                },
-                cancel: {
-                    label: String.raw `<i class='mdi mdi-close-circle mr-1'></i> Batal`,
-                    className: `btn btn-sm btn-dark btn-rounded mr-2`,
-                },
-            },
-            callback: (result) => {
-                if (result) {
-                    const form = $("#form-delete-budget");
+        main.handleDelete("Hapus pagu ?", (response) => {
+            if (response) {
+                const form = $("#form-delete");
 
-                    form.attr("action", `${main.baseUrl}/budget/${id}`);
-                    form.submit();
-                }
-            },
+                form.attr("action", `${main.baseUrl}/budget/${id}`);
+                form.submit();
+            }
         });
     };
 
@@ -115,7 +86,7 @@ class Budget {
                      * append table detail transkasi per budget
                      */
                     res.transaksi.map((transaksi) =>
-                        $("#detail-transaksi").append(String.raw `
+                        $("#detail-transaksi").append(String.raw`
                             <tr>
                                 <td>${transaksi.tanggal}</td>
                                 <td>${transaksi.user.profil.nama_lengkap}</td>
@@ -123,14 +94,15 @@ class Budget {
                                 <td>${transaksi.approval}</td>
                                 <td>${transaksi.no_dokumen}</td>
                                 <td class="text-center">
-                                    ${transaksi.file_dokumen !== null
-                                        ? String.raw`
+                                    ${
+                                        transaksi.file_dokumen !== null
+                                            ? String.raw`
                                             <a href="${main.baseUrl}/belanja/${transaksi.id}/download" class="btn btn-light btn-sm btn-rounded">
                                                 <i class="mdi mdi-download"></i>
                                                 <span>Unduh</span>
                                             </a>
                                         `
-                                        : "File tidak tersedia"
+                                            : "File tidak tersedia"
                                     }
                                 </td>
                                 <td class="text-right">
@@ -164,15 +136,15 @@ class Budget {
         $("#modal-table-akun-belanja").modal(show ? "show" : "hide");
 
         if (this.dataTableAkunBelanja == null) {
-            this.dataTableAkunBelanja = $("#datatable-akun-belanja").DataTable({
+            this.dataTableAkunBelanja = $(
+                "#datatable_modal-akun-belanja"
+            ).DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 20,
                 lengthChange: false,
                 scrollX: true,
                 info: false,
-                scrollY: "300px",
-                scrollCollapse: true,
                 ajax: `${main.baseUrl}/akun-belanja/jenis-belanja/datatable`,
                 pagingType: "simple",
                 language: {
@@ -226,7 +198,7 @@ const budget = new Budget();
 /**
  * Jalankan fungsi seletal document dimuat
  */
-$(document).ready(function() {
+$(document).ready(function () {
     /**
      * summernote keterangan
      */

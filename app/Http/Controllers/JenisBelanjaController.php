@@ -312,9 +312,9 @@ class JenisBelanjaController extends Controller
                 return "
                     <button
                         onclick='budget.setValueAkunBelanja({$data->id}, \"{$data->akunBelanja->nama_akun_belanja}\", \"{$data->kategori_belanja}\")'
-                        class='btn btn-sm btn-success btn-rounded btn-sm'
+                        class='btn btn-sm btn-success btn-sm'
                     >
-                        <i class='mdi mdi-hand-pointing-up mr-1'></i>
+                        <i class='mdi mdi-hand-pointing-up'></i>
                         <span>Pilih</span>
                     </button>
                 ";

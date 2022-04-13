@@ -113,11 +113,6 @@ class Main {
 const main = new Main();
 
 /**
- * Table class
- */
-main.tableClass();
-
-/**
  * Waktu
  */
 function dateTime() {

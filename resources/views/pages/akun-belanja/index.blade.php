@@ -39,7 +39,7 @@
 
                         {{-- table akun_belanja --}}
                         <div class="row">
-                            <div class="col-12 mb-3">
+                            <div class="col-12">
                                 <x-table :paginator="$akunBelanja">
                                     <x-slot name="thead">
                                         <tr>

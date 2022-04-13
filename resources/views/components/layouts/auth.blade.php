@@ -53,17 +53,19 @@
                 <x-topbar></x-topbar>
 
                 <div class="container-fluid">
-                    <div class="page-title-box d-flex justify-content-between align-items-center">
-                        <h4 class="page-title">
-                            {{ $title }}
-                        </h4>
+                    <div class="py-1">
+                        <div class="page-title-box d-flex justify-content-between align-items-center">
+                            <h4 class="page-title">
+                                {{ $title }}
+                            </h4>
 
-                        @isset($backButton)
-                            <a href="{{ $backButton }}" class="btn btn-dark btn-sm">
-                                <i class="mdi mdi-arrow-left"></i>
-                                <span>Kembali</span>
-                            </a>
-                        @endisset
+                            @isset($backButton)
+                                <a href="{{ $backButton }}" class="btn btn-dark btn-sm">
+                                    <i class="mdi mdi-arrow-left"></i>
+                                    <span>Kembali</span>
+                                </a>
+                            @endisset
+                        </div>
                     </div>
 
                     {{-- Notifikasi --}}

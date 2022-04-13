@@ -3,7 +3,7 @@
 
         {{-- form akun --}}
         <div class="row">
-            <div class="col-12 mb-2">
+            <div class="col-12 mb-3">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="header-title mt-2">Form Akun</h4>
@@ -19,7 +19,8 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <input required type="text" id="username" name="username" placeholder="Masukan username..."
-                                    value="{{ old('username') }}" class="form-control @error('username') is-invalid @enderror" />
+                                    value="{{ old('username') }}"
+                                    class="form-control @error('username') is-invalid @enderror" />
 
                                 @error('username')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -35,8 +36,8 @@
 
                             <div class="col-md-9 col-sm-12">
                                 <div class="input-group input-group-merge @error('password') is-invalid @enderror">
-                                    <input required type="password" id="password" name="password" placeholder="Masukan password..."
-                                        value="{{ old('password') }}"
+                                    <input required type="password" id="password" name="password"
+                                        placeholder="Masukan password..." value="{{ old('password') }}"
                                         class="form-control @error('password') is-invalid @enderror" />
 
                                     <div class="input-group-append" data-password="false" style="cursor: pointer">
@@ -89,7 +90,7 @@
                     <div class="card-body">
 
                         {{-- Upload avatar --}}
-                        <div class="form-group row mb-3 justify-content-end">
+                        <div class="form-group row justify-content-end mb-3">
                             <div class="col-md-9 col-sm-12">
                                 <img id="avatar-view" alt="avatar" class="img-fluid avatar-lg rounded-circle img-thumbnail"
                                     src="{{ asset('assets/images/avatars/avatar_default.webp') }}"
@@ -139,7 +140,8 @@
                             <div class="col-md-9 col-sm-12">
                                 <select required name="divisi_id" id="divisi_id" data-toggle="select2"
                                     class="form-control select2 @error('divisi_id') is-invalid @enderror">
-                                    <option disabled value="{{ null }}" @if (!old('divisi_id')) selected @endif>
+                                    <option disabled value="{{ null }}"
+                                        @if (!old('divisi_id')) selected @endif>
                                         -- Pilih Bagian --
                                     </option>
 

@@ -46,12 +46,12 @@ Sistem Informasi Bagian Umum.
     -   [x] Modal delete
     -   [x] Menu akses
         -   [x] Edit menu akses
--   [ ] Halaman budget (pagu)
-    -   [ ] Modal detail
-    -   [ ] Halaman tambah
-    -   [ ] Halaman edit
-    -   [ ] Halaman switch pagu
-    -   [ ] Modal delete
+-   [x] Halaman budget (pagu)
+    -   [x] Modal detail
+    -   [x] Halaman tambah
+    -   [x] Halaman edit
+    -   [x] Halaman switch pagu
+    -   [x] Modal delete
 -   [ ] Halaman transaksi (Realisasi)
     -   [ ] Modal detail
     -   [ ] Halaman tambah

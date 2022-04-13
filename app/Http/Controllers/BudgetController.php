@@ -91,7 +91,7 @@ class BudgetController extends Controller
          */
         $budgets = $query->orderBy('tahun_anggaran', 'desc')
             ->orderBy('budget.updated_at', 'desc')
-            ->paginate(10)->withQueryString();
+            ->paginate(20)->withQueryString();
 
         /**
          * jumlah total nominal dan total sisa_nominal budget
@@ -118,13 +118,13 @@ class BudgetController extends Controller
          * return view
          */
         return view('pages.budget.index', [
-            'budgets' => $budgets,
-            'divisi' => $divisi,
-            'akunBelanja' => $akunBelanja,
-            'totalNominal' => $totalNominal,
+            'budgets'          => $budgets,
+            'divisi'           => $divisi,
+            'akunBelanja'      => $akunBelanja,
+            'totalNominal'     => $totalNominal,
             'totalSisaNominal' => $totalSisaNominal,
-            'userAccess' => $userAccess,
-            'isAdmin' => $isAdmin,
+            'userAccess'       => $userAccess,
+            'isAdmin'          => $isAdmin,
         ]);
     }
 
@@ -194,28 +194,28 @@ class BudgetController extends Controller
          * validasi rule
          */
         $validateRules = [
-            'divisi_id' => ['required', 'exists:divisi,id'],
+            'divisi_id'        => ['required', 'exists:divisi,id'],
             'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
-            'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:1900'],
-            'nominal' => ['required', 'numeric', 'min:0'],
-            'keterangan' => [],
+            'tahun_anggaran'   => ['required', 'numeric', 'max:9999', 'min:1900'],
+            'nominal'          => ['required', 'numeric', 'min:0'],
+            'keterangan'       => [],
         ];
 
         /**
          * pesan error validasi
          */
         $validateMessage = [
-            'divisi_id.required' => 'Bagian harus dipilih.',
-            'divisi_id.exists' => 'bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
+            'divisi_id.required'        => 'Bagian harus dipilih.',
+            'divisi_id.exists'          => 'bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
             'jenis_belanja_id.required' => 'Akun belanja harus dipilih.',
-            'jenis_belanja_id.exists' => 'Akun belanja tidak terdaftar. Pilih akun belanja yang telah ditentukan.',
-            'tahun_anggaran.required' => 'Tahun anggaran tidak boleh kosong.',
-            'tahun_anggaran.numeric' => 'Tahun anggaran harus bertipe numerik atau angka.',
-            'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari 4 digit angka.',
-            'tahun_anggaran.min' => 'Tahun anggaran tidak boleh kurang dari 1900.',
-            'nominal.required' => 'Nilai nominal tidak boleh kosong.',
-            'nominal.numeric' => 'Nilai nominal harus bertipe numerik atau angka.',
-            'nominal.min' => 'Nilai nominal tidak boleh kurang dari 0.',
+            'jenis_belanja_id.exists'   => 'Akun belanja tidak terdaftar. Pilih akun belanja yang telah ditentukan.',
+            'tahun_anggaran.required'   => 'Tahun anggaran tidak boleh kosong.',
+            'tahun_anggaran.numeric'    => 'Tahun anggaran harus bertipe numerik atau angka.',
+            'tahun_anggaran.max'        => 'Tahun anggaran tidak boleh lebih dari 4 digit angka.',
+            'tahun_anggaran.min'        => 'Tahun anggaran tidak boleh kurang dari 1900.',
+            'nominal.required'          => 'Nilai nominal tidak boleh kosong.',
+            'nominal.numeric'           => 'Nilai nominal harus bertipe numerik atau angka.',
+            'nominal.min'               => 'Nilai nominal tidak boleh kurang dari 0.',
         ];
 
         /**
@@ -237,7 +237,7 @@ class BudgetController extends Controller
             return redirect()->route('budget.create')->with('alert', [
                 'type' => 'danger',
                 'message' => "
-                    <ul class='mt-0'>
+                    <ul class='ml-3'>
                         <li>Bagian tidak aktif</li>
                         <li>Anda tidak bisa membuat pagu pada bagian yang tidak aktif.</li>
                     </ul>
@@ -253,7 +253,7 @@ class BudgetController extends Controller
             return redirect()->route('budget.create')->with('alert', [
                 'type' => 'danger',
                 'message' => "
-                    <ul class='mt-0'>
+                    <ul class='ml-3'>
                         <li>Akun belanja tidak aktif</li>
                         <li>Anda tidak bisa membuat pagu pada akun belanja yang tidak aktif.</li>
                     </ul>
@@ -280,11 +280,11 @@ class BudgetController extends Controller
                 ->with('alert', [
                     'type' => 'warning',
                     'message' => "
-                        <ul class='mt-0'>
-                            <li>Budget sudah dibuat.</li>
+                        <ul class='ml-3'>
+                            <li>Pagu sudah dibuat.</li>
                             <li>
                                 Jika anda ingin menambahkan nominal pagu pada akun belanja, bagian & tahun yang sama.
-                                anda bisa melakukan edit data pada tabel budget.
+                                anda bisa melakukan edit data pada tabel pagu.
                             </li>
                         </ul>
                     ",
@@ -343,28 +343,28 @@ class BudgetController extends Controller
          * aturan validasi
          */
         $validateRules = [
-            'divisi_id' => ['required', 'exists:divisi,id'],
+            'divisi_id'        => ['required', 'exists:divisi,id'],
             'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
-            'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:0'],
-            'nominal' => ['required', 'numeric', 'min:0'],
-            'keterangan' => [],
+            'tahun_anggaran'   => ['required', 'numeric', 'max:9999', 'min:0'],
+            'nominal'          => ['required', 'numeric', 'min:0'],
+            'keterangan'       => [],
         ];
 
         /**
          * pesan error validasi
          */
         $validateMessage = [
-            'divisi_id.required' => 'Bagian harus dipilih.',
-            'divisi_id.exists' => 'bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
+            'divisi_id.required'        => 'Bagian harus dipilih.',
+            'divisi_id.exists'          => 'bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
             'jenis_belanja_id.required' => 'Akun belanja harus dipilih.',
-            'jenis_belanja_id.exists' => 'Akun belanja tidak terdaftar. Pilih akun belanja yang telah ditentukan.',
-            'tahun_anggaran.required' => 'Tahun anggaran tidak boleh kosong.',
-            'tahun_anggaran.numeric' => 'Tahun anggaran harus bertipe numerik atau angka.',
-            'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari 4 digit angka.',
-            'tahun_anggaran.min' => 'Tahun anggaran tidak boleh kurang dari 0.',
-            'nominal.required' => 'Nilai nominal tidak boleh kosong.',
-            'nominal.numeric' => 'Nilai nominal harus bertipe numerik atau angka.',
-            'nominal.min' => 'Nilai nominal tidak boleh kurang dari 0.',
+            'jenis_belanja_id.exists'   => 'Akun belanja tidak terdaftar. Pilih akun belanja yang telah ditentukan.',
+            'tahun_anggaran.required'   => 'Tahun anggaran tidak boleh kosong.',
+            'tahun_anggaran.numeric'    => 'Tahun anggaran harus bertipe numerik atau angka.',
+            'tahun_anggaran.max'        => 'Tahun anggaran tidak boleh lebih dari 4 digit angka.',
+            'tahun_anggaran.min'        => 'Tahun anggaran tidak boleh kurang dari 0.',
+            'nominal.required'          => 'Nilai nominal tidak boleh kosong.',
+            'nominal.numeric'           => 'Nilai nominal harus bertipe numerik atau angka.',
+            'nominal.min'               => 'Nilai nominal tidak boleh kurang dari 0.',
         ];
 
         /**
@@ -388,7 +388,7 @@ class BudgetController extends Controller
                 ->with('alert', [
                     'type' => 'danger',
                     'message' => "
-                        <ul class='mt-0'>
+                        <ul class='ml-3'>
                             <li>Bagian tidak aktif</li>
                             <li>Anda tidak bisa membuat pagu pada bagian yang tidak aktif.</li>
                         </ul>
@@ -406,7 +406,7 @@ class BudgetController extends Controller
                 ->with('alert', [
                     'type' => 'danger',
                     'message' => "
-                        <ul class='mt-0'>
+                        <ul class='ml-3'>
                             <li>Akun belanja tidak aktif</li>
                             <li>Anda tidak bisa membuat pagu pada akun belanja yang tidak aktif.</li>
                         </ul>
@@ -437,10 +437,10 @@ class BudgetController extends Controller
                     ->with('alert', [
                         'type' => 'warning',
                         'message' => "
-                            <ul class='mt-0'>
-                                <li>Budget sudah dibuat.</li>
+                            <ul class='ml-3'>
+                                <li>Pagu sudah dibuat.</li>
                                 <li>
-                                    Jika anda ingin menambahkan nominal budget pada bagian,
+                                    Jika anda ingin menambahkan nominal pagu pada bagian,
                                     akun belanja & ditahun yang sama dengan data pagu yang ada sebelumnya,
                                     anda bisa melakukan edit nominal.
                                 </li>
@@ -557,29 +557,29 @@ class BudgetController extends Controller
          * aturan validasi
          */
         $validatedRules = [
-            'divisi_id' => ['required', 'exists:divisi,id'],
+            'divisi_id'        => ['required', 'exists:divisi,id'],
             'jenis_belanja_id' => ['required', 'exists:jenis_belanja,id'],
-            'tahun_anggaran' => ['required', 'numeric', 'max:9999', 'min:1900'],
-            'nominal' => ['required', 'numeric', "max:{$budget->sisa_nominal}", 'min:0'],
-            'keterangan' => [],
+            'tahun_anggaran'   => ['required', 'numeric', 'max:9999', 'min:1900'],
+            'nominal'          => ['required', 'numeric', "max:{$budget->sisa_nominal}", 'min:0'],
+            'keterangan'       => [],
         ];
 
         /**
          * pesan error validasi
          */
         $validatedErrorMessage = [
-            'divisi_id.required' => 'Bagian harus dipilih.',
-            'divisi_id.exists' => 'Bagian tidak ada. Pilih bagian yang ditentukan.',
+            'divisi_id.required'        => 'Bagian harus dipilih.',
+            'divisi_id.exists'          => 'Bagian tidak ada. Pilih bagian yang ditentukan.',
             'jenis_belanja_id.required' => 'Akun Belanja harus dipilih.',
-            'jenis_belanja_id.exists' => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
-            'tahun_anggaran.required' => 'Tahun anggaran harus diisi.',
-            'tahun_anggaran.numeric' => 'Tahun anggaran harus berupa tahun yang valid.',
-            'tahun_anggaran.max' => 'Tahun anggaran tidak boleh lebih dari 9999.',
-            'tahun_anggaran.min' => 'Tahun anggaran tidak boleh kurang dari 1900.',
-            'nominal.required' => 'Jumlah nominal harus diisi.',
-            'nominal.numeric' => 'Jumlah nominal berupa angka.',
-            'nominal.max' => 'Jumlah nominal yang dialihkan melebihi sisa nominal budget pada akun belanja yang dipilih.',
-            'nominal.min' => 'Jumlah nominal tidak boleh kurang dari 0.',
+            'jenis_belanja_id.exists'   => 'Akun belanja tidak ada. Pilih akun belanja yang ditentukan.',
+            'tahun_anggaran.required'   => 'Tahun anggaran harus diisi.',
+            'tahun_anggaran.numeric'    => 'Tahun anggaran harus berupa tahun yang valid.',
+            'tahun_anggaran.max'        => 'Tahun anggaran tidak boleh lebih dari 9999.',
+            'tahun_anggaran.min'        => 'Tahun anggaran tidak boleh kurang dari 1900.',
+            'nominal.required'          => 'Jumlah nominal harus diisi.',
+            'nominal.numeric'           => 'Jumlah nominal berupa angka.',
+            'nominal.max'               => 'Jumlah nominal yang dialihkan melebihi sisa nominal budget pada akun belanja yang dipilih.',
+            'nominal.min'               => 'Jumlah nominal tidak boleh kurang dari 0.',
         ];
 
         /**
@@ -596,7 +596,7 @@ class BudgetController extends Controller
                 ->with('alert', [
                     'type' => 'danger',
                     'message' => "
-                        <ul class='mt-0'>
+                        <ul class='ml-3'>
                             <li>Bagian tidak aktif</li>
                             <li>Anda tidak bisa membuat pagu pada bagian yang tidak aktif.</li>
                         </ul>
@@ -613,7 +613,7 @@ class BudgetController extends Controller
                 ->with('alert', [
                     'type' => 'danger',
                     'message' => "
-                        <ul class='mt-0'>
+                        <ul class='ml-3'>
                             <li>Akun belanja tidak aktif</li>
                             <li>Anda tidak bisa membuat pagu pada akun belanja yang tidak aktif.</li>
                         </ul>
@@ -649,12 +649,12 @@ class BudgetController extends Controller
              */
             if (empty($availableBudget)) {
                 Budget::create([
-                    'divisi_id' => $request->divisi_id,
+                    'divisi_id'        => $request->divisi_id,
                     'jenis_belanja_id' => $request->jenis_belanja_id,
-                    'tahun_anggaran' => $request->tahun_anggaran,
-                    'nominal' => $request->nominal,
-                    'sisa_nominal' => $request->nominal,
-                    'keterangan' => $request->keterangan,
+                    'tahun_anggaran'   => $request->tahun_anggaran,
+                    'nominal'          => $request->nominal,
+                    'sisa_nominal'     => $request->nominal,
+                    'keterangan'       => $request->keterangan,
                 ]);
             } else {
                 $availableBudget->nominal += $request->nominal;

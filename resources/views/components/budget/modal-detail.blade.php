@@ -1,10 +1,4 @@
-<div id="detail-budget"
-    class="modal fade"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="detailBudget"
-    aria-hidden="true"
->
+<div id="detail-budget" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detailBudget" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -82,8 +76,8 @@
 
                         <div class="col-12 mb-3">
                             <div class="table-responsive">
-                                <table class="table table-centered nowrap w-100">
-                                    <thead>
+                                <x-table>
+                                    <x-slot name="tbody">
                                         <tr>
                                             <th>Tanggal</th>
                                             <th>Submitter</th>
@@ -93,10 +87,10 @@
                                             <th class="text-center">File Dokumen</th>
                                             <th class="text-right">Jumlah Nominal</th>
                                         </tr>
-                                    </thead>
+                                    </x-slot>
 
-                                    <tbody id="detail-transaksi"></tbody>
-                                </table>
+                                    <x-slot name="tbody" id="detail-transaksi"></x-slot>
+                                </x-table>
                             </div>
                         </div>
                     </div>
@@ -104,16 +98,21 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="float-right">
-                                <p>
-                                    <b>Pagu :</b>
-                                    <span class="float-right ml-3" id="detail-nominal"></span>
-                                </p>
-                                <p>
-                                    <b>Total Realisasi :</b>
-                                    <span class="float-right ml-3" id="detail-nominal-transaksi"></span>
-                                </p>
-                                <hr>
-                                <h3 id="detail-sisa-nominal"class="float-right"></h3>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Pagu :</td>
+                                            <td id="detail-nominal" class="text-right"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Realisasi :</td>
+                                            <td id="detail-nominal-transaksi" class="text-right"></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="detail-sisa-nominal" class="text-right" colspan="2"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
                             <div class="clearfix"></div>
@@ -123,8 +122,8 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-dark btn-sm btn-rounded" onclick="budget.detail(false)">
-                    <i class=" mdi mdi-close-circle"></i> Tutup
+                <button class="btn btn-dark btn-sm" onclick="budget.detail(false)">
+                    <i class="mdi mdi-close"></i> Tutup
                 </button>
             </div>
         </div>
