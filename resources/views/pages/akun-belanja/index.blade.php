@@ -11,7 +11,7 @@
 
                         {{-- Button tambah & form search --}}
                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                            <div class="col-md-6 col-sm-12 mb-3">
                                 @if ($userAccess->create)
                                     <a href="{{ route('akun-belanja.create') }}" class="btn btn-primary btn-sm">
                                         <i class="mdi mdi-plus"></i>
@@ -20,7 +20,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
+                            <div class="col-md-6 col-sm-12 mb-3">
                                 <x-form action="{{ route('akun-belanja') }}" method="GET">
                                     <div class="input-group">
                                         <input type="search" name="search" placeholder="Cari akun belanja..."

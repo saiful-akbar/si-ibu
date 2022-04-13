@@ -1,14 +1,11 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Layouts;
 
 use Illuminate\View\Component;
 
-class Topbar extends Component
+class profile extends Component
 {
-    public $profil;
-    public $divisi;
-
     /**
      * Create a new component instance.
      *
@@ -16,8 +13,7 @@ class Topbar extends Component
      */
     public function __construct()
     {
-        $this->profil = auth()->user()->profil;
-        $this->divisi = auth()->user()->divisi;
+        //
     }
 
     /**
@@ -27,6 +23,6 @@ class Topbar extends Component
      */
     public function render()
     {
-        return view('components.topbar');
+        return view('components.layouts.profile');
     }
 }

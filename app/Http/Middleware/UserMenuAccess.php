@@ -22,8 +22,8 @@ class UserMenuAccess
         /**
          * query menu item
          */
-        $menuItem = User::with('menuItem')
-            ->find(Auth::user()->id)
+        $menuItem = Auth::user()
+            ->load('menuItem')
             ->menuItem()
             ->where('href', $path)
             ->first();

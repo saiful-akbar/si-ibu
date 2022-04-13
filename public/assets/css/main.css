@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-html.dark {
+body.dark {
     color-scheme: dark;
 }
 
@@ -12,11 +12,12 @@ html.dark {
     line-height: 100% !important;
 }
 
-.header-title {
+.card .card-header .header-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     min-width: 0;
+    text-transform: capitalize !important;
 }
 
 .topbar-title {
@@ -75,7 +76,7 @@ body[data-leftbar-compact-mode="condensed"] {
     min-height: 100vh !important;
 }
 
-select.select2.is-invalid + span.select2-container {
+select.select2.is-invalid+span.select2-container {
     border: 1px solid #fa5c7c !important;
     border-radius: 0.25rem;
 }

@@ -1,7 +1,7 @@
 @props(['paginator' => null])
 
 <div class="table-responsive">
-    <table {{ $attributes->merge(['class' => 'table-sm table-bordered table-hover table-centered table-nowrap w-100 table']) }}>
+    <table {{ $attributes->merge(['class' => 'table-sm table-bordered table-hover table-centered table-nowrap w-100 mb-2 table']) }}>
         @isset($thead)
             <thead class="thead-{{ auth()->user()->pengaturan->tema }}">
                 {{ $thead }}

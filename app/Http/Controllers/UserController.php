@@ -84,13 +84,11 @@ class UserController extends Controller
          * view halaman user.
          */
         return view('pages.user.index', [
-            'users' => $users->paginate(10)->withQueryString(),
+            'users'      => $users->paginate(20)->withQueryString(),
             'userAccess' => $userAccess,
-            'isAdmin' => $isAdmin,
+            'isAdmin'    => $isAdmin,
         ]);
     }
-
-
 
     /**
      * View halaman tambah user
@@ -111,8 +109,6 @@ class UserController extends Controller
         return view('pages.user.create', compact('divisions'));
     }
 
-
-
     /**
      * store
      * Tambah data user baru
@@ -128,12 +124,12 @@ class UserController extends Controller
          * @var array
          */
         $validasi_rules = [
-            'username' => ['required', 'unique:user,username', 'max:100'],
-            'password' => ['required', 'min:4', 'max:200'],
-            'seksi' => ['required', 'max:100'],
-            'avatar' => ['image', 'max:1000'],
+            'username'     => ['required', 'unique:user,username', 'max:100'],
+            'password'     => ['required', 'min:4', 'max:200'],
+            'seksi'        => ['required', 'max:100'],
+            'avatar'       => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
-            'divisi_id' => ['required', 'exists:divisi,id'],
+            'divisi_id'    => ['required', 'exists:divisi,id'],
         ];
 
         /**
@@ -142,20 +138,20 @@ class UserController extends Controller
          * @var array
          */
         $validate_message = [
-            'username.required' => 'Username harus diisi.',
-            'username.unique' => 'Username sudah digunakan.',
-            'username.max' => 'Username tidak boleh lebih dari 100 karakter.',
-            'password.required' => 'Password harus diisi.',
-            'password.min' => 'Password minimal 4 karakter.',
-            'password.max' => 'Password tidak boleh lebih dari 200 karakter.',
-            'seksi.required' => 'Seksi harus diisi.',
-            'seksi.max' => 'Seksi tidak boleh lebih dari 100 karakter.',
-            'avatar.image' => 'Avatar harus berupa file gambar.',
-            'avatar.max' => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
+            'username.required'     => 'Username harus diisi.',
+            'username.unique'       => 'Username sudah digunakan.',
+            'username.max'          => 'Username tidak boleh lebih dari 100 karakter.',
+            'password.required'     => 'Password harus diisi.',
+            'password.min'          => 'Password minimal 4 karakter.',
+            'password.max'          => 'Password tidak boleh lebih dari 200 karakter.',
+            'seksi.required'        => 'Seksi harus diisi.',
+            'seksi.max'             => 'Seksi tidak boleh lebih dari 100 karakter.',
+            'avatar.image'          => 'Avatar harus berupa file gambar.',
+            'avatar.max'            => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
             'nama_lengkap.required' => 'Nama lengkap harus diisi.',
-            'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
-            'divisi_id.required' => 'Bagian harus dipilih.',
-            'divisi_id.exists' => 'Bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
+            'nama_lengkap.max'      => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
+            'divisi_id.required'    => 'Bagian harus dipilih.',
+            'divisi_id.exists'      => 'Bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
         ];
 
         /**
@@ -187,17 +183,17 @@ class UserController extends Controller
              */
             $user = User::create([
                 'divisi_id' => $request->divisi_id,
-                'username' => $request->username,
-                'password' => bcrypt($request->password),
-                'seksi' => ucwords($request->seksi),
-                'active' => $user_active,
+                'username'  => $request->username,
+                'password'  => bcrypt($request->password),
+                'seksi'     => ucwords($request->seksi),
+                'active'    => $user_active,
             ]);
 
             /**
              * tambah data profil
              */
             $user->profil()->create([
-                'avatar' => $avatar,
+                'avatar'       => $avatar,
                 'nama_lengkap' => ucwords($request->nama_lengkap),
             ]);
 
@@ -205,7 +201,7 @@ class UserController extends Controller
              * tambah tema
              */
             $user->pengaturan()->create([
-                'tema' => 'light',
+                'tema'    => 'light',
                 'sidebar' => 'dark',
             ]);
         } catch (\Exception $e) {
@@ -214,7 +210,7 @@ class UserController extends Controller
              * response jika user gagal ditambahkan
              */
             return redirect()->route('user.create')->with('alert', [
-                'type' => 'danger',
+                'type'    => 'danger',
                 'message' => 'Gagal menambahkan user. ' . $e->getMessage(),
             ]);
         }
@@ -223,12 +219,10 @@ class UserController extends Controller
          * redurect ke halaman user
          */
         return redirect()->route('user.menu-akses.edit', ['user' => $user->id])->with('alert', [
-            'type' => 'success',
+            'type'    => 'success',
             'message' => 'User berhasil ditambahkan. Tentukan menu akses pada user.',
         ]);
     }
-
-
 
     /**
      * View halaman edit user
@@ -248,8 +242,6 @@ class UserController extends Controller
         return view('pages.user.edit', compact('divisions', 'user'));
     }
 
-
-
     /**
      * Update data user
      *
@@ -266,12 +258,12 @@ class UserController extends Controller
          * @var array
          */
         $validasi_rules = [
-            'username' => ['required', 'max:100'],
-            'password' => ['max:200'],
-            'seksi' => ['required', 'max:100'],
-            'avatar' => ['image', 'max:1000'],
+            'username'     => ['required', 'max:100'],
+            'password'     => ['max:200'],
+            'seksi'        => ['required', 'max:100'],
+            'avatar'       => ['image', 'max:1000'],
             'nama_lengkap' => ['required', 'max:100'],
-            'divisi_id' => ['required', 'exists:divisi,id'],
+            'divisi_id'    => ['required', 'exists:divisi,id'],
         ];
 
         /**
@@ -294,20 +286,20 @@ class UserController extends Controller
          * @var array
          */
         $validate_message = [
-            'username.required' => 'Username harus diisi.',
-            'username.unique' => 'Username sudah digunakan.',
-            'username.max' => 'Username tidak boleh lebih dari 100 karakter.',
-            'password.required' => 'Password harus diisi.',
-            'password.min' => 'Password minimal 4 karakter.',
-            'password.max' => 'Password tidak boleh lebih dari 200 karakter.',
-            'seksi.required' => 'Seksi harus diisi.',
-            'seksi.max' => 'Seksi tidak boleh lebih dari 100 karakter.',
-            'avatar.image' => 'Avatar harus berupa file gambar.',
-            'avatar.max' => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
+            'username.required'     => 'Username harus diisi.',
+            'username.unique'       => 'Username sudah digunakan.',
+            'username.max'          => 'Username tidak boleh lebih dari 100 karakter.',
+            'password.required'     => 'Password harus diisi.',
+            'password.min'          => 'Password minimal 4 karakter.',
+            'password.max'          => 'Password tidak boleh lebih dari 200 karakter.',
+            'seksi.required'        => 'Seksi harus diisi.',
+            'seksi.max'             => 'Seksi tidak boleh lebih dari 100 karakter.',
+            'avatar.image'          => 'Avatar harus berupa file gambar.',
+            'avatar.max'            => 'Ukuran avatar tidak boleh lebih besar dari 1000 kilobytes',
             'nama_lengkap.required' => 'Nama lengkap harus diisi.',
-            'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
-            'divisi_id.required' => 'Bagian harus dipilih.',
-            'divisi_id.exists' => 'Bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
+            'nama_lengkap.max'      => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
+            'divisi_id.required'    => 'Bagian harus dipilih.',
+            'divisi_id.exists'      => 'Bagian tidak terdaftar. Pilih bagian yang telah ditentukan.',
         ];
 
         /**
@@ -337,9 +329,9 @@ class UserController extends Controller
          * @var object
          */
         $user->divisi_id = $request->divisi_id;
-        $user->username = $request->username;
-        $user->seksi = ucwords($request->seksi);
-        $user->active = $user_active;
+        $user->username  = $request->username;
+        $user->seksi     = ucwords($request->seksi);
+        $user->active    = $user_active;
 
         /**
          * Cek apakah password dirubah atau tidak
@@ -364,14 +356,11 @@ class UserController extends Controller
         /**
          * redirect ke halaman user
          */
-        return redirect()->route('user.edit', ['user' => $user->id])
-            ->with('alert', [
-                'type' => 'success',
-                'message' => '1 user berhasil diperbarui',
-            ]);
+        return redirect()->route('user')->with('alert', [
+            'type'    => 'success',
+            'message' => '1 user berhasil diperbarui',
+        ]);
     }
-
-
 
     /**
      * Hapus data user
@@ -395,7 +384,7 @@ class UserController extends Controller
             return redirect()->route('user')
                 ->with('alert', [
                     'type' => 'warning',
-                    'message' => "Penghapusan dibatalkan. User <b>{$user->profil->nama_lengkap}</b> memiliki relasi pada data <b>Transaksi Belanja</b>.",
+                    'message' => "Penghapusan dibatalkan. User <b>{$user->profil->nama_lengkap}</b> memiliki relasi pada data <b>Realisasi</b>.",
                 ]);
         }
 
@@ -417,8 +406,6 @@ class UserController extends Controller
         ]);
     }
 
-
-
     /**
      * View menu akses user
      *
@@ -438,8 +425,6 @@ class UserController extends Controller
 
         return view('pages.user.menu-akses.index', compact('user', 'menuItems', 'userAccess'));
     }
-
-
 
     /**
      * View menu akses user
@@ -468,8 +453,6 @@ class UserController extends Controller
 
         return view('pages.user.menu-akses.edit', compact('user', 'menuHeaders', 'userAccess'));
     }
-
-
 
     /**
      * Tambah menu akses user
@@ -521,14 +504,14 @@ class UserController extends Controller
                     ->table('user_menu_item')
                     ->updateOrInsert(
                         [
-                            'user_id' => $user->id,
+                            'user_id'      => $user->id,
                             'menu_item_id' => $menuItem['id']
                         ],
                         [
-                            'create' => isset($menuItem['create']),
-                            'read' => isset($menuItem['read']),
-                            'update' => isset($menuItem['update']),
-                            'delete' => isset($menuItem['delete']),
+                            'create'     => isset($menuItem['create']),
+                            'read'       => isset($menuItem['read']),
+                            'update'     => isset($menuItem['update']),
+                            'delete'     => isset($menuItem['delete']),
                             'created_at' => now(),
                             'updated_at' => now(),
                         ]
@@ -549,7 +532,7 @@ class UserController extends Controller
         /**
          * return sukses
          */
-        return redirect()->route('user.menu-akses.edit', ['user' => $user->id])
+        return redirect()->route('user.menu-akses.detail', ['user' => $user->id])
             ->with('alert', [
                 'type' => 'success',
                 'message' => 'Akses pada menu berhasil diperbarui',

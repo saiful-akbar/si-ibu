@@ -70,8 +70,8 @@ class UserSeeder extends Seeder
             ->insert([
                 [
                     'user_id' => 1,
-                    'tema' => 'dark',
-                    'sidebar' => 'dark',
+                    'tema' => 'light',
+                    'sidebar' => 'light',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],

@@ -22,8 +22,8 @@
             <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="javascript:void(0);"
                 role="button" aria-haspopup="false" aria-expanded="false">
                 <span class="account-user-avatar">
-                    @if ($profil->avatar != null)
-                        <img src="{{ asset('storage/' . $profil->avatar) }}" alt="user-image" class="rounded-circle" />
+                    @if (profil()->avatar != null)
+                        <img src="{{ asset('storage/' . profil()->avatar) }}" alt="user-image" class="rounded-circle" />
                     @else
                         <img src="{{ asset('assets/images/avatars/avatar_default.webp') }}" alt="user-image"
                             class="rounded-circle" />
@@ -32,10 +32,10 @@
 
                 <span>
                     <span class="account-user-name">
-                        {{ $profil->nama_lengkap }}
+                        {{ profil()->nama_lengkap }}
                     </span>
                     <span class="account-position">
-                        {{ $divisi->nama_divisi }}
+                        {{ divisi()->nama_divisi }}
                     </span>
                 </span>
             </a>

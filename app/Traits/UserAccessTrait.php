@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -26,7 +25,7 @@ trait UserAccessTrait
      */
     public function getAccess(int $userId = null, string $href = '/dashboard'): object
     {
-        $this->userId = $userId != null ? $userId : Auth::user()->id;
+        $this->userId = !empty($userId) ? $userId : auth()->user()->id;
         $this->href = $href;
 
         /**
@@ -71,15 +70,12 @@ trait UserAccessTrait
      */
     public function isAdmin(string $href = '/dashboard', int $userId = null): bool
     {
-        $id = $userId == null ? Auth::user()->id : $userId;
+        $id = empty($userId) ? auth()->user()->id : $userId;
 
         /**
          * cek params $userId & $href sama atau tidak dengan nilai properti yang ada
          */
-        if (
-            $this->href == $href &&
-            $this->userId == $id
-        ) {
+        if ($this->href == $href &&$this->userId == $id) {
             return $this->isAdmin;
         }
 

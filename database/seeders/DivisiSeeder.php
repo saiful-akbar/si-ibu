@@ -17,24 +17,6 @@ class DivisiSeeder extends Seeder
         DB::connection('anggaran')
             ->table('divisi')->insert([
                 [
-                    'nama_divisi' => 'IT',
-                    'active'      => true,
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ],
-                [
-                    'nama_divisi' => 'Accounting',
-                    'active'      => true,
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ],
-                [
-                    'nama_divisi' => 'Warehouse',
-                    'active'      => true,
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ],
-                [
                     'nama_divisi' => 'Kepala Kantor',
                     'active'      => true,
                     'created_at'  => now(),

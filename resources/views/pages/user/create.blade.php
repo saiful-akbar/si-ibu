@@ -1,29 +1,17 @@
-@extends('templates.main')
-
-@section('title', 'Tambah User')
-
-@section('btn-kembali')
-    <a href="{{ route('user') }}" class="btn btn-rounded btn-dark btn-sm">
-        <i class="mdi mdi-chevron-double-left mr-1"></i>
-        <span>Kembali</span>
-    </a>
-@endsection
-
-@section('content')
-    <form name="user_form" enctype="multipart/form-data" action="{{ route('user.store') }}" method="POST" autocomplete="off">
-        @method('POST') @csrf
+<x-layouts.auth title="Tambah User" back-button="{{ route('user') }}">
+    <x-form method="POST" enctype="multipart/form-data" action="{{ route('user.store') }}">
 
         {{-- form akun --}}
         <div class="row">
-            <div class="col-12 mb-3">
+            <div class="col-12 mb-2">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="header-title mt-2">User Akun</h4>
+                        <h4 class="header-title mt-2">Form Akun</h4>
                     </div>
 
                     <div class="card-body">
 
-                        {{-- input username --}}
+                        {{-- Input username --}}
                         <div class="form-group row mb-3">
                             <label for="username" class="col-md-3 col-sm-12 col-form-label">
                                 Username <small class="text-danger">*</small>
@@ -39,7 +27,7 @@
                             </div>
                         </div>
 
-                        {{-- input password --}}
+                        {{-- Input password --}}
                         <div class="form-group row mb-3">
                             <label for="password" class="col-md-3 col-sm-12 col-form-label">
                                 password <small class="text-danger">*</small>
@@ -68,7 +56,7 @@
                             @enderror
                         </div>
 
-                        {{-- input user aktif --}}
+                        {{-- Switch aktif --}}
                         <div class="form-group row justify-content-end">
                             <div class="col-md-9 col-sm-12">
                                 <div class="custom-control custom-switch">
@@ -90,17 +78,17 @@
 
         {{-- form profil --}}
         <div class="row">
-            <div class="col-12 mb-3">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="header-title mt-2">
-                            User Profil
+                            Form Profil
                         </h4>
                     </div>
 
                     <div class="card-body">
 
-                        {{-- input avatar --}}
+                        {{-- Upload avatar --}}
                         <div class="form-group row mb-3 justify-content-end">
                             <div class="col-md-9 col-sm-12">
                                 <img id="avatar-view" alt="avatar" class="img-fluid avatar-lg rounded-circle img-thumbnail"
@@ -108,9 +96,9 @@
                                     data-src="{{ asset('assets/images/avatars/avatar_default.webp') }}" />
 
                                 <label for="avatar" class="ml-2">
-                                    <span type="button" class="btn btn-rounded btn-success btn-sm">
-                                        <i class="mdi mdi-upload mr-1"></i>
-                                        <span>Avatar</span>
+                                    <span type="button" class="btn btn-success btn-sm">
+                                        <i class="mdi mdi-upload"></i>
+                                        <span>Unggah</span>
                                     </span>
                                 </label>
 
@@ -142,7 +130,7 @@
                             </div>
                         </div>
 
-                        {{-- input bagian (divisi) --}}
+                        {{-- Input divisi (bagian) --}}
                         <div class="form-group row mb-3">
                             <label for="divisi_id" class="col-md-3 col-sm-12 col-form-label">
                                 Bagian <small class="text-danger">*</small>
@@ -152,7 +140,7 @@
                                 <select required name="divisi_id" id="divisi_id" data-toggle="select2"
                                     class="form-control select2 @error('divisi_id') is-invalid @enderror">
                                     <option disabled value="{{ null }}" @if (!old('divisi_id')) selected @endif>
-                                        Pilih Bagian
+                                        -- Pilih Bagian --
                                     </option>
 
                                     @foreach ($divisions as $divisi)
@@ -168,7 +156,7 @@
                             </div>
                         </div>
 
-                        {{-- input seksi --}}
+                        {{-- Input seksi --}}
                         <div class="form-group row mb-3">
                             <label for="seksi" class="col-md-3 col-sm-12 col-form-label">
                                 Seksi <small class="text-danger">*</small>
@@ -187,13 +175,13 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-info btn-rounded btn-sm mr-2">
-                            <i class="mdi mdi-content-save mr-1"></i>
+                        <button type="submit" class="btn btn-info btn-sm mr-2">
+                            <i class="mdi mdi-content-save"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button type="reset" class="btn btn-rounded btn-dark btn-sm">
-                            <i class="mdi mdi-close-circle mr-1"></i>
+                        <button type="reset" class="btn btn-dark btn-sm">
+                            <i class="mdi mdi-close"></i>
                             <span>Reset</span>
                         </button>
                     </div>
@@ -202,9 +190,9 @@
         </div>
         {{-- end form profil --}}
 
-    </form>
-@endsection
+    </x-form>
 
-@section('js')
-    <script src="{{ asset('assets/js/pages/user.js') }}"></script>
-@endsection
+    <x-slot name="script">
+        <script src="{{ asset('assets/js/pages/user.js') }}"></script>
+    </x-slot>
+</x-layouts.auth>

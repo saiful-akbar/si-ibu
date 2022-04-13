@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr" class="{{ $user->pengaturan->tema }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr">
 
 <head>
     <meta charset="utf-8" />
@@ -7,7 +7,7 @@
     <meta name="description" content="{{ config('app.description') }}" />
     <meta name="base-url" content="{{ url('/') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <meta name="theme" content="{{ $user->pengaturan->tema }}" />
+    <meta name="theme" content="{{ pengaturan()->tema }}" />
 
     {{-- Title --}}
     <title>
@@ -24,7 +24,7 @@
     @endisset
 
     {{-- Theme css --}}
-    @if (auth()->user()->pengaturan->tema == 'dark')
+    @if (pengaturan()->tema == 'dark')
         <link href="{{ asset('assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style" />
     @else
         <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
@@ -34,7 +34,7 @@
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="loading" data-leftbar-theme="{{ $user->pengaturan->sidebar }}">
+<body class="loading {{ pengaturan()->tema }}" data-leftbar-theme="{{ pengaturan()->sidebar }}">
     <div id="preloader">
         <div id="status">
             <div class="bouncing-loader">
@@ -53,25 +53,23 @@
                 <x-topbar></x-topbar>
 
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12 py-2">
-                            <div class="page-title-box d-flex justify-content-between align-items-center">
-                                <h4 class="page-title">
-                                    {{ $title }}
-                                </h4>
+                    <div class="page-title-box d-flex justify-content-between align-items-center">
+                        <h4 class="page-title">
+                            {{ $title }}
+                        </h4>
 
-                                @isset($backButton)
-                                    <a href="{{ $backButton }}" class="btn btn-dark btn-sm">
-                                        <i class="mdi mdi-arrow-left"></i>
-                                        <span>Kembali</span>
-                                    </a>
-                                @endisset
-                            </div>
-                        </div>
+                        @isset($backButton)
+                            <a href="{{ $backButton }}" class="btn btn-dark btn-sm">
+                                <i class="mdi mdi-arrow-left"></i>
+                                <span>Kembali</span>
+                            </a>
+                        @endisset
                     </div>
 
+                    {{-- Notifikasi --}}
                     <x-notification></x-notification>
 
+                    {{-- Main content --}}
                     {{ $slot }}
                 </div>
             </div>

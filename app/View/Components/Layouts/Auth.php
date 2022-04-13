@@ -7,7 +7,6 @@ use Illuminate\View\Component;
 class Auth extends Component
 {
     public $title;
-    public $user;
     public $backButton;
 
     /**
@@ -18,7 +17,6 @@ class Auth extends Component
     public function __construct($title, $backButton = null)
     {
         $this->title      = $title;
-        $this->user       = auth()->user();
         $this->backButton = $backButton;
     }
 

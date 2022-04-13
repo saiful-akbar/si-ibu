@@ -20,7 +20,7 @@ class ProfilController extends Controller
      */
     public function index()
     {
-        $profil = Profil::where('user_id', Auth::user()->id)->first();
+        $profil = Profil::where('user_id', auth()->user()->id)->first();
         return view('pages.profil.index', compact('profil'));
     }
 
@@ -55,14 +55,14 @@ class ProfilController extends Controller
          */
         $request->validate($validateRules, $validateErrorMessage);
 
-        $avatar = Auth::user()->profil->avatar;
+        $avatar = auth()->user()->profil->avatar;
 
         /**
          * cek avatar dirubah atau tidak.
          * jika dirubah hapus avatar yang lama dan upload avatar yang baru.
          */
         if ($request->hasFile('avatar')) {
-            Storage::disk('public')->delete(Auth::user()->profil->avatar);
+            Storage::disk('public')->delete(auth()->user()->profil->avatar);
 
             $avatar = $request->file('avatar')->store('avatars', 'public');
         }
@@ -71,7 +71,7 @@ class ProfilController extends Controller
          * simpan perubahan profil ke database
          */
         try {
-            Profil::where('user_id', Auth::user()->id)->update([
+            Profil::where('user_id', auth()->user()->id)->update([
                 'avatar' => $avatar,
                 'nama_lengkap' => ucwords($request->nama_lengkap),
             ]);
@@ -122,7 +122,7 @@ class ProfilController extends Controller
         /**
          * cek username dirubah atau tidak
          */
-        if ($request->username != Auth::user()->username) {
+        if ($request->username != auth()->user()->username) {
             array_push($validateRules['username'], 'unique:user,username');
         }
 
@@ -146,7 +146,7 @@ class ProfilController extends Controller
          * ubah username pada database
          */
         try {
-            User::where('id', Auth::user()->id)->update([
+            User::where('id', auth()->user()->id)->update([
                 'username' => $request->username,
             ]);
         } catch (\Exception $e) {
@@ -177,21 +177,21 @@ class ProfilController extends Controller
          * validasi rule
          */
         $validateRules = [
-            'passwordLama' => ['required', new MatchOldPassword],
-            'passwordBaru' => ['required', 'max:200', 'min:4'],
-            'passwordKonfirmasi' => ['required', 'same:passwordBaru'],
+            'password_lama'       => ['required', new MatchOldPassword],
+            'password_baru'       => ['required', 'max:200', 'min:4'],
+            'password_konfirmasi' => ['required', 'same:password_baru'],
         ];
 
         /**
          * pesan error validasi
          */
         $validateErrorMessage = [
-            'passwordLama.required' => 'Password lama harus diisi.',
-            'passwordBaru.required' => 'Password baru harus diisi.',
-            'passwordBaru.max' => 'Password baru tidak boleh lebih dari 200 karakter.',
-            'passwordBaru.min' => 'Password baru minimal 4 karakter.',
-            'passwordKonfirmasi.required' => 'Password konfirmasi harus diisi.',
-            'passwordKonfirmasi.same' => 'Password konfirmasi tidak cocok.',
+            'password_lama.required'       => 'Password lama harus diisi.',
+            'password_baru.required'       => 'Password baru harus diisi.',
+            'password_baru.max'            => 'Password baru tidak boleh lebih dari 200 karakter.',
+            'password_baru.min'            => 'Password baru minimal 4 karakter.',
+            'password_konfirmasi.required' => 'Password konfirmasi harus diisi.',
+            'password_konfirmasi.same'     => 'Password konfirmasi tidak cocok.',
         ];
 
         /**
@@ -199,26 +199,31 @@ class ProfilController extends Controller
          */
         $request->validate($validateRules, $validateErrorMessage);
 
-        /**
-         * ubah password pada database
-         */
         try {
-            User::where('id', Auth::user()->id)->update([
-                'password' => bcrypt($request->passwordBaru),
-            ]);
+
+            /**
+             * ubah password pada database
+             */
+            User::where('id', auth()->user()->id)
+                ->update(['password' => bcrypt($request->password_baru)]);
         } catch (\Exception $e) {
-            return redirect()->route('profil.akun')
-                ->with('alert', [
-                    'type' => 'danger',
-                    'message' => 'Gagal memperbarui password. ' . $e->getMessage(),
-                ]);
+            
+            /**
+             * Return jika update gagal.
+             */
+            return redirect()->route('profil.akun')->with('alert', [
+                'type'    => 'danger',
+                'message' => 'Gagal memperbarui password. ' . $e->getMessage(),
+            ]);
         }
 
-        return redirect()->route('profil.akun')
-            ->with('alert', [
-                'type' => 'success',
-                'message' => 'Password berhasil diperbarui.',
-            ]);
+        /**
+         * Return jika update berhasil
+         */
+        return redirect()->route('profil.akun')->with('alert', [
+            'type'    => 'success',
+            'message' => 'Password berhasil diperbarui.',
+        ]);
     }
 
     /**
@@ -243,7 +248,7 @@ class ProfilController extends Controller
          * validasi rule
          */
         $validateRules = [
-            'tema' => ['required', 'in:light,dark'],
+            'tema'    => ['required', 'in:light,dark'],
             'sidebar' => ['required', 'in:default,light,dark']
         ];
 
@@ -251,10 +256,10 @@ class ProfilController extends Controller
          * Pesan error validasi
          */
         $validateErrorMessage = [
-            'tema.required' => 'Tema harus dipilih',
-            'tema.in' => 'Pilih tema terang atau gelap.',
+            'tema.required'    => 'Tema harus dipilih',
+            'tema.in'          => 'Pilih tema terang atau gelap.',
             'sidebar.required' => 'Sidebar harus dipilih',
-            'sidebar.in' => 'Pilih sidebar default, terang atau gelap.',
+            'sidebar.in'       => 'Pilih sidebar default, terang atau gelap.',
         ];
 
         /**
@@ -267,7 +272,7 @@ class ProfilController extends Controller
             /**
              * update tema
              */
-            Pengaturan::where('user_id', Auth::user()->id)->update($validatedData);
+            Pengaturan::where('user_id', auth()->user()->id)->update($validatedData);
         } catch (\Exception $e) {
 
             /**
@@ -275,7 +280,7 @@ class ProfilController extends Controller
              */
             return redirect()->route('profil.pengaturan')
                 ->with('alert', [
-                    'type' => 'danger',
+                    'type'    => 'danger',
                     'message' => 'Gagal memperbarui tema. ' . $e->getMessage(),
                 ]);
         }
@@ -285,7 +290,7 @@ class ProfilController extends Controller
          */
         return redirect()->route('profil.pengaturan')
             ->with('alert', [
-                'type' => 'success',
+                'type'    => 'success',
                 'message' => 'Tema berhasil diperbarui.',
             ]);
     }

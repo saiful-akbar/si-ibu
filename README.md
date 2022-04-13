@@ -22,12 +22,46 @@ Sistem Informasi Bagian Umum.
 # Update v2
 
 -   [x] Halaman login
+-   [x] Halaman profil
+    -   [x] Tabs profil
+    -   [x] Tabs akun
+    -   [x] Tabs pengaturan
 -   [x] Halaman dashboard
     -   [ ] Chart line staff
 -   [x] Halaman akun belanja
-    -   [x] Halaman tambah akun belanja
-    -   [x] Halaman edit akun belanja
-    -   [x] Modal delete akun belanja
+    -   [x] Halaman tambah
+    -   [x] Halaman edit
+    -   [x] Modal delete
+-   [x] Halaman jenis belanja
+    -   [x] Halaman tambah
+    -   [x] Halaman Edit
+    -   [x] Modal delete
+-   [x] Halaman divisi (bagian)
+    -   [x] Halaman tambah
+    -   [x] Halaman Edit
+    -   [x] Modal delete
+-   [x] Halaman user
+    -   [x] Halaman tambah
+    -   [x] Halaman Edit
+    -   [x] Modal delete
+    -   [x] Menu akses
+        -   [x] Edit menu akses
+-   [ ] Halaman budget (pagu)
+    -   [ ] Modal detail
+    -   [ ] Halaman tambah
+    -   [ ] Halaman edit
+    -   [ ] Halaman switch pagu
+    -   [ ] Modal delete
+-   [ ] Halaman transaksi (Realisasi)
+    -   [ ] Modal detail
+    -   [ ] Halaman tambah
+    -   [ ] Halaman edit
+    -   [ ] Modal delete
+    -   [ ] Export pdf
+    -   [ ] Export excel
+-   [ ] Master katagori (Arsip)
+-   [ ] Master type (Arsip)
+-   [ ] Dokumen (Arsip)
 
 # Instalasi
 

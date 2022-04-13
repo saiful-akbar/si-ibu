@@ -1,105 +1,96 @@
-@extends('templates.akun-belanja')
-
-@section('title', 'Jenis Belanja')
-
-@section('content-akun-belanja')
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="header-title mt-2">Tabel Jenis Belanja</h4>
-                </div>
-
-                <div class="card-body">
-
-                    {{-- button tambah & form search --}}
-                    <div class="row align-items-center">
-                        <div class="col-md-6 col-sm-12 mb-3">
-                            @if ($userAccess->create == 1)
-                                <a href="{{ route('jenis-belanja.create') }}" class="btn btn-rounded btn-primary btn-sm">
-                                    <i class="mdi mdi-plus-circle mr-1"></i>
-                                    <span>Tambah Jenis Belanja</span>
-                                </a>
-                            @endif
-                        </div>
-
-                        <div class="col-md-6 col-sm-12 mb-3">
-                            <form action="{{ route('jenis-belanja') }}" method="GET" autocomplete="off">
-                                <div class="input-group">
-                                    <input type="search" name="search" placeholder="Cari jenis belanja..." class="form-control"
-                                        value="{{ request('search') }}" />
-
-                                    <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="submit">
-                                            <i class="uil-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+<x-layouts.auth title="Jenis Belanja">
+    <x-layouts.akun-belanja>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title mt-2">Tabel Jenis Belanja</h4>
                     </div>
-                    {{-- end button tambah & form search --}}
 
-                    {{-- table --}}
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <div class="table-responsive">
-                                <table class="table table-centered table-hover nowrap w-100">
-                                    <thead class="thead-light">
+                    <div class="card-body">
+
+                        {{-- Button tambah & form search --}}
+                        <div class="row align-items-center">
+                            <div class="col-md-6 col-sm-12 mb-3">
+                                @if ($userAccess->create)
+                                    <a href="{{ route('jenis-belanja.create') }}" class="btn btn-primary btn-sm">
+                                        <i class="mdi mdi-plus"></i>
+                                        <span>Tambah Jenis Belanja</span>
+                                    </a>
+                                @endif
+                            </div>
+
+                            <div class="col-md-6 col-sm-12 mb-3">
+                                <x-form action="{{ route('jenis-belanja') }}" method="GET">
+                                    <div class="input-group">
+                                        <input
+                                            type="search"
+                                            name="search"
+                                            placeholder="Cari jenis belanja..."
+                                            class="form-control"
+                                            value="{{ request('search') }}"
+                                        />
+
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary" type="submit">
+                                                <i class="uil-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </x-form>
+                            </div>
+                        </div>
+                        {{-- End button tambah & form search --}}
+
+                        {{-- Table jenis belanja --}}
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <x-table :paginator="$jenisBelanja">
+                                    <x-slot name="thead">
                                         <tr>
-                                            <th>No</th>
                                             <th>Akun Belanja</th>
                                             <th>Kategori Belanja</th>
                                             <th class="text-center">Aktif</th>
+                                            <th>Dibuat</th>
+                                            <th>Diperbarui</th>
 
-                                            @if ($isAdmin)
-                                                <th>Dibuat</th>
-                                                <th>Diperbarui</th>
-                                            @endif
-
-                                            @if ($userAccess->update == 1 || $userAccess->delete == 1)
+                                            @if ($userAccess->update || $userAccess->delete)
                                                 <th class="text-center">Aksi</th>
                                             @endif
                                         </tr>
-                                    </thead>
+                                    </x-slot>
 
-                                    <tbody>
+                                    <x-slot name="tbody">
                                         @foreach ($jenisBelanja as $data)
                                             <tr>
-                                                <td>
-                                                    {{ $jenisBelanja->perPage() * ($jenisBelanja->currentPage() - 1) + $loop->iteration }}
-                                                </td>
-
                                                 <td>{{ $data->akunBelanja->nama_akun_belanja }}</td>
                                                 <td>{{ $data->kategori_belanja }}</td>
-
                                                 <td class="text-center">
-                                                    @if ($data->active == 1)
-                                                        <i class="mdi mdi-check text-success h4"></i>
-                                                    @else
-                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
-                                                    @endif
+                                                    <x-active-check :active="$data->active" />
                                                 </td>
+                                                <td>{{ $data->created_at }}</td>
+                                                <td>{{ $data->updated_at }}</td>
 
-                                                @if ($isAdmin)
-                                                    <td>{{ $data->created_at }}</td>
-                                                    <td>{{ $data->updated_at }}</td>
-                                                @endif
-
-                                                @if ($userAccess->update == 1 || $userAccess->delete == 1)
+                                                @if ($userAccess->update || $userAccess->delete)
                                                     <td class="text-cente">
-                                                        @if ($userAccess->update == 1)
+                                                        @if ($userAccess->update)
                                                             <a href="{{ route('jenis-belanja.edit', ['jenisBelanja' => $data->id]) }}"
-                                                                class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
-                                                                data-original-title="Edit" data-placement="top">
+                                                                class="btn btn-sm btn-secondary btn-icon mx-1"
+                                                                data-toggle="tooltip"
+                                                                data-original-title="Edit"
+                                                                data-placement="top"
+                                                            >
                                                                 <i class="mdi mdi-square-edit-outline"></i>
                                                             </a>
                                                         @endif
 
-                                                        @if ($userAccess->delete == 1)
-                                                            <button class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
-                                                                data-original-title="Hapus" data-placement="top"
-                                                                onclick="akunBelanja.deleteJenisBelanja({{ $data->id }})">
+                                                        @if ($userAccess->delete)
+                                                            <button class="btn btn-sm btn-secondary btn-icon mx-1"
+                                                                data-toggle="tooltip"
+                                                                data-original-title="Hapus"
+                                                                data-placement="top"
+                                                                onclick="akunBelanja.deleteJenisBelanja({{ $data->id }})"
+                                                            >
                                                                 <i class="mdi mdi-delete"></i>
                                                             </button>
                                                         @endif
@@ -107,31 +98,22 @@
                                                 @endif
                                             </tr>
                                         @endforeach
-                                    </tbody>
-                                </table>
+                                    </x-slot>
+                                </x-table>
                             </div>
                         </div>
-                    </div>
-                    {{-- end table --}}
+                        {{-- End table jenis belanja --}}
 
-
-                    {{-- paginasi --}}
-                    <div class="row">
-                        <div class="col-12">
-                            {{ $jenisBelanja->links() }}
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </x-layouts.akun-belanja>
 
-    {{-- form delete --}}
-    <form method="POST" id="form-delete-jenis-belanja">
-        @method('DELETE') @csrf
-    </form>
-@endsection
+    {{-- Form delete --}}
+    <x-form method="DELETE" id="form-delete"></x-form>
 
-@section('js-akun-belanja')
-    <script src="{{ asset('assets/js/pages/akunBelanja.js') }}"></script>
-@endsection
+    <x-slot name="script">
+        <script src="{{ asset('assets/js/pages/akunBelanja.js') }}"></script>
+    </x-slot>
+</x-layouts.auth>
