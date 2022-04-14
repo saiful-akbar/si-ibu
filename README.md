@@ -59,9 +59,9 @@ Sistem Informasi Bagian Umum.
     -   [x] Modal delete
     -   [x] Export pdf
     -   [x] Export excel
--   [ ] Master katagori (Arsip)
--   [ ] Master type (Arsip)
--   [ ] Dokumen (Arsip)
+-   [x] Master katagori (Arsip)
+-   [x] Master type (Arsip)
+-   [x] Dokumen (Arsip)
 
 # Instalasi
 

@@ -35,10 +35,10 @@ class DocumentController extends Controller
          */
         $validateRules = [
             'first_period' => [],
-            'last_period' => [],
+            'last_period'  => [],
             'ars_category' => [],
-            'ars_type' => [],
-            'number' => [],
+            'ars_type'     => [],
+            'number'       => [],
         ];
 
         /**
@@ -46,12 +46,12 @@ class DocumentController extends Controller
          */
         $validateErrorMessage = [
             'first_period.required' => 'Periode harus diisi.',
-            'first_period.date' => 'Periode harus tanggal yang valid.',
-            'last_period.required' => 'Periode harus diisi.',
-            'last_period.date' => 'Periode harus tanggal yang valid.',
-            'ars_category.exists' => 'Kategori arsip tidak ada. Pilih kategori arsip yang ditentukan.',
-            'ars_type.exists' => 'Type arsip tidak ada. Pilih type arsip yang ditentukan.',
-            'number.exists' => 'Nomor tidak ditemukan.',
+            'first_period.date'     => 'Periode harus tanggal yang valid.',
+            'last_period.required'  => 'Periode harus diisi.',
+            'last_period.date'      => 'Periode harus tanggal yang valid.',
+            'ars_category.exists'   => 'Kategori arsip tidak ada. Pilih kategori arsip yang ditentukan.',
+            'ars_type.exists'       => 'Type arsip tidak ada. Pilih type arsip yang ditentukan.',
+            'number.exists'         => 'Nomor tidak ditemukan.',
         ];
 
         /**
@@ -126,7 +126,7 @@ class DocumentController extends Controller
          */
         $arsDocuments = $query->orderBy('Years', 'desc')
             ->orderBy('DateDoc', 'desc')
-            ->paginate(10)
+            ->paginate(20)
             ->withQueryString();
 
         /**

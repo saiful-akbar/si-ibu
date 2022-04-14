@@ -1,17 +1,9 @@
-@extends('templates.main')
-
-@section('title', 'Dokumen Arsip')
-
-@section('content')
-
+<x-layouts.auth title="Dokumen Arsip">
+    
     {{-- form filter --}}
     <div class="row">
         <div class="col-12 mb-3">
-            <form
-                action="{{ route('arsip.document') }}"
-                method="GET"
-                autocomplete="off"
-            >
+            <x-form action="{{ route('arsip.document') }}" method="GET">
                 <div class="card">
                     <div class="card-header pt-3">
                         <h4 class="header-title">Filter</h4>
@@ -21,38 +13,35 @@
                         <div class="row">
 
                             {{-- input periode tanggal --}}
-                            <div class="col-lg-8 col-md-6 col-sm-12 mb-2">
+                            <div class="col-lg-8 col-sm-12 mb-1">
                                 <div class="form-group">
                                     <label> Periode <small class="text-danger">*</small></label>
 
                                     <div class="input-group @error('first_period') is-invalid @enderror">
                                         <input
+                                            required
                                             type="date"
                                             name="first_period"
-                                            class="form-control @error('first_period') is-invalid @enderror"
                                             id="first_period"
                                             placeholder="Masukan periode awal..."
+                                            class="form-control @error('first_period') is-invalid @enderror"
                                             value="{{ old('first_period', $firstPeriod) }}"
-                                            required
                                         />
 
                                         <div class="input-group-prepend">
-                                            <span
-                                                class="input-group-text"
-                                                id="basic-addon1"
-                                            >
+                                            <span class="input-group-text" id="basic-addon1">
                                                 <i class="mdi mdi-chevron-double-right"></i>
                                             </span>
                                         </div>
 
                                         <input
+                                            required
                                             type="date"
                                             name="last_period"
-                                            class="form-control @error('last_period') is-invalid @enderror"
                                             id="last_period"
-                                            value="{{ old('last_period', $lastPeriod) }}"
                                             placeholder="Masukan periode akhir..."
-                                            required
+                                            class="form-control @error('last_period') is-invalid @enderror"
+                                            value="{{ old('last_period', $lastPeriod) }}"
                                         />
                                     </div>
 
@@ -68,7 +57,7 @@
                             {{-- end input periode tanggal --}}
 
                             {{-- input kategori arsip --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
                                 <div class="form-group">
                                     <label for="ars_category">Kategori Arsip</label>
 
@@ -78,7 +67,7 @@
                                         data-toggle="select2"
                                         class="form-control select2 @error('ars_category') is-invalid @enderror"
                                     >
-                                        <option value="{{ null }}">Semua Kategori</option>
+                                        <option value="{{ null }}">-- Semua --</option>
 
                                         @foreach ($arsCategories as $arsCategory)
                                             <option
@@ -98,11 +87,9 @@
                             {{-- end input kategori arsip --}}
 
                             {{-- input type arsip --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
                                 <div class="form-group">
-                                    <label for="ars_type">
-                                        Type Arsip
-                                    </label>
+                                    <label for="ars_type">Type Arsip</label>
 
                                     <select
                                         id="ars_type"
@@ -110,7 +97,7 @@
                                         data-toggle="select2"
                                         class="form-control select2 @error('ars_type') is-invalid @enderror"
                                     >
-                                        <option value="{{ null }}">Semua Type</option>
+                                        <option value="{{ null }}">-- Semua --</option>
 
                                         @foreach ($arsCategories as $arsCategory)
                                             <optgroup label="{{ $arsCategory->Name }}">
@@ -135,19 +122,17 @@
                             {{-- end input type arsip --}}
 
                             {{-- input number --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
                                 <div class="form-group">
-                                    <label for="number">
-                                        Nomor
-                                    </label>
+                                    <label for="number">Nomor Dokumen</label>
 
                                     <input
                                         type="search"
                                         name="number"
-                                        value="{{ old('number', request('number')) }}"
-                                        class="form-control @error('number') is-invalid @enderror"
                                         id="number"
                                         placeholder="Masukan nomor..."
+                                        class="form-control @error('number') is-invalid @enderror"
+                                        value="{{ old('number', request('number')) }}"
                                     />
 
                                     @error('number')
@@ -161,16 +146,13 @@
                     </div>
 
                     <div class="card-footer">
-                        <button
-                            type="submit"
-                            class="btn btn-info btn-rounded btn-sm mr-2"
-                        >
-                            <i class="mdi mdi-filter-variant mr-1"></i>
+                        <button type="submit" class="btn btn-info btn-sm">
+                            <i class="mdi mdi-filter-variant"></i>
                             <span>Filter</span>
                         </button>
                     </div>
                 </div>
-            </form>
+            </x-form>
         </div>
     </div>
     {{-- end form filter --}}
@@ -184,76 +166,61 @@
                 </div>
 
                 <div class="card-body">
-
-                    {{-- table --}}
                     <div class="row">
                         <div class="col-12 mb-3">
-                            <div class="table-responsive">
-                                <table class="table table-centered table-hover w-100 nowrap">
-                                    <thead class="thead-light">
+                            <x-table :paginator="$arsDocuments">
+                                <x-slot name="thead">
+                                    <tr>
+                                        <th>No</th>
+                                        <th class="text-center">Unduh</th>
+                                        <th>Tahun</th>
+                                        <th>Tanggal</th>
+                                        <th>Kategori</th>
+                                        <th>Type</th>
+                                        <th>Nomor</th>
+                                        <th>Nama File</th>
+                                        <th>Dibuat</th>
+                                    </tr>
+                                </x-slot>
+
+                                <x-slot name="tbody">
+                                    @foreach ($arsDocuments as $arsDocument)
                                         <tr>
-                                            <th>No</th>
-                                            <th class="text-center">Unduh</th>
-                                            <th>Tahun</th>
-                                            <th>Tanggal</th>
-                                            <th>Kategori</th>
-                                            <th>Type</th>
-                                            <th>Nomor</th>
-                                            <th>Nama File</th>
-                                            <th>Dibuat</th>
+                                            <td>
+                                                {{ number_format($arsDocuments->perPage() * ($arsDocuments->currentPage() - 1) + $loop->iteration) }}
+                                            </td>
+                                            <td class="text-center">
+                                                @if (!empty($arsDocument->Dokumen))
+                                                    <a
+                                                        href="{{ route('arsip.document.download', ['arsDocument' => $arsDocument->ARSDocument_PK]) }}"
+                                                        class="btn btn-sm btn-dark btn-icon mx-1"
+                                                        data-toggle="tooltip"
+                                                        data-original-title="Unduh"
+                                                        data-placement="top"
+                                                    >
+                                                        <i class="mdi mdi-download"></i>
+                                                    </a>
+                                                @else
+                                                    <i class="mdi mdi mdi-close text-danger h4"></i>
+                                                @endif
+                                            </td>
+                                            <td>{{ $arsDocument->Years }}</td>
+                                            <td>{{ $arsDocument->DateDoc }}</td>
+                                            <td>{{ $arsDocument->MSARSType->MSARSCategory->Name }}</td>
+                                            <td>{{ $arsDocument->MSARSType->Name }}</td>
+                                            <td>{{ $arsDocument->Number }}</td>
+                                            <td>{{ $arsDocument->NamaFile }}</td>
+                                            <td>{{ date('d M Y H:i', strtotime($arsDocument->DateAdds)) }}</td>
                                         </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach ($arsDocuments as $arsDocument)
-                                            <tr>
-                                                <td>
-                                                    {{ $arsDocuments->perPage() * ($arsDocuments->currentPage() - 1) + $loop->iteration }}
-                                                </td>
-
-                                                <td class="text-center">
-                                                    @if (!empty($arsDocument->Dokumen))
-                                                        <a
-                                                            href="{{ route('arsip.document.download', ['arsDocument' => $arsDocument->ARSDocument_PK]) }}"
-                                                            class="btn btn-sm btn-dark btn-icon mx-1"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Unduh"
-                                                            data-placement="top"
-                                                        >
-                                                            <i class="mdi mdi-download"></i>
-                                                        </a>
-                                                    @else
-                                                        <i class="mdi mdi mdi-close text-danger h4"></i>
-                                                    @endif
-                                                </td>
-
-                                                <td>{{ $arsDocument->Years }}</td>
-                                                <td>{{ $arsDocument->DateDoc }}</td>
-                                                <td>{{ $arsDocument->MSARSType->MSARSCategory->Name }}</td>
-                                                <td>{{ $arsDocument->MSARSType->Name }}</td>
-                                                <td>{{ $arsDocument->Number }}</td>
-                                                <td>{{ $arsDocument->NamaFile }}</td>
-                                                <td>{{ date('d M Y H:i', strtotime($arsDocument->DateAdds)) }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                    @endforeach
+                                </x-slot>
+                            </x-table>
                         </div>
                     </div>
-                    {{-- end table --}}
-
-                    {{-- table pagination --}}
-                    <div class="row">
-                        <div class="col-12">
-                            {{ $arsDocuments->links() }}
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
     {{-- end table --}}
 
-@endsection
+</x-layouts.auth>
