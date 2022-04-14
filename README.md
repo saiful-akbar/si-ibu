@@ -52,13 +52,13 @@ Sistem Informasi Bagian Umum.
     -   [x] Halaman edit
     -   [x] Halaman switch pagu
     -   [x] Modal delete
--   [ ] Halaman transaksi (Realisasi)
-    -   [ ] Modal detail
-    -   [ ] Halaman tambah
-    -   [ ] Halaman edit
-    -   [ ] Modal delete
-    -   [ ] Export pdf
-    -   [ ] Export excel
+-   [x] Halaman transaksi (Realisasi)
+    -   [x] Modal detail
+    -   [x] Halaman tambah
+    -   [x] Halaman edit
+    -   [x] Modal delete
+    -   [x] Export pdf
+    -   [x] Export excel
 -   [ ] Master katagori (Arsip)
 -   [ ] Master type (Arsip)
 -   [ ] Dokumen (Arsip)

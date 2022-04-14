@@ -1,52 +1,29 @@
 class Transaksi {
     constructor() {
-        this.dataTableBudget = null;
+        this.dtBudget = null;
     }
 
     /**
-     * Method handle hapus data user
-     *
-     * @param {int} id
+     * Fungsi handle delete transaksi (pagu)
+     * 
+     * @param  {int} id [id transaksi (pagu)]
+     * @return void
      */
-    delete(id) {
-        bootbox.confirm({
-            title: "Anda insin menghapus data belanja?",
-            message: String.raw `
-                <div class="alert alert-danger" role="alert">
-                    <h4 class="alert-heading">
-                        <i class="dripicons-warning mr-1"></i>
-                        Peringatan!
-                    </h4>
-                    <ul>
-                        <li>Tindakan ini tidak dapat dibatalkan.</li>
-                        <li>Data belanja yang dihapus tidak dapat dikembalikan.</li>
-                        <li>Pastikan anda berhati-hati dalam menghapus data.</li>
-                    </ul>
-                </div>
-            `,
-            buttons: {
-                confirm: {
-                    label: String.raw `<i class='mdi mdi-delete mr-1'></i> Hapus`,
-                    className: `btn btn-danger btn-sm btn-rounded`,
-                },
-                cancel: {
-                    label: String.raw `<i class='mdi mdi-close-circle mr-1'></i> Batal`,
-                    className: `btn btn-sm btn-dark btn-rounded mr-2`,
-                },
-            },
-            callback: (result) => {
-                if (result) {
-                    const form = $("#form-delete-transaksi");
+    handleDelete(id) {
+        main.handleDelete('Hapus Realisasi ?', (response) => {
+            if (response) {
+                const form = $('#form-delete');
+                const url = `${main.baseUrl}/belanja/${id}`;
 
-                    form.attr("action", `${main.baseUrl}/belanja/${id}`);
-                    form.submit();
-                }
-            },
-        });
+                form.attr('action', url);
+                form.submit();
+            }
+        })
     }
 
     /**
-     * Method how modal loading
+     * Method untuk menampilkan modal loading
+     * 
      * @param {boolean} show
      */
     showModalLoading(show) {
@@ -101,14 +78,12 @@ class Transaksi {
                 $("#detail-kegiatan").text(kegiatan);
                 $("#detail-tanggal").text(tanggal);
                 $("#detail-no-dokumen").text(no_dokumen);
-                $("#detail-jumlah-nominal").text(
-                    "Rp. " + main.formatRupiah(jumlah_nominal)
-                );
+                $("#detail-jumlah-nominal").text("Rp. " + main.formatRupiah(jumlah_nominal));
 
                 if (res.download !== null) {
                     $("#detail-download-dokumen").html(String.raw `
-                        <a href="${res.download}" class="btn btn-light btn-sm btn-rounded">
-                            <i class="mdi mdi-download mr-1"></i>
+                        <a href="${res.download}" class="btn btn-light btn-sm">
+                            <i class="mdi mdi-download"></i>
                             <span>Unduh</span>
                         </a>
                     `);
@@ -135,51 +110,56 @@ class Transaksi {
     showModalTableBudget(show) {
         $("#modal-table-budget").modal(show ? "show" : "hide");
 
-        if (this.dataTableBudget == null) {
-            this.dataTableBudget = $("#datatable-budget").DataTable({
-                processing: true,
-                serverSide: true,
-                pageLength: 20,
-                lengthChange: false,
-                scrollX: true,
-                destroy: false,
-                info: false,
-                scrollY: "300px",
-                scrollCollapse: true,
-                ajax: `${main.baseUrl}/belanja/budget/datatable`,
-                pagingType: "simple",
-                language: { paginate: { previous: "Prev", next: "Next" } },
-                columns: [
-                    {
-                        data: "action",
-                        name: "action",
-                        orderable: false,
-                        searchable: false,
-                        className: "text-center",
-                    },
-                    {
-                        data: "tahun_anggaran",
-                        name: "tahun_anggaran",
-                    },
-                    {
-                        data: "nama_divisi",
-                        name: "nama_divisi",
-                    },
-                    {
-                        data: "nama_akun_belanja",
-                        name: "nama_akun_belanja",
-                    },
-                    {
-                        data: "kategori_belanja",
-                        name: "kategori_belanja",
-                    },
-                    {
-                        data: "sisa_nominal",
-                        name: "sisa_nominal",
-                        render: (data) => "Rp. " + main.formatRupiah(data),
-                    },
-                ],
-            });
+        const options = {
+            processing: true,
+            serverSide: true,
+            pageLength: 20,
+            lengthChange: false,
+            scrollX: true,
+            destroy: false,
+            info: false,
+            ajax: `${main.baseUrl}/belanja/budget/datatable`,
+            pagingType: "simple",
+            language: {
+                paginate: {
+                    previous: "Prev",
+                    next: "Next"
+                }
+            },
+            columns: [
+                {
+                    data: "action",
+                    name: "action",
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center",
+                },
+                {
+                    data: "tahun_anggaran",
+                    name: "tahun_anggaran",
+                },
+                {
+                    data: "nama_divisi",
+                    name: "nama_divisi",
+                },
+                {
+                    data: "nama_akun_belanja",
+                    name: "nama_akun_belanja",
+                },
+                {
+                    data: "kategori_belanja",
+                    name: "kategori_belanja",
+                },
+                {
+                    data: "sisa_nominal",
+                    name: "sisa_nominal",
+                    render: (data) => "Rp. " + main.formatRupiah(data),
+                },
+            ],
+        };
+
+        if (this.dtBudget == null) {
+            this.dtBudget = $("#datatable-budget").DataTable(options);
         }
     }
 
@@ -271,7 +251,6 @@ $(document).ready(function() {
         const formExport = $("#form-export");
 
         formExport.attr("action", route);
-
         formExport.submit();
     });
 });

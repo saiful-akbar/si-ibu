@@ -386,7 +386,7 @@ class DashboardController extends Controller
             ->where('active', 1)
             ->get();
 
-        $option = "<option value>Semua Jenis Belanja</option>";
+        $option = "<option value>-- Semua --</option>";
 
         foreach ($jenisBelanja as $jBelanja) {
             $option .= "<option value='{$jBelanja->id}'>{$jBelanja->kategori_belanja}</option>";

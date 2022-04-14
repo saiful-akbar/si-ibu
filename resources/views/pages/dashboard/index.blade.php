@@ -187,7 +187,9 @@
 
                                         <select id="admin__chart-by-akun-belanja__select-divisi"
                                             class="form-control form-control-sm select2" data-toggle="select2">
-                                            <option value="{{ null }}">Semua Bagian</option>
+                                            <option value="{{ null }}">
+                                                -- Semua --
+                                            </option>
 
                                             @foreach ($divisi as $divChartByAkunBelanja)
                                                 <option value="{{ $divChartByAkunBelanja->id }}">
@@ -207,7 +209,7 @@
 
                                         <select id="admin__chart-by-akun-belanja__select-akun-belanja"
                                             class="form-control form-control-sm select2" data-toggle="select2">
-                                            <option value="{{ null }}">Semua Akun Belanja</option>
+                                            <option value="{{ null }}">-- Semua --</option>
 
                                             @foreach ($akunBelanja as $aBelanja)
                                                 <option value="{{ $aBelanja->id }}">
@@ -223,7 +225,7 @@
 
                                         <select id="admin__chart-by-akun-belanja__select-jenis-belanja"
                                             class="form-control form-control-sm select2" data-toggle="select2">
-                                            <option value="{{ null }}">Semua Jenis Belanja</option>
+                                            <option value="{{ null }}">-- Semua --</option>
                                         </select>
                                     </div>
 

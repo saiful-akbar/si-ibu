@@ -1,21 +1,14 @@
-@extends('templates.main')
+<x-layouts.auth title="Tambah Realisasi" back-button="{{ route('belanja') }}">
+    <x-slot name="style">
+        <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('assets/css/vendor/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('assets/css/vendor/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('assets/css/vendor/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('assets/css/vendor/select.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+    </x-slot>
 
-@section('title', 'Tambah Realisasi')
-
-@section('btn-kembali')
-    <a href="{{ route('belanja') }}" class="btn btn-rounded btn-dark btn-sm">
-        <i class="mdi mdi-chevron-double-left mr-1"></i>
-        <span>Kembali</span>
-    </a>
-@endsection
-
-@section('content')
-
-    {{-- Form input budget --}}
-    <form action="{{ route('belanja.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
-        @method('POST') @csrf
-
-        {{-- input budget_id --}}
+    {{-- Form tambah transaksi (realisasi) --}}
+    <x-form action="{{ route('belanja.store') }}" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="budget_id" id="budget_id" value="{{ old('budget_id') }}" required />
 
         {{-- input akun belanja (jenis_belanja) & bagian (divisi) --}}
@@ -155,7 +148,6 @@
                 </div>
             </div>
         </div>
-        {{-- end input akun belanja (jenis_belanja) & bagian (divisi) --}}
 
         {{-- input kegiatan, jumlah nominal & uraian --}}
         <div class="row">
@@ -282,7 +274,6 @@
                 </div>
             </div>
         </div>
-        {{-- end input kegiatan, jumlah nominal & uraian --}}
 
         {{-- input dokumen & file dokumen --}}
         <div class="row">
@@ -326,8 +317,8 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="file_dokumen">
-                                            <span type="button" class="btn btn-success btn-sm btn-rounded">
-                                                <i class="mdi mdi-upload mr-1"></i>
+                                            <span type="button" class="btn btn-success btn-sm">
+                                                <i class="mdi mdi-upload"></i>
                                                 <span>Unggah File</span>
                                             </span>
                                         </label>
@@ -355,7 +346,6 @@
                 </div>
             </div>
         </div>
-        {{-- end input dokumen & file dokumen --}}
 
         {{-- input uraian --}}
         <div class="row">
@@ -374,48 +364,38 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-info btn-sm btn-rounded mr-2">
-                            <i class="mdi mdi-content-save mr-1"></i>
+                        <button type="submit" class="btn btn-info btn-sm mr-2">
+                            <i class="mdi mdi-content-save"></i>
                             <span>Simpan</span>
                         </button>
 
-                        <button type="reset" class="btn btn-dark btn-sm btn-rounded">
-                            <i class="mdi mdi-close-circle mr-1"></i>
+                        <button type="reset" class="btn btn-dark btn-sm">
+                            <i class="mdi mdi-close-circle"></i>
                             <span>Reset</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        {{-- end input uraian --}}
+    </x-form>
+    {{-- End form tambah transaksi (realisasi) --}}
 
-    </form>
-    {{-- end form input budget --}}
+    {{-- Modal tabel budget --}}
+    <x-transaksi.modal-table-budget />
 
-    @include('components.molecules.modal-table-budget')
-
-@endsection
-
-@push('css')
-    <link href="{{ asset('assets/css/vendor/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/vendor/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/vendor/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/vendor/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/vendor/select.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-@endpush
-
-@section('js')
-    <script src="{{ asset('assets/js/vendor/summernote-bs4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/dataTables.bootstrap4.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/buttons.flash.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/dataTables.keyTable.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/dataTables.select.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/transaksi.js') }}"></script>
-@endsection
+    <x-slot name="script">
+        <script src="{{ asset('assets/js/vendor/summernote-bs4.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/dataTables.bootstrap4.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/responsive.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/buttons.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/buttons.html5.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/buttons.flash.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/buttons.print.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/dataTables.keyTable.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/dataTables.select.min.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/transaksi.js') }}"></script>
+    </x-slot>
+</x-layouts.auth>

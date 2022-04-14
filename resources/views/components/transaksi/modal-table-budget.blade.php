@@ -7,13 +7,17 @@
                     Daftar Pagu
                 </h5>
 
-                <button type="button" class="close" onclick="transaksi.showModalTableBudget(false)"
-                    aria-hidden="true">×</button>
+                <button
+                    type="button"
+                    class="close"
+                    onclick="transaksi.showModalTableBudget(false)"
+                    aria-hidden="true"
+                >×</button>
             </div>
 
             <div class="modal-body">
-                <table id="datatable-budget" class="table table-hover table-centered w-100 nowrap">
-                    <thead>
+                <x-table id="datatable-budget">
+                    <x-slot name="thead">
                         <tr>
                             <th class="text-center">Pilih</th>
                             <th>Tahun Anggaran</th>
@@ -22,13 +26,13 @@
                             <th>Jenis Belanja</th>
                             <th>Sisa Budget</th>
                         </tr>
-                    </thead>
-                </table>
+                    </x-slot>
+                </x-table>
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-dark btn-rounded btn-sm" onclick="transaksi.showModalTableBudget(false)">
-                    <i class="mdi mdi-close-circle"></i>
+                <button class="btn btn-dark btn-sm" onclick="transaksi.showModalTableBudget(false)">
+                    <i class="mdi mdi-close"></i>
                     <span>Tutup</span>
                 </button>
             </div>

@@ -57,7 +57,7 @@
                 <x-form action="{{ route('profil.akun.password.update') }}" method="PATCH">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="header-title mt-3">Ubah Password</h4>
+                            <h4 class="header-title mt-2">Ubah Password</h4>
                         </div>
 
                         <div class="card-body">

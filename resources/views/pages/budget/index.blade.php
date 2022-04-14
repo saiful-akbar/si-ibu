@@ -13,7 +13,7 @@
                         <div class="row">
 
                             {{-- input periode tahun --}}
-                            <div class="col-lg-8 col-md-12 col-sm-12 mb-2">
+                            <div class="col-lg-8 col-md-12 col-sm-12 mb-1">
                                 <div class="form-group">
                                     <label>Periode Tahun <small class="text-danger">*</small></label>
 
@@ -38,7 +38,7 @@
 
                             {{-- input bagian (divisi) jika user sebagai admin --}}
                             @if ($isAdmin)
-                                <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
                                     <div class="form-group">
                                         <label for="divisi">Bagian</label>
 
@@ -57,7 +57,7 @@
                             @endif
 
                             {{-- input akun belanja (jenis_belanja) --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
                                 <div class="form-group">
                                     <label for="jenis_belanja">Akun Belanja</label>
 
