@@ -15,10 +15,7 @@ class Sidebar extends Component
      */
     public function __construct()
     {
-        $this->menu = auth()->user()->load([
-            'menuHeader' => fn ($query) => $query->orderBy('no_urut', 'asc'),
-            'menuItem' => fn ($query) => $query->orderBy('nama_menu', 'asc'),
-        ]);
+        $this->menu = menu();
     }
 
     /**

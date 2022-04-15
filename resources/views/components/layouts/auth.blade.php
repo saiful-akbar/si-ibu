@@ -76,6 +76,7 @@
                 </div>
             </div>
 
+            {{-- Footer --}}
             <x-footer></x-footer>
         </div>
     </div>

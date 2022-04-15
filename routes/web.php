@@ -49,24 +49,20 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/dashboard,read')
             ->name('dashboard');
 
+        Route::get('/chart/akun-belanja', [DashboardController::class, 'budgetChartByAkunBelanja'])
+            ->middleware('menu:/dashboard,read')
+            ->name('dashboard.chart.jenisBelanja');
+
+        Route::get('/chart/akun-belanja/options/{akunBelanjaId}', [DashboardController::class, 'getJenisBelanjaByAkunBelanjaId'])
+            ->middleware('menu:/dashboard,read');
+
         Route::get('/chart/{year}', [DashboardController::class, 'globalBudgetChart'])
             ->middleware('menu:/dashboard,read')
-            ->name('dashboard.global');
+            ->name('dashboard.chart.global');
 
         Route::get('/chart/admin/{divisi}/{year}/divisi', [DashboardController::class, 'budgetChartByDivisi'])
             ->middleware('menu:/dashboard,read')
-            ->name('dashboard.divisi');
-
-        Route::get('/chart/admin/akun-belanja', [DashboardController::class, 'budgetChartByAkunBelanja'])
-            ->middleware('menu:/dashboard,read')
-            ->name('dashboard.admin.jenisBelanja');
-
-        Route::get('/chart/admin/akun-belanja/{akunBelanjaId}', [DashboardController::class, 'getJenisBelanjaByAkunBelanjaId'])
-            ->middleware('menu:/dashboard,read');
-
-        Route::get('/chart/divisi/{year}/jenis-belanja', [DashboardController::class, 'transaksiChartLine'])
-            ->middleware('menu:/dashboard,read')
-            ->name('dashboard.divisi.jenisBelanja');
+            ->name('dashboard.chart.divisi');
     });
 
 

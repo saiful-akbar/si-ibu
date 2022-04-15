@@ -27,6 +27,6 @@ class LaporanTransaksiExport implements FromView
      */
     public function view(): View
     {
-        return view('export.excel.excel-transaksi', $this->data);
+        return view('export.excel.laporan-transaksi', $this->data);
     }
 }

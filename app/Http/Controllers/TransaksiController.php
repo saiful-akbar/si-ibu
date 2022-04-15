@@ -355,7 +355,7 @@ class TransaksiController extends Controller
                 'no_dokumen'     => $request->no_dokumen,
                 'file_dokumen'   => $fileDocument,
                 'uraian'         => $request->uraian ?? null,
-                'outstanding'    => (boolean) $request->outstanding,
+                'outstanding'    => (bool) $request->outstanding,
             ]);
 
             /**
@@ -558,7 +558,7 @@ class TransaksiController extends Controller
                 /**
                  * jika budget tidak dirubah cek jumlah nominal lebih banyak...
                  * ...atau lebih sedikit dari jumlah_nominal sebelumnya.
-                 * 
+                 *
                  * update sisa_nominal budget pada akun belanja (jenis_belanja) yang lama.
                  */
                 if ($request->jumlah_nominal > $transaksi->jumlah_nominal) {
@@ -592,7 +592,7 @@ class TransaksiController extends Controller
                     'no_dokumen'     => $request->no_dokumen,
                     'file_dokumen'   => Storage::exists($fileDokumen) ? $fileDokumen : null,
                     'uraian'         => $request->uraian ?? null,
-                    'outstanding'    => (boolean) $request->outstanding,
+                    'outstanding'    => (bool) $request->outstanding,
                 ]);
         } catch (\Exception $e) {
 
@@ -799,9 +799,11 @@ class TransaksiController extends Controller
     public function exportExcel(Request $request)
     {
         $data = $this->fillter($request);
+        $dateTime = date('Y_m_d_h_i_s');
+
         return Excel::download(
             new LaporanTransaksiExport($data),
-            'Realisasi (' . date('Y-m-d h.i.s') . ').xlsx'
+            "Realisasi_{$dateTime}.xlsx"
         );
     }
 
@@ -815,19 +817,22 @@ class TransaksiController extends Controller
         $data = $this->fillter($request);
 
         $pdf = PDF::loadView(
-            'export.pdf.pdf-transaksi',
+            'export.pdf.laporan-transaksi',
             $data,
             [],
             [
-                'orientation' => 'L',
+                'orientation'   => 'L',
                 'margin_header' => 5,
                 'margin_footer' => 5,
-                'margin_top' => 37,
+                'margin_top'    => 37,
                 'margin_bottom' => 18,
             ]
         );
 
-        return $pdf->stream('Realisasi (' . date('Y-m-d h.i.s') . ').pdf');
+        $dateTime = date('Y_m_d_h_i_s');
+
+        // return $pdf->stream('Realisasi (' . date('Y-m-d h.i.s') . ').pdf');
+        return $pdf->stream("Realisasi_{$dateTime}.pdf");
     }
 
     /**

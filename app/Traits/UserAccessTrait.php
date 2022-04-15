@@ -75,7 +75,7 @@ trait UserAccessTrait
         /**
          * cek params $userId & $href sama atau tidak dengan nilai properti yang ada
          */
-        if ($this->href == $href &&$this->userId == $id) {
+        if ($this->href == $href && $this->userId == $id) {
             return $this->isAdmin;
         }
 

@@ -13,20 +13,15 @@
                         <div class="row">
 
                             {{-- input periode tanggal --}}
-                            <div class="col-lg-8 col-sm-12 mb-1">
+                            <div class="col-lg-8 col-sm-12 mb-2">
                                 <div class="form-group">
                                     <label>Periode <small class="text-danger">*</small></label>
 
                                     <div class="input-group @error('periode_awal') is-invalid @enderror">
-                                        <input
-                                            required
-                                            type="date"
-                                            name="periode_awal"
-                                            id="periode_awal"
+                                        <input required type="date" name="periode_awal" id="periode_awal"
                                             placeholder="Masukan periode awal..."
                                             class="form-control @error('periode_awal') is-invalid @enderror" id="periode_awal"
-                                            value="{{ old('periode_awal', request('periode_awal') ?? $periodeAwal) }}"
-                                        />
+                                            value="{{ old('periode_awal', request('periode_awal') ?? $periodeAwal) }}" />
 
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -34,15 +29,10 @@
                                             </span>
                                         </div>
 
-                                        <input
-                                            required
-                                            type="date"
-                                            name="periode_akhir"
-                                            id="periode_akhir"
+                                        <input required type="date" name="periode_akhir" id="periode_akhir"
                                             placeholder="Masukan periode akhir..."
                                             class="form-control @error('periode_akhir') is-invalid @enderror"
-                                            value="{{ old('periode_akhir', request('periode_akhir') ?? $periodeAkhir) }}"
-                                        />
+                                            value="{{ old('periode_akhir', request('periode_akhir') ?? $periodeAkhir) }}" />
                                     </div>
 
                                     @error('periode_awal')
@@ -58,25 +48,19 @@
 
                             {{-- input nama bagian (divisi) --}}
                             @if ($isAdmin)
-                                <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
+                                <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                     <div class="form-group">
                                         <label for="divisi">Bagian</label>
 
-                                        <select
-                                            id="divisi"
-                                            name="divisi"
-                                            data-toggle="select2"
-                                            class="form-control select2 @error('divisi') is-invalid @enderror"
-                                        >
+                                        <select id="divisi" name="divisi" data-toggle="select2"
+                                            class="form-control select2 @error('divisi') is-invalid @enderror">
                                             <option value="{{ null }}">
                                                 -- Semua --
                                             </option>
 
                                             @foreach ($divisi as $div)
-                                                <option
-                                                    value="{{ $div->nama_divisi }}"
-                                                    @if (old('divisi', request('divisi')) == $div->nama_divisi) selected @endif
-                                                >
+                                                <option value="{{ $div->nama_divisi }}"
+                                                    @if (old('divisi', request('divisi')) == $div->nama_divisi) selected @endif>
                                                     {{ $div->nama_divisi }}
                                                 </option>
                                             @endforeach
@@ -91,16 +75,12 @@
                             {{-- end input nama bagian (divisi) --}}
 
                             {{-- input jenis belanja --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                 <div class="form-group">
                                     <label for="jenis_belanja">Akun Belanja</label>
 
-                                    <select
-                                        id="jenis_belanja"
-                                        name="jenis_belanja"
-                                        data-toggle="select2"
-                                        class="form-control select2 @error('jenis_belanja') is-invalid @enderror"
-                                    >
+                                    <select id="jenis_belanja" name="jenis_belanja" data-toggle="select2"
+                                        class="form-control select2 @error('jenis_belanja') is-invalid @enderror">
                                         <option value="{{ null }}">
                                             -- Semua --
                                         </option>
@@ -109,13 +89,8 @@
                                             <optgroup label="{{ $aBelanja->nama_akun_belanja }}">
                                                 @foreach ($aBelanja->jenisBelanja as $jenisBelanja)
                                                     @if ($jenisBelanja->active == 1)
-                                                        <option
-                                                            value="{{ $jenisBelanja->kategori_belanja }}"
-
-                                                            @if (old('jenis_belanja', request('jenis_belanja')) == $jenisBelanja->kategori_belanja)
-                                                                selected
-                                                            @endif
-                                                        >
+                                                        <option value="{{ $jenisBelanja->kategori_belanja }}"
+                                                            @if (old('jenis_belanja', request('jenis_belanja')) == $jenisBelanja->kategori_belanja) selected @endif>
                                                             {{ $jenisBelanja->kategori_belanja }}
                                                         </option>
                                                     @endif
@@ -133,18 +108,13 @@
 
                             {{-- input no dokumen --}}
                             @if ($isAdmin)
-                                <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
+                                <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                     <div class="form-group">
                                         <label for="no_dokumen">No. Dokumen</label>
 
-                                        <input
-                                            type="search"
-                                            name="no_dokumen"
-                                            id="no_dokumen"
-                                            placeholder="Masukan no dokumen..."
+                                        <input type="search" name="no_dokumen" id="no_dokumen" placeholder="Masukan no dokumen..."
                                             class="form-control @error('no_dokumen') is-invalid @enderror"
-                                            value="{{ old('no_dokumen', request('no_dokumen')) }}"
-                                        />
+                                            value="{{ old('no_dokumen', request('no_dokumen')) }}" />
 
                                         @error('no_dokumen')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -189,23 +159,17 @@
                             @endif
                         </div>
 
-                        <div class="col-lg-3 col-md-6 col-sm-12 mb-3 d-flex justify-content-md-end">
+                        <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-md-end mb-3">
                             <div class="btn-group btn-block">
-                                <button
-                                    type="submit" class="btn btn-light btn-sm btn-export"
+                                <button type="submit" class="btn btn-light btn-sm btn-export"
                                     data-route="{{ route('belanja.excel') }}"
-                                    @if (count($transactions) <= 0) disabled @endif
-                                >
+                                    @if (count($transactions) <= 0) disabled @endif>
                                     <i class="mdi mdi-file-excel text-success"></i>
                                     <span>Excel</span>
                                 </button>
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-light btn-sm btn-export"
-                                    data-route="{{ route('belanja.pdf') }}"
-                                    @if (count($transactions) <= 0) disabled @endif
-                                >
+                                <button type="submit" class="btn btn-light btn-sm btn-export"
+                                    data-route="{{ route('belanja.pdf') }}" @if (count($transactions) <= 0) disabled @endif>
                                     <i class="mdi mdi-file-pdf text-danger"></i>
                                     <span>PDF</span>
                                 </button>
@@ -262,36 +226,24 @@
                                             <td>{{ $data->created_at }}</td>
                                             <td>{{ $data->updated_at }}</td>
                                             <td class="text-center">
-                                                <button
-                                                    class="btn btn-sm btn-secondary btn-icon mx-1"
-                                                    data-toggle="tooltip"
-                                                    data-original-title="Detail"
-                                                    data-placement="top"
-                                                    onclick="transaksi.showDetail({{ $data->id }})"
-                                                >
+                                                <button class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
+                                                    data-original-title="Detail" data-placement="top"
+                                                    onclick="transaksi.showDetail({{ $data->id }})">
                                                     <i class="mdi mdi-eye-outline"></i>
                                                 </button>
 
                                                 @if ($userAccess->update)
-                                                    <a
-                                                        href="{{ route('belanja.edit', ['transaksi' => $data->id]) }}"
-                                                        class="btn btn-sm btn-secondary btn-icon mx-1"
-                                                        data-toggle="tooltip"
-                                                        data-original-title="Edit"
-                                                        data-placement="top"
-                                                    >
+                                                    <a href="{{ route('belanja.edit', ['transaksi' => $data->id]) }}"
+                                                        class="btn btn-sm btn-secondary btn-icon mx-1" data-toggle="tooltip"
+                                                        data-original-title="Edit" data-placement="top">
                                                         <i class="mdi mdi-square-edit-outline"></i>
                                                     </a>
                                                 @endif
 
                                                 @if ($userAccess->delete)
-                                                    <button
-                                                        class="btn btn-sm btn-icon btn-secondary mx-1"
-                                                        data-toggle="tooltip"
-                                                        data-original-title="Hapus"
-                                                        data-placement="top"
-                                                        onclick="transaksi.handleDelete({{ $data->id }})"
-                                                    >
+                                                    <button class="btn btn-sm btn-icon btn-secondary mx-1" data-toggle="tooltip"
+                                                        data-original-title="Hapus" data-placement="top"
+                                                        onclick="transaksi.handleDelete({{ $data->id }})">
                                                         <i class="mdi mdi-delete"></i>
                                                     </button>
                                                 @endif
@@ -315,7 +267,8 @@
     {{-- Form export excel & print pdf --}}
     <x-form id="form-export" target="_blank" method="GET">
         <input type="hidden" name="periode_awal" value="{{ old('periode_awal', request('periode_awal') ?? $periodeAwal) }}" />
-        <input type="hidden" name="periode_akhir" value="{{ old('periode_akhir', request('periode_akhir') ?? $periodeAkhir) }}" />
+        <input type="hidden" name="periode_akhir"
+            value="{{ old('periode_akhir', request('periode_akhir') ?? $periodeAkhir) }}" />
         <input type="hidden" name="jenis_belanja" value="{{ old('jenis_belanja', request('jenis_belanja')) }}" />
 
         @if ($isAdmin)
