@@ -48,7 +48,13 @@ composer install --optimize-autoloader --no-dev
 cp .env.example .env
 ```
 
-4.  Buka file .env & ubah value pada variable `APP_*` & `DB_*`
+4.  Buat generate:key & storage:link
+
+```bash
+php artisan key:generate && php artisan storage:link
+```
+
+5.  Buka file .env & ubah value pada variable `APP_*` & `DB_*`
 
 ```php
 APP_ENV=production
@@ -72,15 +78,12 @@ DB_USERNAME_ARSIP=sa
 DB_PASSWORD_ARSIP=
 ```
 
-5.  Buat generate:key & storage:link
-
-```bash
-php artisan key:generate && php artisan storage:link
-```
-
 6. Migrasi tabel ke database
 
 ```bash
+# Note:
+# Jangan lakukan migrasi jika database sebelumnya sudah ada.
+# Karena akan menghilangkan semua table & record pada database sebelumnya.
 php artisan migrate:refresh --seed
 ```
 
