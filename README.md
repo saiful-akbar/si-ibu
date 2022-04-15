@@ -21,47 +21,12 @@ Sistem Informasi Bagian Umum.
 
 # Update v2
 
--   [x] Halaman login
--   [x] Halaman profil
-    -   [x] Tabs profil
-    -   [x] Tabs akun
-    -   [x] Tabs pengaturan
--   [x] Halaman dashboard
-    -   [ ] Chart line staff
--   [x] Halaman akun belanja
-    -   [x] Halaman tambah
-    -   [x] Halaman edit
-    -   [x] Modal delete
--   [x] Halaman jenis belanja
-    -   [x] Halaman tambah
-    -   [x] Halaman Edit
-    -   [x] Modal delete
--   [x] Halaman divisi (bagian)
-    -   [x] Halaman tambah
-    -   [x] Halaman Edit
-    -   [x] Modal delete
--   [x] Halaman user
-    -   [x] Halaman tambah
-    -   [x] Halaman Edit
-    -   [x] Modal delete
-    -   [x] Menu akses
-        -   [x] Edit menu akses
--   [x] Halaman budget (pagu)
-    -   [x] Modal detail
-    -   [x] Halaman tambah
-    -   [x] Halaman edit
-    -   [x] Halaman switch pagu
-    -   [x] Modal delete
--   [x] Halaman transaksi (Realisasi)
-    -   [x] Modal detail
-    -   [x] Halaman tambah
-    -   [x] Halaman edit
-    -   [x] Modal delete
-    -   [x] Export pdf
-    -   [x] Export excel
--   [x] Master katagori (Arsip)
--   [x] Master type (Arsip)
--   [x] Dokumen (Arsip)
+-   Perbaikan form filter pada chart pie.
+-   Perubahan nama `Budget` menjadi `Pagu`.
+-   Perubahan nama `Belanja` menjadi `Realisasi`.
+-   Menambah kolom `Nominal Realisasi` pada tabel view (bukan di database) pada halaman pagu.
+-   Menambah kolom `outstanding` pada tabel transaksi di database.
+-   Sekarang `bagian umum` & `kepala kantor` dapat input realisasi untuk semua akun belanja yang sebelumnya hanya akun belanja yang sesuai dengan bagian user yang sedang login.
 
 # Instalasi
 
