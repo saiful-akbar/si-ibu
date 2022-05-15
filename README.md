@@ -21,12 +21,12 @@ Sistem Informasi Bagian Umum.
 
 # Update v2
 
--   Perbaikan form filter pada chart pie.
--   Perubahan nama `Budget` menjadi `Pagu`.
--   Perubahan nama `Belanja` menjadi `Realisasi`.
--   Menambah kolom `Nominal Realisasi` pada tabel view (bukan di database) pada halaman pagu.
--   Menambah kolom `outstanding` pada tabel transaksi di database.
--   Sekarang `bagian umum` & `kepala kantor` dapat input realisasi untuk semua akun belanja yang sebelumnya hanya akun belanja yang sesuai dengan bagian user yang sedang login.
+1.   Perbaikan form filter pada chart pie.
+2.   Perubahan nama `Budget` menjadi `Pagu`.
+3.   Perubahan nama `Belanja` menjadi `Realisasi`.
+4.   Menambah kolom `Nominal Realisasi` pada tabel view (bukan di database) pada halaman pagu.
+5.   Menambah kolom `outstanding` pada tabel transaksi di database.
+6.   Sekarang `bagian umum` & `kepala kantor` dapat input realisasi untuk semua akun belanja yang sebelumnya hanya akun belanja yang sesuai dengan bagian user yang sedang login.
 
 # Instalasi
 
