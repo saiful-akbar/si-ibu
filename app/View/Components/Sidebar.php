@@ -15,7 +15,7 @@ class Sidebar extends Component
      */
     public function __construct()
     {
-        $this->menu = menu();
+        $this->menu = session('user.menu');
     }
 
     /**

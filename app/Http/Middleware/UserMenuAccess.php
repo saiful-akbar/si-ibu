@@ -22,11 +22,7 @@ class UserMenuAccess
         /**
          * query menu item
          */
-        $menuItem = Auth::user()
-            ->load('menuItem')
-            ->menuItem()
-            ->where('href', $path)
-            ->first();
+        $menuItem = collect(session('user.menu')->menuItem)->firstWhere('href', '/dashboard');
 
         /**
          * cek akses pada menu sesua request

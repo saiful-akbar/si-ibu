@@ -17,8 +17,6 @@ class AuthController extends Controller
         return view('pages.auth.login');
     }
 
-
-
     /**
      * Login user
      *
@@ -73,12 +71,30 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         /**
+         * Buat session user menu akses
+         */
+        $this->setSessionUserMenu();
+
+        /**
          * redirect ke halaman dashboard
          */
         return redirect()->route('dashboard');
     }
 
+    /**
+     * Buat session user menu akses
+     * 
+     * @return object
+     */
+    private function setSessionUserMenu()
+    {
+        $userMenu = Auth::user()->load([
+            'menuHeader' => fn ($query) => $query->orderBy('no_urut', 'asc'),
+            'menuItem' => fn ($query) => $query->orderBy('nama_menu', 'asc'),
+        ]);
 
+        session(['user.menu' => $userMenu]);
+    }
 
     /**
      * Logout user

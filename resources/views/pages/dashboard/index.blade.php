@@ -92,7 +92,8 @@
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <div class="apex-charts divisi-chart" data-divisi-id="{{ $data->id }}"
-                                        id="divisi-{{ $data->id }}"></div>
+                                        id="divisi-{{ $data->id }}">
+                                    </div>
                                 </div>
                             </div>
 

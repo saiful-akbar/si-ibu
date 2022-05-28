@@ -11,7 +11,6 @@ use App\Traits\UserAccessTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Js;
 
 class DashboardController extends Controller
 {

@@ -25,17 +25,13 @@ trait UserAccessTrait
      */
     public function getAccess(int $userId = null, string $href = '/dashboard'): object
     {
-        $this->userId = !empty($userId) ? $userId : auth()->user()->id;
+        $this->userId = empty($userId) ? auth()->user()->id : $userId;
         $this->href = $href;
 
         /**
          * query menu_item berdasarkan user_id dan href
          */
-        $query = User::with('menuItem')
-            ->find($this->userId)
-            ->menuItem()
-            ->where('href', $this->href)
-            ->first();
+        $query = collect(session('user.menu')->menuItem)->firstWhere('href', '/dashboard');
 
         /**
          * set properti $access

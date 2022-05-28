@@ -51,19 +51,3 @@ if (!function_exists('pengaturan')) {
 		return auth()->user()->pengaturan;
 	}
 }
-
-if (!function_exists('menu')) {
-
-	/**
-	 * Fungsi global user menu header & item
-	 * 
-	 * @return object
-	 */
-	function menu()
-	{
-		return auth()->user()->load([
-            'menuHeader' => fn ($query) => $query->orderBy('no_urut', 'asc'),
-            'menuItem' => fn ($query) => $query->orderBy('nama_menu', 'asc'),
-        ]);
-	}
-}
