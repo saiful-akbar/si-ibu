@@ -12,12 +12,12 @@
                     <div class="row">
 
                         {{-- Pie chart --}}
-                        <div class="col-lg-8 col-md-6 col-sm-12 my-3">
+                        <div class="col-md-6 col-sm-12 my-3">
                             <div id="global-chart" class="apex-charts"></div>
                         </div>
                         {{-- end Pie chart --}}
 
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-md-6 col-sm-12">
 
                             {{-- Form filter tahun periode --}}
                             <div class="row">
@@ -154,21 +154,18 @@
 
                 <div class="card-body">
                     <div class="row">
-
-                        {{-- chart per akun belanja (jenis_belanja) --}}
                         <div class="col-md-6 col-sm-12 my-3">
                             <div id="chart-by-akun-belanja" class="apex-charts"></div>
                         </div>
 
                         <div class="col-md-6 col-sm-12">
-                            <div class="row mb-3">
-
+                            <div class="row">
                                 {{-- select tahun anggaran --}}
-                                <div class="form-group col-lg-6 col-sm-12 mb-3">
-                                    <label for="chart-by-akun-belanja__select-tahun-anggaran">Tahun Anggaran</label>
+                                <div class="form-group col-12 mb-2">
+                                    <label for="chart-by-akun-belanja__tahun">Tahun Anggaran</label>
 
-                                    <select id="chart-by-akun-belanja__select-tahun-anggaran"
-                                        class="form-control form-control-sm select2" data-toggle="select2">
+                                    <select id="chart-by-akun-belanja__tahun" class="form-control form-control-sm select2"
+                                        data-toggle="select2">
                                         @foreach ($years as $year)
                                             <option value="{{ $year }}"
                                                 @if ($year == date('Y')) selected @endif>
@@ -180,14 +177,12 @@
 
                                 {{-- select bagian (divisi) --}}
                                 @if ($isAdmin)
-                                    <div class="form-group col-lg-6 col-sm-12 mb-3">
-                                        <label for="chart-by-akun-belanja__select-divisi">Bagian</label>
+                                    <div class="form-group col-12 mb-2">
+                                        <label for="chart-by-akun-belanja__divisi">Bagian</label>
 
-                                        <select id="chart-by-akun-belanja__select-divisi"
-                                            class="form-control form-control-sm select2" data-toggle="select2">
-                                            <option value="{{ null }}">
-                                                -- Semua --
-                                            </option>
+                                        <select id="chart-by-akun-belanja__divisi" class="form-control form-control-sm select2"
+                                            data-toggle="select2">
+                                            <option value="{{ null }}">-- Semua --</option>
 
                                             @foreach ($divisi as $divChartByAkunBelanja)
                                                 <option value="{{ $divChartByAkunBelanja->id }}">
@@ -199,35 +194,30 @@
                                 @endif
 
                                 {{-- select akun belanja --}}
-                                <div class="form-group col-lg-6 col-sm-12 mb-3">
-                                    <label for="chart-by-akun-belanja__select-akun-belanja">Akun Belanja</label>
+                                <div class="form-group col-12 mb-2">
+                                    <label for="chart-by-akun-belanja__akun-belanja">Akun Belanja</label>
 
-                                    <select id="chart-by-akun-belanja__select-akun-belanja"
-                                        class="form-control form-control-sm select2" data-toggle="select2">
+                                    <select id="chart-by-akun-belanja__akun-belanja" class="form-control form-control-sm select2"
+                                        data-toggle="select2">
                                         <option value="{{ null }}">-- Semua --</option>
-
-                                        @foreach ($akunBelanja as $aBelanja)
-                                            <option value="{{ $aBelanja->id }}">
-                                                {{ $aBelanja->nama_akun_belanja }}
-                                            </option>
-                                        @endforeach
                                     </select>
                                 </div>
 
                                 {{-- select jenis_belanja --}}
-                                <div class="form-group col-lg-6 col-sm-12 mb-3">
-                                    <label for="chart-by-akun-belanja__select-jenis-belanja">Jenis Belanja</label>
+                                <div class="form-group col-12">
+                                    <label for="chart-by-akun-belanja__jenis-belanja">Jenis Belanja</label>
 
-                                    <select id="chart-by-akun-belanja__select-jenis-belanja"
-                                        class="form-control form-control-sm select2" data-toggle="select2">
+                                    <select id="chart-by-akun-belanja__jenis-belanja" class="form-control form-control-sm select2"
+                                        data-toggle="select2">
                                         <option value="{{ null }}">-- Semua --</option>
                                     </select>
                                 </div>
 
-                            </div>
+                                <div class="col-12 my-3">
+                                    <hr>
+                                </div>
 
-                            {{-- deskripsi --}}
-                            <div class="row">
+                                {{-- deskripsi --}}
                                 <div class="col-12 chart-widget-list">
                                     <p>
                                         Total Pagu

@@ -60,9 +60,7 @@ class AuthController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return back()->withErrors([
-                'error' => 'Akun anda tidak aktif.',
-            ]);
+            return back()->withErrors(['error' => 'Akun anda tidak aktif.']);
         }
 
         /**

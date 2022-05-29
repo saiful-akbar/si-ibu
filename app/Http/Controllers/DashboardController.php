@@ -58,15 +58,7 @@ class DashboardController extends Controller
          */
         $divisi = Divisi::where('active', 1)->get();
 
-        /**
-         * ambil data akun_belanja
-         */
-        $akunBelanja = AkunBelanja::where('active', 1)->get();
-
-        return view(
-            'pages.dashboard.index',
-            compact('years', 'divisi', 'isAdmin', 'akunBelanja')
-        );
+        return view('pages.dashboard.index', compact('years', 'divisi', 'isAdmin'));
     }
 
     /**
@@ -298,23 +290,57 @@ class DashboardController extends Controller
     }
 
     /**
+     * Mengambil data akun belanja berdasarkan id divisi...
+     * ... untuk isi select option.
+     *
+     * @param  int $akunBelanjaId [description]
+     * @return void
+     */
+    public function getAkunBelanjaByDivisiId(Request $request)
+    {
+        $isAdmin = $this->isAdmin(href: '/dashboard');
+        $divisiId = $isAdmin ? $request->divisi_id : Auth::user()->divisi->id;
+
+        $jenisBelanjaInBudget = Budget::select('jenis_belanja_id')
+            ->where('divisi_id', $divisiId)
+            ->get();
+
+        $akunBelanja = AkunBelanja::leftJoin('jenis_belanja', 'akun_belanja.id', '=', 'jenis_belanja.akun_belanja_id')
+            ->select('akun_belanja.id', 'akun_belanja.nama_akun_belanja')
+            ->whereIn('jenis_belanja.id', $jenisBelanjaInBudget)
+            ->where('akun_belanja.active', 1)
+            ->get();
+
+        $options = "<option value>-- Semua --</option>";
+
+        foreach ($akunBelanja as $aBelanja) {
+            $options .= "<option value='{$aBelanja->id}'>{$aBelanja->nama_akun_belanja}</option>";
+        }
+
+        echo $options;
+    }
+
+    /**
      * Mengambil data jenis belanja berdasarkan id akun belanja...
      * ... untuk isi select option.
      *
      * @param  int $akunBelanjaId [description]
      * @return void
      */
-    public function getJenisBelanjaByAkunBelanjaId($akunBelanjaId)
+    public function getJenisBelanjaByAkunBelanjaId(Request $request)
     {
-        $jenisBelanja = JenisBelanja::select(['id', 'akun_belanja_id', 'kategori_belanja', 'active'])
-            ->where('akun_belanja_id', $akunBelanjaId)
-            ->where('active', 1)
-            ->get();
-
         $options = "<option value>-- Semua --</option>";
 
-        foreach ($jenisBelanja as $jBelanja) {
-            $options .= "<option value='{$jBelanja->id}'>{$jBelanja->kategori_belanja}</option>";
+        if (!empty($request->divisi_id) && !empty($request->akun_belanja_id)) {
+            $jenisBelanja = JenisBelanja::leftJoin('budget', 'jenis_belanja.id', '=', 'budget.jenis_belanja_id')
+                ->select('jenis_belanja.id', 'jenis_belanja.kategori_belanja')
+                ->where('budget.divisi_id', $request->divisi_id)
+                ->where('jenis_belanja.akun_belanja_id', $request->akun_belanja_id)
+                ->get();
+
+            foreach ($jenisBelanja as $jBelanja) {
+                $options .= "<option value='{$jBelanja->id}'>{$jBelanja->kategori_belanja}</option>";
+            }
         }
 
         echo $options;

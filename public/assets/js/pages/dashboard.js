@@ -36,7 +36,7 @@ class Dashboard {
                 // chart options
                 const options = {
                     chart: {
-                        height: 350,
+                        height: 400,
                         type: "pie",
                     },
                     legend: {
@@ -164,7 +164,7 @@ class Dashboard {
                 );
 
                 const options = {
-                    chart: { height: 350, type: "pie" },
+                    chart: { height: 400, type: "pie" },
                     legend: { show: false },
                     fill: { type: "gradient" },
                     series: [
@@ -210,7 +210,7 @@ const dashboard = new Dashboard();
 /**
  * Jalankan fungsi ketika document selsai dimuat
  */
-$(document).ready(function () {
+$(function () {
     dashboard.setGlobalBudgetChart(new Date().getFullYear());
     dashboard.setBudgetChartByAkunBelanja();
 
@@ -218,7 +218,7 @@ $(document).ready(function () {
      * handle change select tahun anggaran...
      * ...pada chart per akun belanja
      */
-    $("#chart-by-akun-belanja__select-tahun-anggaran").change(function (e) {
+    $("#chart-by-akun-belanja__tahun").change(function (e) {
         e.preventDefault();
         dashboard.chartByAkunBelanja["tahunAnggaran"] = $(this).val();
         dashboard.setBudgetChartByAkunBelanja();
@@ -228,37 +228,59 @@ $(document).ready(function () {
      * handle change select divisi...
      * ...pada chart per akun belanja
      */
-    $("#chart-by-akun-belanja__select-divisi").change(function (e) {
+    $("#chart-by-akun-belanja__divisi").change(function (e) {
         e.preventDefault();
+
         dashboard.chartByAkunBelanja["divisiId"] = $(this).val();
+        dashboard.chartByAkunBelanja["akunBelanjaId"] = "";
+        dashboard.chartByAkunBelanja["jenisBelanjaId"] = "";
         dashboard.setBudgetChartByAkunBelanja();
+
+        const divisiId = $(this).val();
+        const akunBelanjaId = $("#chart-by-akun-belanja__akun-belanja").val();
+
+        $("#chart-by-akun-belanja__akun-belanja").load(
+            `${main.baseUrl}/dashboard/chart/akun-belanja/options?divisi_id=${divisiId}`
+        );
+
+        $("#chart-by-akun-belanja__jenis-belanja").load(
+            `${main.baseUrl}/dashboard/chart/jenis-belanja/options?divisi_id=${divisiId}&akun_belanja_id=${akunBelanjaId}`
+        );
     });
+
+    /**
+     * Ambil data akun belanja saat halaman selesai dimuat...
+     * ...untuk select chart by akun belanja
+     */
+    $("#chart-by-akun-belanja__akun-belanja").load(
+        `${main.baseUrl}/dashboard/chart/akun-belanja/options?divisi_id=`
+    );
 
     /**
      * handle change select akun belanja...
      * ...pada chart per akun belanja
      */
-    $("#chart-by-akun-belanja__select-akun-belanja").change(function (e) {
+    $("#chart-by-akun-belanja__akun-belanja").change(function (e) {
         e.preventDefault();
 
         dashboard.chartByAkunBelanja["akunBelanjaId"] = $(this).val();
+        dashboard.chartByAkunBelanja["jenisBelanjaId"] = "";
+
         dashboard.setBudgetChartByAkunBelanja();
 
-        const akunBelanjaId = $(this).val() === "" ? "all" : $(this).val();
+        const akunBelanjaId = $(this).val();
+        const divisiId = $("#chart-by-akun-belanja__divisi").val();
 
-        const url = `${main.baseUrl}/dashboard/chart/akun-belanja/options/${akunBelanjaId}`;
-        const selectJenisBelanja = $(
-            "#chart-by-akun-belanja__select-jenis-belanja"
+        $("#chart-by-akun-belanja__jenis-belanja").load(
+            `${main.baseUrl}/dashboard/chart/jenis-belanja/options?divisi_id=${divisiId}&akun_belanja_id=${akunBelanjaId}`
         );
-
-        selectJenisBelanja.load(url);
     });
 
     /**
      * handle change select jenis belanja...
      * ...pada chart per akun belanja
      */
-    $("#chart-by-akun-belanja__select-jenis-belanja").change(function (e) {
+    $("#chart-by-akun-belanja__jenis-belanja").change(function (e) {
         e.preventDefault();
         dashboard.chartByAkunBelanja["jenisBelanjaId"] = $(this).val();
         dashboard.setBudgetChartByAkunBelanja();

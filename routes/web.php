@@ -53,7 +53,10 @@ Route::middleware('auth')->group(function () {
             ->middleware('menu:/dashboard,read')
             ->name('dashboard.chart.jenisBelanja');
 
-        Route::get('/chart/akun-belanja/options/{akunBelanjaId}', [DashboardController::class, 'getJenisBelanjaByAkunBelanjaId'])
+        Route::get('/chart/akun-belanja/options', [DashboardController::class, 'getAkunBelanjaByDivisiId'])
+            ->middleware('menu:/dashboard,read');
+
+        Route::get('/chart/jenis-belanja/options', [DashboardController::class, 'getJenisBelanjaByAkunBelanjaId'])
             ->middleware('menu:/dashboard,read');
 
         Route::get('/chart/{year}', [DashboardController::class, 'globalBudgetChart'])

@@ -36,9 +36,10 @@ class DocumentController extends Controller
         $validateRules = [
             'first_period' => [],
             'last_period'  => [],
+            'number'       => [],
+            'nama_file'    => [],
             'ars_category' => [],
             'ars_type'     => [],
-            'number'       => [],
         ];
 
         /**
@@ -49,9 +50,9 @@ class DocumentController extends Controller
             'first_period.date'     => 'Periode harus tanggal yang valid.',
             'last_period.required'  => 'Periode harus diisi.',
             'last_period.date'      => 'Periode harus tanggal yang valid.',
+            'number.exists'         => 'Nomor tidak ditemukan.',
             'ars_category.exists'   => 'Kategori arsip tidak ada. Pilih kategori arsip yang ditentukan.',
             'ars_type.exists'       => 'Type arsip tidak ada. Pilih type arsip yang ditentukan.',
-            'number.exists'         => 'Nomor tidak ditemukan.',
         ];
 
         /**
@@ -119,6 +120,13 @@ class DocumentController extends Controller
          */
         if (!empty($request->number)) {
             $query->where('Number', $request->number);
+        }
+
+        /**
+         * query jika request nama_file diinput
+         */
+        if (!empty($request->nama_file)) {
+            $query->where('NamaFile', 'like', "%{$request->nama_file}%");
         }
 
         /**

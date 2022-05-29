@@ -46,6 +46,38 @@
                             </div>
                             {{-- end input periode tanggal --}}
 
+                            {{-- input number --}}
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                <div class="form-group">
+                                    <label for="number">Nomor Dokumen</label>
+
+                                    <input type="search" name="number" id="number" placeholder="Masukan nomor..."
+                                        class="form-control @error('number') is-invalid @enderror"
+                                        value="{{ old('number', request('number')) }}" />
+
+                                    @error('number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            {{-- end input number --}}
+
+                            {{-- input nama file --}}
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                                <div class="form-group">
+                                    <label for="nama_file">Nama File</label>
+
+                                    <input type="search" name="nama_file" id="nama_file" placeholder="Masukan nama file..."
+                                        class="form-control @error('nama_file') is-invalid @enderror"
+                                        value="{{ old('nama_file', request('nama_file')) }}" />
+
+                                    @error('nama_file')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            {{-- end input nama file --}}
+
                             {{-- input kategori arsip --}}
                             <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                 <div class="form-group">
@@ -97,22 +129,6 @@
                                 </div>
                             </div>
                             {{-- end input type arsip --}}
-
-                            {{-- input number --}}
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                                <div class="form-group">
-                                    <label for="number">Nomor Dokumen</label>
-
-                                    <input type="search" name="number" id="number" placeholder="Masukan nomor..."
-                                        class="form-control @error('number') is-invalid @enderror"
-                                        value="{{ old('number', request('number')) }}" />
-
-                                    @error('number')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            {{-- end input number --}}
 
                         </div>
                     </div>
