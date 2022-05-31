@@ -32,20 +32,12 @@
 
         .table-bordered tr th,
         .table-bordered tr td {
-            border: 2px solid #000;
+            border: 1px solid #000;
         }
 
         .table tr th,
         .table tr td {
             padding: 7px;
-
-        }
-
-        .table tr th {
-            font-size: 14px;
-        }
-
-        .table tr td {
             font-size: 12px;
         }
 
