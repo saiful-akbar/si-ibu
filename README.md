@@ -27,7 +27,7 @@ Sistem Informasi Bagian Umum.
 4.  Menambah kolom `Nominal Realisasi` pada tabel view (bukan di database) pada halaman pagu.
 5.  Menambah kolom `outstanding` pada tabel transaksi di database.
 6.  Sekarang khusus `bagian umum` & `kepala kantor` dapat input realisasi untuk semua akun belanja.
-7.  Penambahan form filter by nama file pada halaman arsip dokumen.    
+7.  Penambahan form filter by nama file pada halaman arsip dokumen.
 
 # Instalasi
 
@@ -43,40 +43,40 @@ git clone https://github.com/saiful-akbar/si-ibu.git && cd si-ibu
 composer install --optimize-autoloader --no-dev
 ```
 
-3. Copy file .env.example ke .env
+3. Copy file .env.example ke .env & generate:key
 
 ```bash
-cp .env.example .env
+cp .env.example .env && php artisan key:generate
 ```
 
-4.  Buat generate:key & storage:link
-
-```bash
-php artisan key:generate && php artisan storage:link
-```
-
-5.  Buka file .env & ubah value pada variable `APP_*` & `DB_*`
+4.  Buka file .env & ubah value pada variable `APP_*` & `DB_*`
 
 ```php
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://www.domain.com
+APP_ENV= # local | production
+APP_DEBUG= # true | false
+APP_URL= #https://www.siibu.com
 
 # Koneksi database pertama (Anggaran)
 DB_CONNECTION_ANGGARAN=anggaran
-DB_HOST_ANGGARAN=localhost
-DB_PORT_ANGGARAN=1433
-DB_DATABASE_ANGGARAN=siibu_anggaran
-DB_USERNAME_ANGGARAN=sa
-DB_PASSWORD_ANGGARAN=
+DB_HOST_ANGGARAN= # localhost
+DB_PORT_ANGGARAN= # 1433
+DB_DATABASE_ANGGARAN= # siibu_anggaran
+DB_USERNAME_ANGGARAN= # sa
+DB_PASSWORD_ANGGARAN= # secret
 
 # Koneksi database kedua (Arsip)
 DB_CONNECTION_ARSIP=arsip
-DB_HOST_ARSIP=localhost
-DB_PORT_ARSIP=1433
-DB_DATABASE_ARSIP=siibu_arsip
-DB_USERNAME_ARSIP=sa
-DB_PASSWORD_ARSIP=
+DB_HOST_ARSIP= # localhost
+DB_PORT_ARSIP= # 1433
+DB_DATABASE_ARSIP= # siibu_arsip
+DB_USERNAME_ARSIP= # sa
+DB_PASSWORD_ARSIP= # secret
+```
+
+5.  Buat storage:link
+
+```bash
+php artisan storage:link
 ```
 
 6. Migrasi tabel ke database.

@@ -66,7 +66,7 @@
 
                 <p class="lead">
                     <i class="mdi mdi-format-quote-open"></i>
-                    {{ config('app.name') }} v{{ config('app.version') }}
+                    v{{ config('app.version') }}
                     <i class="mdi mdi-format-quote-close"></i>
                 </p>
             </div>
