@@ -16,7 +16,7 @@ Sistem Informasi Bagian Umum.
 -   php v8.x.x
 -   composer
 -   git & git bash
--   Aktifkan `extension=gd` pada php.ini untuk fitur export excel dan domPDF
+-   Aktifkan `extension=gd` pada `php.ini` untuk fitur export excel dan domPDF
 -   Ter-install driver SQL Server untuk php
 
 # Update v2.1.0
@@ -52,25 +52,25 @@ cp .env.example .env && php artisan key:generate
 4.  Buka file .env & ubah value pada variable `APP_*` & `DB_*`
 
 ```php
-APP_ENV= # local | production
-APP_DEBUG= # true | false
-APP_URL= #https://www.siibu.com
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=
 
 # Koneksi database pertama (Anggaran)
 DB_CONNECTION_ANGGARAN=anggaran
-DB_HOST_ANGGARAN= # localhost
-DB_PORT_ANGGARAN= # 1433
-DB_DATABASE_ANGGARAN= # siibu_anggaran
-DB_USERNAME_ANGGARAN= # sa
-DB_PASSWORD_ANGGARAN= # secret
+DB_HOST_ANGGARAN=localhost
+DB_PORT_ANGGARAN=1433
+DB_DATABASE_ANGGARAN=siibu_anggaran
+DB_USERNAME_ANGGARAN=sa
+DB_PASSWORD_ANGGARAN=
 
 # Koneksi database kedua (Arsip)
 DB_CONNECTION_ARSIP=arsip
-DB_HOST_ARSIP= # localhost
-DB_PORT_ARSIP= # 1433
-DB_DATABASE_ARSIP= # siibu_arsip
-DB_USERNAME_ARSIP= # sa
-DB_PASSWORD_ARSIP= # secret
+DB_HOST_ARSIP=localhost
+DB_PORT_ARSIP=1433
+DB_DATABASE_ARSIP=siibu_arsip
+DB_USERNAME_ARSIP=sa
+DB_PASSWORD_ARSIP=
 ```
 
 5.  Buat storage:link
@@ -82,7 +82,6 @@ php artisan storage:link
 6. Migrasi tabel ke database.
 
 ```bash
-# Note:
 # Jangan lakukan migrasi jika database sebelumnya sudah ada.
 # Karena akan menghilangkan semua table & record pada database sebelumnya.
 php artisan migrate:refresh --seed
