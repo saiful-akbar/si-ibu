@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Budget;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaksi extends Model
 {
@@ -38,7 +40,7 @@ class Transaksi extends Model
      */
     public function budget()
     {
-        return $this->belongsTo(budget::class, 'budget_id', 'id');
+        return $this->belongsTo(Budget::class, 'budget_id', 'id');
     }
 
     /**
@@ -46,7 +48,7 @@ class Transaksi extends Model
      */
     public function getCreatedAtAttribute()
     {
-        return \Carbon\Carbon::parse($this->attributes['created_at'])->format('d M Y H:i');
+        return Carbon::parse($this->attributes['created_at'])->format('d M Y H:i');
     }
 
     /**
@@ -54,6 +56,6 @@ class Transaksi extends Model
      */
     public function getUpdatedAtAttribute()
     {
-        return \Carbon\Carbon::parse($this->attributes['updated_at'])->format('d M Y H:i');
+        return Carbon::parse($this->attributes['updated_at'])->format('d M Y H:i');
     }
 }
